@@ -1,0 +1,6 @@
+*
+!target/
+target/*
+!target/agent/
+!target/agent/**
+!Dockerfile

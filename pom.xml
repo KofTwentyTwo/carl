@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Scaffold copyright (C) 2026 KofTwentyTwo.
+    Consumer additions retain their respective owners' copyright.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>com.kof22</groupId><artifactId>kof22-agent-parent</artifactId><version>0.4.0</version><relativePath/></parent>
+  <groupId>com.kof22.carlai</groupId>
+  <artifactId>carl-ai</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <properties><main.class>com.kof22.carlai.AgentApplication</main.class><argLine></argLine></properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency><groupId>org.apache.pdfbox</groupId><artifactId>pdfbox</artifactId><version>2.0.37</version></dependency>
+      <dependency><groupId>org.apache.pdfbox</groupId><artifactId>fontbox</artifactId><version>2.0.37</version></dependency>
+      <dependency><groupId>org.apache.pdfbox</groupId><artifactId>xmpbox</artifactId><version>2.0.37</version></dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency><groupId>com.fasterxml.jackson.datatype</groupId><artifactId>jackson-datatype-jsr310</artifactId></dependency>
+    <dependency><groupId>org.apache.pdfbox</groupId><artifactId>pdfbox</artifactId></dependency>
+    <dependency><groupId>org.mnode.ical4j</groupId><artifactId>ical4j</artifactId><version>4.3.0</version></dependency>
+  </dependencies>
+  <build><plugins>
+    <plugin><groupId>com.mycila</groupId><artifactId>license-maven-plugin</artifactId><version>5.1.2</version>
+      <configuration><header>${project.basedir}/config/license/copyright.txt</header><strictCheck>false</strictCheck><skipExistingHeaders>true</skipExistingHeaders><failIfMissing>true</failIfMissing>
+        <mapping><cjs>SLASHSTAR_STYLE</cjs></mapping>
+        <includes><include>src/**/*.java</include><include>src/**/*.sql</include><include>scripts/**/*.java</include><include>scripts/**/*.sh</include><include>scripts/**/*.py</include><include>scripts/**/*.cjs</include></includes>
+        <excludes><exclude>**/node_modules/**</exclude></excludes>
+      </configuration><executions><execution><id>carl-copyright</id><phase>validate</phase><goals><goal>check</goal></goals></execution></executions>
+    </plugin>
+    <plugin><groupId>org.jacoco</groupId><artifactId>jacoco-maven-plugin</artifactId><version>0.8.15</version>
+      <executions><execution><goals><goal>prepare-agent</goal></goals></execution><execution><id>consumer-coverage</id><phase>verify</phase><goals><goal>report</goal></goals></execution><execution><id>consumer-coverage-minimum</id><phase>verify</phase><goals><goal>check</goal></goals><configuration><rules><rule><element>BUNDLE</element><limits><limit><counter>LINE</counter><value>COVEREDRATIO</value><minimum>0.80</minimum></limit><limit><counter>BRANCH</counter><value>COVEREDRATIO</value><minimum>0.60</minimum></limit></limits></rule></rules></configuration></execution></executions>
+    </plugin>
+    <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><configuration><argLine>@{argLine} -Dqqq.logger.logSessionId.disabled=true</argLine></configuration></plugin>
+  </plugins></build>
+  <profiles><profile><id>errorprone</id><activation><property><name>!idea.maven.embedder.version</name></property></activation>
+    <build><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId>
+      <configuration><compilerArgs combine.children="append"><arg>-XDcompilePolicy=simple</arg><arg>-XDaddTypeAnnotationsToSymbol=true</arg><arg>--should-stop=ifError=FLOW</arg><arg>-Xplugin:ErrorProne -Xep:MissingSummary:OFF</arg></compilerArgs>
+      <annotationProcessorPaths combine.children="append"><path><groupId>com.google.errorprone</groupId><artifactId>error_prone_core</artifactId><version>2.50.0</version></path></annotationProcessorPaths></configuration>
+    </plugin></plugins></build>
+  </profile></profiles>
+</project>

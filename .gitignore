@@ -1,0 +1,16 @@
+#
+# Scaffold copyright (C) 2026 KofTwentyTwo.
+# Consumer additions retain their respective owners' copyright.
+#
+
+.env
+.idea/
+.vscode/
+*.iml
+target/
+
+/log/
+
+__pycache__/
+
+*.py[cod]

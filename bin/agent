@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Scaffold copyright (C) 2026 KofTwentyTwo.
+# Consumer additions retain their respective owners' copyright.
+#
+
+set -eu
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+agent_dir=$(cd -- "$script_dir/.." && pwd -P)
+if [ "$#" -eq 0 ]; then
+  configuration="$agent_dir/config/agent.properties"
+else
+  configuration="$1"
+  shift
+fi
+exec java -Dqqq.logger.logSessionId.disabled=true -jar "$agent_dir/app.jar" "$configuration" "$@"

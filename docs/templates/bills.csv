@@ -1,0 +1,4 @@
+source_id,vendor,description,amount,currency,due_date,status,visibility
+synthetic-power-2026-09,Synthetic Power,September electricity,125.25,USD,2026-09-30,UNPAID,PRIVATE
+synthetic-water-2026-09,Synthetic Water,September water,74.75,USD,2026-09-30,UNPAID,FAMILY
+synthetic-review-2026-09,Synthetic Service,Supporting information needed,,USD,,UNKNOWN,PRIVATE

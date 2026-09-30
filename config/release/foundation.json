@@ -1,0 +1,18 @@
+{
+  "version": "0.4.0",
+  "source": "bb25a2a1f3ca562b054400a321773852ae839f39",
+  "release": "https://github.com/KofTwentyTwo/kof22-agent-foundation/releases/tag/v0.4.0",
+  "qualificationRun": 36670072139,
+  "evidenceZipSha256": "b335799a61591ea7d0bccbfd17a94d49df2995defcef69a6dc5f6ce4564c74ac",
+  "artifacts": {
+    "com/kof22/kof22-agent-core/0.4.0/kof22-agent-core-0.4.0.pom": "08bb02bfca3243acebd8b90aa9411a46a6beff4a413712c54561a88b4ffc1184",
+    "com/kof22/kof22-agent-core/0.4.0/kof22-agent-core-0.4.0.jar": "c41074d3476c374b1e1c8387cdb723372120b6e305cc4df407f70402ff8c1356",
+    "com/kof22/kof22-agent-core/0.4.0/kof22-agent-core-0.4.0-tests.jar": "a4849adb3218d46823957665c6b4eef2a26be1a8a7fe0f82827cf2481312be59",
+    "com/kof22/kof22-agent-ui/0.4.0/kof22-agent-ui-0.4.0.pom": "29f803f6f9ef8c24d1186f4fa58b9aa5decfaf871e59077d926cebfdc972992f",
+    "com/kof22/kof22-agent-ui/0.4.0/kof22-agent-ui-0.4.0.jar": "a118976a7cb17c1edfa6f3ed283d9d547068317d86bce8943f1cf260e726ee52",
+    "com/kof22/kof22-agent-qqq/0.4.0/kof22-agent-qqq-0.4.0.pom": "0ac71a3c2c69dec4f67217841e223498e67197356e9f4c8532f94c5ac1569420",
+    "com/kof22/kof22-agent-qqq/0.4.0/kof22-agent-qqq-0.4.0.jar": "ecb297e885d1af43d0903d22a98c4e257869b9d81a11a3915be84f4d5998acae",
+    "com/kof22/kof22-agent-qqq/0.4.0/kof22-agent-qqq-0.4.0-tests.jar": "aa5b1ed82a95819831eca2417da20e3af2e650f3204b7a651d44335ecfc66faa",
+    "com/kof22/kof22-agent-parent/0.4.0/kof22-agent-parent-0.4.0.pom": "df259beedb879b0de97aaab890776b803685e209c4cf52bc9a5cd709100722df"
+  }
+}

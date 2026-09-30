@@ -1,0 +1,84 @@
+# Carl family client integration
+
+Carl uses the foundation `/api/agent/v1` protocol. Foundation `0.4.0` is remotely qualified at source `bb25a2a1f3ca562b054400a321773852ae839f39`. Carl pins `0.4.0` using exact artifacts verified against the signed publication hashes; fresh consumer remote package access remains a separate hosted release prerequisite. Follow the matching foundation `docs/CLIENT-API.md` and OpenAPI contract for tokens, conversations, polling, limits and native iPhone login.
+
+Set `kof22.agent.client-api.enabled=true`, `.issuer`, and `.audience` only after selecting and qualifying the identity provider. Set the public HTTPS origin through `kof22.agent.qqq.public-origin`. The native API audience must differ from the QQQ operator audience. The foundation validates dedicated access tokens; prompt text, JSON caller fields and QQQ cookies cannot substitute for them.
+
+An operator explicitly provisions `carl_identity(issuer,subject,member_id)` and current `carl_member`/domain permissions. There is no default family member or mapping from a display name. `CarlFamilyAccess` resolves the exact verified issuer and subject to the current durable household permission epoch. Do not reuse member IDs. Permission changes invalidate old conversations and stored artifacts conservatively; clients clear protected caches and start a fresh conversation. Existing reports may need regeneration even when only another household permission changed. V7 intentionally denies older artifacts without an epoch snapshot.
+
+Ordinary private chat exposes only Carl's six caller-aware read tools (bills, finances, records, category budget variance, explicit presentation preferences and possible appointment windows). Shared conversations have no private read tools. Explicit reports, drafts, financial comparisons and plan changes use a separate user workflow intent with the server's immutable participant set, never model-supplied identities or audience.
+
+| Workflow kind | `input` fields | Result |
+| --- | --- | --- |
+| `report` | `from`, `through`: ISO dates, at most two years | Persisted source-linked household facts for the audience's intersecting access |
+| `debt-comparison` | `asOf`: ISO date; `currency`: explicit currency; `monthlyBudget`: positive exact decimal string; `horizonMonths`: 1–600; `budgetEvidence`: explicit assumption/evidence | Persisted comparison of authorized debt inputs; supplied budget is not proof of affordability |
+| `purchase-assessment` | `cashPlan`: positive permitted record ID; `purchaseDate`: ISO date; `allInPrice`: exact decimal string; `purpose`: bounded text; `allInCostsKnown`: boolean | Conditional cash budget from the saved dated forecast, selected reserves and goals; financing offers require separate qualification |
+| `offer-comparison` | `offerIds`: one to ten distinct permitted record IDs; `asOf`: ISO date | Scoped equal-principal/currency financing costs, residuals and dated source limitations; no offer acceptance |
+| `rental-report` | `propertyIds`: one to 100 distinct permitted records; `from`, `through`: ISO dates spanning at most 366 days; `asOf`: explicit date | Source-linked property cash figures, explicit ownership and partial source coverage |
+| `tax-packet` | `propertyIds`: one to 100 distinct permitted records; `taxYear`: explicit 1900–2200; `asOf`: ISO date, interpreted at UTC midnight | Dated preparation evidence and missing-document checklist; tax calculation remains unqualified |
+| `draft` | `workId`: positive integer; `purpose`: FOLLOW_UP, QUOTE_REQUEST, SCHEDULING_INQUIRY or SERVICE_QUESTION | Persisted local vendor draft, explicitly not sent |
+| `plan-create` | `sourceArtifact`: current financial comparison ID; `title`, `reason`: bounded text | New draft plan; comparison audience must exactly match immutable conversation participants |
+| `plan-step` | `plan`, `expectedVersion`, canonical `step` UUID, `title`, `assignee` member ID, ISO `due`, `location`, nullable canonical `dependency` UUID, `reason` | Versioned task; assignee must have current plan access; task revisions require renewed agreement |
+| `plan-agree` | `plan`, `expectedVersion`, `reason` | Explicit agreement after current complete assumptions and assigned tasks are checked |
+| `plan-check-in` | `plan`, `expectedVersion`, canonical `step` UUID, `status`: TODO/REPORTED_COMPLETE/VERIFIED_COMPLETE/BLOCKED, `note`, nullable `evidence` record ID | Reported work remains distinct from human evidence-reviewed completion; every recipient must see typed evidence and its dependencies |
+| `plan-rebase` | `plan`, `expectedVersion`, `sourceArtifact`, `reason` | Replaces assumptions with a current comparison for the same audience; preserves prior versions and tasks, returns to draft for review |
+| `plan-export` | `plan` | Protected PDF bytes as `contentBase64`, `mediaType`, `filename`, `exportedPlanVersion`, `exportedAt`; `plan` is the snapshot at workflow completion and may be newer than the dated PDF |
+
+Use `PUT /api/agent/v1/conversations/{conversationId}/workflows/{kind}/{requestId}` with `{"input":{...}}`, then GET the same URL. Generate one UUID per logical request and retain it across retries. Reusing it for different input, requester, conversation or audience fails. `PENDING` means work is still running; `UNKNOWN` requires reconciliation and must never trigger a new automatic request. Results return protected artifact content directly, without public download URLs. Plan mutation and its saved result commit atomically; retries return the original result after current audience/source checks. Exact keys are required, including explicit nulls for nullable task fields. Plan inputs never accept caller identity or an audience override.
+
+Carl owns two workflow workers, a sixteen-request queue and a thirty-second domain execution budget. SQL execution is bounded by the remaining budget (rounded up to one second) and normal query bounds. Interrupted startup work becomes UNKNOWN; it is not replayed. Current workflows produce deterministic facts/drafts without live narration. Complete conversational/model acceptance and the iPhone application remain unqualified.
+
+Secret names only: `KOF22_AGENT_ANTHROPIC_API_KEY`, `KOF22_AGENT_DB_PASSWORD`, `KOF22_AGENT_QQQ_DB_PASSWORD`, `KOF22_AGENT_QQQ_PASSWORD`. Identity-provider secrets belong to the selected deployment's protected configuration; no client secret is embedded in an iPhone binary. Synology credentials and collection identifiers are not yet configured or connected.
+
+## Portfolio summaries and protected details
+
+`portfolio-comparison` accepts exactly `accounts` (1–100 unique positive IDs), `moves` (0–20 unique reviewed allocation IDs), `asOf`, `currency`, decimal-string `monthlyBudget`, integer `horizonMonths` (1–600), `rollover` (`AVALANCHE`, `SNOWBALL`, or `MINIMUM_ONLY`), and `budgetEvidence`. The service additionally limits the combined projection to 25,000 debt-period rows. The response contains a protected artifact ID and bounded summary, including currency, estimated totals, payoff date, comparison qualifications, and counts. `PARTIAL` can mean a strategy cannot pay off within the horizon. Available credit and an assumed monthly budget do not establish affordability.
+
+To retrieve the preserved details, start a `portfolio-detail` workflow with exactly `artifact`, `section`, `strategy`, `offset`, and `limit`. Sections are `assumptions`, `sources`, `gaps`, `months`, `payoffDates`, and `cashDifferences`. Supply `strategy: null` for the first three; other sections take `CURRENT_PAYMENT`, `MINIMUM_ONLY`, `AVALANCHE`, `SNOWBALL`, or `USER_DIRECTED` (cash differences compare a candidate against current, so select a candidate). Pages have 1–10 items and a 128 KiB bound, with `totalItems` and `nextOffset`; use a smaller page if needed. Immutable saved schedules are never silently truncated. A missing strategy schedule requires inspecting its gaps, not treating it as zero debt. The configured conversation audience must retain permission to every source on every retrieval. Native administration also exposes the full protected artifact.
+
+
+## Purchase payment choices
+
+`purchase-options` accepts exactly `cashPlan`, `purchaseDate`, `allInPrice` (decimal string), `purpose`, `allInCostsKnown`, `card`, and `offers` (zero to five distinct permitted PURCHASE_FINANCE offer IDs). `card` must be explicit null or exactly `{account, payoffDate, graceConfirmed, balanceReviewed, evidence}`; payoffDate may be null. Grace claims require coherent current dated zero-balance evidence and reject contradictory newer imported balances. Ordinary financing with a first payment beyond one modeled month remains unqualified because the initial accrual/grace period is not implemented. Cash, full-pay card and supported actual store-financing terms share the same dated reserve/cash constraints; credit limits are never an affordability input.
+
+The protected result includes currency, all-in price, conditional maximum cash budget, cost/liquidity qualifications and per-option payment counts. Retrieve immutable repayment pages through `purchase-detail` with exactly `artifact`, `option`, `offset` and `limit` (1–24 payments). Each page includes currency, total and nextOffset. Unsupported terms or incomplete forecast coverage return unknown qualification, not fabricated savings. No order, application or payment occurs.
+
+## Shared calendar and reminder intents
+
+`calendar-plan` accepts exactly `plan`, canonical `step` UUID, positive `expectedVersion`, `collection` (`events` or `reminders`), `operation` (`PUBLISH`, `RETIRE`, `RECONCILE`, `SYNCHRONIZE`, `STATUS`) and `priorRequest`. `priorRequest` is a canonical UUID only for RECONCILE and must otherwise be null. Only operator-configured fixed collections are eligible. The existing plan audience must exactly match the conversation participants; the separately configured shared-calendar audience must also pass current source checks. STATUS returns at most 51 recent local operations/observations and does not refresh the provider. Unknown writes require read-only reconciliation of the original operation ID.
+
+SYNCHRONIZE may retain a typed remote reminder observation. It does not change task completion. `reminder-review` accepts exactly `plan`, `observation`, `expectedVersion`, `decision` (`ACCEPT_REPORTED_COMPLETE` or `DISMISS`) and bounded `note`. Current source permissions, plan version and latest synchronized resource identity/hash are rechecked. Acceptance records human-reviewed **REPORTED_COMPLETE**, never verified financial execution. The provider does not prove which family member edited a shared checkbox. Conflicting, inaccessible or changed observations require renewed review. Calendar endpoints, arbitrary content, caller IDs and audience overrides are never input fields.
+
+
+## Tax source packets and bounded saved-fact navigation
+
+`tax-planning-packet` accepts exactly `taxYear` (1900–2200 or explicit null), `asOf` (nonfuture RFC3339 instant), `properties` (1–20 unique permitted IDs), `alternatives` (0–40), and `references` (0–100). It combines supplied property facts, conditional human-proposed structures and dated primary-source reference identities. Reference applicability is evaluated as of the requested instant; supplied domain facts remain current records, not reconstructed history. No tax calculation, entity recommendation or professional approval is inferred. The result is a protected artifact ID and bounded summary, with full data available through section pages.
+
+`artifact-section` accepts exactly `artifact`, `path` (RFC6901 JSON pointer, root is `""`), nonnegative `offset`, and positive `limit`. The root contains `facts`, `narrative` and `limitations`. Object/array pages allow at most 25 entries; each descriptor includes its exact next `path` and type. Large nested values are navigated explicitly, not included unboundedly. Text leaves allow at most 4096 Unicode code points per page; `totalItems`, `offsetUnit` and `nextOffset` allow complete reconstruction without cutting surrogate pairs. Decimal values remain exact. Missing paths and oversized pages fail explicitly. Every page rechecks the original conversation participants against all current source permissions; this is not a public artifact URL.
+
+The `carl_read_availability` ordinary read capability takes exact `from`/`through` instants and integer `minimumMinutes` (1–1440); requested interval is at most seven days. It merges only common authorized busy intervals, excludes canceled/transparent events, returns at most 100 candidate windows and includes coverage/freshness limitations. No private event prose enters its result. Incomplete/private calendar coverage can conflict with every suggestion. Native administration also provides household-zone date/time entry and rejects ambiguous/skipped DST endpoints rather than guessing which occurrence was intended.
+
+### Focused reports and operational recovery
+
+Use explicit `focused-report` input `{focus: BILLS|CALENDAR|VENDORS, from, through}` or `bill-period-comparison` input `{beforeFrom, beforeThrough, afterFrom, afterThrough}` with ISO dates. Results contain protected artifact summaries; `artifact-section` retrieves complete facts/narrative in bounded pages. Comparisons require comparable source coverage and preserve hypotheses separately from observed differences.
+
+`report-status` accepts only `{reportRequest: UUID}`. `report-reconciliation` accepts `{reportRequest: UUID, reason: string}` and uses the workflow request UUID as its new reconciliation identity. Both require the original actor and exact current conversation audience. Reconciliation can recover a provably committed artifact or fence an abandoned generation; it never replays narration. Retrieval rechecks current authority. FAILED means a new explicit generation needs a new request UUID; UNKNOWN needs review, not blind repetition.
+
+### Selected balance sheets and rental stress
+
+`balance-sheet` accepts `{asOf: YYYY-MM-DD, maximumAgeDays: 0..3660, accounts: [IDs], estimatedProperties: [IDs], linkedProperties: [IDs]}`. Select at least one account/property, at most 100 accounts and 100 unique properties; a property may occur in only one valuation list. These are selected permitted balances, not proof of complete household coverage. Linked asset/debt identities are counted once.
+
+`rental-stress-report` accepts only `{scenario: ID}` for an existing human-reviewed native scenario. It replays the authorized historical rental interval with explicit vacancy/repair/simple-interest assumptions; it does not predict mortgage payments, taxes or future affordability. Both return a protected summary with `artifact-section` navigation. Creating scenario assumptions is currently a separate explicit native human workflow.
+
+
+### Protected report downloads
+
+`report-export` accepts `{artifact: ID, format: PDF|TEXT}` and returns a small immutable export manifest: export request UUID, artifact ID, media type, total byte count and SHA-256. `report-download` accepts `{exportRequest: UUID, format: PDF|TEXT, offset: integer, limit: integer}`. The limit is1–65,536bytes; follow `nextOffset` until null, concatenate decoded `contentBase64` bytes in order and verify the manifest length/hash. Text uses UTF-8: decode after byte reassembly. Maximum stored export is4MB; oversized reports fail explicitly. The app may offer copy/save after complete reassembly; no public URL or outbound send is created.
+
+Every page rechecks export ownership, current artifact/source permissions and every immutable conversation recipient. Source or permission changes can invalidate an earlier manifest. Do not treat downloaded client caches as automatically revoked; clear private cached results when `/me.permissionRevision` changes and follow the approved device-storage policy. No actor or audience fields are accepted.
+
+## Expected and observed plan effects
+
+`plan-expectation` accepts `plan`, current `version`, `step` UUID, `kind` (`CASH_PAYMENT`, `TRANSFER`, `PRINCIPAL_REDUCTION`), `account`, exact decimal-string `amount`, date-only `from`/`through`, and `reason`. The verified conversation participants must exactly match the plan audience. The result is a protected immutable expectation ID; no payment or task completion occurs.
+
+`plan-effect-comparison` accepts that `expectation`, an explicitly selected array of at most100 transaction IDs, and `evidence`. It returns a bounded artifact summary; `artifact-section` retrieves protected details. The result preserves expected/observed/difference amounts, currency, observation date, source selection and MATCH/DIFFERENCE/UNDETERMINED. Missing observations remain unknown. Current permission checks apply to creation and every retrieval, and results never automatically verify financial execution or complete a task.
