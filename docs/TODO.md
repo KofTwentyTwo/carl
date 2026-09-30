@@ -31,3 +31,9 @@ This replaces historical duplicate checklists. Governing scope remains [baseline
 - [ ] Production policy: retention/deletion/backup expiry/operator/recovery decisions before any separately requested deployment.
 
 No live account connection, personal data, external financial action or deployment is claimed. Initial source is signed locally at `e1213fa`; the reviewed container/evidence repair follows in signed history. Push and hosted release remain blocked as stated above.
+
+## Anthropic compatibility prerequisite
+
+- [ ] Qualify the upstream default-model tool continuation and incomplete-stop correction with actual SDK/HTTP regressions and unchanged foundation gates.
+- [ ] Select the qualified corrected foundation artifact and rerun the consumer gate and relevant conversation/report failure cases with exact artifact identities.
+- [ ] Run bounded synthetic live model evaluations only after the owner's provider authorization and secure personal credential configuration; do not claim controlled fixtures qualify account access.

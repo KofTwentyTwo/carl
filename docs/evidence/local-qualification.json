@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "state": "LOCAL_APPLICATION_QUALIFIED_CONTAINER_REPAIRED",
+  "state": "CONTROLLED_EVIDENCE_RETAINED_RUNTIME_COMPATIBILITY_BLOCKED",
   "applicationVersion": "0.1.0-SNAPSHOT",
   "foundation": {
     "version": "0.4.0",
@@ -130,5 +130,12 @@
     "initialSignedLocalCommit": "e1213fa429166d8016f777c5a89016356dee105f",
     "securityFollowup": "Reviewed Docker-only repair and evidence refresh; exact signed revision is recorded in repository history.",
     "remote": "Push blocked; no remote implementation PR or release."
+  },
+  "knownRuntimeCompatibilityHold": {
+    "status": "BLOCKED",
+    "affectedFoundationVersion": "0.4.0",
+    "upstreamBranch": "feature/anthropic-tool-loop-qualification",
+    "finding": "Required provider continuation content is lost and incomplete stops can appear complete. Existing controlled gate counts are historical evidence, not live-model qualification.",
+    "next": "Qualify corrected upstream artifacts and consumer regressions; personal provider authorization/account access remain separate."
   }
 }

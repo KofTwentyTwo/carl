@@ -130,3 +130,5 @@ Latest complete integrated gate: **299 tests**, zero failures/errors/skips, with
 | SYN-AT-06 | PASS | CalDavClientTest; CalendarPublicationServiceTest; AgendaDecoderTest; CalendarAgendaServiceTest; ReminderObservationsTest | Controlled synthetic application contract; live qualification is separate. |
 | SYN-AT-07 | PASS | browser native-shared-reminder-sync-and-human-reported-completion; ReminderObservationsTest.familyCalendarStatusAndReviewUseImmutableParticipantsAndRequestIds | Actual packaged controlled provider/PG/native state passes; live client compatibility remains separate. |
 | SYN-AT-08 | BLOCKED | docs/CALENDAR-REMINDERS.md | No authorized real endpoint/credentials/client qualification yet. |
+
+Current model compatibility hold: the selected foundation requires the reproduced continuation/incomplete-stop correction before conversational qualification. Historical controlled PASS rows do not establish default live-model readiness; CHAT-01 and REL-04 remain BLOCKED. See [the acceptance hold](ACCEPTANCE.md#default-model-compatibility-hold).

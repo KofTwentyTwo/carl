@@ -147,7 +147,7 @@
   "CHAT-01": {
     "status": "BLOCKED",
     "evidence": "AgentApplicationTest.actualApplicationPersistsConversationsAndServesAuthenticatedAdministration; CarlFamilyHttpTest",
-    "limitation": "Controlled SDK tool loop and actual family/native records pass; selected real model and entrypoint qualification pending."
+    "limitation": "Controlled SDK tool loop and actual family/native records pass historical fixtures; newly reproduced provider continuation/incomplete-stop defects require qualified upstream correction and consumer regression, followed by selected real model/entrypoint qualification."
   },
   "CHAT-02": {
     "status": "BLOCKED",
@@ -232,7 +232,7 @@
   "REL-04": {
     "status": "BLOCKED",
     "evidence": "ConformanceTest; AgentApplicationTest; CarlServiceTest.workflowDeadlineCancelsSlowDatabaseReadAndLeavesServiceResponsive",
-    "limitation": "Runtime controls/diagnostics pass controlled fixtures; agreed live budget/alert/provider usage policy is unresolved."
+    "limitation": "Historical controlled runtime diagnostics pass; incomplete-provider-stop correction is held pending qualified upstream/consumer artifacts, and agreed live budget/alert/provider usage policy remains unresolved."
   },
   "REL-05": {
     "status": "BLOCKED",
