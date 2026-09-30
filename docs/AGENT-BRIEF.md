@@ -1,0 +1,5 @@
+# Carl AI brief
+
+Carl IS the application, including its household domain, database, reasoning, capabilities, workflows, and interfaces. The owner authorized a public standalone repository at KofTwentyTwo/carl, display name Carl AI, with the supplied version 1.1 draft as implementation baseline. Consumer identifiers are carl-ai / com.kof22.carlai. The reusable foundation remains a separately versioned dependency.
+
+Required slices: authenticated domain access; manual bills and atomic CSV preview/import; grounded bill reads; read-only Apple iCloud/CalDAV synchronization, agendas and conflicts; vendor work and local drafts; permission-scoped on-demand household reports; real QQQ administration. Private conversations are default; family sharing must be explicit. Model/provider credentials, permitted real data, real membership/access, household zone, budget/retention, and deployment remain unresolved. Development uses explicit synthetic members and clocks. Read-only external behavior does not prohibit narrow human-requested internal persistence. See REQUIREMENTS.md and DECISIONS.md.
