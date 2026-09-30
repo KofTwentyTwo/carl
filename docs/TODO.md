@@ -23,9 +23,11 @@ This replaces historical duplicate checklists. Governing scope remains [baseline
 - [x] Complete supported native mixed-source selection, current-source full gate, final browser/visual checks and reconcile all143 numbered requirements.
 - [x] Pin stable foundation0.4.0 and verify all nine local artifact bytes against signed remote publication hashes.
 - [ ] Qualify fresh consumer Maven resolution and hosted package access with an authorized credential.
-- [x] Refresh source secret and exact dependency/container scans: zero secrets and zero HIGH/CRITICAL findings across240 Java packages.
-- [ ] Qualify hosted CI and commit/PR/main/release through the parent coordinator; consumer package access is unresolved.
+- [x] Preserve 299-test/31-browser and exact application/dependency evidence; initial source signed locally as `e1213fa`.
+- [x] Repair newly reported base-image OpenSSL CVE; refreshed ARM64/AMD64 scans each inventory 240 Java packages with zero HIGH/CRITICAL, Java21/non-root smoke passes. Earlier clean image evidence is historical.
+- [ ] Coordinator: push the signed source and Docker/evidence follow-up using working authorized credentials; current OAuth lacks workflow scope and SSH agent refused signing.
+- [ ] Qualify hosted CI and PR/main/release through the coordinator; FOUNDATION_PACKAGES_TOKEN is absent and no remote implementation PR/release exists.
 - [ ] Live qualification: verified household identities/access, Synology endpoint/version/collections, allowed model data/account and real provider acceptance.
 - [ ] Production policy: retention/deletion/backup expiry/operator/recovery decisions before any separately requested deployment.
 
-No live account connection, personal data, external financial action or deployment is claimed. Source remains uncommitted until the parent coordinates final gates and the existing release authorization.
+No live account connection, personal data, external financial action or deployment is claimed. Initial source is signed locally at `e1213fa`; the reviewed container/evidence repair follows in signed history. Push and hosted release remain blocked as stated above.

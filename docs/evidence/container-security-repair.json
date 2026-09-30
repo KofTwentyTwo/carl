@@ -1,0 +1,79 @@
+{
+  "date": "2026-09-30",
+  "status": "PASS_LOCAL_CONTAINER_SECURITY_REPAIR",
+  "advisory": "https://ubuntu.com/security/CVE-2026-84782",
+  "applicationCommitBeforeRepair": "e1213fa429166d8016f777c5a89016356dee105f",
+  "foundationVersion": "0.4.0",
+  "baseImage": "eclipse-temurin:21-jre@sha256:d7051a45dd955e4d5d1db4d3f4269fe13d1c6dff8cc6b7ef89fc8577b96c1982",
+  "dockerfileSha256": "93d11fd4f3e677cf86bb3884ac96fc573bdb995f5e5370308a9342f56a39f4ce",
+  "patchSha256": "d686ca9d0f17052f8b89d14318b51b8cd067edfc12a28b8ed8e15197ae853bcb",
+  "applicationJarSha256": "0952dae06f993ffe6a1e92c5bab85bab3a6f89314989722b0222b3f981dfc44b",
+  "change": "Only libssl3t64, openssl and openssl-provider-legacy upgrade from 3.5.5-1ubuntu3.5 to 3.5.5-1ubuntu3.6; build rejects older versions. Java source and dependencies unchanged.",
+  "before": {
+    "status": "FAIL_REFRESHED_DB",
+    "highCritical": 3,
+    "reportSha256": "eec27d44f49eed9f5c9248a7e107cb708fc265d82675cff897ca7bcd8a2870de",
+    "advisory": "CVE-2026-84782",
+    "qualification": "Earlier zero-finding image scan remains historical; its old image/archive must not be released."
+  },
+  "scannerDatabase": {
+    "metadata": {
+      "Version": 2,
+      "NextUpdate": "2026-10-01T07:10:47.109176927Z",
+      "UpdatedAt": "2026-09-30T07:10:47.109177017Z",
+      "DownloadedAt": "2026-09-30T07:35:17.677087086Z"
+    },
+    "sha256": "b781da9ad35783269a9b8769b99b7f47886cc6db0d309988c351c470036afc08"
+  },
+  "repairedImages": {
+    "arm64": {
+      "reportSha256": "2c088a90de66a115f35eb08bddf2e9550ac12c1a30caa99cfd991cb9cd5d970c",
+      "architecture": "arm64",
+      "imageConfigId": "sha256:1c8432150c748956b00ad4f96d2921167f2dd4b80c7003839c331d1466651b56",
+      "javaPackages": 240,
+      "highCritical": 0,
+      "fixedPackages": {
+        "libssl3t64": "3.5.5-1ubuntu3.6",
+        "openssl": "3.5.5-1ubuntu3.6",
+        "openssl-provider-legacy": "3.5.5-1ubuntu3.6"
+      },
+      "imageIndexDigest": "sha256:e48b41d19ed22d19c962e818f5fdf57261e821cb0f444e75d4c83df97666546e",
+      "runtimeSmoke": {
+        "status": "PASS",
+        "uid": 10001,
+        "javaMajor": 21,
+        "appJarSha256": "0952dae06f993ffe6a1e92c5bab85bab3a6f89314989722b0222b3f981dfc44b"
+      }
+    },
+    "amd64": {
+      "reportSha256": "3205aa2caae80ce41e7ee69a57f4d6b9577350fc091de88239874af0aed042fa",
+      "architecture": "amd64",
+      "imageConfigId": "sha256:3436f7fd3e2de77cee3eb9fbc543775b0f17af48419bb82027079d6d1d91aaf0",
+      "javaPackages": 240,
+      "highCritical": 0,
+      "fixedPackages": {
+        "libssl3t64": "3.5.5-1ubuntu3.6",
+        "openssl": "3.5.5-1ubuntu3.6",
+        "openssl-provider-legacy": "3.5.5-1ubuntu3.6"
+      },
+      "imageIndexDigest": "sha256:7f8b5639800b91c79f89a81bd719b61777185579bfce8cdc6ac5c94301bd084d",
+      "runtimeSmoke": {
+        "status": "PASS",
+        "uid": 10001,
+        "javaMajor": 21,
+        "appJarSha256": "0952dae06f993ffe6a1e92c5bab85bab3a6f89314989722b0222b3f981dfc44b"
+      }
+    }
+  },
+  "applicationEvidence": {
+    "tests": 299,
+    "browserChecks": 31,
+    "result": "Existing application evidence retained because application JAR is unchanged; no new Maven/browser run claimed for this Docker-only repair."
+  },
+  "limitations": [
+    "Locally built repaired ARM64 and AMD64 images were scanned and smoke-tested; no hosted Carl run or published release is claimed.",
+    "Future apt repository contents may be newer; fixed-version floor plus an actual-image scan remains mandatory on each release.",
+    "HTTPS push was rejected because the current OAuth credential lacks workflow scope; SSH agent refused signing.",
+    "FOUNDATION_PACKAGES_TOKEN is absent; fresh consumer Maven access and hosted CI remain blocked."
+  ]
+}

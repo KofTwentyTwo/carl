@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "state": "LOCAL_CONTROLLED_QUALIFICATION_PASS",
+  "state": "LOCAL_APPLICATION_QUALIFIED_CONTAINER_REPAIRED",
   "applicationVersion": "0.1.0-SNAPSHOT",
   "foundation": {
     "version": "0.4.0",
@@ -92,15 +92,19 @@
       "image": {
         "javaPackages": 240,
         "highCritical": 0,
-        "sha256": "aeac2165fe4804c7ecb7bf10b8600384eee0b2539700b8509aa0acc8676bb6af"
+        "sha256": "aeac2165fe4804c7ecb7bf10b8600384eee0b2539700b8509aa0acc8676bb6af",
+        "qualification": "HISTORICAL_SUPERSEDED: refreshed database detects three HIGH OpenSSL package findings; use container-security-repair.json for repaired images."
       }
     },
     "secretFindings": 0,
-    "sourceScanReportSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    "sourceScanReportSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "currentContainerRepair": "container-security-repair.json",
+    "currentContainerRepairSha256": "f85c4c01a7c77dfae612093f60b06f5b1e3a995256bc37fb0c200b3fb9ff3360"
   },
   "artifacts": {
     "appJarSha256": "0952dae06f993ffe6a1e92c5bab85bab3a6f89314989722b0222b3f981dfc44b",
-    "containerArchiveSha256": "bee9b007b17e696afeec8074f98d1ac11b889dec0e20b8ed66668d24bf17d4bc"
+    "containerArchiveSha256": "bee9b007b17e696afeec8074f98d1ac11b889dec0e20b8ed66668d24bf17d4bc",
+    "containerArchiveQualification": "HISTORICAL_VULNERABLE_IMAGE_DO_NOT_RELEASE"
   },
   "visual": {
     "inspected": [
@@ -117,8 +121,14 @@
   "limitations": [
     "One earlier full attempt encountered PostgreSQL SQLState08P01 during fixture startup; unchanged fixture passed targeted retry and the complete final gate.",
     "First final browser attempt used an incorrect direct-button selector; native Actions-menu selector corrected, complete31-check run passed.",
-    "Fresh consumer Maven access, hosted CI, commit/merge/release qualification remain separate.",
+    "Initial source is signed locally at e1213fa; push, fresh consumer Maven access, hosted CI, merge and release remain blocked.",
     "Real family identities/data, live model/provider acceptance, Synology credentials/capabilities and production policies remain unqualified.",
-    "No live provider connection, real household data, deployment, financial action or vendor send was performed."
-  ]
+    "No live provider connection, real household data, deployment, financial action or vendor send was performed.",
+    "The earlier clean image scan is historical, not current security assurance. Refreshed OpenSSL findings and repaired dual-architecture image scans are recorded separately."
+  ],
+  "sourceState": {
+    "initialSignedLocalCommit": "e1213fa429166d8016f777c5a89016356dee105f",
+    "securityFollowup": "Reviewed Docker-only repair and evidence refresh; exact signed revision is recorded in repository history.",
+    "remote": "Push blocked; no remote implementation PR or release."
+  }
 }

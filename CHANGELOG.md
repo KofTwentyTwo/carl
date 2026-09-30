@@ -9,4 +9,5 @@
 
 ### Security
 
+- Upgrade the pinned container’s three affected OpenSSL packages to Ubuntu’s fixed version for CVE-2026-84782; refreshed ARM64 and AMD64 scans pass with unchanged application bytes.
 - Preserve read-only financial/vendor boundaries, verified family identity, per-record permissions and access-revocation checks. Live provider and production qualification remain separate.
