@@ -147,7 +147,7 @@
   "CHAT-01": {
     "status": "BLOCKED",
     "evidence": "AgentApplicationTest.actualApplicationPersistsConversationsAndServesAuthenticatedAdministration; CarlFamilyHttpTest",
-    "limitation": "Controlled SDK tool loop and actual family/native records pass historical fixtures; newly reproduced provider continuation/incomplete-stop defects require qualified upstream correction and consumer regression, followed by selected real model/entrypoint qualification."
+    "limitation": "Existing tests separately cover a mocked SDK loop and explicit family workflow routes with a mocked session. Ordinary natural-language orchestration into authorized report/draft generation and one actual SDK/HTTP-to-domain-to-QQQ acceptance test remain missing. Qualified upstream continuation/completion repair and later live model/entrypoint qualification are also required."
   },
   "CHAT-02": {
     "status": "BLOCKED",

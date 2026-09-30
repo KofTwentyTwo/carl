@@ -37,3 +37,5 @@ No live account connection, personal data, external financial action or deployme
 - [ ] Qualify the upstream default-model tool continuation and incomplete-stop correction with actual SDK/HTTP regressions and unchanged foundation gates.
 - [ ] Select the qualified corrected foundation artifact and rerun the consumer gate and relevant conversation/report failure cases with exact artifact identities.
 - [ ] Run bounded synthetic live model evaluations only after the owner's provider authorization and secure personal credential configuration; do not claim controlled fixtures qualify account access.
+
+- [ ] Close AT-19/CHAT-01: ordinary conversational generation must invoke an explicit authorized report/draft workflow and return its persisted result. Prove one real SDK/loopback HTTP, PostgreSQL and QQQ integration path; do not substitute independently mocked boundaries or hide persistence in read tools.

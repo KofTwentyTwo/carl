@@ -28,7 +28,7 @@ PASS below means the stated controlled synthetic application behavior passed. It
 | AT-16 | PASS | Actual application/read-tool fixtures run withSlack disabled, bounded read catalogs and no prohibited write capability. |
 | AT-17 | PASS | `at03at09at17MissingBillsAndUntrustedTextRemainFactsAfterAttributedCorrection`: original evidence retained, attributed correction and matching generated facts. |
 | AT-18 | NOT APPLICABLE — deployment not requested | Production backup/restore qualification requires approved operating scope. |
-| AT-19 | BLOCKED | `AgentApplicationTest.actualApplicationPersistsConversationsAndServesAuthenticatedAdministration` and `CarlFamilyHttpTest.familyConversationRequestsPersistSourceGroundedReportsAndDraftsWithCurrentAccess` prove controlled SDK/family/native continuity; live chosen entry point/model remains unqualified. |
+| AT-19 | BLOCKED | `AgentApplicationTest` separately exercises a mocked SDK tool loop; `CarlFamilyHttpTest` exercises explicit persisted report/draft workflow routes with a mocked session. Neither proves one ordinary conversational turn creating those artifacts. Natural-language workflow orchestration and actual SDK/HTTP-to-domain-to-QQQ acceptance remain to implement; live qualification is separate. |
 
 ## Expanded scope and evidence
 
