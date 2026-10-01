@@ -33,6 +33,7 @@ Current controlled qualification:377 tests, zero failures/errors/skips;59 matchi
 - [ ] Unblock Carl push credentials: SSH agent refuses signing; existing HTTPS OAuth lacksworkflow scope. Then complete protected Carl PR/main/development publication.
 - [ ] Select and qualify a non-snapshot QQQ/Quick Search closure and matching immutable foundation release before Carl RC/stable. Timestamped snapshots remain rejected by unchanged release enforcement.
 - [ ] Qualify a supported upstream native state-provider shutdown correction. The isolated earlier proposal is uninstalled/unpublished; no daemon/thread/process bypass.
+- [ ] Complete representative synthetic live-evaluation tooling in the isolated evaluation worktree: exact artifact facts/sources, same-record QQQ continuity, currencies, drafts, uncertainty, privacy/injection, refusals and purchase guidance. Existing live Talk substring smoke is insufficient; verify validators with corrupted controlled outputs.
 - [ ] Read the already-authorized personal CLAUDE_API token after1Password unlock/CLI approval and qualify bounded synthetic live conversations/evaluations. Current preview model is disconnected.
 - [ ] Qualify real household identities, access/audiences, account/currency mappings, report periods and permitted model data categories.
 - [ ] Qualify designated Synology endpoint/version/collections, narrow credentials and actual calendar/reminder client behavior.
