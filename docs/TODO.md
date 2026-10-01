@@ -28,7 +28,7 @@ Current controlled qualification:377 tests, zero failures/errors/skips;59 matchi
 
 ## Remaining delivery and integration gates
 
-- [ ] Verify foundation main0.5.0-SNAPSHOT candidate, signatures and fresh remote consumer in run36811134831; backend qualification worker is following the live job.
+- [x] Verify foundation main0.5.0-SNAPSHOT publication at0b6f437/run36811134831: signatures,66 staged hashes,nine remote Maven identities and17 passing fresh hosted consumer tests. Local registry/OCI credential access remains unperformed.
 - [ ] Obtain authorized FOUNDATION_PACKAGES_TOKEN and prove fresh Carl Maven resolution/hosted access. Local recovered artifacts do not prove remote consumption.
 - [ ] Unblock Carl push credentials: SSH agent refuses signing; existing HTTPS OAuth lacksworkflow scope. Then complete protected Carl PR/main/development publication.
 - [ ] Select and qualify a non-snapshot QQQ/Quick Search closure and matching immutable foundation release before Carl RC/stable. Timestamped snapshots remain rejected by unchanged release enforcement.

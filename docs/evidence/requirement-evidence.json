@@ -6,8 +6,8 @@
   },
   "FND-02": {
     "status": "BLOCKED",
-    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; config/release/foundation.json",
-    "limitation": "Current parent0.5.0-SNAPSHOT is a locally qualified development closure. Immutable0.4.1 remains the independently published baseline. Foundation PR15 is merged; main snapshot publication is pending in run36811134831. Fresh credentialed consumer/hosted access and a matching immutable release remain blocked; local install is not publication."
+    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; config/release/foundation.json; docs/evidence/2026-10-01-foundation-main-0.5-snapshot.json",
+    "limitation": "Current parent0.5.0-SNAPSHOT has independently qualified remote publication at0b6f437/run36811134831, including nine Maven identities and17 fresh hosted consumer tests. Carl retains its separately qualified local development closure and immutable0.4.1 release baseline. Carl-specific credentialed resolution/hosted access and a matching immutable release remain blocked."
   },
   "FND-03": {
     "status": "PASS",
@@ -666,8 +666,8 @@
   },
   "UX-10": {
     "status": "BLOCKED",
-    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; foundation final prescribed verifier",
-    "limitation": "Current consumer377-test,59 matching packaged checks and fresh source/distribution/container scans pass unchanged floors. Independent full foundation qualification and protected PR15 checks pass; PR15 is merged. Main snapshot publication and Carl credentialed hosted delivery remain pending. Live/deployed states are separate."
+    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; foundation final prescribed verifier; docs/evidence/2026-10-01-foundation-main-0.5-snapshot.json",
+    "limitation": "Current consumer377-test,59 matching packaged checks and source/distribution/container scans pass unchanged floors. Foundation full qualification, protected PR15 and independently verified main0.5 snapshot publication pass. Carl-specific credentialed hosted delivery and live qualification remain blocked; deployment is separate."
   },
   "UX-11": {
     "status": "BLOCKED",
