@@ -237,3 +237,26 @@ Applying the owner’s $8,100.00 USD display convention through native QQQ metad
 Native QQQ money fields now use currency-aware display values and grouping, while raw BigDecimal, sorting, stored facts and machine exports remain exact. APRs/shares have separate decimal metadata. Dashboards, comparisons, budget/plan/import summaries, human reports/downloads and PDF figures share formatted amounts; monetary columns, headers and figures align right. Missing amounts/currencies remain explicit. Both native record sections now span6 of12 columns rather than1; actual desktop geometry and narrow browser checks pass. [Exact qualification](evidence/2026-10-01-money-presentation-qualification.json) records419 current passing tests and unchanged coverage floors,117 final browser checks,269-package distribution/image scans with zero HIGH/CRITICAL, and251 exact matching files. The419 full run's obsolete budget expectation was corrected and native verify passed; only section-width metadata changed afterward, with targeted verify/package/browser proof.
 
 New retained synthetic preview https://localhost:57132/session45828 uses frozen app372f094e and the full public household; model remains disconnected. Old previews are preserved. Foundation PR18 is normally protected-merged at0dbc70b; its new main publication remains separately unqualified. Carl PR1 package access, immutable RC/stable, live model/household/Synology and production/native shutdown holds remain. No live family data, external financial mutation or deployment occurred.
+
+## October1 — baseline merge and CI/CD design questions
+
+The owner authorizes merging the current work and will report manual testing
+findings as GitHub issues. Fresh full verification of source a21f105 passes419 tests with zero failures,
+errors or skips in an isolated consumer worktree before normal baseline merge.
+[Fresh merge verification](evidence/2026-10-01-baseline-merge-verification.json)
+also proves the running preview has identical application payloads and libraries,
+and five current navigation/access checks pass. Hosted Carl
+verification still lacks FOUNDATION_PACKAGES_TOKEN; its application environment
+is waiting for review. Foundation PR18 is merged, and its main publication is
+running separately. The existing synthetic preview57132 remains available.
+
+The owner additionally requests website-pattern full CI/CD, Liquibase for DDL
+and versioned data changes, image publication and Argo CD deployment to local
+Kubernetes. [The delivery requirements](CICD-GITOPS-REQUIREMENTS.md) record the
+inspected website pattern and pending questions. The owner confirms CircleCI/Munitor, private carl-CD, GHCR/app-of-apps, Liquibase
+for both histories with a tested transition, automatic dev/RC/production
+promotion, k8s-prod namespaces carl-dev/carl-staging/carl-prod, isolated
+databases/roles on existing PostgreSQL, existing Authentik, reused website
+credentials and an initial synthetic deployment. Hostnames and initial test
+users are still pending; service/credential identities are being discovered.
+No CI/migration implementation or cluster rollout has begun.

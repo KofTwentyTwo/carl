@@ -63,3 +63,11 @@ Current delivery: [signed/pushed draft PR1 and exact credential hold](evidence/2
 - [x] Qualify updated shared Next numeric alignment plus packaged desktop/narrow UI.
 
 Qualified419 current Java results,117 packaged/running browser checks and exact source/package/image evidence: [money presentation](evidence/2026-10-01-money-presentation-qualification.json). Foundation PR18 is merged; Carl hosted/immutable/live holds remain separate.
+
+## Owner-requested CI/CD and local Kubernetes delivery
+
+- [ ] Resolve the [delivery design questions](CICD-GITOPS-REQUIREMENTS.md) before implementation.
+- [ ] Qualify selected CI credentials, fresh foundation resolution and mandatory hosted checks.
+- [ ] Implement and test the selected Liquibase boundary, retained-database transition and versioned data changes.
+- [ ] Publish a scanned, traceable application/migration image set and test GitOps rendering/promotion.
+- [ ] Qualify Argo CD rollout, authentication, services, storage and recovery in the agreed test environment.
