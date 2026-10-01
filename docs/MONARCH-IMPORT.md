@@ -1,6 +1,6 @@
 # Monarch transaction import contract
 
-Status: confirmed initial transaction and balance-history sources; implementation/qualification pending. Owner authorized local inspection of manually downloaded `Transactions_*.csv` examples on September 29, 2026. This document records the schema and required behavior, not private account contents. Real rows, account labels, financial aggregates and private source files must not enter the public repository, build artifacts or synthetic fixtures.
+Status: confirmed transaction and balance-history formats; controlled native upload, reconciliation and repeat-import workflows are implemented and qualified with synthetic records. Real account/currency mappings and financial coverage remain unresolved; see [current acceptance](ACCEPTANCE.md). Owner authorized local inspection of manually downloaded `Transactions_*.csv` examples on September 29, 2026. This document records the schema and required behavior, not private account contents. Real rows, account labels, financial aggregates and private source files must not enter the public repository, build artifacts or synthetic fixtures.
 
 ## Supported observed export
 

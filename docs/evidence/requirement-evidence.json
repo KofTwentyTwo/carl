@@ -147,7 +147,7 @@
   "CHAT-01": {
     "status": "BLOCKED",
     "evidence": "CarlConversationHttpTest; CarlTalkServiceTest; CarlTalkHtmlTest; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Actual controlled SDK/HTTP-to-domain-to-QQQ reports/drafts and financial/plan workflows pass current377 tests. Native Talk shares the sole host-owned service and passes packaged/running UI checks. Live model/client acceptance remains blocked by1Password access and real identity/data decisions; offline UI is not a live answer."
+    "limitation": "Actual controlled SDK/HTTP-to-domain-to-QQQ reports/drafts and financial/plan workflows pass original377 tests. Native Talk shares the sole host-owned service and passes packaged/running UI checks. Live model/client acceptance remains blocked by1Password access and real identity/data decisions; offline UI is not a live answer."
   },
   "CHAT-02": {
     "status": "BLOCKED",
@@ -302,7 +302,7 @@
   "FIN-12": {
     "status": "BLOCKED",
     "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Report/draft, purchase/budget, debt comparison/DRAFT plan, rental/tax/investment/balance/expense and interactive plan workflows pass actual controlled SDK/HTTP/PostgreSQL/QQQ current377-test and packaged gates. Representative live model/family acceptance remains blocked."
+    "limitation": "Report/draft, purchase/budget, debt comparison/DRAFT plan, rental/tax/investment/balance/expense and interactive plan workflows pass actual controlled SDK/HTTP/PostgreSQL/QQQ original377-test and packaged gates. Representative live model/family acceptance remains blocked."
   },
   "FIN-13": {
     "status": "PASS",
@@ -322,7 +322,7 @@
   "FIN-16": {
     "status": "BLOCKED",
     "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Natural-language kitchen-table purchase/purchase-negative/purchase-budget scenarios now invoke current-authorized deterministic cash/expense/reserve services and persist the same protected artifact shown by QQQ. Current377-test gate and typed browser purchase flow pass. Representative live model interpretation remains blocked."
+    "limitation": "Natural-language kitchen-table purchase/purchase-negative/purchase-budget scenarios now invoke current-authorized deterministic cash/expense/reserve services and persist the same protected artifact shown by QQQ. Original377-test gate and typed browser purchase flow pass. Representative live model interpretation remains blocked."
   },
   "FIN-17": {
     "status": "PASS",
@@ -342,7 +342,7 @@
   "FIN-20": {
     "status": "BLOCKED",
     "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Attributed priority revisions, source-linked debt-versus-uncertain-return comparisons and same-plan rebase/current-intent conversations pass current377 tests and matching packaged dashboard checks. Live model/household acceptance remains blocked."
+    "limitation": "Attributed priority revisions, source-linked debt-versus-uncertain-return comparisons and same-plan rebase/current-intent conversations pass original377 tests and matching packaged dashboard checks. Live model/household acceptance remains blocked."
   },
   "FAT-01": {
     "status": "PASS",
@@ -387,7 +387,7 @@
   "FAT-09": {
     "status": "BLOCKED",
     "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Actual controlled natural-language debt comparison, draft creation, agreement/tasks/check-ins/rebase/PDF and observed effects use the same authorized domain services. Current377-test and matching package gates pass. Live interpretation/family acceptance remains blocked."
+    "limitation": "Actual controlled natural-language debt comparison, draft creation, agreement/tasks/check-ins/rebase/PDF and observed effects use the same authorized domain services. Original377-test and matching package gates pass. Live interpretation/family acceptance remains blocked."
   },
   "FAT-10": {
     "status": "PASS",
@@ -417,7 +417,7 @@
   "FAT-15": {
     "status": "BLOCKED",
     "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Actual controlled natural-language purchase/purchase-negative/purchase-budget SDK/HTTP scenarios call deterministic calculators, persist protected reports and inspect the same result through QQQ. Current377-test gate passes; representative live model evaluation remains blocked."
+    "limitation": "Actual controlled natural-language purchase/purchase-negative/purchase-budget SDK/HTTP scenarios call deterministic calculators, persist protected reports and inspect the same result through QQQ. Original377-test gate passes; representative live model evaluation remains blocked."
   },
   "FAT-16": {
     "status": "PASS",
@@ -457,7 +457,7 @@
   "FAT-23": {
     "status": "BLOCKED",
     "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "GoalTradeoffsTest and actual controlled conversational HTTP cases prove priority revisions, known debt costs versus uncertain returns, source staleness, explicit same-plan rebase and permissions. Current377-test/package/security gates pass. Live acceptance remains blocked."
+    "limitation": "GoalTradeoffsTest and actual controlled conversational HTTP cases prove priority revisions, known debt costs versus uncertain returns, source staleness, explicit same-plan rebase and permissions. Original377-test/package/security gates pass. Live acceptance remains blocked."
   },
   "MON-01": {
     "status": "PASS",
@@ -667,7 +667,7 @@
   "UX-10": {
     "status": "BLOCKED",
     "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; foundation final prescribed verifier; docs/evidence/2026-10-01-foundation-main-0.5-snapshot.json",
-    "limitation": "Current consumer377-test,59 matching packaged checks and source/distribution/container scans pass unchanged floors. Foundation full qualification, protected PR15 and independently verified main0.5 snapshot publication pass. Carl-specific credentialed hosted delivery and live qualification remain blocked; deployment is separate."
+    "limitation": "Original consumer377-test,59 matching packaged checks and source/distribution/container scans pass unchanged floors. Foundation full qualification, protected PR15 and independently verified main0.5 snapshot publication pass. Carl-specific credentialed hosted delivery and live qualification remain blocked; deployment is separate."
   },
   "UX-11": {
     "status": "BLOCKED",

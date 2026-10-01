@@ -3,7 +3,7 @@
 These are source-controlled drafts for the owner's requested series. Repository publication is not article publication. Claims must match the acceptance evidence at publication time; examples use synthetic records.
 
 1. [Carl is the application](001-carl-is-the-application.md): mission, foundation boundaries and why the domain model matters.
-2. Planned: importing and reconciling two Monarch exports without silently choosing conflicting facts.
+2. [Give Carl records before asking for a plan](002-monarch-records-before-plans.md): native two-file import, reviewable revisions, conservative balance reconciliation and explicit coverage.
 3. Planned: debt strategies, transfer fees, promotional deadlines and protecting cash reserves.
 4. Planned: private and shared family conversations using the same permissions as administration.
 5. Planned: human execution plans, evidence, replanning and the designated Synology calendar.

@@ -2,7 +2,7 @@
 
 Carl is one standalone agent application with authoritative PostgreSQL state, deterministic domain capabilities, model reasoning, native QQQ administration and the authenticated family API. Governing scope is the preserved [baseline](REQUIREMENTS.md), [financial expansion](FINANCIAL-PLANNING-REQUIREMENTS.md), [Monarch imports](MONARCH-IMPORT.md), [Synology authority](CALENDAR-REMINDERS.md) and [UI requirements](UI-REQUIREMENTS.md).
 
-Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh packaged browser checks including exact plan/task persistence across a JVM restart;22 evaluation assertions. Fresh distribution and local image each inventory269 Java packages with zero HIGH/CRITICAL findings. See [shared plan/restart evidence](evidence/2026-10-01-shared-plan-restart.json). The original377-test/59-browser qualification retains its exact older package provenance in [RC7 evidence](evidence/2026-09-30-current-rc7-preview-qualification.json); the owner preview remains that earlier frozen synthetic package.
+Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh packaged browser checks including exact plan/task persistence across a JVM restart;22 evaluation assertions. Fresh distribution and local image each inventory269 Java packages with zero HIGH/CRITICAL findings. See [shared plan/restart evidence](evidence/2026-10-01-shared-plan-restart.json). The original377-test/59-browser qualification retains its exact older package provenance in [RC7 evidence](evidence/2026-09-30-current-rc7-preview-qualification.json); the earlier frozen synthetic preview remains available. The [new running preview](evidence/2026-10-01-current-running-preview.json) uses the current008af67 package and passes15 Talk/navigation/dashboard checks plus two acknowledged ESB events.
 
 ## Implemented and controlled-qualified
 
@@ -23,7 +23,7 @@ Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh 
 - [x] Mid-request search/choice revocation and pre-inference permission changes deny access with meaningful failing regressions and zero provider transmissions.
 - [x] Full original-source Maven quality gate; unchanged style/copyright/80% line/60% branch floors and no skipped consumer tests.
 - [x] Required dashboard/Talk/QBits CI gates, explicit package-credential mapping and seven semantic-release/signature policy tests.
-- [x] Signed local implementation and evidence history, including current sourcebd3874d. Failed push attempts left the remote unchanged.
+- [x] Signed local implementation and evidence history, including current runtime source008af67. Failed push attempts left the remote unchanged.
 - [x] Independent final foundation full qualification and protected hosted PR15 checks; PR15 merged at0b6f437.
 
 ## Remaining delivery and integration gates
@@ -42,4 +42,4 @@ Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh 
 - [ ] Agree model usage/alerts, retention/deletion, backup expiry, access revocation and operating policies before real-data use.
 - [ ] Separately qualify any requested production environment, TLS/identity/operator, recovery targets, encrypted restore and upgrade/rollback. Deployment has not been requested.
 
-The synthetic preview is https://localhost:64503: sign in as Alice, then Carl AI → Overview → Talk to Carl. Offline receipts are not live answers. Requirement statuses remain individually tracked in [the evidence map](REQUIREMENT-EVIDENCE.md); no whole-product, live-provider or release completion is claimed.
+The current synthetic preview is https://localhost:51051 (runtime source008af67; prior64503 preview retained): sign in as Alice, then Carl AI → Overview → Talk to Carl. Offline receipts are not live answers. Requirement statuses remain individually tracked in [the evidence map](REQUIREMENT-EVIDENCE.md); no whole-product, live-provider or release completion is claimed.

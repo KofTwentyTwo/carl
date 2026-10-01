@@ -55,7 +55,7 @@ Quick Search must use the actual QBit with a bounded current-permission scope. I
 - UX-10: complete quality/build/security gates pass on the final integrated source; remote publication, live qualification and deployment retain separate statuses.
 - UX-11: an obvious native “Talk to Carl” entry point accepts questions/follow-ups through the same conversational capabilities and persisted records as the family API. Private conversations are the default; explicit sharing fixes an authorized audience. Current identity/access is rechecked, excluded actions remain unavailable, and an unconfigured/failed model is shown truthfully. Actual native UI-to-domain-to-QQQ and access-negative evidence is required; a decorative form or API documentation alone does not pass.
 
-Status: requirements confirmed. The native dashboard/navigation slice has isolated synthetic PostgreSQL, metadata, native HTTP and sanitizer qualification below; packaged browser acceptance, default signed-in landing behavior, QBits and final integration remain pending. Prior 319-test/31-browser evidence does not establish these new requirements.
+Status: requirements confirmed and implemented with controlled packaged/browser evidence. Original RC7 qualification covers branded grouped desktop/narrow dashboards, default signed-in Overview, Talk and actual QBits. The current386-test build additionally has32 packaged checks and a [new running preview](evidence/2026-10-01-current-running-preview.json) with fresh navigation, selected dashboard figures, Talk privacy and two acknowledged ESB events. Live model/household acceptance and hosted delivery remain BLOCKED. The isolated slice evidence below is historical.
 
 
 ## Native dashboard slice evidence (2026-09-30)
