@@ -31,6 +31,7 @@ Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh 
 - [x] Qualify FAT-18 controlled shared conversational state, assignments, obstacle/completion, concurrent revisions, protected history and exact QQQ fields; separately prove private seeded plan/task durability across packaged JVM replacement. Live model interpretation remains BLOCKED.
 
 - [x] Verify foundation main0.5.0-SNAPSHOT publication at0b6f437/run36811134831: signatures,66 staged hashes,nine remote Maven identities and17 passing fresh hosted consumer tests. Local registry/OCI credential access remains unperformed.
+- [x] Independently qualify protected foundation PR16/main1a7abd/run36820241402:470 source hashes,66 staged archive files,nine hosted Maven identities,17 fresh remote-consumer tests and offline signed evidence; [publication proof](evidence/2026-10-01-foundation-pr16-publication.json). Carl-specific remote consumption remains blocked.
 - [ ] Obtain authorized FOUNDATION_PACKAGES_TOKEN and prove fresh Carl Maven resolution/hosted access. Local recovered artifacts do not prove remote consumption.
 - [ ] Unblock Carl push credentials: SSH agent refuses signing; existing HTTPS OAuth lacksworkflow scope. Then complete protected Carl PR/main/development publication.
 - [ ] Select and qualify a non-snapshot QQQ/Quick Search closure and matching immutable foundation release before Carl RC/stable. Timestamped snapshots remain rejected by unchanged release enforcement.

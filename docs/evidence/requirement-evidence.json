@@ -6,13 +6,13 @@
   },
   "FND-02": {
     "status": "BLOCKED",
-    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; config/release/foundation.json; docs/evidence/2026-10-01-foundation-main-0.5-snapshot.json",
-    "limitation": "Current parent0.5.0-SNAPSHOT has independently qualified remote publication at0b6f437/run36811134831, including nine Maven identities and17 fresh hosted consumer tests. Carl retains its separately qualified local development closure and immutable0.4.1 release baseline. Carl-specific credentialed resolution/hosted access and a matching immutable release remain blocked."
+    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; config/release/foundation.json; docs/evidence/2026-10-01-foundation-main-0.5-snapshot.json; docs/evidence/2026-10-01-foundation-pr16-publication.json",
+    "limitation": "Current parent0.5.0-SNAPSHOT has independently qualified remote main publication at1a7abd/run36820241402, including nine Maven identities and17 fresh hosted consumer tests; prior0b6f437 publication retains its own evidence. Carl retains its separately qualified local development closure and immutable0.4.1 release baseline. Carl-specific credentialed resolution/hosted access and a matching immutable release remain blocked."
   },
   "FND-03": {
     "status": "PASS",
     "evidence": "AgentApplicationTest; ConformanceTest; CarlNativeHttpTest; CarlFamilyHttpTest",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
+    "limitation": "Retains the supported inherited contract in synthetic checks. Complete graceful shutdown remains BLOCKED: the selected QQQ InMemoryStateProvider owns a non-daemon cleanup executor with no supported close/shutdown API; JVM replacement is durability evidence only. See docs/evidence/2026-10-01-native-lifecycle-limitation.json. Live qualification is separate."
   },
   "FND-04": {
     "status": "PASS",

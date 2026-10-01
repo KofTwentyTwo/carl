@@ -1,0 +1,351 @@
+{
+  "status": "PASS",
+  "pr": 16,
+  "source_commit": "1a7abd147f8681e95c0821456ee86feaabc1125e",
+  "workflow_run": 36820241402,
+  "version": "0.5.0-SNAPSHOT",
+  "protected_merge": {
+    "pr": 16,
+    "normal_merge": true,
+    "head": "0794581a292417279f411a16ac5a076c33e722b2",
+    "merge_commit": "1a7abd147f8681e95c0821456ee86feaabc1125e",
+    "merged_at_utc": "2026-10-01T05:32:12Z",
+    "both_fresh_required_gates_passed": true,
+    "independent_diff_review": "PASS",
+    "main_tree_matches_reviewed_tree": true
+  },
+  "limits": [
+    "Development snapshot only; RC/stable blocked by unchanged requireReleaseDeps and timestamped upstream snapshot dependencies.",
+    "Known native state-provider shutdown gap unchanged.",
+    "No independent local Maven registry or OCI resolution/signature check performed: local credential lacks read:packages and consumer package token absent.",
+    "No consumer business/live-provider or production deployment qualification."
+  ],
+  "source_security": {
+    "semgrep_targets": 153,
+    "semgrep_findings": 0,
+    "semgrep_errors": 0
+  },
+  "hosted_initial_verification": {
+    "core_unit": {
+      "files": 45,
+      "tests": 244,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core_integration": {
+      "files": 2,
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "adapter_unit": {
+      "files": 71,
+      "tests": 352,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "adapter_integration": {
+      "files": 5,
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native_example_unit": {
+      "files": 1,
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native_example_integration": {
+      "files": 0,
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "generated_consumer_unit": {
+      "files": 2,
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "generated_consumer_integration": {
+      "files": 0,
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core_coverage": {
+      "BRANCH": {
+        "covered": 643,
+        "missed": 0
+      },
+      "LINE": {
+        "covered": 2177,
+        "missed": 0
+      }
+    },
+    "adapter_coverage": {
+      "BRANCH": {
+        "covered": 1915,
+        "missed": 0
+      },
+      "LINE": {
+        "covered": 4120,
+        "missed": 0
+      }
+    },
+    "dependencies_scan": {
+      "java_package_records": 267,
+      "high_critical": 0
+    },
+    "image_scan": {
+      "java_package_records": 267,
+      "high_critical": 0
+    },
+    "browser": {
+      "passed": true,
+      "checks": [
+        "oidc-pkce-login",
+        "owner-scoped-accounts",
+        "record-detail",
+        "deep-link-refresh",
+        "domain-process",
+        "denied-generic-mutation",
+        "failed-logout-retains-session",
+        "logout-replay-denied",
+        "replay-denied-after-jvm-restart",
+        "fresh-login-after-restart"
+      ],
+      "version": "0.5.0-SNAPSHOT",
+      "source_commit": "1a7abd147f8681e95c0821456ee86feaabc1125e",
+      "screenshots": 4,
+      "visual_review": "Four new retained screenshots viewed; dashboard, owner-scoped account list/detail and process result render."
+    },
+    "api": {
+      "passed": true,
+      "previous": "0.4.1",
+      "target": "0.5.0",
+      "semantic_change": "0.1.0",
+      "source_commit": "1a7abd147f8681e95c0821456ee86feaabc1125e"
+    },
+    "frontend_unit_summary": [
+      "Test Files  185 passed (185)",
+      "Tests  1929 passed (1929)"
+    ],
+    "frontend_audit": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0
+      },
+      "dependencies": 1038,
+      "devDependencies": 0,
+      "optionalDependencies": 0,
+      "totalDependencies": 1038
+    }
+  },
+  "publication_qualification": {
+    "publication_signature_verified_offline": true,
+    "delivery_manifest_signature_and_report_hashes_verified_offline": true,
+    "evidence_zip_sha256": "c8df82fbdaf26ab7adbf77282a99f6306396599b3a63eceb73214e69b3e36778",
+    "evidence_zip_digest_matches_signed_publication": true,
+    "image_digest": "ghcr.io/koftwentytwo/kof22-agent-foundation@sha256:5d3bd592440aeba5a6c3b0f97f5dd4a4c92ff780ccd8cfd3216bce9f72c4d462",
+    "hosted_image_signature_report_identity_matches": true,
+    "remote_publication": true,
+    "fresh_remote_consumer_passed": true,
+    "fresh_remote_consumer_xml": {
+      "files": 2,
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "remote_maven_identities": [
+      {
+        "path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.061606-2.pom",
+        "logical_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.055455-1.pom",
+        "sha256": "7f14faf632775e726f2766c9017df80b1eb68f298b3de599d7bf7ba12e4dc569"
+      },
+      {
+        "path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.061606-2.jar",
+        "logical_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.jar",
+        "staged_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.055455-1.jar",
+        "sha256": "ee3edbd598e517568208691b191ecc9ca8c624d2a8e81f329dea08fc732bd885"
+      },
+      {
+        "path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.061606-2-tests.jar",
+        "logical_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT-tests.jar",
+        "staged_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.055455-1-tests.jar",
+        "sha256": "c74cf0183257b9a1187636465ba18c3c5d4c95ee748e66b804292e6765cfd093"
+      },
+      {
+        "path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.061620-2.pom",
+        "logical_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.055656-1.pom",
+        "sha256": "b9065abc76a17b0b1efb4f23c7fac3c0406f1c4a17ecdf07990bb4ba15c6f26d"
+      },
+      {
+        "path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.061620-2.jar",
+        "logical_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.jar",
+        "staged_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.055656-1.jar",
+        "sha256": "b10bae3f75ff0fecc9df3fd5681b2be0649412cb97b47b5183dc1f8711892010"
+      },
+      {
+        "path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.061631-2.pom",
+        "logical_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.060211-1.pom",
+        "sha256": "b1724d2d8278b2983dfde6f95df6aa781f246b968d3423b1068ef4c328146eb6"
+      },
+      {
+        "path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.061631-2.jar",
+        "logical_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.jar",
+        "staged_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.060211-1.jar",
+        "sha256": "3b0cc9d19145e30d7c3f02e03b94ec709b9c83a134de130ab18d25ab55fcc9cc"
+      },
+      {
+        "path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.061631-2-tests.jar",
+        "logical_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT-tests.jar",
+        "staged_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.060211-1-tests.jar",
+        "sha256": "0b15e2a49593ec1dc2787a17754f208d9540605d7710bbe8394146722879a367"
+      },
+      {
+        "path": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-20261001.061643-2.pom",
+        "logical_path": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-20261001.060834-1.pom",
+        "sha256": "857bca2153213fdfcd23e384481a98a596117bee54a9e59b6e56829f8a1eaf6b"
+      }
+    ],
+    "remote_metadata_identities_verified_offline": 9,
+    "remote_evidence_classifier_metadata_verified_offline": true,
+    "source_inventory_files_match_complete_git_source": 470,
+    "source_git_tree_sha": "f55e87028349e8e434db89ff9305e968c5a4c145",
+    "local_source_comparison_commit": "1c5f7c04c617d3c80bd594a64299be777b9f4d7d",
+    "main_signature_verified": true,
+    "main_tree_matches_reviewed_commit": true,
+    "candidate_artifact_inventory": 66,
+    "manifest_report_files": 8,
+    "source_commit": "1a7abd147f8681e95c0821456ee86feaabc1125e",
+    "version": "0.5.0-SNAPSHOT",
+    "signed_record_sha256": {
+      "publication.json": "5860250c1f0cede9bb87206abc33e28023365ce2848d602135e4503267bdd524",
+      "publication.sigstore.json": "81842b80887c4cfce5b3d37d07e5a137ea9260b6743d91413da7928f284d59cf",
+      "delivery-manifest.json": "36bce706726574822f0aa513ab5f3afeeeb0b9a1d8ce34b9d7f3927f677d928d",
+      "delivery-manifest.sigstore.json": "d8ef9be1db0534b8b7fe2c5938ea7908f4d5447eab21f0f80a2deb3661554a26",
+      "image-signature.json": "dda1c9e4977a39a883c58c1f266bc57e865677392885555dc820e5ec076714f7"
+    },
+    "dependencies_scan": {
+      "java_package_records": 267,
+      "high_critical": 0
+    },
+    "image_scan": {
+      "java_package_records": 267,
+      "high_critical": 0
+    },
+    "browser": {
+      "passed": true,
+      "checks": 10,
+      "source_commit": "1a7abd147f8681e95c0821456ee86feaabc1125e",
+      "version": "0.5.0-SNAPSHOT"
+    },
+    "sbom_components": 267,
+    "packaged_checks": {
+      "packaged_boot": true,
+      "container_boot": true,
+      "encrypted_restore": true,
+      "nonempty_restore_denied": true,
+      "relocated_distribution": true,
+      "container_nonroot_readonly": true,
+      "native_shared_listener": true
+    },
+    "candidate_archive_identity_matches_signed_evidence": true,
+    "actual_staged_artifacts_sha256_verified": 66
+  },
+  "candidate_transport": {
+    "actions_candidate_zip_bytes": 1099530019,
+    "actions_candidate_zip_sha256": "f0635e306338137c024e31558eba150a8eaad61ff9f8b7744f2150d468716ad6",
+    "matches_actions_digest": true,
+    "tgz_sha256": "ac0b660ee94aba11fcd2b99e6e8203b6d675d58b21a91ec771d5d609ea2dba20"
+  },
+  "workflow": {
+    "status": "completed",
+    "conclusion": "success",
+    "headSha": "1a7abd147f8681e95c0821456ee86feaabc1125e",
+    "url": "https://github.com/KofTwentyTwo/kof22-agent-foundation/actions/runs/36820241402",
+    "createdAt": "2026-10-01T05:32:14Z",
+    "updatedAt": "2026-10-01T06:19:26Z",
+    "jobs": [
+      {
+        "name": "Version and changelog policy",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T05:32:17Z",
+        "completedAt": "2026-10-01T05:32:23Z"
+      },
+      {
+        "name": "Foundation verification",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T05:32:27Z",
+        "completedAt": "2026-10-01T05:54:14Z"
+      },
+      {
+        "name": "Source and workflow security",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T05:32:26Z",
+        "completedAt": "2026-10-01T05:34:10Z"
+      },
+      {
+        "name": "Exact candidate qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T05:54:17Z",
+        "completedAt": "2026-10-01T06:14:24Z"
+      },
+      {
+        "name": "Foundation gate",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T06:14:27Z",
+        "completedAt": "2026-10-01T06:14:32Z"
+      },
+      {
+        "name": "Publish verified delivery",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T06:14:35Z",
+        "completedAt": "2026-10-01T06:19:25Z"
+      }
+    ]
+  },
+  "qualified_at_utc": "2026-10-01T06:26:13.385077+00:00",
+  "schema": 1,
+  "trusted_key": {
+    "path": "foundation/config/release/cosign.pub",
+    "sha256": "29f7c13261ce1b63c984c7692edfd21c77ca12b5a3f3feb8311a79771abe7c27"
+  },
+  "independent_qualification": {
+    "sha256": "80863c30106cc91e80785be9e7d110fc119425cb15c744118c40d30e92abd111",
+    "source_hashes_verified": 470,
+    "staged_file_hashes_verified": 66,
+    "root_recheck": [
+      "pinned-key SHA256",
+      "offline publication signature",
+      "offline delivery signature and all report hashes",
+      "published evidence ZIP SHA256",
+      "actual fresh remote-consumer XML:17 tests,0 failures/errors/skips"
+    ],
+    "transparency_log_verified": false
+  }
+}
