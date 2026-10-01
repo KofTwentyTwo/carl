@@ -24,7 +24,7 @@ than lowering the gate (see `PromptStack.read`).
 | Generated consumer | Inherited conformance/application tests plus consumer-owned business tests; no inherited 100% coverage plugin |
 
 The historical owned middleware's SpotBugs/PMD baseline remains with its source but is not
-part of current official QQQ middleware builds. See [security policy](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/SECURITY.md).
+part of current official QQQ middleware builds. See [security policy](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/SECURITY.md).
 
 ## Framework and setup
 
@@ -32,7 +32,7 @@ Tests use JUnit Jupiter 5.12.2, AssertJ and Mockito through explicit native depe
 Testcontainers 1.21.4 for PostgreSQL 16, ArchUnit 1.4.1 for SDK boundaries, and MockWebServer
 for provider HTTP stubs. The QQQ adapter pins JUnit 5.12.2. Use JDK 21 and Maven 3.9+;
 keep Docker running for the complete suite. The full packaged verification also needs Python 3.12+
-and `age`. See [Development](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/DEVELOPMENT.md) for the build order and [Configuration](CONFIGURATION.md)
+and `age`. See [Development](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/DEVELOPMENT.md) for the build order and [Configuration](CONFIGURATION.md)
 for isolated Maven cache/settings controls.
 
 ## The pyramid
@@ -60,7 +60,7 @@ This CI path uses local installations; remote publication is verified separately
 The foundation script and candidate build run pinned Next type, lint, unit, audit and export checks.
 The separate full-browser gate installs locked Playwright/Chromium test dependencies and runs
 against packaged resources. Node.js is a build dependency, not an application runtime dependency.
-See [Session state](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/SESSION-STATE.md) for current qualification and [the historical QQQ RC report](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/verification/qqq4-qualification.md) for the original native migration evidence.
+See [Session state](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/SESSION-STATE.md) for current qualification and [the historical QQQ RC report](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/verification/qqq4-qualification.md) for the original native migration evidence.
 
 Each application test context owns its PostgreSQL container and QQQ listener. Run contexts
 serially because native QQQ has JVM-global registries. `ApplicationMcpFixtures` must replace
@@ -72,7 +72,7 @@ consumers do not duplicate the core grant list. Add direct business-data and per
 The native suite applies synthetic configuration overrides before any deferred resource
 factory runs. Its controlled model can inspect and invoke the actual gated local/outbound
 tool catalog; `assertNativeApplication` runs with live stores and host. Fixtures own their
-literal-loopback MCP servers. Use the executable [domain example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/examples/native-domain/README.md)
+literal-loopback MCP servers. Use the executable [domain example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/examples/native-domain/README.md)
 for a shipped component factory, owner-aware tool and redactor checks.
 
 The verification script also boots the packaged jar and its non-root, read-only container,
@@ -131,13 +131,13 @@ Notes:
 
 ## CI
 
-The [GitHub Actions workflow](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/.github/workflows/ci.yml) runs the same local gates,
+The [GitHub Actions workflow](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/.github/workflows/ci.yml) runs the same local gates,
 source secrets scanning, and actual JAR/image scans. Main snapshots and signed RC/stable tags stage and verify
 all four artifacts before publication. `bash scripts/verify-browser.sh` exercises the ordinary
 packaged domain app, scoped UI/process, record deep-link refresh, denied generic mutation,
 failed/successful logout, cookie replay across JVM restart
 and fresh login against disposable PostgreSQL and local HTTPS OIDC. The browser fixture never
-uses a personal profile or live provider, and only sanitized screenshots/results are uploaded. See [CI/CD](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/CI-CD.md).
+uses a personal profile or live provider, and only sanitized screenshots/results are uploaded. See [CI/CD](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/CI-CD.md).
 
 ## Writing tests and consumer responsibilities
 
@@ -161,7 +161,7 @@ Supply synthetic/business fixtures and an adapter observing actual structured fa
 tool selection/execution and approval evidence. The runner checks exact facts, forbidden
 or unapproved writes, declared prompt/model/tool versions and optional latency/token limits.
 Safe reports omit prompts, replies, arguments and fact values. See the concrete format and
-adapter example in [EvaluationRunnerTest](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/src/test/java/com/kof22/agentcore/conformance/eval/EvaluationRunnerTest.java).
+adapter example in [EvaluationRunnerTest](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/src/test/java/com/kof22/agentcore/conformance/eval/EvaluationRunnerTest.java).
 Controlled fixtures prove the harness, not model correctness; live consumer evaluations
 remain explicitly authorized and use synthetic data.
 

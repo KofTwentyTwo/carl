@@ -1,7 +1,7 @@
 # Configuration
 
 Native applications load one Java properties file, followed by optional `--key=value`
-overrides. The generator writes [`config/agent.properties`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/scripts/templates/agent.properties).
+overrides. The generator writes [`config/agent.properties`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/scripts/templates/agent.properties).
 File values are overridden by matching environment variables, then command-line arguments.
 Never put secrets in arguments or committed files. Complete `${ENV_NAME}` values resolve an
 explicit environment alias; embedded/default-value expressions are not supported.
@@ -75,7 +75,7 @@ These properties are under `kof22.agent.limits`.
 | `max-concurrent-turns` | 8 |
 | `turn-timeout` | `2m` |
 
-The limits are validated by [RuntimeLimits](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/src/main/java/com/kof22/agentcore/runtime/RuntimeLimits.java). Character limits are not token or currency estimates. The output-token allowance shrinks over provider requests, and the current provider loop also has a ten-iteration bound. See [Runtime contract](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/RUNTIME-CONTRACT.md).
+The limits are validated by [RuntimeLimits](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/src/main/java/com/kof22/agentcore/runtime/RuntimeLimits.java). Character limits are not token or currency estimates. The output-token allowance shrinks over provider requests, and the current provider loop also has a ten-iteration bound. See [Runtime contract](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/RUNTIME-CONTRACT.md).
 
 ## Governance and privacy
 

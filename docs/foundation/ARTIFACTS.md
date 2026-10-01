@@ -25,9 +25,9 @@ retain their historical artifact inventory.
 | `com.kof22:kof22-agent-parent:X.Y.Z` | POM | Consumer build/dependency/test/packaging defaults; signed `evidence` ZIP |
 
 The 0.3.0 line consumes official `com.kingsrook.qqq:qqq-middleware-javalin:4.0.0` and
-packages a separate Kof22 integration build of [QQQ Next](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/frontend/README.md).
+packages a separate Kof22 integration build of [QQQ Next](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/frontend/README.md).
 Earlier releases retain the owned compatibility artifact and its
-[provenance](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/compat/qqq-middleware-javalin/UPSTREAM.md); those versions remain immutable.
+[provenance](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/compat/qqq-middleware-javalin/UPSTREAM.md); those versions remain immutable.
 Keep all foundation versions aligned; normally the parent handles this for you.
 
 ## Use a published release
@@ -43,13 +43,13 @@ token with only `repo` does not provide package access. The foundation's own wor
 its repository-scoped `GITHUB_TOKEN` with explicit package permissions. See
 [GitHub's Maven authentication requirements](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry).
 Never put its value in a POM, committed settings, image layer or command-line argument.
-[`config/maven/settings.xml.example`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/config/maven/settings.xml.example) is usable as-is:
+[`config/maven/settings.xml.example`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/config/maven/settings.xml.example) is usable as-is:
 it reads these environment variables and registers repository/server id `github`.
 
 Use the generator from the source tag matching the selected release. The native generator
 requires the native contract introduced in `0.1.1`; it cannot target the historical `0.1.0`
 application host. Stable `0.3.0` is published and independently verified in
-[the delivery record](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/verification/2026-09-29-stable-0.3.0.json):
+[the delivery record](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/verification/2026-09-29-stable-0.3.0.json):
 
 ```sh
 # Select the published native release and its matching source checkout.
@@ -82,7 +82,7 @@ The generated POM's essential part is:
 
 The parent inherits core, QQQ and their shared test-kit classifiers, plus shared checks and
 ordinary-JAR packaging. You do not need to redeclare them individually. See
-[GETTING-STARTED.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/GETTING-STARTED.md) for the database, environment and launch commands.
+[GETTING-STARTED.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/GETTING-STARTED.md) for the database, environment and launch commands.
 Every consumer must satisfy [QQQ-APPLICATION-CONTRACT.md](QQQ-APPLICATION-CONTRACT.md).
 
 Generated applications use their GitHub Actions repository token for package resolution.
@@ -95,7 +95,7 @@ Credentials never enter the runtime image.
 Versions follow **Semantic Versioning**: `MAJOR.MINOR.PATCH`. The publication
 channels are protected-main `X.Y.Z-SNAPSHOT`, signed `vX.Y.Z-rc.N` prereleases, and signed
 `vX.Y.Z` stable tags supplied to the protected-main release action. Tag pushes, feature branches
-and PRs do not publish. See [the enforced lifecycle](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/CI-CD.md).
+and PRs do not publish. See [the enforced lifecycle](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/CI-CD.md).
 
 - **Patch:** compatible fixes to the existing public API, behavior and dependency set.
 - **Minor:** compatible additions. During the initial `0.x` series, a change requiring
@@ -117,7 +117,7 @@ own version remains independent of the foundation version.
 Canonical prereleases use lowercase `-rc.N`, starting at 1 without leading zeros.
 The generator accepts `FOUNDATION_VERSION=0.3.0-rc.1` or `0.4.0-SNAPSHOT` once published;
 use exact stable/RC pins for repeatable consumers. Required changelog classifications,
-API comparisons, signed tags and promotion are described in [CI-CD.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/CI-CD.md).
+API comparisons, signed tags and promotion are described in [CI-CD.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/docs/CI-CD.md).
 
 ## Work on the foundation from source
 
@@ -154,7 +154,7 @@ consumer cache. The source commit identifies the starting revision; source hashe
 capture local changes when you intentionally stage an uncommitted working tree.
 
 The protected-main release action adds successful secret/dependency/image gates before upload.
-[`publish-release.py`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/scripts/publish-release.py) then publishes these exact verified
+[`publish-release.py`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/scripts/publish-release.py) then publishes these exact verified
 files to this repository's GitHub Packages, preserving all classifiers. It requires the
 authorized channel/version, source commit and artifact hashes to match. A separate empty-cache consumer
 must resolve the actual remotely published bytes before `publication.json` reports success.

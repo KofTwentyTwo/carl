@@ -18,12 +18,12 @@ Current controlled qualification:408 tests,113 browser checks across seven final
 - [x] Controlled Synology agenda/publication outbox, recurrence/DST/private/free-busy behavior, remote observations and explicit human completion review.
 - [x] Actual controlled SDK/HTTP conversational bills/reports/drafts and expanded financial/plan workflows use the same authoritative records as QQQ.
 - [x] Native Talk, continuation/readable receipts, current-authorized sharing choices and pending/unknown polling without inference replay.
-- [x] Branded grouped navigation and four scoped dashboards, date pickers, saved-balance choices and desktop/narrow visual qualification on Next UI1.0.0-RC.7.
+- [x] Carl AI app/table navigation, contextual table actions, System nesting, lower-left docked chat and four scoped dashboards with explicit saved selections; desktop/narrow visual qualification on Next UI1.0.0-RC.8.
 - [x] Real OpenSearch/native Quick Search and fixed Artemis ESB invalidation; two events consumed/acknowledged, zero dead letters, index update before periodic refresh.
 - [x] Mid-request search/choice revocation and pre-inference permission changes deny access with meaningful failing regressions and zero provider transmissions.
 - [x] Full original-source Maven quality gate; unchanged style/copyright/80% line/60% branch floors and no skipped consumer tests.
-- [x] Required dashboard/Talk/QBits CI gates, explicit package-credential mapping and seven semantic-release/signature policy tests.
-- [x] Signed local implementation and evidence history, including current runtime source008af67. Failed push attempts left the remote unchanged.
+- [x] Required dashboard/Talk/QBits/public-household/docked-chat CI gates, explicit package-credential mapping and nine semantic-release/signature policy tests.
+- [x] Signed implementation and evidence history; final source03ffa899 and delivery documentation1bdb621 are pushed to the public feature branch. Earlier failed pushes are historical.
 - [x] Independent final foundation full qualification and protected hosted PR15 checks; PR15 merged at0b6f437.
 
 ## Remaining delivery and integration gates
@@ -32,6 +32,7 @@ Current controlled qualification:408 tests,113 browser checks across seven final
 
 - [x] Verify foundation main0.5.0-SNAPSHOT publication at0b6f437/run36811134831: signatures,66 staged hashes,nine remote Maven identities and17 passing fresh hosted consumer tests. Local registry/OCI credential access remains unperformed.
 - [x] Independently qualify protected foundation PR16/main1a7abd/run36820241402:470 source hashes,66 staged archive files,nine hosted Maven identities,17 fresh remote-consumer tests and offline signed evidence; [publication proof](evidence/2026-10-01-foundation-pr16-publication.json). Carl-specific remote consumption remains blocked.
+- [x] Independently qualify RC8 foundation PR17/main1464b10/run36878751071:480 source hashes,66 staged files,nine hosted Maven identities,17 fresh consumer tests and separately scoped packaged/browser fixtures; [RC8 publication proof](evidence/2026-10-01-foundation-pr17-rc8-publication.json).
 - [ ] Obtain authorized FOUNDATION_PACKAGES_TOKEN and prove fresh Carl Maven resolution/hosted access. Local recovered artifacts do not prove remote consumption.
 - [x] Sign and push current implementation; [draft PR1](https://github.com/KofTwentyTwo/carl/pull/1) is reviewable. Latest source03ffa899 signature is verified; canonical10-file Git export matches the generator.
 - [ ] Pass hosted Carl application/package/browser checks, then merge/publish. [Run36876709062](https://github.com/KofTwentyTwo/carl/actions/runs/36876709062) stops at missing FOUNDATION_PACKAGES_TOKEN; earlier source/public generator/release validators pass. Matching qualified immutable foundation baseline remains required for RC/stable.
@@ -47,8 +48,8 @@ Current controlled qualification:408 tests,113 browser checks across seven final
 The current full fictional household preview is https://localhost:63173 (Alice; frozen final RC8 app3c9dedbf). Use **Chat with Carl** in the lower-left dock. Its model is disconnected. Apps/tables-only navigation, System Operations/ESB/admin diagnostics, saved dashboard selections and typed homes/mortgages are qualified; prior previews remain preserved. Live/hosted/release/production states remain separate.
 
 
-October 1 active work: finish combined RC8/docked-chat backend coverage and packaged browser qualification; preserve native provider shutdown and immutable/live publication holds.
+October 1: combined RC8/docked-chat backend coverage and packaged browser qualification are complete. Preserve native provider shutdown and immutable/live publication holds.
 
-October1 final local implementation/qualification passes; final documentation/source closure and signed Carl PR delivery are in progress. Private Maven returns401, live model credential access is unresolved, and immutable RC/stable dependencies remain unavailable.
+October1 final local implementation, qualification, documentation/source closure and signed Carl PR delivery pass. Private Maven returns401, live model credential access is unresolved, and immutable RC/stable dependencies remain unavailable.
 
 Current delivery: [signed/pushed draft PR1 and exact credential hold](evidence/2026-10-01-rc8-delivery-status.json); no Carl merge or release.

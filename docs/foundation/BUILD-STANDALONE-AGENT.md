@@ -129,7 +129,7 @@ a domain permission just to make the local anonymous session pass.
 
 Work in small end-to-end slices, then repeat for **every workflow in the brief**. Use the
 [API](API.md), [QQQ contract](QQQ-APPLICATION-CONTRACT.md) and executable
-[native domain example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/examples/native-domain/README.md) as the reference. The example
+[native domain example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/examples/native-domain/README.md) as the reference. The example
 shows a read workflow and owner isolation; it is not a completed write integration.
 
 1. **Persist authoritative data.** Add versioned SQL under `src/main/resources/db/migration/`,
@@ -165,7 +165,7 @@ shows a read workflow and owner isolation; it is not a completed write integrati
 Keep the production main and tests on the same component factory. The factory defers external
 resources until configuration is validated; do not open vendor connections while declaring
 components. If composition needs business settings, implement `validate(configuration)` and
-retain the inherited validation. Inspect the [example factory](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/examples/native-domain/src/main/java/com/kof22/example/ExampleApplication.java)
+retain the inherited validation. Inspect the [example factory](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/examples/native-domain/src/main/java/com/kof22/example/ExampleApplication.java)
 and its tests rather than guessing method signatures.
 
 ## 5. Connect only the entry points required by the brief
@@ -213,7 +213,7 @@ fixtures for automation; replace every configured external boundary before invok
 Build and run the entire `target/agent/` distribution from another directory and verify health,
 configuration/persona resolution and domain behavior. Build its Dockerfile, exercise its actual
 network topology and runtime restrictions, and scan the consumer JAR/image through its CI.
-Adapt the foundation's [browser fixture](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/scripts/e2e/browser.cjs) to this domain with
+Adapt the foundation's [browser fixture](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/d46cf4e1902db52229abccbaa6707346e94e1c23/scripts/e2e/browser.cjs) to this domain with
 synthetic data; its example selectors do not certify a different consumer. Add automated
 business UI tests to the consumer workflow and record a visual inspection separately.
 Live model/Slack/vendor evaluation and host restore checks require their own authorized
