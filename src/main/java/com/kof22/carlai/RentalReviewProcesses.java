@@ -32,8 +32,8 @@ final class RentalReviewProcesses
       var reviews = new RentalAllocationReviews(service);
       for(var table : List.of(
          CarlMetadata.table("carlRentalReviews", "Rental Allocation Reviews", "carl_rental_review_view", "transaction_id:L,transaction_revision:L,review_version:L,state:S,classification_id:L,classification_version:L,result_id:L,source_amount:M,currency:S,source_date:D,source_stale:B,classification_stale:B"),
-         CarlMetadata.table("carlRentalReviewComponents", "Reviewed Rental Components", "carl_rental_review_component_view", "review_id:L,component_id:S,kind:S,amount:M,outside_fraction:M,review_version:L,state:S,currency:S"),
-         CarlMetadata.table("carlRentalReviewShares", "Reviewed Property Shares", "carl_rental_review_share_view", "review_id:L,component_id:S,property_id:L,property_label:S,fraction:M,review_version:L,state:S")))
+         CarlMetadata.table("carlRentalReviewComponents", "Reviewed Rental Components", "carl_rental_review_component_view", "review_id:L,component_id:S,kind:S,amount:M,outside_fraction:R,review_version:L,state:S,currency:S"),
+         CarlMetadata.table("carlRentalReviewShares", "Reviewed Property Shares", "carl_rental_review_share_view", "review_id:L,component_id:S,property_id:L,property_label:S,fraction:R,review_version:L,state:S")))
       {
          instance.addTable(table);
          app.withChild(table);
@@ -68,11 +68,11 @@ final class RentalReviewProcesses
       CarlMetadata.add(instance, app, CarlMetadata.process("carlPreviewRentalReview", "Preview Rental Allocation Review", List.of(review()), (in, out) ->
       {
          var preview = reviews.preview(CarlService.Scope.privateFor(CarlMetadata.principal()), id(in, "review"));
-         var text = new StringBuilder("Review ").append(preview.id()).append(" / version ").append(preview.version()).append(" / ").append(preview.state()).append("\nSource: ").append(preview.currency()).append(' ').append(preview.sourceAmount().toPlainString());
+         var text = new StringBuilder("Review ").append(preview.id()).append(" / version ").append(preview.version()).append(" / ").append(preview.state()).append("\nSource: ").append(com.kof22.carlai.report.MoneyPresentation.format(preview.sourceAmount(), preview.currency()));
          for(var part : preview.components())
          {
-            text.append("\n").append(part.id()).append(" / ").append(part.kind()).append(" / ").append(preview.currency()).append(' ').append(part.amount().toPlainString()).append(" / unallocated: ").append(part.remainingFraction().multiply(new BigDecimal("100")).toPlainString()).append('%');
-            part.propertyAmounts().entrySet().stream().sorted(java.util.Map.Entry.comparingByKey()).forEach(entry -> text.append("\n  Allocation ").append(entry.getKey()).append(": ").append(preview.currency()).append(' ').append(entry.getValue().toPlainString()));
+            text.append("\n").append(part.id()).append(" / ").append(part.kind()).append(" / ").append(com.kof22.carlai.report.MoneyPresentation.format(part.amount(), preview.currency())).append(" / unallocated: ").append(part.remainingFraction().multiply(new BigDecimal("100")).toPlainString()).append('%');
+            part.propertyAmounts().entrySet().stream().sorted(java.util.Map.Entry.comparingByKey()).forEach(entry -> text.append("\n  Allocation ").append(entry.getKey()).append(": ").append(com.kof22.carlai.report.MoneyPresentation.format(entry.getValue(), preview.currency())));
          }
          for(String gap : preview.gaps())
          {

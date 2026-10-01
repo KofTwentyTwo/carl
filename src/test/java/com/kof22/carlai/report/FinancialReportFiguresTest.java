@@ -53,7 +53,7 @@ class FinancialReportFiguresTest
       try(var pdf = PDDocument.load(bytes))
       {
          String text = new PDFTextStripper().getText(pdf);
-         for(String value : List.of("USD 1000.25", "USD 85.12", "USD 10.00", "USD 5.00", "USD 725.25", "USD -15.75", "Horizon costs only; not lifetime savings", "Credit capacity is not spending budget"))
+         for(String value : List.of("$1,000.25 USD", "$85.12 USD", "$10.00 USD", "$5.00 USD", "$725.25 USD", "-$15.75 USD", "Horizon costs only; not lifetime savings", "Credit capacity is not spending budget"))
          {
             assertTrue(text.contains(value), value + " missing from actual PDF");
          }

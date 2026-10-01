@@ -110,7 +110,7 @@ public final class PlanPdfRenderer
             {
                layout.keep(66);
                layout.paragraph(figure.label(), 10, true, INK, 2);
-               layout.paragraph(figure.amount() == null ? figure.currency() + " - Not available" : figure.currency() + " " + figure.amount().setScale(Math.max(figure.amount().scale(), java.util.Currency.getInstance(figure.currency()).getDefaultFractionDigits())).toPlainString(), 17, true, ACCENT, 3);
+               layout.paragraph(MoneyPresentation.format(figure.amount(), figure.currency()), 17, true, ACCENT, 3, true);
                layout.paragraph(fallback(figure.evidence(), "Supporting evidence not supplied."), 9, false, MUTED, 12);
             }
             if(!report.planId().startsWith("report-") || !report.tasks().isEmpty())
@@ -350,12 +350,19 @@ public final class PlanPdfRenderer
 
       private void paragraph(String value, float size, boolean bold, Color color, float gap) throws IOException
       {
+         paragraph(value, size, bold, color, gap, false);
+      }
+
+
+
+      private void paragraph(String value, float size, boolean bold, Color color, float gap, boolean right) throws IOException
+      {
          PDFont font = bold ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA;
          float leading = size * 1.4f;
          for(String line : wrap(safe(value), font, size))
          {
             keep(leading);
-            text(stream, line, LEFT, y, size, font, color);
+            text(stream, line, right ? LEFT + WIDTH - width(line, font, size) : LEFT, y, size, font, color);
             y -= leading;
          }
          y -= gap;

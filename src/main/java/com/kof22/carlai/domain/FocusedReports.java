@@ -282,7 +282,7 @@ public final class FocusedReports
       }
       try
       {
-         var facts = new com.fasterxml.jackson.databind.ObjectMapper().readTree(artifact.get("facts").toString());
+         var facts = new com.fasterxml.jackson.databind.ObjectMapper().enable(com.fasterxml.jackson.databind.DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS).readTree(artifact.get("facts").toString());
          var text = new StringBuilder("Carl AI — ").append(artifact.get("kind")).append("\nReport ").append(id).append(" / ").append(artifact.get("status_label")).append("\nGenerated: ").append(facts.path("generatedAt").asText()).append("\n").append(artifact.get("limitations"));
          for(String totals : List.of("totals", "selectedCurrencyStatusDifferences"))
          {
@@ -293,7 +293,7 @@ public final class FocusedReports
             }
             for(var field : fields)
             {
-               text.append("\n").append(field.getKey().replace(':', ' ')).append(": ").append(field.getValue().decimalValue().toPlainString());
+               text.append("\n").append(field.getKey().replace(':', ' ')).append(": ").append(com.kof22.carlai.report.MoneyPresentation.format(field.getValue().decimalValue(), field.getKey().split(":", 2)[0]));
             }
          }
          for(String section : List.of("bills", "events", "workItems", "recordDifferences"))
@@ -305,8 +305,9 @@ public final class FocusedReports
             }
             text.append("\n").append(section).append(" (source records: ").append(records.size()).append("):");
             int shown = 0;
-            for(var record : records)
+            for(var rawRecord : records)
             {
+               var record = com.kof22.carlai.report.MoneyPresentation.humanFacts(rawRecord);
                if(shown++ == 100)
                {
                   text.append("\nMore records are retained in the protected report; this review shows the first 100.");

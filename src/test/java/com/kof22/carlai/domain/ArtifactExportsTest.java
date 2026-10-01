@@ -105,7 +105,7 @@ class ArtifactExportsTest
             offset = page.get("nextOffset").intValue();
          }
          assertEquals(manifest.get("totalBytes").intValue(), bytes.size());
-         assertTrue(bytes.toString(java.nio.charset.StandardCharsets.UTF_8).contains("USD 200"));
+         assertTrue(bytes.toString(java.nio.charset.StandardCharsets.UTF_8).contains("$200.00 USD"));
          assertEquals(manifest.get("sha256").asText(), java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(bytes.toByteArray())));
          UUID savedPage = finalPage;
          assertThrows(com.kof22.agentadmin.client.ClientFailure.class, () -> download.start(context, UUID.randomUUID(), json.createObjectNode().put("exportRequest", export.toString()).put("format", "TEXT").put("offset", 0).put("limit", 65537)));
@@ -141,8 +141,8 @@ class ArtifactExportsTest
       var exports = new ArtifactExports(service);
       long report = report(new CarlService.Scope("alice", Set.of("alice", "bob")));
       String copy = exports.copy("alice", report);
-      assertTrue(copy.contains("USD 200"), copy);
-      assertTrue(copy.contains("EUR 5.5"), copy);
+      assertTrue(copy.contains("$200.00 USD"), copy);
+      assertTrue(copy.contains("€5.50 EUR"), copy);
       assertFalse(copy.contains("999.00"), copy);
       assertTrue(copy.contains("No authorized calendar connection"), copy);
       UUID request = UUID.randomUUID();
@@ -152,8 +152,8 @@ class ArtifactExportsTest
       try(var pdf = org.apache.pdfbox.pdmodel.PDDocument.load(bytes))
       {
          String text = new org.apache.pdfbox.text.PDFTextStripper().getText(pdf);
-         assertTrue(text.contains("USD 200.00"), text);
-         assertTrue(text.contains("EUR 5.50"), text);
+         assertTrue(text.contains("$200.00 USD"), text);
+         assertTrue(text.contains("€5.50 EUR"), text);
          assertTrue(text.contains("No authorized calendar connection"), text);
          assertFalse(text.contains("999.00"), text);
          assertEquals(null, pdf.getDocumentCatalog().getOpenAction());

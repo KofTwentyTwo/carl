@@ -30,7 +30,7 @@ final class TaxProcesses
    static void register(QInstance instance, QAppMetaData app, CarlService service)
    {
       var tax = new TaxRecords(service);
-      var table = CarlMetadata.table("carlTaxProperties", "Tax Preparation Properties", "carl_tax_property_view", "currency:S,ownership_share:M,acquisition_date:D,acquisition_basis:M,land_basis:M,building_basis:M,placed_in_service:D,financed:B,basis_evidence:T,tax_context_evidence:T");
+      var table = CarlMetadata.table("carlTaxProperties", "Tax Preparation Properties", "carl_tax_property_view", "currency:S,ownership_share:R,acquisition_date:D,acquisition_basis:M,land_basis:M,building_basis:M,placed_in_service:D,financed:B,basis_evidence:T,tax_context_evidence:T");
       instance.addTable(table);
       app.withChild(table);
       instance.addPossibleValueSource(QPossibleValueSource.newForTable(table.getName()));

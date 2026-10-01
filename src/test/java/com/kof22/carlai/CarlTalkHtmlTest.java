@@ -39,6 +39,20 @@ class CarlTalkHtmlTest
 
 
    @Test
+   void savedFinancialFactsFormatEachCurrencyWithoutChangingRatesOrSourceIdentifiers()
+   {
+      var artifact = new ObjectMapper().createObjectNode();
+      var facts = artifact.putObject("savedReport").putObject("facts");
+      facts.put("currency", "USD").put("amount", new java.math.BigDecimal("8100.00")).put("annualRate", new java.math.BigDecimal("0.24")).put("id", 8100);
+      facts.putObject("totals").put("EUR:UNPAID", new java.math.BigDecimal("-1200.25"));
+      String html = CarlTalkHtml.render(message(new ClientWorkflow.Result(ClientWorkflow.Status.COMPLETE, "123", "Saved report", artifact)));
+      assertThat(html).contains("$8,100.00 USD", "-€1,200.25 EUR", "text-align:right", ">0.24", ">8100");
+      assertThat(facts.path("amount").isNumber()).isTrue();
+   }
+
+
+
+   @Test
    void rendersReadableFactsAndEscapesImportedHtmlRatherThanExecutingIt()
    {
       var artifact = new ObjectMapper().createObjectNode().put("message", "Bills total USD 200.00").put("narrative", "<script>disclose()</script>");

@@ -17,7 +17,7 @@ import com.kof22.agentadmin.client.FamilyAccess;
 /** Native conversation bridge into the exact service owned by the running foundation host. */
 public final class CarlTalkService
 {
-   private static final ObjectMapper JSON = new ObjectMapper();
+   private static final ObjectMapper JSON = new ObjectMapper().enable(com.fasterxml.jackson.databind.DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
    private final CarlService service;
    private volatile ClientService clients;
 

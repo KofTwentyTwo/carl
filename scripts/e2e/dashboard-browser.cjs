@@ -76,15 +76,15 @@ async function main() {
       await page.goto(origin + '/app/carlMoney');
       for(const name of ['carlCashFlow', 'carlIncomeExpense', 'carlBalanceSheet']) {
         await expect(page.locator(`[data-qqq-id="widget-needs-selection-${name}"]`)).toBeVisible();
-        await expect(widget(name)).not.toContainText('1675.30');
+        await expect(widget(name)).not.toContainText('$1,675.30 USD');
       }
       await screenshot(locale + '-02-required-selection-empty-state');
       await dates('carlCashFlow');
-      await expect(widget('carlCashFlow')).toContainText('2226.20 USD');
-      await expect(widget('carlCashFlow')).toContainText('550.90 USD');
-      await expect(widget('carlCashFlow')).toContainText('1675.30 USD');
-      await expect(widget('carlCashFlow')).toContainText('1125.50 USD');
-      await expect(widget('carlCashFlow')).toContainText('1075.00 USD');
+      await expect(widget('carlCashFlow')).toContainText('$2,226.20 USD');
+      await expect(widget('carlCashFlow')).toContainText('$550.90 USD');
+      await expect(widget('carlCashFlow')).toContainText('$1,675.30 USD');
+      await expect(widget('carlCashFlow')).toContainText('$1,125.50 USD');
+      await expect(widget('carlCashFlow')).toContainText('$1,075.00 USD');
       await expect(widget('carlCashFlow')).toContainText('principal/interest allocation');
       await expect(widget('carlCashFlow').getByRole('table', { name: 'Exact accessible account movement totals' })).toBeVisible();
       await expect(widget('carlCashFlow').getByRole('table', { name: /Classified spending across all account kinds/ })).toBeVisible();
@@ -95,27 +95,37 @@ async function main() {
       await screenshot(locale + '-03-cash-spending-sankey-exact-tables');
       checks.push(locale + '-native-ISO-controls-cash-and-card-spending-accessible-SVG-table');
       await choose('carlCashFlow', 'carlDashboardCurrency', 'EUR');
-      await expect(widget('carlCashFlow')).toContainText('10.10 EUR');
-      await expect(widget('carlCashFlow')).not.toContainText('2226.20');
+      await expect(widget('carlCashFlow')).toContainText('€10.10 EUR');
+      await expect(widget('carlCashFlow')).not.toContainText('$2,226.20 USD');
       await choose('carlCashFlow', 'carlDashboardCurrency', 'USD');
-      await expect(widget('carlCashFlow')).toContainText('2226.20 USD');
+      await expect(widget('carlCashFlow')).toContainText('$2,226.20 USD');
       const selected = page.locator('[data-qqq-id="widget-dropdown-carlBalanceSheet-carlSavedBalanceSheets"]');
       await selected.click();
       for(const id of [seed.balanceSheet, seed.duplicateBalanceSheet]) await expect(page.locator(`[data-qqq-id="widget-dropdown-option-carlBalanceSheet-carlSavedBalanceSheets-${id}"]`)).toContainText('#' + id);
       await expect(page.locator(`[data-qqq-id="widget-dropdown-option-carlBalanceSheet-carlSavedBalanceSheets-${seed.debtArtifact}"]`)).toHaveCount(0);
       await page.locator(`[data-qqq-id="widget-dropdown-option-carlBalanceSheet-carlSavedBalanceSheets-${seed.duplicateBalanceSheet}"]`).click();
-      await expect(widget('carlBalanceSheet')).toContainText('-1500');
-      await expect(widget('carlBalanceSheet')).toContainText('100.10');
+      await expect(widget('carlBalanceSheet')).toContainText('-$1,500.00 USD');
+      await expect(widget('carlBalanceSheet')).toContainText('€100.10 EUR');
       await expect(widget('carlBalanceSheet')).toContainText('UI Missing Valuation');
       await expect(widget('carlBalanceSheet')).toContainText('currencies are never combined');
       await screenshot(locale + '-04-distinct-balance-choices-currencies-gaps');
       checks.push(locale + '-distinct-saved-balance-choice-and-explicit-currency-gaps');
+      for(const name of ['carlCashFlow', 'carlIncomeExpense', 'carlBalanceSheet']) {
+        const cells = widget(name).locator('td').filter({ has: page.locator('span[data-carl-money]') });
+        const count = await cells.count();
+        expect(count).toBeGreaterThan(0);
+        for(let index = 0; index < count; index++) {
+          await expect(cells.nth(index)).toHaveCSS('text-align', 'right');
+          await expect(cells.nth(index)).toHaveCSS('font-variant-numeric', 'tabular-nums');
+        }
+      }
+      checks.push(locale + '-currency-symbols-grouping-and-computed-monetary-alignment');
       await page.goto(origin + '/app/carlPlanning');
       await choose('carlPlanProgress', 'carlPlans', seed.plan);
       await expect(widget('carlPlanProgress')).toContainText('UI priority: debt freedom');
       await expect(widget('carlPlanProgress')).toContainText('REPORTED_COMPLETE');
       await expect(widget('carlPlanProgress')).toContainText('TRANSFER');
-      await expect(widget('carlPlanProgress')).toContainText(/200\.25(?:0+)? USD/);
+      await expect(widget('carlPlanProgress')).toContainText('$200.25 USD');
       await expect(widget('carlPlanProgress')).toContainText('MATCH');
       await expect(widget('carlPlanProgress')).toContainText('Stale');
       await expect(widget('carlPlanProgress').getByRole('table', { name: /Saved selected observations/ })).toContainText('false');
@@ -143,6 +153,41 @@ async function main() {
       await expect(page.getByRole('menuitem', { name: 'Review Selected Accounts and Properties', exact: true })).toBeVisible();
       await screenshot(locale + '-08-native-record-context-action');
       await page.keyboard.press('Escape');
+      await page.goto(origin + '/app/carlAccounts');
+      await page.getByRole('button', { name: /^Configure columns(?: \(\d+\))?$/ }).click();
+      await page.locator('[data-qqq-id="column-config-hide-all"]').click();
+      for(const field of ['title', 'balance', 'currency', 'ownership_share']) await page.locator('[data-qqq-id="column-toggle-' + field + '"]').click();
+      await page.getByRole('button', { name: 'Close column configuration', exact: true }).click();
+      const negativeMoney = page.locator('td[data-qqq-id="grid-cell-balance"]').filter({ hasText: '-$2,000.25 USD' });
+      await expect(negativeMoney).toHaveCount(1);
+      await expect(negativeMoney).toHaveCSS('text-align', 'right');
+      await expect(negativeMoney).toHaveCSS('font-variant-numeric', 'tabular-nums');
+      const balanceHeader = page.getByRole('columnheader').filter({ has: page.getByRole('button', { name: /^Balance/ }) });
+      await expect(balanceHeader).toHaveCSS('text-align', 'right');
+      await expect(page.locator('td[data-qqq-id="grid-cell-ownership_share"]').first()).not.toContainText('$');
+      await screenshot(locale + '-09-native-money-grid');
+      await negativeMoney.click();
+      await expect(page.locator('[data-qqq-id="field-value-balance"]')).toHaveText('-$2,000.25 USD');
+      await expect(page.locator('[data-qqq-id="field-value-balance"]')).toHaveCSS('text-align', 'right');
+      const detailLayout = await page.locator('[data-qqq-id="record-tab-panel-overview"]').evaluate(panel => {
+        const card = [...panel.children].find(child => child.querySelector('[data-qqq-id="field-value-balance"]'));
+        const field = card.querySelector('[data-qqq-id="field-value-balance"]');
+        const cardBox = card.getBoundingClientRect();
+        const fieldBox = field.getBoundingClientRect();
+        return { cardWidth: cardBox.width, cardLeft: cardBox.left, cardRight: cardBox.right, fieldLeft: fieldBox.left, fieldRight: fieldBox.right };
+      });
+      expect(detailLayout.cardWidth).toBeGreaterThanOrEqual(400);
+      expect(detailLayout.fieldLeft).toBeGreaterThanOrEqual(detailLayout.cardLeft);
+      expect(detailLayout.fieldRight).toBeLessThanOrEqual(detailLayout.cardRight);
+
+      await screenshot(locale + '-10-native-money-detail');
+      await page.goto(origin + '/app/carlManualBill');
+      const moneyInput = page.locator('input[name="amount"]');
+      await moneyInput.fill('8100.00');
+      await expect(moneyInput).toHaveValue('8100.00');
+      await expect(moneyInput).toHaveCSS('text-align', 'right');
+      await screenshot(locale + '-11-exact-money-input');
+      checks.push(locale + '-native-grid-header-detail-and-input-money-alignment');
       const choiceResponse = await context.request.post(origin + '/qqq/v1/possibleValues/carlSavedBalanceSheets', { headers: { Origin: origin }, data: { ids: [String(seed.balanceSheet)] } });
       expect(choiceResponse.status()).toBe(200);
       const exact = await choiceResponse.json();
@@ -170,7 +215,7 @@ async function main() {
     await expect.poll(() => new URL(page.url()).pathname).toMatch(/^\/app\/carlOverview\/?$/);
     await page.goto(origin + '/app/carlMoney');
     await dates('carlCashFlow');
-    await expect(widget('carlCashFlow')).not.toContainText('2226.20');
+    await expect(widget('carlCashFlow')).not.toContainText('$2,226.20 USD');
     await expect(widget('carlCashFlow')).not.toContainText('UI Salary');
     const privateChoices = await bob.request.post(origin + '/qqq/v1/possibleValues/carlSavedBalanceSheets', { headers: { Origin: origin }, data: { ids: [String(seed.balanceSheet)] } });
     expect(privateChoices.status()).toBe(200);
@@ -191,7 +236,7 @@ async function main() {
     await expect.poll(() => new URL(page.url()).pathname).toMatch(/^\/app\/carlOverview\/?$/);
     await page.goto(origin + '/app/carlMoney');
     await dates('carlCashFlow');
-    await expect(widget('carlCashFlow')).toContainText('2226.20 USD');
+    await expect(widget('carlCashFlow')).toContainText('$2,226.20 USD');
     await new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('Synthetic revocation acknowledgement timeout')), 10000);
       lines.on('line', line => { if(line.includes('PACKAGED_DASHBOARDS_REVOKED')) { clearTimeout(timer); resolve(); } });
@@ -199,7 +244,7 @@ async function main() {
     });
     await page.locator('[data-qqq-id="button-widget-reload-carlCashFlow"]').click();
     await expect(page.locator('[data-qqq-id="widget-error-carlCashFlow"]')).toBeVisible();
-    await expect(page.locator('[data-qqq-id="widget-carlCashFlow"]')).not.toContainText('2226.20');
+    await expect(page.locator('[data-qqq-id="widget-carlCashFlow"]')).not.toContainText('$2,226.20 USD');
     const revoked = await alice.request.post(origin + '/qqq/v1/possibleValues/carlSavedBalanceSheets', { headers: { Origin: origin }, data: { ids: [String(seed.balanceSheet)] } });
     expect(revoked.status()).toBeGreaterThanOrEqual(400);
     expect(revoked.status()).not.toBe(404);

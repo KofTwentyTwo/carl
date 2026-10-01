@@ -183,6 +183,8 @@ class RentalRecordsTest
       long split = rentals.classify("alice", UUID.randomUUID(), tx, List.of(component("rent", RentalEconomics.Kind.RENT_RECEIPT, "100.00", house)), "FAMILY", "Receipt evidence");
       long due = rentals.rentDue("alice", UUID.randomUUID(), house, null, FROM, n("150.00"), "FAMILY", "Lease evidence");
       long applied = rentals.applyRent("alice", UUID.randomUUID(), due, split, 1, "rent", n("80.00"), "Partial September receipt");
+      var nativeRows = service.transaction(c -> CarlService.rows(c, "SELECT currency FROM carl_rent_application_view WHERE principal=?", "alice"));
+      assertEquals("USD", nativeRows.getFirst().get("currency"));
       assertThrows(IllegalArgumentException.class, () -> rentals.applyRent("alice", UUID.randomUUID(), due, split, 1, "rent", n("30.00"), "Would overapply source"));
       assertThrows(IllegalArgumentException.class, () -> rentals.reviseClassification("alice", UUID.randomUUID(), split, 1, List.of(component("rent", RentalEconomics.Kind.RENT_RECEIPT, "100.00", house)), "Linked applications require explicit removal"));
       rentals.unapplyRent("alice", UUID.randomUUID(), applied, "Correcting period allocation");

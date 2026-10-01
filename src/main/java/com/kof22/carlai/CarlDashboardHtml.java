@@ -57,34 +57,34 @@ final class CarlDashboardHtml
    private static void flow(StringBuilder html, JsonNode facts, boolean chart)
    {
       html.append("<p style='color:#526273'>").append(text(facts.path("from"))).append(" through ").append(text(facts.path("through"))).append(" · ").append(text(facts.path("currency"))).append(" · ").append(text(facts.path("displayZone"))).append("</p>");
-      html.append(TABLE).append("<caption>Exact accessible account movement totals</caption><thead><tr><th scope='col'>Inflows</th><th scope='col'>Outflows</th><th scope='col'>Net movement</th></tr></thead><tbody><tr>");
+      html.append(TABLE).append("<caption>Exact accessible account movement totals</caption><thead><tr><th scope='col' style='text-align:right'>Inflows</th><th scope='col' style='text-align:right'>Outflows</th><th scope='col' style='text-align:right'>Net movement</th></tr></thead><tbody><tr>");
       for(String field : List.of("inflows", "outflows", "netMovement"))
       {
-         html.append("<td style='font-size:24px;font-weight:600;padding:10px 0'>").append(amount(facts.path(field))).append(" ").append(text(facts.path("currency"))).append("</td>");
+         html.append("<td style='font-size:24px;font-weight:600;padding:10px 0;text-align:right;font-variant-numeric:tabular-nums'>").append(amount(facts.path(field), facts.path("currency"))).append("</td>");
       }
       html.append("</tr></tbody></table></div>");
-      html.append(TABLE).append("<caption>Classified spending across all account kinds · distinct from cash movement</caption><thead><tr><th scope='col'>Expense movements</th><th scope='col'>Expense refunds</th><th scope='col'>Net classified spending</th></tr></thead><tbody><tr>");
+      html.append(TABLE).append("<caption>Classified spending across all account kinds · distinct from cash movement</caption><thead><tr><th scope='col' style='text-align:right'>Expense movements</th><th scope='col' style='text-align:right'>Expense refunds</th><th scope='col' style='text-align:right'>Net classified spending</th></tr></thead><tbody><tr>");
       for(String field : List.of("classifiedSpendingAllAccountKinds", "classifiedExpenseRefundsAllAccountKinds", "classifiedNetSpendingAllAccountKinds"))
       {
-         html.append("<td>").append(amount(facts.path(field))).append(" ").append(text(facts.path("currency"))).append("</td>");
+         html.append("<td style='text-align:right;font-variant-numeric:tabular-nums'>").append(amount(facts.path(field), facts.path("currency"))).append("</td>");
       }
       html.append("</tr></tbody></table></div><p>Spending uses explicit EXPENSE classification, including credit-card purchases and their refunds; transfers/debt service/capital/unclassified movements are separate. This is partial record coverage and no tax treatment is inferred.</p>");
       if(chart)
       {
          sankey(html, facts);
       }
-      html.append(TABLE).append("<caption>Directional classified movements · exact amounts used in the chart</caption><thead><tr><th scope='col'>Category and treatment</th><th scope='col'>Direction</th><th scope='col'>Amount</th><th scope='col'>Records</th></tr></thead><tbody>");
+      html.append(TABLE).append("<caption>Directional classified movements · exact amounts used in the chart</caption><thead><tr><th scope='col'>Category and treatment</th><th scope='col'>Direction</th><th scope='col' style='text-align:right'>Amount</th><th scope='col'>Records</th></tr></thead><tbody>");
       for(JsonNode row : facts.path("flows"))
       {
-         row(html, text(row.path("label")), text(row.path("direction")), amount(row.path("amount")) + " " + text(facts.path("currency")), text(row.path("records")));
+         row(html, text(row.path("label")), text(row.path("direction")), amount(row.path("amount"), facts.path("currency")), text(row.path("records")));
       }
       html.append("</tbody></table></div>");
       if(!facts.path("nonCashAccountMovements").isEmpty())
       {
-         html.append(TABLE).append("<caption>Other account movements · excluded from cash totals and chart</caption><thead><tr><th scope='col'>Account kind</th><th scope='col'>Treatment</th><th scope='col'>Direction</th><th scope='col'>Amount</th></tr></thead><tbody>");
+         html.append(TABLE).append("<caption>Other account movements · excluded from cash totals and chart</caption><thead><tr><th scope='col'>Account kind</th><th scope='col'>Treatment</th><th scope='col'>Direction</th><th scope='col' style='text-align:right'>Amount</th></tr></thead><tbody>");
          for(JsonNode row : facts.path("nonCashAccountMovements"))
          {
-            row(html, text(row.path("accountKind")), text(row.path("label")), text(row.path("direction")), amount(row.path("amount")) + " " + text(facts.path("currency")));
+            row(html, text(row.path("accountKind")), text(row.path("label")), text(row.path("direction")), amount(row.path("amount"), facts.path("currency")));
          }
          html.append("</tbody></table></div>");
       }
@@ -164,8 +164,8 @@ final class CarlDashboardHtml
          outsideStart += Math.max(1, width) + 28;
          String color = incoming ? "#15847b" : "#2563eb";
          html.append("<rect x='").append(incoming ? "280" : "670").append("' y='").append(outside - width / 2).append("' width='10' height='").append(Math.max(1, width)).append("' fill='").append(color).append("'/>");
-         html.append("<path d='M ").append(incoming ? "290 " : "495 ").append(incoming ? outside : center).append(incoming ? " C 365 " : " C 540 ").append(incoming ? outside : center).append(incoming ? " 415 " : " 615 ").append(incoming ? center : outside).append(incoming ? " 465 " : " 670 ").append(incoming ? center : outside).append("' fill='none' stroke='").append(color).append("' stroke-opacity='0.35' stroke-width='").append(Math.max(1, width)).append("'><title>").append(escape(row.label())).append(": ").append(escape(row.amount().toPlainString())).append(" ").append(escape(currency)).append("</title></path>");
-         html.append("<text x='").append(incoming ? "12" : "690").append("' y='").append(outside - 5).append("' font-size='12' fill='#203040'>").append(escape(shortLabel(row.label()))).append("</text><text x='").append(incoming ? "12" : "690").append("' y='").append(outside + 12).append("' font-size='12' fill='#526273'>").append(escape(row.amount().toPlainString())).append(" ").append(escape(currency)).append("</text>");
+         html.append("<path d='M ").append(incoming ? "290 " : "495 ").append(incoming ? outside : center).append(incoming ? " C 365 " : " C 540 ").append(incoming ? outside : center).append(incoming ? " 415 " : " 615 ").append(incoming ? center : outside).append(incoming ? " 465 " : " 670 ").append(incoming ? center : outside).append("' fill='none' stroke='").append(color).append("' stroke-opacity='0.35' stroke-width='").append(Math.max(1, width)).append("'><title>").append(escape(row.label())).append(": ").append(escape(com.kof22.carlai.report.MoneyPresentation.format(row.amount(), currency))).append("</title></path>");
+         html.append("<text x='").append(incoming ? "12" : "690").append("' y='").append(outside - 5).append("' font-size='12' fill='#203040'>").append(escape(shortLabel(row.label()))).append("</text><text x='").append(incoming ? "270" : "948").append("' text-anchor='end' y='").append(outside + 12).append("' font-size='12' fill='#526273'>").append(escape(com.kof22.carlai.report.MoneyPresentation.format(row.amount(), currency))).append("</text>");
          middle += width;
       }
    }
@@ -198,17 +198,17 @@ final class CarlDashboardHtml
             }
          }
       }
-      html.append(TABLE).append("<caption>Known selected balances · currencies are never combined</caption><thead><tr><th scope='col'>Currency</th><th scope='col'>Assets</th><th scope='col'>Liabilities</th><th scope='col'>Net worth</th><th scope='col'>Liquid signed balances</th></tr></thead><tbody>");
-      facts.path("knownSelectedNetWorthByCurrency").fields().forEachRemaining(entry -> row(html, escape(entry.getKey()), assets.getOrDefault(entry.getKey(), BigDecimal.ZERO).toPlainString(), liabilities.getOrDefault(entry.getKey(), BigDecimal.ZERO).toPlainString(), amount(entry.getValue()), amount(facts.path("knownSelectedLiquidBalancesByCurrency").path(entry.getKey()))));
+      html.append(TABLE).append("<caption>Known selected balances · currencies are never combined</caption><thead><tr><th scope='col'>Currency</th><th scope='col' style='text-align:right'>Assets</th><th scope='col' style='text-align:right'>Liabilities</th><th scope='col' style='text-align:right'>Net worth</th><th scope='col' style='text-align:right'>Liquid signed balances</th></tr></thead><tbody>");
+      facts.path("knownSelectedNetWorthByCurrency").fields().forEachRemaining(entry -> row(html, escape(entry.getKey()), money(assets.getOrDefault(entry.getKey(), BigDecimal.ZERO), entry.getKey()), money(liabilities.getOrDefault(entry.getKey(), BigDecimal.ZERO), entry.getKey()), amount(entry.getValue(), JSON.valueToTree(entry.getKey())), amount(facts.path("knownSelectedLiquidBalancesByCurrency").path(entry.getKey()), JSON.valueToTree(entry.getKey()))));
       html.append("</tbody></table></div>");
       for(String list : List.of("accounts", "properties"))
       {
-         html.append(TABLE).append("<caption>Selected ").append(list).append(" and valuation treatment</caption><thead><tr><th scope='col'>Source</th><th scope='col'>Currency</th><th scope='col'>Owned signed value</th><th scope='col'>Treatment</th><th scope='col'>Dated evidence</th></tr></thead><tbody>");
+         html.append(TABLE).append("<caption>Selected ").append(list).append(" and valuation treatment</caption><thead><tr><th scope='col'>Source</th><th scope='col'>Currency</th><th scope='col' style='text-align:right'>Owned signed value</th><th scope='col'>Treatment</th><th scope='col'>Dated evidence</th></tr></thead><tbody>");
          for(JsonNode row : facts.path(list))
          {
             JsonNode observations = row.path("observations");
             String observed = observations.isArray() && !observations.isEmpty() ? observations.get(0).path("as_of").asText() : row.path("valuationDate").asText("Not supplied");
-            row(html, text(row.path("title")), text(row.path("currency")), amount(row.path(list.equals("accounts") ? "ownedSignedBalance" : "ownedPropertyValue")), text(row.path("treatment")), escape(observed));
+            row(html, text(row.path("title")), text(row.path("currency")), amount(row.path(list.equals("accounts") ? "ownedSignedBalance" : "ownedPropertyValue"), row.path("currency")), text(row.path("treatment")), escape(observed));
          }
          html.append("</tbody></table></div>");
       }
@@ -241,24 +241,24 @@ final class CarlDashboardHtml
       var figures = com.kof22.carlai.report.FinancialReportFigures.from(selected.path("projected").path("facts"));
       if(!figures.isEmpty())
       {
-         html.append(TABLE).append("<caption>Saved modeled amounts · assumptions are not observations</caption><thead><tr><th scope='col'>Figure</th><th scope='col'>Amount</th><th scope='col'>Qualification</th></tr></thead><tbody>");
+         html.append(TABLE).append("<caption>Saved modeled amounts · assumptions are not observations</caption><thead><tr><th scope='col'>Figure</th><th scope='col' style='text-align:right'>Amount</th><th scope='col'>Qualification</th></tr></thead><tbody>");
          for(var figure : figures)
          {
-            row(html, escape(figure.label()), (figure.amount() == null ? "Not supplied" : escape(figure.amount().toPlainString())) + " " + escape(figure.currency()), escape(figure.evidence()));
+            row(html, escape(figure.label()), money(figure.amount(), figure.currency()), escape(figure.evidence()));
          }
          html.append("</tbody></table></div>");
       }
       html.append("<p>Open the saved financial output for its exact debt costs, investment assumptions, horizon and scenario evidence. Projected investment growth remains uncertain and separate from debt costs.</p>");
-      html.append(TABLE).append("<caption>Explicit agreed expectations</caption><thead><tr><th scope='col'>Task</th><th scope='col'>Kind</th><th scope='col'>Expected amount</th><th scope='col'>Period</th></tr></thead><tbody>");
+      html.append(TABLE).append("<caption>Explicit agreed expectations</caption><thead><tr><th scope='col'>Task</th><th scope='col'>Kind</th><th scope='col' style='text-align:right'>Expected amount</th><th scope='col'>Period</th></tr></thead><tbody>");
       for(JsonNode expectation : selected.path("expectations"))
       {
-         row(html, text(expectation.path("step_title")), text(expectation.path("effect_kind")), amount(expectation.path("expected_amount")) + " " + text(expectation.path("currency")), text(expectation.path("period_start")) + " through " + text(expectation.path("period_end")));
+         row(html, text(expectation.path("step_title")), text(expectation.path("effect_kind")), amount(expectation.path("expected_amount"), expectation.path("currency")), text(expectation.path("period_start")) + " through " + text(expectation.path("period_end")));
       }
-      html.append("</tbody></table></div>").append(TABLE).append("<caption>Saved selected observations · numerical matches do not verify causal effect or task completion</caption><thead><tr><th scope='col'>Observation</th><th scope='col'>Outcome</th><th scope='col'>Observed amount</th><th scope='col'>Observed minus expected</th><th scope='col'>Version matched when calculated</th><th scope='col'>Current plan version matches</th><th scope='col'>Source status</th></tr></thead><tbody>");
+      html.append("</tbody></table></div>").append(TABLE).append("<caption>Saved selected observations · numerical matches do not verify causal effect or task completion</caption><thead><tr><th scope='col'>Observation</th><th scope='col'>Outcome</th><th scope='col' style='text-align:right'>Observed amount</th><th scope='col' style='text-align:right'>Observed minus expected</th><th scope='col'>Version matched when calculated</th><th scope='col'>Current plan version matches</th><th scope='col'>Source status</th></tr></thead><tbody>");
       for(JsonNode observation : selected.path("observations"))
       {
          JsonNode facts = observation.path("facts");
-         row(html, text(observation.path("id")), text(facts.path("outcome")), amount(facts.path("observedAmount")) + " " + text(facts.path("currency")), amount(facts.path("differenceObservedMinusExpected")), text(facts.path("planVersionMatches")), text(observation.path("currentPlanVersionMatches")), observation.path("stale").asBoolean() ? "Stale" : "Current");
+         row(html, text(observation.path("id")), text(facts.path("outcome")), amount(facts.path("observedAmount"), facts.path("currency")), amount(facts.path("differenceObservedMinusExpected"), facts.path("currency")), text(facts.path("planVersionMatches")), text(observation.path("currentPlanVersionMatches")), observation.path("stale").asBoolean() ? "Stale" : "Current");
       }
       html.append("</tbody></table></div>");
       for(JsonNode observation : selected.path("observations"))
@@ -302,7 +302,7 @@ final class CarlDashboardHtml
       html.append("<tr>");
       for(String column : columns)
       {
-         html.append("<td style='padding:8px 6px;border-bottom:1px solid #e2e8f0'>").append(column).append("</td>");
+         html.append("<td style='padding:8px 6px;border-bottom:1px solid #e2e8f0").append(column.startsWith("<span data-carl-money") ? ";text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap" : "").append("'>").append(column).append("</td>");
       }
       html.append("</tr>");
    }
@@ -321,9 +321,16 @@ final class CarlDashboardHtml
 
 
 
-   private static String amount(JsonNode value)
+   private static String amount(JsonNode value, JsonNode currency)
    {
-      return value.isNumber() ? escape(value.decimalValue().toPlainString()) : "Not supplied / excluded";
+      return value.isNumber() ? money(value.decimalValue(), currency.asText()) : "<span data-carl-money='true'>Not supplied / excluded</span>";
+   }
+
+
+
+   private static String money(BigDecimal value, String currency)
+   {
+      return "<span data-carl-money='true'>" + escape(com.kof22.carlai.report.MoneyPresentation.format(value, currency)) + "</span>";
    }
 
 

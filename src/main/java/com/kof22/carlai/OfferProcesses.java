@@ -33,7 +33,7 @@ final class OfferProcesses
    static void register(QInstance instance, QAppMetaData app, CarlService service)
    {
       var offers = new FinancingOffers(service);
-      var table = CarlMetadata.table("carlFinancingOffers", "Financing Offers", "carl_financing_offer_view", "kind:S,currency:S,financed_principal:M,monthly_payment:M,term_months:L,initial_apr:M,post_promo_apr:M,financed_fee:M,cash_fee:M,promotion:S,promo_months:L,deferred_apr:M,allocation_confirmed:B,evidence_class:S,as_of:D,expires_on:D,first_payment:D,collateral_terms:T");
+      var table = CarlMetadata.table("carlFinancingOffers", "Financing Offers", "carl_financing_offer_view", "kind:S,currency:S,financed_principal:M,monthly_payment:M,term_months:L,initial_apr:R,post_promo_apr:R,financed_fee:M,cash_fee:M,promotion:S,promo_months:L,deferred_apr:R,allocation_confirmed:B,evidence_class:S,as_of:D,expires_on:D,first_payment:D,collateral_terms:T");
       instance.addTable(table);
       app.withChild(table);
       instance.addPossibleValueSource(QPossibleValueSource.newForTable(table.getName()));
@@ -58,7 +58,7 @@ final class OfferProcesses
       CarlMetadata.add(instance, app, CarlMetadata.process("carlCompareOffers", "Compare Financing Offer Costs", List.of(field("firstOffer", QFieldType.LONG).withPossibleValueSourceName("carlFinancingOffers"), field("secondOffer", QFieldType.LONG).withPossibleValueSourceName("carlFinancingOffers"), field("asOf", QFieldType.DATE)), (in, out) ->
       {
          long id = offers.compare(CarlService.Scope.privateFor(CarlMetadata.principal()), UUID.fromString(in.getValueString("requestId")), List.of(Long.parseLong(in.getValueString("firstOffer")), Long.parseLong(in.getValueString("secondOffer"))), in.getValueLocalDate("asOf"));
-         out.addValue("result", service.artifact(CarlMetadata.principal(), id).get("facts").toString() + "\nSaved comparison " + id + ". Household affordability, retained debts and collateral risk require separate review.");
+         out.addValue("result", com.kof22.carlai.report.MoneyPresentation.humanFacts(service.artifact(CarlMetadata.principal(), id).get("facts").toString()) + "\nSaved comparison " + id + ". Household affordability, retained debts and collateral risk require separate review.");
       }));
    }
 

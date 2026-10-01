@@ -64,14 +64,15 @@ final class PurchaseProcesses
 
    private static String render(com.fasterxml.jackson.databind.JsonNode result)
    {
-      int digits = java.util.Currency.getInstance(result.path("currency").asText()).getDefaultFractionDigits();
-      var html = new StringBuilder("<h2>Purchase payment choices</h2><p>").append(escape(result.path("recommendation").asText())).append("</p><p>Currency: ").append(escape(result.path("currency").asText())).append(". All-in price: ").append(money(result.path("allInPrice"), digits)).append(". Maximum supported cash budget: ").append(result.path("maximumCashBudget").isNull() ? "Not established" : money(result.path("maximumCashBudget"), digits)).append(".</p><table><thead><tr><th>Option</th><th>Assessment</th><th>Total cash outlay</th><th>Interest and fees</th><th>Last payment</th><th>Lowest forecast cash</th></tr></thead><tbody>");
+      String currency = result.path("currency").asText();
+      var html = new StringBuilder("<h2>Purchase payment choices</h2><p>").append(escape(result.path("recommendation").asText())).append("</p><p>Currency: ").append(escape(result.path("currency").asText())).append(". All-in price: ").append(money(result.path("allInPrice"), currency)).append(". Maximum supported cash budget: ").append(result.path("maximumCashBudget").isNull() ? "Not established" : money(result.path("maximumCashBudget"), currency)).append(".</p><table><thead><tr><th>Option</th><th>Assessment</th><th style='text-align:right;padding:8px'>Total cash outlay</th><th style='text-align:right;padding:8px'>Interest and fees</th><th>Last payment</th><th style='text-align:right;padding:8px'>Lowest forecast cash</th></tr></thead><tbody>");
       for(var option : result.path("options"))
       {
          html.append("<tr>");
          for(String field : List.of("id", "state", "totalCashOutlay", "financeCost", "lastPayment", "minimumCashAfterPayments"))
          {
-            html.append("<td>").append(option.path(field).isNull() ? "Unknown" : (option.path(field).isNumber() ? money(option.path(field), digits) : escape(option.path(field).asText().replace('_', ' ')))).append("</td>");
+            boolean monetary = List.of("totalCashOutlay", "financeCost", "minimumCashAfterPayments").contains(field);
+            html.append(monetary ? "<td style='text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding:8px'>" : "<td>").append(monetary ? money(option.path(field), currency) : (option.path(field).isNull() ? "Unknown" : escape(option.path(field).asText().replace('_', ' ')))).append("</td>");
          }
          html.append("</tr>");
       }
@@ -89,10 +90,9 @@ final class PurchaseProcesses
 
 
 
-   private static String money(com.fasterxml.jackson.databind.JsonNode value, int digits)
+   private static String money(com.fasterxml.jackson.databind.JsonNode value, String currency)
    {
-      var decimal = value.decimalValue();
-      return decimal.setScale(Math.max(decimal.scale(), digits)).toPlainString();
+      return escape(com.kof22.carlai.report.MoneyPresentation.format(value.isNumber() ? value.decimalValue() : null, currency));
    }
 
 

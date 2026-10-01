@@ -48,9 +48,29 @@ class PlanPdfRendererTest
          String text = new PDFTextStripper().getText(pdf);
          assertTrue(text.contains("Carl AI"));
          assertTrue(text.contains("PLAN-42 | Version 7"));
-         assertTrue(text.contains("USD 1250.25"));
-         assertTrue(text.contains("EUR 74.7500"));
-         assertTrue(text.contains("Not available"));
+         assertTrue(text.contains("$1,250.25 USD"));
+         var edges = new java.util.ArrayList<Float>();
+         var positions = new PDFTextStripper()
+         {
+            @Override
+            protected void writeString(String value, java.util.List<org.apache.pdfbox.text.TextPosition> characters) throws java.io.IOException
+            {
+               if((value.contains("$1,250.25 USD") || value.contains("€74.75 EUR")) && !characters.isEmpty())
+               {
+                  var last = characters.get(characters.size() - 1);
+                  edges.add(last.getXDirAdj() + last.getWidthDirAdj());
+               }
+               super.writeString(value, characters);
+            }
+         };
+         positions.getText(pdf);
+         assertEquals(2, edges.size());
+         for(float edge : edges)
+         {
+            assertEquals(564, edge, 0.1, "Monetary figures share the printable right margin");
+         }
+         assertTrue(text.contains("€74.75 EUR"));
+         assertTrue(text.contains("Not supplied"));
          assertTrue(text.contains("Household coverage may be partial"));
          assertTrue(text.contains("<script>alert('x')</script>"));
          assertTrue(text.contains("https://example.invalid/not-fetched"));

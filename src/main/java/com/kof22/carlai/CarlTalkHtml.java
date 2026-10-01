@@ -38,7 +38,7 @@ final class CarlTalkHtml
       {
          html.append("<section aria-label='Saved facts and source references'><h4>Saved facts and source references</h4>");
          int[] budget = new int[]{0, 0};
-         fields(html, result.artifact(), 0, budget);
+         fields(html, com.kof22.carlai.report.MoneyPresentation.humanFacts(result.artifact()), 0, budget);
          if(budget[0] >= 400 || budget[1] >= 64000)
          {
             html.append("<p>Additional saved detail omitted from this bounded view; inspect Carl's protected records.</p>");
@@ -88,10 +88,11 @@ final class CarlTalkHtml
             }
             count[0]++;
             String key = field.getKey().substring(0, Math.min(256, field.getKey().length()));
+            boolean money = com.kof22.carlai.report.MoneyPresentation.isMoneyField(key) || key.matches("[A-Z]{3}(:[A-Z_]+)?");
             String label = key.replace('_', ' ').replaceAll("([a-z])([A-Z])", "$1 $2");
             label = label.substring(0, Math.min(label.length(), 64000 - count[1]));
             count[1] += label.length();
-            html.append("<dt style='font-weight:600'>").append(escape(label)).append("</dt><dd style='margin:0 0 12px;white-space:pre-wrap'>");
+            html.append("<dt style='font-weight:600'>").append(escape(label)).append("</dt><dd style='margin:0 0 12px;white-space:pre-wrap").append(money ? ";text-align:right;font-variant-numeric:tabular-nums" : "").append("'>");
             fields(html, field.getValue(), depth + 1, count);
             html.append("</dd>");
          });

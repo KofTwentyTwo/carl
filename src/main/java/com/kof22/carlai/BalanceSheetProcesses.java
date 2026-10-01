@@ -29,7 +29,7 @@ final class BalanceSheetProcesses
    {
       BalanceSelectionProcesses.register(instance, app, service);
       var stress = new RentalStress(service);
-      var table = CarlMetadata.table("carlRentalStress", "Rental Stress Assumptions", "carl_rental_shock_view", "baseline_artifact_id:L,property_id:L,expected_rent:M,vacancy_fraction:M,repair_amount:M,additional_annual_rate:M,allocated_principal:M,balance_as_of:D,assumptions:T,created_by:L,currency:S,revision:L");
+      var table = CarlMetadata.table("carlRentalStress", "Rental Stress Assumptions", "carl_rental_shock_view", "baseline_artifact_id:L,property_id:L,expected_rent:M,vacancy_fraction:R,repair_amount:M,additional_annual_rate:R,allocated_principal:M,balance_as_of:D,assumptions:T,created_by:L,currency:S,revision:L");
       instance.addTable(table);
       app.withChild(table);
       instance.addPossibleValueSource(QPossibleValueSource.newForTable(table.getName()));

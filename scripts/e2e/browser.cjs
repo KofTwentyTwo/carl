@@ -234,7 +234,7 @@ async function main() {
     await page.getByRole('button',{name:/next|continue|submit/i}).last().click();
     await expect(page.getByRole('heading',{name:'Purchase payment choices',exact:true})).toBeVisible();
     await expect(page.getByText(/Conditionally prefer CASH/)).toBeVisible();
-    await expect(page.getByText(/Maximum supported cash budget: 500.00/)).toBeVisible();
+    await expect(page.getByText(/Maximum supported cash budget: \$500\.00 USD/)).toBeVisible();
     await page.screenshot({path:path.join(report,'18-purchase-payment-options.png'),fullPage:true});
     checks.push('native-cash-versus-store-finance-purchase-guidance');
     await page.goto(origin + '/app/carlManualTransaction');
@@ -254,7 +254,9 @@ async function main() {
     await page.locator('[data-qqq-id=\"budget\"]').click();
     await page.getByRole('option',{name:/Synthetic grocery budget/}).click();
     await page.getByRole('button',{name:/next|continue|submit/i}).last().click();
-    await expect(page.getByText(/Actual expenses less refunds: 25.00/)).toBeVisible();
+    const actualExpense = page.getByRole('row').filter({ has: page.getByRole('rowheader', { name: 'Actual expenses less refunds', exact: true }) }).getByRole('cell');
+    await expect(actualExpense).toHaveText('$25.00 USD');
+    await expect(actualExpense).toHaveCSS('text-align', 'right');
     await page.screenshot({path:path.join(report,'19-budget-actuals.png'),fullPage:true});
     checks.push('native-category-budget-actuals');
     await page.goto(origin + '/app/carlDownloadVendorDraft');

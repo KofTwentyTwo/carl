@@ -53,8 +53,38 @@ final class BudgetProcesses
       CarlMetadata.add(instance, app, CarlMetadata.process("carlBudgetVariance", "Review Budget Versus Actual", List.of(field("budget", QFieldType.LONG).withPossibleValueSourceName("carlBudgets")), (in, out) ->
       {
          var result = budgets.variance(CarlService.Scope.privateFor(CarlMetadata.principal()), Long.parseLong(in.getValueString("budget")));
-         out.addValue("result", "Budget versus actual — partial accessible scope\nCategory: " + result.get("category") + "\nCurrency: " + result.get("currency") + "\nPeriod: " + result.get("from") + " through " + result.get("through") + "\nBudget: " + result.get("budget") + "\nActual expenses less refunds: " + result.get("actualSpending") + "\nRemaining category budget: " + result.get("remainingBudget") + "\nUnclassified records: " + result.get("unclassifiedCount") + "\nExcluded transfers/principal/other records: " + result.get("excludedNonExpenseCount") + "\n\nThis is not available cash or confirmed whole-household coverage. Source transaction records: " + result.get("sources"));
+         out.addValue("result", "Budget versus actual — partial accessible scope\nCategory: " + result.get("category") + "\nCurrency: " + result.get("currency") + "\nPeriod: " + result.get("from") + " through " + result.get("through") + "\nBudget: " + money(result, "budget") + "\nActual expenses less refunds: " + money(result, "actualSpending") + "\nRemaining category budget: " + money(result, "remainingBudget") + "\nUnclassified records: " + result.get("unclassifiedCount") + "\nExcluded transfers/principal/other records: " + result.get("excludedNonExpenseCount") + "\n\nThis is not available cash or confirmed whole-household coverage. Source transaction records: " + result.get("sources"));
+         out.addValue("result.html", presentation(result));
       }));
+   }
+
+
+
+   /** A scoped financial summary with independently aligned monetary figures. */
+   static String presentation(java.util.Map<String, Object> result)
+   {
+      var html = new StringBuilder("<h2>Budget versus actual — partial accessible scope</h2><p>Category: ").append(escape(result.get("category")))
+         .append(". Currency: ").append(escape(result.get("currency"))).append(". Period: ").append(escape(result.get("from"))).append(" through ").append(escape(result.get("through"))).append(".</p><table><tbody>");
+      for(var row : List.of(List.of("Budget", "budget"), List.of("Actual expenses less refunds", "actualSpending"), List.of("Remaining category budget", "remainingBudget")))
+      {
+         html.append("<tr><th scope='row' style='text-align:left;padding:8px'>").append(row.get(0)).append("</th><td style='text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding:8px'>").append(escape(money(result, row.get(1)))).append("</td></tr>");
+      }
+      return html.append("</tbody></table><p>Unclassified records: ").append(escape(result.get("unclassifiedCount"))).append(". Excluded transfers/principal/other records: ").append(escape(result.get("excludedNonExpenseCount")))
+         .append(".</p><p>This is not available cash or confirmed whole-household coverage. Source transaction records: ").append(escape(result.get("sources"))).append(".</p>").toString();
+   }
+
+
+
+   private static String money(java.util.Map<String, Object> result, String field)
+   {
+      return com.kof22.carlai.report.MoneyPresentation.format((BigDecimal) result.get(field), (String) result.get("currency"));
+   }
+
+
+
+   private static String escape(Object value)
+   {
+      return String.valueOf(value).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&#39;");
    }
 
 

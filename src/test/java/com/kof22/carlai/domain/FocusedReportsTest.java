@@ -116,7 +116,7 @@ class FocusedReportsTest
       assertEquals(1, facts.get("missingOrUncertainRecordIds").size());
       assertEquals("FAILED", service.artifact("alice", id).get("narration_state"));
       assertEquals("PARTIAL", new ReportRecovery(service).inspect(scope, request).state());
-      assertTrue(reports.presentation("alice", id).contains("USD UNPAID: 200"));
+      assertTrue(reports.presentation("alice", id).contains("USD UNPAID: $200.00 USD"));
       assertTrue(reports.presentation("alice", id).contains("Narration: FAILED"));
       assertEquals(id, reports.generate(scope, request, FocusedReports.Focus.BILLS, FROM, THROUGH, null));
       sql("UPDATE carl_permission SET details=false WHERE member_id=2 AND domain='BILLS'");

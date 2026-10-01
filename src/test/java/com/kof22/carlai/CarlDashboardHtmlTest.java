@@ -30,11 +30,25 @@ class CarlDashboardHtmlTest
          assertEquals(tables, html.split("<caption>", -1).length - 1, name);
          if(name.equals("carlCashFlow") || name.equals("carlIncomeExpense"))
          {
-            assertTrue(html.contains("2226.20 USD"));
-            assertTrue(html.contains("550.90 USD"));
+            assertTrue(html.contains("$2,226.20 USD"));
+            assertTrue(html.contains("$550.90 USD"));
             assertTrue(html.contains("A long category containing source evidence"));
          }
       }
+   }
+
+
+
+   @Test
+   void groupsMoneyAndRightAlignsAmountsWithoutChangingRecordCountsOrMissingFacts()
+   {
+      String html = CarlDashboardHtml.render("carlCashFlow", flow("8100.00", "12000.00", List.of(Map.of("label", "Expenses", "direction", "OUTFLOW", "amount", new BigDecimal("12000.00"), "records", 8100))));
+      assertTrue(html.contains("$8,100.00 USD"), html);
+      assertTrue(html.contains("-$3,900.00 USD"), html);
+      assertTrue(html.contains("text-align:right"), html);
+      assertTrue(html.contains("font-variant-numeric:tabular-nums"), html);
+      assertTrue(html.contains(">8100</td>"), html);
+      assertTrue(html.contains("Not supplied / excluded"), html);
    }
 
 
@@ -51,7 +65,7 @@ class CarlDashboardHtmlTest
    {
       var rows = List.of(Map.<String, Object>of("label", "Expense refund: <script>alert('x')</script>", "direction", "INFLOW", "amount", new BigDecimal("25.25"), "records", 1));
       String html = CarlDashboardHtml.render("carlIncomeExpense", flow("25.25", "0.00", rows));
-      assertTrue(html.contains("25.25 USD"), html);
+      assertTrue(html.contains("$25.25 USD"), html);
       assertTrue(html.contains("&lt;script&gt;"), html);
       assertFalse(html.contains("<script"));
       assertFalse(html.contains("<form"));
@@ -77,9 +91,9 @@ class CarlDashboardHtmlTest
       String deficit = CarlDashboardHtml.render("carlIncomeExpense", flow("0.00", "120.12", rows));
       assertTrue(deficit.contains("Net outflow funding gap"));
       assertTrue(deficit.contains("Other categories (see exact table)"));
-      assertTrue(deficit.contains("50.05 USD"));
+      assertTrue(deficit.contains("$50.05 USD"));
       assertTrue(deficit.contains("Expense 11"));
-      assertTrue(deficit.contains("-120.12 USD"));
+      assertTrue(deficit.contains("-$120.12 USD"));
       assertFalse(deficit.contains("stroke-width='-"));
    }
 
@@ -109,7 +123,7 @@ class CarlDashboardHtmlTest
       assertTrue(html.contains("Source facts changed"));
       assertTrue(html.contains("REPORTED_DONE"));
       assertTrue(html.contains("not verified financial effects"));
-      assertTrue(html.contains("125.25 USD"));
+      assertTrue(html.contains("$125.25 USD"));
       assertTrue(html.contains("Debt first"));
       assertTrue(html.contains("DEBT_FREEDOM"));
       assertTrue(html.contains("Partial selected observations"));

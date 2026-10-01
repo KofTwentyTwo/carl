@@ -87,10 +87,10 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
          table("carlBills", "Bills", "carl_bill_view", "vendor_label:S,amount:M,currency:S,due_date:D,status:S,payment_evidence:T,source_id:S,created_at:I,revision:L"),
          table("carlVendors", "Vendors", "carl_vendor_view", "category:S,contact:S,contact_verified:B"),
          table("carlWork", "Vendor Work", "carl_work_view", "vendor_id:L,status:S,assigned_member:L,follow_up:D,commitment_evidence:T"),
-         table("carlAccounts", "Accounts and Debts", "carl_account_view", "kind:S,currency:S,institution:S,liquid:B,ownership_share:M,balance:M,as_of:D,basis:S"),
+         table("carlAccounts", "Accounts and Debts", "carl_account_view", "kind:S,currency:S,institution:S,liquid:B,ownership_share:R,balance:M,as_of:D,basis:S"),
          table("carlTransactions", "Transactions", "carl_transaction_view", "account_id:L,effective_date:D,amount:M,currency:S,classification:S,category:S,transfer_key:S,source_id:S"),
          table("carlBudgets", "Budgets", "carl_budget_view", "category:S,period_start:D,period_end:D,amount:M,currency:S"),
-         table("carlProperties", "Rental Properties", "carl_rental_property_view", "revision:L,locality:S,ownership_share:M,market_value:M,valuation_date:D,currency:S,legal_owner:S,asset_account_id:L,debt_account_id:L,acquisition_date:D,acquisition_basis:M,land_basis:M,building_basis:M,basis_evidence:T"),
+         table("carlProperties", "Rental Properties", "carl_rental_property_view", "revision:L,locality:S,ownership_share:R,market_value:M,valuation_date:D,currency:S,legal_owner:S,asset_account_id:L,debt_account_id:L,acquisition_date:D,acquisition_basis:M,land_basis:M,building_basis:M,basis_evidence:T"),
          table("carlCalendarConnections", "Calendar Connections", "carl_calendar_connection_view", "provider:S,sync_state:S,last_success:I,last_attempt:I,failure_code:S,coverage_from:D,coverage_through:D"),
          table("carlCalendar", "Calendar", "carl_calendar_view", "start_at:I,end_at:I,source_zone:S,all_day_start:D,all_day_end_exclusive:D,cancelled:B,transparent:B,last_success:I,sync_state:S"),
          table("carlTax", "Tax Documents", "carl_tax_view", "tax_year:L,jurisdiction:S,document_kind:S,classification_state:S,treatment_evidence:T"),
@@ -146,7 +146,7 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
       add(instance, app, process("carlPreviewBills", "Preview Bill Import", List.of(input("csv", QFieldType.TEXT, true)), (in, out) ->
       {
          principal();
-         out.addValue("result", BillCsv.preview(in.getValueString("csv")).toString());
+         out.addValue("result", com.kof22.carlai.report.MoneyPresentation.humanFactsOf(BillCsv.preview(in.getValueString("csv"))).toPrettyString());
       }));
       add(instance, app, process("carlImportBills", "Apply Reviewed Bill Import", List.of(input("requestId", QFieldType.STRING, true), input("sourceName", QFieldType.STRING, true), input("csv", QFieldType.TEXT, true)), (in, out) ->
       {
@@ -189,7 +189,7 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
       add(instance, app, process("carlCompareDebt", "Compare Debt Payoff Plans", List.of(input("asOf", QFieldType.DATE, true), input("currency", QFieldType.STRING, true), input("monthlyBudget", QFieldType.DECIMAL, true).withLabel("Assumed monthly payment budget after essentials and reserves"), input("horizon", QFieldType.INTEGER, true).withLabel("Maximum projection months (1–600)"), input("budgetEvidence", QFieldType.TEXT, true)), (in, out) ->
       {
          long id = new com.kof22.carlai.domain.DebtPlans(service).compare(CarlService.Scope.privateFor(principal()), UUID.fromString(in.getValueString("requestId")), in.getValueLocalDate("asOf"), in.getValueString("currency"), new BigDecimal(in.getValueString("monthlyBudget")), in.getValueInteger("horizon"), in.getValueString("budgetEvidence"));
-         out.addValue("result", service.artifact(principal(), id).get("facts").toString() + "\nSaved comparison " + id + ". Monthly estimates, not an issuer quote or verified affordability.");
+         out.addValue("result", com.kof22.carlai.report.MoneyPresentation.humanFacts(service.artifact(principal(), id).get("facts").toString()) + "\nSaved comparison " + id + ". Monthly estimates, not an issuer quote or verified affordability.");
       }));
       MonarchUploadProcess.register(instance, app, service);
       PlanProcesses.register(instance, app, service);
@@ -254,7 +254,7 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
          String[] parts = definition.split(":");
          QFieldType type = switch(parts[1])
          {
-            case "M" -> QFieldType.DECIMAL;
+            case "M", "R" -> QFieldType.DECIMAL;
             case "D" -> QFieldType.DATE;
             case "I" -> QFieldType.DATE_TIME;
             case "L" -> QFieldType.LONG;
@@ -262,7 +262,12 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
             case "T" -> QFieldType.TEXT;
             default -> QFieldType.STRING;
          };
-         table.withField(field(parts[0], type));
+         var meta = field(parts[0], type);
+         if(parts[1].equals("M"))
+         {
+            meta.withDisplayFormat(com.kingsrook.qqq.backend.core.model.metadata.fields.DisplayFormat.DECIMAL2_COMMAS).withBehavior(new CarlMoneyDisplay());
+         }
+         table.withField(meta);
       }
       var orderedFields = new java.util.ArrayList<String>();
 
@@ -271,10 +276,10 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
          orderedFields.add(definition.split(":")[0]);
       }
       table.withSection(new QFieldSection().withName("identity").withLabel("Record").withTier(com.kingsrook.qqq.backend.core.model.metadata.tables.Tier.T1).withFieldNames(List.of("title", "id")));
-      table.withSection(new QFieldSection().withName("details").withLabel("Details").withTier(com.kingsrook.qqq.backend.core.model.metadata.tables.Tier.T2).withGridColumns(1).withFieldNames(orderedFields));
+      table.withSection(new QFieldSection().withName("details").withLabel("Details").withTier(com.kingsrook.qqq.backend.core.model.metadata.tables.Tier.T2).withGridColumns(6).withFieldNames(orderedFields));
       if(evidence)
       {
-         table.withSection(new QFieldSection().withName("sources").withLabel("Source evidence").withTier(com.kingsrook.qqq.backend.core.model.metadata.tables.Tier.T2).withGridColumns(1).withFieldNames(List.of("evidence")));
+         table.withSection(new QFieldSection().withName("sources").withLabel("Source evidence").withTier(com.kingsrook.qqq.backend.core.model.metadata.tables.Tier.T2).withGridColumns(6).withFieldNames(List.of("evidence")));
       }
       return table;
    }
@@ -283,7 +288,12 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
 
    private static QFieldMetaData field(String name, QFieldType type)
    {
-      return new QFieldMetaData(name, type).withLabel(name.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + name.substring(1).replace('_', ' ')).withBackendName(name).withIsEditable(false);
+      var meta = new QFieldMetaData(name, type).withLabel(name.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + name.substring(1).replace('_', ' ')).withBackendName(name).withIsEditable(false);
+      if(name.equals("facts") && type == QFieldType.TEXT)
+      {
+         meta.withBehavior(new CarlFactsDisplay());
+      }
+      return meta;
    }
 
 
@@ -314,6 +324,8 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
    static QProcessMetaData process(String name, String label, List<QFieldMetaData> fields, BackendStep handler)
    {
       var form = new QFrontendStepMetaData().withName("input").withComponent(new QFrontendComponentMetaData().withType(QComponentType.EDIT_FORM));
+      fields.stream().filter(field -> field.getType() == QFieldType.DECIMAL && (com.kof22.carlai.report.MoneyPresentation.isMoneyField(field.getName()) || List.of("principal", "payment", "escrow", "fee", "rent").contains(field.getName())))
+         .forEach(field -> field.withDisplayFormat(com.kingsrook.qqq.backend.core.model.metadata.fields.DisplayFormat.DECIMAL2_COMMAS));
       fields.stream().filter(field -> !field.getName().equals("requestId")).forEach(form::withFormField);
       return new QProcessMetaData().withName(name).withLabel(label).withPermissionRules(OperatorPermissions.require(Role.OPERATOR))
          .withStep(new QBackendStepMetaData().withName("prepare").withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->

@@ -58,8 +58,16 @@ final class PlanEffectProcesses
    {
       long id = effects.compare(effects.expectationScope(CarlMetadata.principal(), Long.parseLong(in.getValueString("expectation"))), UUID.fromString(in.getValueString("requestId")), Long.parseLong(in.getValueString("expectation")), ids, in.getValueString("evidence"));
       var saved = service.artifact(CarlMetadata.principal(), id);
-      var facts = parse(saved.get("facts").toString());
-      return "Saved scoped comparison " + id + "\nOutcome: " + facts.path("outcome").asText() + "\nExpected: " + facts.path("expectation").path("expected_amount").asText() + " " + facts.path("currency").asText() + "\nObserved: " + (facts.path("observedAmount").isNull() ? "Undetermined" : facts.path("observedAmount").asText()) + "\nDifference: " + (facts.path("differenceObservedMinusExpected").isNull() ? "Undetermined" : facts.path("differenceObservedMinusExpected").asText()) + "\n" + facts.path("boundary").asText() + "\nReview complete saved source facts in Carl reports.";
+      return presentation(id, saved.get("facts").toString());
+   }
+
+
+
+   /** Presents the exact saved comparison without changing its financial facts. */
+   static String presentation(long id, String value)
+   {
+      var facts = parse(value);
+      return "Saved scoped comparison " + id + "\nOutcome: " + facts.path("outcome").asText() + "\nExpected: " + facts.path("expectation").path("expected_amount").asText() + "\nObserved: " + (facts.path("observedAmount").isNull() ? "Undetermined" : facts.path("observedAmount").asText()) + "\nDifference: " + (facts.path("differenceObservedMinusExpected").isNull() ? "Undetermined" : facts.path("differenceObservedMinusExpected").asText()) + "\n" + facts.path("boundary").asText() + "\nReview complete saved source facts in Carl reports.";
    }
 
 
@@ -68,7 +76,7 @@ final class PlanEffectProcesses
    {
       try
       {
-         return new com.fasterxml.jackson.databind.ObjectMapper().readTree(value);
+         return com.kof22.carlai.report.MoneyPresentation.humanFacts(new com.fasterxml.jackson.databind.ObjectMapper().enable(com.fasterxml.jackson.databind.DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS).readTree(value));
       }
       catch(com.fasterxml.jackson.core.JsonProcessingException invalid)
       {

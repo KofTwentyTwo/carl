@@ -38,7 +38,7 @@ final class RentalProcesses
          CarlMetadata.table("carlRentalUnits", "Rental Units", "carl_rental_unit_view", "property_id:L,unit_label:S,scheduled_rent:M,currency:S,lease_start:D,lease_end:D,occupancy:S"),
          CarlMetadata.table("carlRentalSources", "Rental Source Classifications", "carl_rental_source_view", "transaction_id:L,current_version:L,source_amount:M,source_date:D,currency:S,source_stale:B"),
          CarlMetadata.table("carlRentDues", "Scheduled Rent", "carl_rent_due_view", "property_id:L,unit_id:L,due_date:D,amount:M,currency:S"),
-         CarlMetadata.table("carlRentApplications", "Rent Receipt Applications", "carl_rent_application_view", "rent_due_id:L,split_id:L,version:L,component_id:S,amount:M,active:B,property_id:L")))
+         CarlMetadata.table("carlRentApplications", "Rent Receipt Applications", "carl_rent_application_view", "rent_due_id:L,split_id:L,version:L,component_id:S,amount:M,currency:S,active:B,property_id:L")))
       {
          instance.addTable(table);
          app.withChild(table);
@@ -108,7 +108,7 @@ final class RentalProcesses
       CarlMetadata.add(instance, app, CarlMetadata.process("carlRentalReport", "Prepare Rental Property Report", List.of(property(), f("from", QFieldType.DATE), f("through", QFieldType.DATE), f("asOf", QFieldType.DATE)), (in, out) ->
       {
          long report = rentals.report(CarlService.Scope.privateFor(CarlMetadata.principal()), request(in), Set.of(id(in, "property")), in.getValueLocalDate("from"), in.getValueLocalDate("through"), in.getValueLocalDate("asOf"));
-         out.addValue("result", service.artifact(CarlMetadata.principal(), report).get("facts").toString() + "\nSaved report " + report + " covers supplied records only. Missing ownership, rent applications and source coverage remain explicit.");
+         out.addValue("result", com.kof22.carlai.report.MoneyPresentation.humanFacts(service.artifact(CarlMetadata.principal(), report).get("facts").toString()) + "\nSaved report " + report + " covers supplied records only. Missing ownership, rent applications and source coverage remain explicit.");
       }));
    }
 

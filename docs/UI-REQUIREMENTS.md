@@ -79,3 +79,22 @@ Remaining UX-08/09/10 work: packaged RC4 browser checks and default signed-in la
 
 
 October1 final current package: [RC8 evidence](evidence/2026-10-01-rc8-docked-public-qualification.json) records408 tests and113 browser checks including desktop/narrow dock, System/ESB, explicit saved defaults, protected home profiles and admin diagnostics. The full public fictional preview is https://localhost:63173. Live inference and private-package/immutable-release qualification remain blocked; earlier UI evidence below retains its historical scope.
+
+
+## Monetary presentation
+
+Confirmed October1: human-facing monetary figures use the currency symbol,
+comma grouping and explicit currency code, for example `$8,100.00 USD` and
+`-$1,250.00 USD`. Use the record’s own currency and its standard fraction digits;
+retain meaningful additional source precision. Do not infer USD or a zero amount
+when a currency/value is missing. APRs, ownership shares and identifiers are not
+money. Monetary columns and their headings, detail figures and numeric entry
+controls align right with tabular digits. Narrative text stays naturally aligned.
+
+QQQ decimal metadata and native display behaviors supply formatted display
+values while preserving numeric values for sorting, filtering and calculations.
+Dashboards, saved report views, comparison results, copy/download and PDF figures
+share the human formatter. Original documents and human/model historical prose
+are evidence and remain verbatim; Carl’s persona specifies the convention for
+new answers. Stored facts, typed API/tool numbers and machine CSV/JSON exports
+remain exact and machine-readable. Live model wording still requires evaluation.

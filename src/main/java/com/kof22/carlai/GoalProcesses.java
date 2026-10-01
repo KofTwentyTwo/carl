@@ -51,7 +51,7 @@ final class GoalProcesses
          UUID request = UUID.fromString(in.getValueString("requestId"));
          var assumption = new InvestmentPlanning.Assumption(request.toString(), new BigDecimal(in.getValueString("monthlyReturn")), new BigDecimal(in.getValueString("assetFeeRate")), new BigDecimal(in.getValueString("initialFee")), new BigDecimal(in.getValueString("monthlyFee")), "human:" + request);
          long id = goals.scenario(CarlService.Scope.privateFor(CarlMetadata.principal()), request, Long.parseLong(in.getValueString("goal")), in.getValueString("currency"), YearMonth.parse(in.getValueString("firstMonth")), in.getValueInteger("months"), new BigDecimal(in.getValueString("initialCapital")), new BigDecimal(in.getValueString("monthlyContribution")), assumption, in.getValueString("evidence"));
-         out.addValue("result", service.artifact(CarlMetadata.principal(), id).get("facts").toString() + "\nEducational scenario " + id + ". No security selected or order placed; debt and cash reserve priorities remain explicit.");
+         out.addValue("result", com.kof22.carlai.report.MoneyPresentation.humanFacts(service.artifact(CarlMetadata.principal(), id).get("facts").toString()) + "\nEducational scenario " + id + ". No security selected or order placed; debt and cash reserve priorities remain explicit.");
       }));
    }
 

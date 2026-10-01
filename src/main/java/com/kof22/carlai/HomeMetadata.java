@@ -40,7 +40,7 @@ public final class HomeMetadata
    {
       var homes = new HomeRecords(service);
       for(var table : List.of(
-         CarlMetadata.table("carlHomes", "Homes and Properties", "carl_home_view", "revision:L,property_use:S,currency:S,locality:S,ownership_share:M,asset_account_id:L,debt_account_id:L,market_value:M,valuation_date:D,mortgage_as_of:D,mortgage_principal:M,annual_rate:M,payment_amount:M,first_payment:D,maturity_date:D,amortization_months:L,rate_kind:S,escrow_amount:M,fee_amount:M,assumptions:T,profile_evidence:T", false),
+         CarlMetadata.table("carlHomes", "Homes and Properties", "carl_home_view", "revision:L,property_use:S,currency:S,locality:S,ownership_share:R,asset_account_id:L,debt_account_id:L,market_value:M,valuation_date:D,mortgage_as_of:D,mortgage_principal:M,annual_rate:R,payment_amount:M,first_payment:D,maturity_date:D,amortization_months:L,rate_kind:S,escrow_amount:M,fee_amount:M,assumptions:T,profile_evidence:T", false),
          CarlMetadata.table("carlHomeHistory", "Home Profile History", "carl_home_history_view", "property_id:L,property_revision:L,actor_id:L,snapshot:T,created_at:I", false)))
       {
          if(table.getName().equals("carlHomes"))

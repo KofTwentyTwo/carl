@@ -45,7 +45,7 @@ Current controlled qualification:408 tests,113 browser checks across seven final
 - [ ] Agree model usage/alerts, retention/deletion, backup expiry, access revocation and operating policies before real-data use.
 - [ ] Separately qualify any requested production environment, TLS/identity/operator, recovery targets, encrypted restore and upgrade/rollback. Deployment has not been requested.
 
-The current full fictional household preview is https://localhost:63173 (Alice; frozen final RC8 app3c9dedbf). Use **Chat with Carl** in the lower-left dock. Its model is disconnected. Apps/tables-only navigation, System Operations/ESB/admin diagnostics, saved dashboard selections and typed homes/mortgages are qualified; prior previews remain preserved. Live/hosted/release/production states remain separate.
+The current full fictional household preview is https://localhost:57132 (Alice; frozen money-qualified RC8 app372f094e). Use **Chat with Carl** in the lower-left dock. Its model is disconnected. Apps/tables-only navigation, System Operations/ESB/admin diagnostics, saved dashboard selections and typed homes/mortgages are qualified; prior previews remain preserved. Live/hosted/release/production states remain separate.
 
 
 October 1: combined RC8/docked-chat backend coverage and packaged browser qualification are complete. Preserve native provider shutdown and immutable/live publication holds.
@@ -53,3 +53,13 @@ October 1: combined RC8/docked-chat backend coverage and packaged browser qualif
 October1 final local implementation, qualification, documentation/source closure and signed Carl PR delivery pass. Private Maven returns401, live model credential access is unresolved, and immutable RC/stable dependencies remain unavailable.
 
 Current delivery: [signed/pushed draft PR1 and exact credential hold](evidence/2026-10-01-rc8-delivery-status.json); no Carl merge or release.
+
+
+## Consistent monetary presentation
+
+- [x] Native per-record currency display values, grouped symbols and exact numeric sorting.
+- [x] Right-aligned monetary tables, dashboards, comparison/report views and PDF figures.
+- [x] Preserve missing data, rates/shares, original decimal values and machine exports.
+- [x] Qualify updated shared Next numeric alignment plus packaged desktop/narrow UI.
+
+Qualified419 current Java results,117 packaged/running browser checks and exact source/package/image evidence: [money presentation](evidence/2026-10-01-money-presentation-qualification.json). Foundation PR18 is merged; Carl hosted/immutable/live holds remain separate.

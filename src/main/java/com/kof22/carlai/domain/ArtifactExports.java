@@ -241,9 +241,9 @@ public final class ArtifactExports
       var text = new StringBuilder("Carl AI — ").append(artifact.get("title")).append("\nRecord ").append(artifact.get("id")).append(" / version ").append(artifact.get("version")).append("\nGenerated ").append(artifact.get("created_at")).append("\nStatus: ").append(artifact.get("status_label")).append(" / narration: ").append(artifact.get("narration_state")).append("\nScope: ").append(facts.path("scope").asText("Saved authorized artifact audience only")).append("\nSources currently stale: ").append(artifact.get("stale")).append("\nVerified figures\n");
       for(var figure : FinancialReportFigures.from(facts))
       {
-         text.append(figure.label()).append(": ").append(figure.currency()).append(' ').append(figure.amount() == null ? "Not available" : figure.amount().toPlainString()).append("\n").append(figure.evidence()).append('\n');
+         text.append(figure.label()).append(": ").append(com.kof22.carlai.report.MoneyPresentation.format(figure.amount(), figure.currency())).append("\n").append(figure.evidence()).append('\n');
       }
-      text.append("\nNarration / interpretation\n").append(artifact.get("narrative")).append("\nLimitations\n").append(artifact.get("limitations")).append("\nSupporting deterministic snapshot\n").append(facts.toPrettyString());
+      text.append("\nNarration / interpretation\n").append(artifact.get("narrative")).append("\nLimitations\n").append(artifact.get("limitations")).append("\nSupporting deterministic snapshot\n").append(com.kof22.carlai.report.MoneyPresentation.humanFacts(facts).toPrettyString());
       if(text.length() > 400_000)
       {
          throw new IllegalArgumentException("Narrow the report; maximum 400000 characters for a complete copy");
@@ -329,6 +329,7 @@ public final class ArtifactExports
 
    private static String sourceDetails(JsonNode row)
    {
+      row = com.kof22.carlai.report.MoneyPresentation.humanFacts(row);
       var text = new StringBuilder();
       for(String key : List.of("vendor_label", "category", "amount", "currency", "due_date", "status", "payment_evidence", "evidence", "start_at", "end_at", "all_day_start", "all_day_end_exclusive", "source_zone", "observed_at", "provider", "sync_state", "last_success", "failure_code", "follow_up", "assignee_id", "commitment", "commitment_evidence", "contact", "contact_verified", "locality", "ownership_share", "legal_owner", "market_value", "valuation_date", "beforeRecord", "afterRecord", "beforeAmount", "afterAmount", "difference", "vendorLabel"))
       {

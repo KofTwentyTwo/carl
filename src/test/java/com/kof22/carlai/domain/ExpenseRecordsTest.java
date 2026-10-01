@@ -116,6 +116,8 @@ class ExpenseRecordsTest
       long expense = expenses.create("alice", UUID.randomUUID(), "Gas", "FAMILY", "Synthetic invoice", schedule("350.00"));
       long actual = expenses.manualActual("alice", UUID.randomUUID(), ASOF, "USD", n("100.00"), ExpenseForecast.Kind.EXPENSE, "FAMILY", "Synthetic payment");
       long link = expenses.settle("alice", UUID.randomUUID(), expense, LocalDate.of(2026, 9, 15), actual, n("80.00"), "Partial payment");
+      var nativeRows = service.transaction(c -> CarlService.rows(c, "SELECT currency FROM carl_expense_settlement_view WHERE principal=?", "alice"));
+      assertEquals("USD", nativeRows.getFirst().get("currency"));
       assertThrows(IllegalArgumentException.class, () -> expenses.settle("alice", UUID.randomUUID(), expense, LocalDate.of(2026, 9, 15), actual, n("30.00"), "Over-capacity"));
       long revision = CarlService.number(expenses.records(CarlService.Scope.privateFor("alice"), "expenses").getFirst(), "revision");
       assertThrows(IllegalArgumentException.class, () -> expenses.correct("alice", UUID.randomUUID(), expense, revision, schedule("300.00"), "Must review linked occurrences first"));

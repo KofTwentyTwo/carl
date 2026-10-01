@@ -34,7 +34,7 @@ final class ExpenseProcesses
    static void register(QInstance instance, QAppMetaData app, CarlService service)
    {
       var expenses = new ExpenseRecords(service);
-      for(var table : List.of(CarlMetadata.table("carlExpenses", "Expense Schedules", "carl_expense_view", "revision:L,currency:S,cadence:S,first_due:D,last_due:D,base_amount:M,kind:S,basis:S,property_id:L"), CarlMetadata.table("carlExpenseActuals", "Evidenced Expense Payments", "carl_expense_actual_view", "revision:L,transaction_id:L,paid_date:D,currency:S,amount:M,kind:S,source_stale:B"), CarlMetadata.table("carlExpenseSettlements", "Expense Payment Applications", "carl_expense_settlement_view", "expense_id:L,due_date:D,actual_id:L,amount:M,active:B")))
+      for(var table : List.of(CarlMetadata.table("carlExpenses", "Expense Schedules", "carl_expense_view", "revision:L,currency:S,cadence:S,first_due:D,last_due:D,base_amount:M,kind:S,basis:S,property_id:L"), CarlMetadata.table("carlExpenseActuals", "Evidenced Expense Payments", "carl_expense_actual_view", "revision:L,transaction_id:L,paid_date:D,currency:S,amount:M,kind:S,source_stale:B"), CarlMetadata.table("carlExpenseSettlements", "Expense Payment Applications", "carl_expense_settlement_view", "expense_id:L,due_date:D,actual_id:L,amount:M,currency:S,active:B")))
       {
          instance.addTable(table);
          app.withChild(table);

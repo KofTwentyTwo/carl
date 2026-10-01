@@ -184,6 +184,8 @@ class PortfolioPlansTest
       UUID create = UUID.randomUUID();
       long move = plans.createMove("alice", create, "Reviewed transfer", "FAMILY", destination(offer), Map.of(a, n("500.00")), "Reviewed hypothetical transfer");
       assertEquals(move, plans.createMove("alice", create, "Reviewed transfer", "FAMILY", destination(offer), Map.of(a, n("500.00")), "Reviewed hypothetical transfer"));
+      var nativeRows = service.transaction(c -> CarlService.rows(c, "SELECT currency FROM carl_portfolio_move_view WHERE principal=?", "alice"));
+      assertEquals("USD", nativeRows.getFirst().get("currency"));
       UUID request = UUID.randomUUID();
       var scope = new CarlService.Scope("alice", Set.of("alice", "bob"));
       long report = compare(request, Set.of(a, b), Set.of(move), scope);

@@ -35,7 +35,7 @@ final class PortfolioProcesses
    static void register(QInstance instance, QAppMetaData app, CarlService service)
    {
       var plans = new PortfolioPlans(service);
-      var table = CarlMetadata.table("carlPortfolioMoves", "Reviewed Financing Allocations", "carl_portfolio_move_view", "offer_id:L,as_of:D,capacity:M,minimum_amount:M,minimum_fraction:M,monthly_fee:M,first_payment:D,proposed_payment:M,source_stale:B");
+      var table = CarlMetadata.table("carlPortfolioMoves", "Reviewed Financing Allocations", "carl_portfolio_move_view", "offer_id:L,as_of:D,capacity:M,minimum_amount:M,minimum_fraction:R,monthly_fee:M,first_payment:D,proposed_payment:M,currency:S,source_stale:B");
       instance.addTable(table);
       app.withChild(table);
       instance.addPossibleValueSource(QPossibleValueSource.newForTable(table.getName()));
@@ -112,7 +112,7 @@ final class PortfolioProcesses
 
    private static String render(com.fasterxml.jackson.databind.JsonNode summary)
    {
-      var html = new StringBuilder("<h2>Selected debt portfolio</h2><p>Budget and affordability are not yet qualified. These are monthly estimates over the selected accessible debts.</p><p>As of ").append(escape(summary.path("asOf").asText())).append("; currency ").append(escape(summary.path("currency").asText())).append(". Saved report ").append(summary.path("artifactId").asLong()).append(".</p><table><thead><tr><th>Strategy</th><th>Interest</th><th>Financed fees</th><th>Cash fees</th><th>Monthly fees</th><th>Payoff</th></tr></thead><tbody>");
+      var html = new StringBuilder("<h2>Selected debt portfolio</h2><p>Budget and affordability are not yet qualified. These are monthly estimates over the selected accessible debts.</p><p>As of ").append(escape(summary.path("asOf").asText())).append("; currency ").append(escape(summary.path("currency").asText())).append(". Saved report ").append(summary.path("artifactId").asLong()).append(".</p><table><thead><tr><th>Strategy</th><th style='text-align:right;padding:8px'>Interest</th><th style='text-align:right;padding:8px'>Financed fees</th><th style='text-align:right;padding:8px'>Cash fees</th><th style='text-align:right;padding:8px'>Monthly fees</th><th>Payoff</th></tr></thead><tbody>");
       for(String strategy : List.of("CURRENT_PAYMENT", "MINIMUM_ONLY", "AVALANCHE", "SNOWBALL", "USER_DIRECTED"))
       {
          var values = summary.path("strategies").path(strategy);
@@ -123,7 +123,7 @@ final class PortfolioProcesses
          html.append("<tr><td>").append(strategy.replace('_', ' ')).append("</td>");
          for(String field : List.of("interest", "financedFees", "upfrontCashFees", "monthlyFees"))
          {
-            html.append("<td>").append((values.path(field).isNumber() ? values.path(field).decimalValue().setScale(Math.max(values.path(field).decimalValue().scale(), java.util.Currency.getInstance(summary.path("currency").asText()).getDefaultFractionDigits())).toPlainString() : "Unknown")).append("</td>");
+            html.append("<td style='text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding:8px'>").append(escape(com.kof22.carlai.report.MoneyPresentation.format(values.path(field).isNumber() ? values.path(field).decimalValue() : null, summary.path("currency").asText()))).append("</td>");
          }
          html.append("<td>").append(escape(values.path("payoffDate").isNull() ? "Not established within horizon" : values.path("payoffDate").asText("Not established"))).append("</td></tr>");
       }

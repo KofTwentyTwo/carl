@@ -47,7 +47,7 @@ final class CashProcesses
       CarlMetadata.add(instance, app, CarlMetadata.process("carlAssessPurchase", "Assess Household Purchase", List.of(field("cashPlan", QFieldType.LONG).withPossibleValueSourceName("carlCashPlans"), field("purchaseDate", QFieldType.DATE), field("allInPrice", QFieldType.DECIMAL).withLabel("All-in price including tax, delivery and fees"), field("purpose", QFieldType.STRING), field("allInCostsKnown", QFieldType.BOOLEAN)), (in, out) ->
       {
          long id = plans.assess(CarlService.Scope.privateFor(CarlMetadata.principal()), UUID.fromString(in.getValueString("requestId")), Long.parseLong(in.getValueString("cashPlan")), in.getValueLocalDate("purchaseDate"), new BigDecimal(in.getValueString("allInPrice")), in.getValueString("purpose"), Boolean.TRUE.equals(in.getValueBoolean("allInCostsKnown")));
-         out.addValue("result", service.artifact(CarlMetadata.principal(), id).get("facts").toString() + "\nSaved conditional assessment " + id + ". No purchase, application or payment occurred.");
+         out.addValue("result", com.kof22.carlai.report.MoneyPresentation.humanFacts(service.artifact(CarlMetadata.principal(), id).get("facts").toString()) + "\nSaved conditional assessment " + id + ". No purchase, application or payment occurred.");
       }));
    }
 

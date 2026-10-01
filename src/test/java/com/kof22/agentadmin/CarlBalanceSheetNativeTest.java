@@ -149,7 +149,7 @@ class CarlBalanceSheetNativeTest
             var correctedBudget = process(http, base, alice, "carlCorrectBudget", Map.of("budget", Long.toString(budget), "expectedRevision", "1", "amount", "9876.54", "reason", "Human reviewed synthetic amount"));
             assertTrue(correctedBudget.contains("Budget correction saved with attribution"), correctedBudget);
             var budgetResponse = process(http, base, alice, "carlBudgetVariance", Map.of("budget", Long.toString(budget)));
-            assertTrue(budgetResponse.contains("9876.54"), budgetResponse);
+            assertTrue(budgetResponse.contains("$9,876.54 USD"), budgetResponse);
             String budgetProcess = JSON.readTree(budgetResponse).path("processUUID").asText();
             var started = request(http, base, "/processes/carlConsolidatedBalanceSheet/init?recordsParam=recordIds&recordIds=" + cash + "," + property, alice, Map.of());
             assertEquals(200, started.statusCode(), started.body());
@@ -185,6 +185,7 @@ class CarlBalanceSheetNativeTest
             var cachedBudget = request(http, base, "/processes/carlBudgetVariance/" + budgetProcess + "/step/result", alice, Map.of());
             assertEquals(403, cachedBudget.statusCode(), cachedBudget.body());
             assertFalse(cachedBudget.body().contains("9876.54"), cachedBudget.body());
+            assertFalse(cachedBudget.body().contains("$9,876.54 USD"), cachedBudget.body());
             var revokedPreview = request(http, base, "/processes/carlConsolidatedBalanceSheet/" + startedId + "/records?skip=0&limit=20", alice, null);
             assertEquals(403, revokedPreview.statusCode(), revokedPreview.body());
             assertFalse(revokedPreview.body().contains("Synthetic selected cash"), revokedPreview.body());
