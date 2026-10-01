@@ -12,7 +12,7 @@ An operator provisions the household display zone, real verified member mappings
 
 After qualified migration and private configuration, launch `target/agent/bin/agent /absolute/path/to/agent.properties`. The script resolves its jar and default config independently of the working directory. Keep migration credentials out of runtime configuration; keep all secrets out of source and command-line history.
 
-## Household workflows implemented so far
+## Household workflows
 
 - Create permitted accounts with explicit currency/type/share and evidence. Source account labels are not stable provider identities; map them explicitly using Map Monarch Account.
 - Import from Monarch accepts the Settings transaction and balance CSV exports. Review mapping gaps, changed IDs and ambiguous balances, then explicitly apply. Each file's application is atomic; a transaction file can commit while balances remain PARTIAL/NEEDS_REVIEW. Resolve a documented balance observation and resume the same review. Original private uploaded bytes and selected-row evidence remain retained.
@@ -26,7 +26,7 @@ After qualified migration and private configuration, launch `target/agent/bin/ag
 
 A saved artifact is reauthorized on retrieval. Permission-epoch changes conservatively deny old reports/drafts, including data held in QQQ; regenerate under the current authorized scope. Source fact revisions mark still-permitted snapshots stale. UNKNOWN workflow outcomes must be reconciled by request ID; do not create another request to make the warning disappear.
 
-Uploads and source history currently have no production retention/deletion policy or expiry job. Report interruption reconciliation, complete import review UX, selected-plan execution tracking and provider synchronization remain implementation work. No external vendor sends or financial writes exist. Designated Synology calendar/reminder standing write authority is recorded, but the client/codec/agenda components are not yet a live qualified synchronization workflow.
+Uploads and source history have no owner-approved production retention/deletion policy or expiry job. Report interruption reconciliation, native import review, selected-plan tracking and bounded provider synchronization are implemented and controlled-qualified; see [current acceptance](ACCEPTANCE.md). No external vendor sends or financial writes exist. The designated Synology calendar/reminder has separate standing write authority, but actual endpoint/collection/client compatibility and live synchronization remain unqualified.
 
 Before any production deployment, complete the requirements and scans, confirm retention/provider data handling, qualify TLS and identity, monitor failures, and test encrypted backup restore plus a compatible upgrade/rollback procedure. Never restore stale permissions into an active internet-facing service: advance permission epochs and revoke sessions/tokens as part of a separately qualified restore.
 
@@ -41,7 +41,7 @@ A plan task currently maps to one fixed collection/component: publish it as a ca
 
 ## Native table preferences
 
-The currently pinned Next0.2 frontend uses middleware field-map order for query columns; it does not use table section order. For a practical narrow review, use **Configure columns** to select Title, Amount, Currency and Effective date, then move Title first with the native drag handle or arrow keys. This is an authenticated user's browser preference, not an application-wide default. Record details use Carl's native sections and source-evidence grouping. Universal default grid ordering remains an upstream UI qualification gap; Carl does not carry a separate frontend fork.
+The current packaged frontend is Next UI1.0.0-RC.7. Table column preferences are separate from record-detail section ordering. For a practical narrow review, use **Configure columns** to select Title, Amount, Currency and Effective date, then move Title first with the native drag handle or arrow keys. This is an authenticated user's browser preference, not an application-wide default. Record details use Carl's native sections and source-evidence grouping. Universal default grid ordering remains an upstream UI qualification gap; Carl does not carry a separate frontend fork.
 
 Consumer CLI verification now also enforces ErrorProne, existing KofTwentyTwo copyright headers and a whole-application coverage regression floor of80%lines/60%branches without exclusions. The foundation retains its separate100%core/adapter gate. `mvn verify` is authoritative; IntelliJ's native compilation omits the ErrorProne profile because its embedded compiler lacks the Maven JVM export flags.
 
@@ -63,3 +63,9 @@ Review request outcome separately from connection state. Failed or expired reads
 Native account/property selection uses `carl_balance_selection_view` and `carl_rental_baseline_selection_view`; grant the restricted QQQ reader only these protected views in addition to the existing required list. Start balance review from **Accounts and Properties for Review**, check the authorized rows, then choose **Actions → Review Selected Accounts and Properties**. Select a property valuation method explicitly. No raw record-ID entry is required.
 
 Native process context expires after24hours or a permission epoch change. Reopening stale results is denied; start from current authorized records. A scope change during a submitted operation may occur after its commit, so inspect/reconcile the current durable outcome before resubmitting. The receipt-only rental review edits and tax-reference status change are explicitly tested exceptions containing no retrieved private figures/evidence; adding sensitive receipt output requires changing that flow, not weakening the guard.
+
+## Native conversations and current delivery
+
+Use [Talk to Carl](TALK-TO-CARL.md) for private or explicitly shared conversations over the same saved workflow state used by family clients. The synthetic preview at https://localhost:64503 runs the qualified RC7 development package. Its model is offline until the already-authorized personal1Password CLAUDE_API credential can be read securely after desktop unlock/CLI approval. An offline or UNKNOWN receipt is not a completed model answer; do not repeat inference under a new request ID.
+
+Current controlled source/package gates pass377 tests and59 browser checks with fresh source/artifact scans. Foundation PR15 is merged; main0.5.0-SNAPSHOT publication remains pending in run36811134831. Carl push/package credentials remain blocked, and timestamped QQQ/Quick Search dependencies prevent RC/stable promotion. Keep immutable0.4.1 release evidence separate from the current development parent. Production deployment and real-data/model/provider acceptance remain separate milestones.
