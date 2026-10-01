@@ -132,6 +132,26 @@ class CarlTalkServiceTest
                sql.executeUpdate();
             }
             assertThat(talk.choices("alice")).hasSize(1);
+            var chat = new CarlNativeChat(service, talk);
+            assertThat(chat.label()).isEqualTo("Chat with Carl");
+            assertThat(chat.sharingEnabled()).isTrue();
+            assertThat(chat.members("alice")).containsExactly(new com.kof22.agentadmin.NativeChat.Choice("2", "Bob"));
+            assertThat(chat.threads("alice")).hasSize(1);
+            assertThat(chat.history("alice", selected).messages()).hasSize(2);
+            assertThat(chat.history("alice", selected).messages().getFirst().text()).isEqualTo("Private saved-message preview");
+            assertThat(chat.read("alice", selected).text()).contains("200.00", "Calendar coverage is incomplete");
+            assertThatThrownBy(() -> chat.history("bob", selected)).isInstanceOf(RuntimeException.class);
+            assertThatThrownBy(() -> chat.start("alice", UUID.randomUUID(), "Forged sharing", true, Set.of("3"))).isInstanceOf(SecurityException.class);
+            assertThatThrownBy(() -> chat.start("alice", UUID.randomUUID(), "Empty sharing", true, Set.of())).isInstanceOf(SecurityException.class);
+            assertThatThrownBy(() -> chat.start("alice", UUID.randomUUID(), "Private with participants", false, Set.of("2"))).isInstanceOf(IllegalArgumentException.class);
+            var sharedChat = chat.start("alice", UUID.randomUUID(), "Shared chat request", true, Set.of("2"));
+            assertThat(contexts.get(UUID.fromString(sharedChat.selected().split("/")[1])).participants()).containsExactlyInAnyOrder("1", "2");
+            var privateChat = chat.start("alice", UUID.randomUUID(), "New private question", false, Set.of());
+            assertThat(privateChat.status()).isEqualTo(ClientWorkflow.Status.PENDING);
+            int beforePoll = starts.get();
+            assertThat(chat.read("alice", privateChat.selected()).status()).isEqualTo(ClientWorkflow.Status.PENDING);
+            assertThat(starts.get()).isEqualTo(beforePoll);
+            assertThat(chat.reply("alice", selected, UUID.randomUUID(), "Continue the saved response").status()).isEqualTo(ClientWorkflow.Status.PENDING);
             revokeChoice.set(true);
             assertThatThrownBy(() -> talk.choices("alice")).isInstanceOf(SecurityException.class);
             try(var c = source.getConnection(); var sql = c.createStatement())

@@ -246,8 +246,8 @@
   },
   "FIN-01": {
     "status": "PASS",
-    "evidence": "BalanceSheetsTest; CarlBalanceSheetNativeTest; familyBalanceAndStressUseProtectedBoundedOutputs",
-    "limitation": "Selected accounts/properties, liabilities, currency separation and unknown values pass PostgreSQL/native/family tests and actual native row-selection browser workflow."
+    "evidence": "BalanceSheetsTest; CarlBalanceSheetNativeTest; HomeRecordsTest; CarlHomeNativeTest; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Selected authoritative accounts/properties retain currency separation and unknown values. Typed home/mortgage profiles link existing asset/debt identities without duplicating balances; protected attributed history and current linked-account revocation pass. Synthetic qualification only."
   },
   "FIN-02": {
     "status": "PASS",
@@ -276,13 +276,13 @@
   },
   "FIN-07": {
     "status": "PASS",
-    "evidence": "RentalRecordsTest; RentalEconomicsTest; RentalAllocationReviewsTest; CarlRentalReviewNativeTest; browser native-saved-multi-property-allocation-preview-apply",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
+    "evidence": "RentalRecordsTest; RentalEconomicsTest; RentalAllocationReviewsTest; CarlRentalReviewNativeTest; HomeRecordsTest; public PostgreSQL household gate; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Actual fictional primary home, occupied duplex and vacant rental retain explicit use, rent/arrears, operating records and mortgage provenance. Missing legacy home use remains UNKNOWN; live ownership/source qualification is separate."
   },
   "FIN-08": {
     "status": "PASS",
-    "evidence": "BalanceSheetsTest; RentalEconomicsTest; CarlBalanceSheetNativeTest",
-    "limitation": "Rental actuals and bounded conditional stress pass final PostgreSQL/native/family gate; selected-source scope and unknown valuations remain explicit."
+    "evidence": "BalanceSheetsTest; RentalEconomicsTest; CarlBalanceSheetNativeTest; HomeRecordsTest; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Exact rental actuals and conditional stress retain current source permissions, unknown valuations and asset/liability deduplication. Supplied home mortgage facts are versioned evidence, never invented contract terms."
   },
   "FIN-09": {
     "status": "PASS",
@@ -621,13 +621,13 @@
   },
   "UX-01": {
     "status": "PASS",
-    "evidence": "CarlNavigationTest; CarlDashboardNativeTest;18 packaged dashboard checks; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Actual native nested groups, stable routes and contextual actions pass in matching RC7 en-US/en-GB browser."
+    "evidence": "CarlNavigationTest; CarlDashboardNativeTest; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Final RC8 native sidebar contains apps/tables only; processes retain contextual table actions. Vendor draft versions appear under Vendors; System nests Operations, enabled ESB and bounded administrator database diagnostics. Stable direct routes and current permissions pass."
   },
   "UX-02": {
     "status": "PASS",
-    "evidence": "CarlNavigationTest; native login/dashboard title/favicon browser assertions; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Actual before/after-login native Carl name/title/favicon pass; lifecycle-managed branding survives head updates."
+    "evidence": "CarlNavigationTest; native login/dashboard title/favicon; native dock desktop/mobile checks; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Actual Carl AI name/header/title/favicon pass before and after login. Desktop dock leaves native profile/logout usable; phone layout fits without document overflow."
   },
   "UX-03": {
     "status": "PASS",
@@ -651,27 +651,27 @@
   },
   "UX-07": {
     "status": "PASS",
-    "evidence": "CarlQBitsNativeTest; CarlConversationAuthorizationTest; actual other-member and current-revocation browser negatives; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Actual native global search rehydrates only current-authorized records; guessed private IDs and mid-request revocation deny whole assembled responses. Stored outputs retain source access checks."
+    "evidence": "CarlDashboardScopeEpochNativeTest; CarlQBitsNativeTest; CarlNativeChatTest; CarlDatabaseDiagnosticsTest; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Mid-request dashboard/search revocation denies the assembled response. Private chat history, shared scope, stored artifacts and administrator-only diagnostics recheck current authorization; no model calls occur when configured offline."
   },
   "UX-08": {
     "status": "PASS",
-    "evidence": "59 packaged browser checks; actual desktop/narrow visual review; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Matching RC7 desktop/narrow controls, SVG/table scrolling and no document overflow pass. Tall widgets require their internal scroll; a single viewport does not show every inner section."
+    "evidence": "113 final packaged/running browser checks; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Actual final RC8 desktop/narrow dashboards, current saved defaults, contextual actions, dock history/minimize/expand/logout, home records and System/ESB diagnostics pass. Tall widgets use internal scrolling. Seven suites retain distinct fixture scopes and exact package hashes."
   },
   "UX-09": {
     "status": "PASS",
-    "evidence": "CarlQBitsNativeTest; actual OpenSearch/Artemis packaged qualification; qbits-event-report.json; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Actual native Quick Search uses OpenSearch2.19.1. Two real Artemis2.57.0 CloudEvents are consumed/acknowledged with zero dead letters and fixed index changes593ms before periodic refresh. Payload authority is ignored. Synthetic loopback fixtures only."
+    "evidence": "CarlQBitsNativeTest; actual OpenSearch/Artemis gate; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Five final native QBits checks pass. Two real synthetic Artemis events consumed/acknowledged, zero remaining/dead letters, first refresh498ms and restored title. Running full fictional dataset separately proves search/broker READY and ESB under System. Production native shutdown remains unqualified."
   },
   "UX-10": {
     "status": "BLOCKED",
-    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; foundation final prescribed verifier; docs/evidence/2026-10-01-foundation-main-0.5-snapshot.json",
-    "limitation": "Original consumer377-test,59 matching packaged checks and source/distribution/container scans pass unchanged floors. Foundation full qualification, protected PR15 and independently verified main0.5 snapshot publication pass. Carl-specific credentialed hosted delivery and live qualification remain blocked; deployment is separate."
+    "evidence": "408-test clean verify; original final foundation verifier; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Final local consumer quality/coverage,113 browser checks,10 public generator tests, actual public PostgreSQL gate,9 release policy tests,22 evaluation assertions and269-package artifact/image scans pass. Private Maven resolution returns401; matching immutable foundation release and hosted Carl delivery remain blocked. Deployment is separate."
   },
   "UX-11": {
     "status": "BLOCKED",
-    "evidence": "CarlTalkServiceTest; CarlTalkHtmlTest; CarlNativeHttpTest; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
-    "limitation": "Native Talk private default, explicit immutable sharing, readable protected outcomes, continuation links, pending/unknown polling and current revocation pass. Five matching packaged and five running preview UI checks pass offline. Owner-authorized live model replies remain blocked because1Password CLI authorization was dismissed."
+    "evidence": "CarlNativeChatTest; NativeChatRoutesTest; CarlTalkServiceTest;48 final dock checks plus5 native Talk checks; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "limitation": "Private-default dock and contextual native Talk share the host-owned durable conversation service, authorized immutable audiences, bounded history and truthful pending/unknown results. Identity/logout clears private text; unknown POSTs are never automatically replayed. Live replies/evaluations remain blocked on authorized1Password credential access."
   }
 }

@@ -87,6 +87,24 @@ class BudgetPreferencesTest
 
 
    @Test
+   void explicitMemberDashboardSelectionsAreTypedAndNeverSharedPrivateRecordDefaults()
+   {
+      preferences.set("alice", UUID.randomUUID(), "MEMBER", "DASHBOARD_FROM", "2026-09-01", "Synthetic selected reporting period");
+      preferences.set("alice", UUID.randomUUID(), "MEMBER", "DASHBOARD_THROUGH", "2026-09-30", "Synthetic selected reporting period");
+      preferences.set("alice", UUID.randomUUID(), "MEMBER", "DASHBOARD_CURRENCY", "USD", "Explicit presentation currency");
+      preferences.set("alice", UUID.randomUUID(), "MEMBER", "DASHBOARD_PLAN", "42", "Explicit selected plan identity");
+      assertEquals("2026-09-01", preferences.effective("alice").get("DASHBOARD_FROM"));
+      assertFalse(preferences.effective("bob").containsKey("DASHBOARD_PLAN"));
+      for(String[] invalid : new String[][]{{"DASHBOARD_FROM", "not-a-date"}, {"DASHBOARD_FROM", "1800-01-01"}, {"DASHBOARD_THROUGH", "2300-01-01"}, {"DASHBOARD_CURRENCY", "NONE"}, {"DASHBOARD_PLAN", "0"}, {"DASHBOARD_BALANCE", "-1"}, {"DASHBOARD_PLAN", "some-url"}})
+      {
+         assertThrows(IllegalArgumentException.class, () -> preferences.set("alice", UUID.randomUUID(), "MEMBER", invalid[0], invalid[1], "Invalid synthetic default"));
+      }
+      assertThrows(IllegalArgumentException.class, () -> preferences.set("alice", UUID.randomUUID(), "HOUSEHOLD", "DASHBOARD_PLAN", "42", "Private defaults cannot become household defaults"));
+   }
+
+
+
+   @Test
    void manualOriginsAreIdempotentAndNotMonarch()
    {
       long account = account("FAMILY");

@@ -61,6 +61,18 @@ class CarlReadToolsTest
          assertFalse(suggested.isError(), suggested.content());
          assertTrue(suggested.content().contains("PARTIAL_SUGGESTIONS"));
          assertTrue(availability.executor().execute("{\"from\":\"2026-09-30T12:00:00Z\",\"through\":\"2026-09-30T18:00:00Z\",\"minimumMinutes\":\"30\"}", "alice").isError());
+         var rentals = new com.kof22.carlai.domain.RentalRecords(service);
+         long home = rentals.createProperty("alice", UUID.randomUUID(), "Private primary home", "PRIVATE", "Synthetic property source", new com.kof22.carlai.domain.RentalRecords.PropertyValues("USD", "Fictional locality", null, null, null, null, null, null, null, null, null, null, null));
+         new com.kof22.carlai.domain.HomeRecords(service).save("alice", UUID.randomUUID(), home, 1,
+            new com.kof22.carlai.domain.HomeRecords.ProfileValues(com.kof22.carlai.domain.HomeRecords.Use.PRIMARY_RESIDENCE, "USD", null, "Explicit synthetic home use"));
+         var records = tools.stream().filter(t -> t.definition().name().equals("carl_read_records")).findFirst().orElseThrow();
+         var homeResult = records.executor().execute("{\"kind\":\"homes\"}", "alice");
+         assertFalse(homeResult.isError(), homeResult.content());
+         assertTrue(homeResult.content().contains("PRIMARY_RESIDENCE"));
+         assertTrue(homeResult.content().contains("Mortgage terms not supplied"));
+         assertEquals("[]", records.executor().execute("{\"kind\":\"homes\"}", "bob").content());
+         assertTrue(records.executor().execute("{\"kind\":\"homes\",\"principal\":\"alice\"}", "bob").isError());
+         assertTrue(records.executor().execute("{\"kind\":\"homes\"}", "unmapped").isError());
          assertTrue(tools.stream().allMatch(t -> t.definition().name().startsWith("carl_read_")));
       }
    }

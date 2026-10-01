@@ -17,9 +17,9 @@ import com.kingsrook.qqq.backend.core.model.metadata.tables.QTableMetaData;
 /** Native financial groupings keep existing table/process IDs and direct URLs intact. */
 final class CarlNavigation
 {
-   private static final List<String> LABELS = List.of("Overview", "Money", "Plans", "Properties and Tax", "Calendar and Reminders", "Vendors", "Documents and Data", "Settings");
-   private static final List<String> NAMES = List.of("carlOverview", "carlMoney", "carlPlanning", "carlPropertyTax", "carlCalendarReminders", "carlVendorWorkspace", "carlDocumentsData", "carlSettings");
-   private static final List<String> ICONS = List.of("dashboard", "account_balance_wallet", "route", "real_estate_agent", "event", "handshake", "folder_open", "settings");
+   private static final List<String> LABELS = List.of("Overview", "Money", "Plans", "Properties and Tax", "Calendar and Reminders", "Vendors", "Documents and Data", "Settings", "System");
+   private static final List<String> NAMES = List.of("carlOverview", "carlMoney", "carlPlanning", "carlPropertyTax", "carlCalendarReminders", "carlVendorWorkspace", "carlDocumentsData", "carlSettings", "carlSystem");
+   private static final List<String> ICONS = List.of("dashboard", "account_balance_wallet", "route", "real_estate_agent", "event", "handshake", "folder_open", "settings", "dns");
 
    private CarlNavigation()
    {
@@ -46,9 +46,9 @@ final class CarlNavigation
          {
             section.withTable(child.getName());
          }
-         else if(child instanceof QProcessMetaData)
+         else if(child instanceof QProcessMetaData process)
          {
-            section.withProcess(child.getName());
+            contextualAction(instance, process);
          }
       }
       app.getChildren().clear();
@@ -69,21 +69,135 @@ final class CarlNavigation
          }
          for(var child : originalChildren)
          {
-            if(group(child.getName()) == n)
+            if(child instanceof QTableMetaData && group(child.getName()) == n)
             {
                dashboard.withChild(child);
             }
          }
          var original = sections.get(n);
-         if(!original.getTables().isEmpty() || !original.getProcesses().isEmpty())
+         if(!original.getTables().isEmpty())
          {
-            dashboard.withSections(List.of(new QAppSection().withName(NAMES.get(n) + "Records").withLabel(LABELS.get(n)).withTables(new ArrayList<>(original.getTables())).withProcesses(new ArrayList<>(original.getProcesses())).withReports(new ArrayList<>()).withApps(new ArrayList<>())));
+            dashboard.withSections(List.of(new QAppSection().withName(NAMES.get(n) + "Records").withLabel(LABELS.get(n)).withTables(new ArrayList<>(original.getTables())).withProcesses(new ArrayList<>()).withReports(new ArrayList<>()).withApps(new ArrayList<>())));
          }
          instance.addApp(dashboard);
          app.withChild(dashboard);
          sections.get(n).withApp(dashboard.getName());
       }
       app.withWidgets(List.of("carlCashFlow", "carlPlanProgress"));
+      ZCarlSystemNavigation.attach(instance);
+   }
+
+   private static final java.util.Map<String, String> ACTION_TABLES = java.util.Map.ofEntries(
+      java.util.Map.entry("carlCreateAccount", "carlAccounts"),
+      java.util.Map.entry("carlDebtTerms", "carlAccounts"),
+      java.util.Map.entry("carlDebtPayments", "carlAccounts"),
+      java.util.Map.entry("carlCompareDebt", "carlAccounts"),
+      java.util.Map.entry("carlDebtRateChange", "carlAccounts"),
+      java.util.Map.entry("carlInvestmentContext", "carlFinancialGoals"),
+      java.util.Map.entry("carlClassifyTransaction", "carlTransactions"),
+      java.util.Map.entry("carlPairTransfer", "carlTransactions"),
+      java.util.Map.entry("carlUnpairTransfer", "carlTransactions"),
+      java.util.Map.entry("carlPreviewBills", "carlBills"),
+      java.util.Map.entry("carlImportBills", "carlBills"),
+      java.util.Map.entry("carlManualBill", "carlBills"),
+      java.util.Map.entry("carlCorrectBill", "carlBills"),
+      java.util.Map.entry("carlCompareBillPeriods", "carlBills"),
+      java.util.Map.entry("carlAddVendor", "carlVendors"),
+      java.util.Map.entry("carlCorrectVendor", "carlVendors"),
+      java.util.Map.entry("carlAddWork", "carlWork"),
+      java.util.Map.entry("carlMaintainVendorWork", "carlWork"),
+      java.util.Map.entry("carlVendorDraft", "carlWork"),
+      java.util.Map.entry("carlImportMonarch", "carlImportReviews"),
+      java.util.Map.entry("carlMapMonarch", "carlImportReviews"),
+      java.util.Map.entry("carlResolveMonarchBalance", "carlImportReviews"),
+      java.util.Map.entry("carlResumeMonarch", "carlImportReviews"),
+      java.util.Map.entry("carlHouseholdReport", "carlArtifacts"),
+      java.util.Map.entry("carlFocusedReport", "carlArtifacts"),
+      java.util.Map.entry("carlCopyReport", "carlArtifacts"),
+      java.util.Map.entry("carlDownloadReportPdf", "carlArtifacts"),
+      java.util.Map.entry("carlDownloadReportText", "carlArtifacts"),
+      java.util.Map.entry("carlInspectReportRequest", "carlArtifacts"),
+      java.util.Map.entry("carlReconcileReportRequest", "carlArtifacts"),
+      java.util.Map.entry("carlCopyVendorDraft", "carlArtifacts"),
+      java.util.Map.entry("carlDownloadVendorDraft", "carlArtifacts"),
+      java.util.Map.entry("carlEditVendorDraft", "carlArtifacts"),
+      java.util.Map.entry("carlVendorDraftHistory", "carlArtifacts"),
+      java.util.Map.entry("carlTalkRead", "carlArtifacts"),
+      java.util.Map.entry("carlTalkReply", "carlArtifacts"),
+      java.util.Map.entry("carlTalkStart", "carlArtifacts"),
+      java.util.Map.entry("carlCreatePlan", "carlPlans"),
+      java.util.Map.entry("carlAgreePlan", "carlPlans"),
+      java.util.Map.entry("carlReplan", "carlPlans"),
+      java.util.Map.entry("carlExportPlan", "carlPlans"),
+      java.util.Map.entry("carlPlanTask", "carlPlanSteps"),
+      java.util.Map.entry("carlPlanCheckIn", "carlPlanSteps"),
+      java.util.Map.entry("carlPlanExpectation", "carlPlanEffects"),
+      java.util.Map.entry("carlComparePrincipalEffect", "carlPlanEffects"),
+      java.util.Map.entry("carlCreateGoal", "carlFinancialGoals"),
+      java.util.Map.entry("carlInvestmentScenario", "carlFinancialGoals"),
+      java.util.Map.entry("carlComparePortfolio", "carlAccounts"),
+      java.util.Map.entry("carlReviewPortfolioMove", "carlPortfolioMoves"),
+      java.util.Map.entry("carlCompareOffers", "carlFinancingOffers"),
+      java.util.Map.entry("carlRecordOffer", "carlFinancingOffers"),
+      java.util.Map.entry("carlComparePurchaseOptions", "carlCashPlans"),
+      java.util.Map.entry("carlCalendarSetupStatus", "carlCalendarConnections"),
+      java.util.Map.entry("carlSyncAgenda", "carlCalendarConnections"),
+      java.util.Map.entry("carlPublishCalendar", "carlCalendarOperations"),
+      java.util.Map.entry("carlReviewReminder", "carlReminderObservations"),
+      java.util.Map.entry("carlSuggestAppointmentWindows", "carlCalendar"),
+      java.util.Map.entry("carlSetReportDetail", "carlPreferences"),
+      java.util.Map.entry("carlSetReportPeriod", "carlPreferences"),
+      java.util.Map.entry("carlCreateBudget", "carlBudgets"),
+      java.util.Map.entry("carlCorrectBudget", "carlBudgets"),
+      java.util.Map.entry("carlBudgetVariance", "carlBudgets"),
+      java.util.Map.entry("carlManualTransaction", "carlManualTransactions"),
+      java.util.Map.entry("carlCreateCashPlan", "carlCashPlans"),
+      java.util.Map.entry("carlCashMovement", "carlCashPlans"),
+      java.util.Map.entry("carlAssessPurchase", "carlCashPlans"),
+      java.util.Map.entry("carlSelectCashExpenses", "carlCashPlans"),
+      java.util.Map.entry("carlCreateExpense", "carlExpenses"),
+      java.util.Map.entry("carlCorrectExpense", "carlExpenses"),
+      java.util.Map.entry("carlExpenseReport", "carlExpenses"),
+      java.util.Map.entry("carlRecordExpenseActual", "carlExpenseActuals"),
+      java.util.Map.entry("carlRefreshExpenseActual", "carlExpenseActuals"),
+      java.util.Map.entry("carlClassifyExpenseActual", "carlExpenseActuals"),
+      java.util.Map.entry("carlSettleExpense", "carlExpenseSettlements"),
+      java.util.Map.entry("carlUnsettleExpense", "carlExpenseSettlements"),
+      java.util.Map.entry("carlAddRentalProperty", "carlProperties"),
+      java.util.Map.entry("carlCorrectRentalProperty", "carlProperties"),
+      java.util.Map.entry("carlAddRentalUnit", "carlRentalUnits"),
+      java.util.Map.entry("carlClassifyRentalSource", "carlRentalSources"),
+      java.util.Map.entry("carlRecordRentDue", "carlRentDues"),
+      java.util.Map.entry("carlApplyRentReceipt", "carlRentApplications"),
+      java.util.Map.entry("carlUnapplyRentReceipt", "carlRentApplications"),
+      java.util.Map.entry("carlRentalReport", "carlRentalBaselines"),
+      java.util.Map.entry("carlStartRentalReview", "carlRentalReviews"),
+      java.util.Map.entry("carlPreviewRentalReview", "carlRentalReviews"),
+      java.util.Map.entry("carlApplyRentalReview", "carlRentalReviews"),
+      java.util.Map.entry("carlEditRentalReviewComponent", "carlRentalReviewComponents"),
+      java.util.Map.entry("carlRemoveRentalReviewComponent", "carlRentalReviewComponents"),
+      java.util.Map.entry("carlEditRentalReviewShare", "carlRentalReviewShares"),
+      java.util.Map.entry("carlRecordRentalStress", "carlRentalStress"),
+      java.util.Map.entry("carlRentalStressReport", "carlRentalStress"),
+      java.util.Map.entry("carlTaxDocument", "carlTax"),
+      java.util.Map.entry("carlTaxPacket", "carlTax"),
+      java.util.Map.entry("carlTaxPropertyContext", "carlTaxProperties"),
+      java.util.Map.entry("carlRecordTaxReference", "carlTaxReferences"),
+      java.util.Map.entry("carlTaxReferenceStatus", "carlTaxReferences"),
+      java.util.Map.entry("carlSourceGroundedTaxPacket", "carlTaxReferences"),
+      java.util.Map.entry("carlRecordTaxAlternative", "carlTaxAlternatives"));
+
+   private static void contextualAction(QInstance instance, QProcessMetaData process)
+   {
+      if(process.getTableName() == null)
+      {
+         String table = ACTION_TABLES.get(process.getName());
+         if(table == null || instance.getTable(table) == null)
+         {
+            throw new IllegalStateException("Carl action requires a registered contextual table: " + process.getName());
+         }
+         process.withTableName(table).withMinInputRecords(0).withMaxInputRecords(0);
+      }
    }
 
 
@@ -98,7 +212,7 @@ final class CarlNavigation
       {
          return 7;
       }
-      if(name.contains("Rental") || name.contains("Rent") || name.contains("Tax") || name.contains("Propert"))
+      if(name.contains("Home") || name.contains("Rental") || name.contains("Rent") || name.contains("Tax") || name.contains("Propert"))
       {
          return 3;
       }
@@ -106,7 +220,7 @@ final class CarlNavigation
       {
          return 4;
       }
-      if(name.contains("Vendor") || name.contains("Work"))
+      if(name.contains("Vendor") || name.contains("Work") || name.equals("carlDraftVersions"))
       {
          return 5;
       }

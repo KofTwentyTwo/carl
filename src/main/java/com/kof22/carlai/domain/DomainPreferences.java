@@ -4,6 +4,8 @@ package com.kof22.carlai.domain;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Currency;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,9 +28,9 @@ public final class DomainPreferences
    /** Stores an explicit self-owned or manager-authorized household choice with full history. */
    public long set(String principal, UUID request, String scope, String key, String value, String evidence)
    {
-      if(!Set.of("MEMBER", "HOUSEHOLD").contains(scope) || !ALLOWED.getOrDefault(key, Set.of()).contains(value))
+      if(!Set.of("MEMBER", "HOUSEHOLD").contains(scope) || !valid(scope, key, value))
       {
-         throw new IllegalArgumentException("Only explicit report detail and period preferences are supported");
+         throw new IllegalArgumentException("Only supported, explicit presentation preferences are allowed");
       }
       CarlService.bounded(evidence, 2000, "preference provenance");
       String digest = BillCsv.hash(CarlService.json(Map.of("scope", scope, "key", key, "value", value, "evidence", evidence)));
@@ -85,19 +87,51 @@ public final class DomainPreferences
       return service.transaction(c ->
       {
          var actor = authorized(c, principal);
-         var rows = CarlService.rows(c, "SELECT preference_key,value FROM carl_preference_view WHERE principal=? AND (scope='HOUSEHOLD' OR member_id=?) ORDER BY CASE WHEN scope='HOUSEHOLD' THEN 0 ELSE 1 END", principal, actor.id());
+         var rows = CarlService.rows(c, "SELECT preference_key,value,scope FROM carl_preference_view WHERE principal=? AND (scope='HOUSEHOLD' OR member_id=?) ORDER BY CASE WHEN scope='HOUSEHOLD' THEN 0 ELSE 1 END", principal, actor.id());
          var result = new LinkedHashMap<String, String>();
          for(var row : rows)
          {
             String key = row.get("preference_key").toString();
             String value = row.get("value").toString();
-            if(ALLOWED.getOrDefault(key, Set.of()).contains(value))
+            if(valid(row.get("scope").toString(), key, value))
             {
                result.put(key, value);
             }
          }
          return Map.copyOf(result);
       });
+   }
+
+
+
+   private static boolean valid(String scope, String key, String value)
+   {
+      if(value == null || key == null)
+      {
+         return false;
+      }
+      if(ALLOWED.getOrDefault(key, Set.of()).contains(value))
+      {
+         return true;
+      }
+      if(!"MEMBER".equals(scope))
+      {
+         return false;
+      }
+      try
+      {
+         return switch(key)
+         {
+            case "DASHBOARD_FROM", "DASHBOARD_THROUGH" -> value.matches("\\d{4}-\\d{2}-\\d{2}") && LocalDate.parse(value).getYear() >= 1900 && LocalDate.parse(value).getYear() <= 2200;
+            case "DASHBOARD_CURRENCY" -> value.matches("[A-Z]{3}") && Currency.getInstance(value).getDefaultFractionDigits() >= 0 && Currency.getInstance(value).getDefaultFractionDigits() <= 4;
+            case "DASHBOARD_PLAN", "DASHBOARD_BALANCE" -> value.matches("[1-9][0-9]{0,17}");
+            default -> false;
+         };
+      }
+      catch(IllegalArgumentException invalid)
+      {
+         return false;
+      }
    }
 
 

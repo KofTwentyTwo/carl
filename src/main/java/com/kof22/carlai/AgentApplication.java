@@ -110,6 +110,16 @@ public final class AgentApplication
 
 
          @Override
+         public java.util.Optional<com.kof22.agentadmin.NativeChat> chat()
+         {
+            return configuration.clientApi().enabled()
+               ? java.util.Optional.of(new CarlNativeChat(java.util.Objects.requireNonNull(service), java.util.Objects.requireNonNull(talk)))
+               : java.util.Optional.empty();
+         }
+
+
+
+         @Override
          public com.kof22.agentadmin.qbits.NativeQBits administrationExtensions(com.kof22.agentadmin.bootstrap.NativeStores stores)
          {
             return java.util.Objects.requireNonNull(qbits).extensions();
@@ -144,7 +154,7 @@ public final class AgentApplication
          @Override
          public java.util.List<com.kingsrook.qqq.backend.core.model.metadata.MetaDataProducerInterface<?>> metadata()
          {
-            return java.util.List.of(new CarlMetadata(java.util.Objects.requireNonNull(service), java.util.Objects.requireNonNull(calendars), java.util.Objects.requireNonNull(talk)), java.util.Objects.requireNonNull(qbits));
+            return java.util.List.of(new CarlMetadata(java.util.Objects.requireNonNull(service), java.util.Objects.requireNonNull(calendars), java.util.Objects.requireNonNull(talk)), java.util.Objects.requireNonNull(qbits), new ZCarlSystemNavigation());
          }
       };
    }

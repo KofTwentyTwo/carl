@@ -214,6 +214,8 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
       AvailabilityProcesses.register(instance, app, service);
       CarlTalkProcesses.register(instance, app, talk);
       CarlDashboards.register(instance, service);
+      HomeMetadata.register(instance, app, service);
+      CarlSystemMetadata.register(instance, service);
       CarlNavigation.apply(instance, app);
       return app;
    }

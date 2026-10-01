@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Carl//Public Fictional Household//EN
+BEGIN:VTODO
+UID:fictional-offline-quote-review
+DTSTAMP:20260930T000000Z
+DUE:20261005T150000Z
+SUMMARY:Fictional review maintenance quote
+STATUS:NEEDS-ACTION
+END:VTODO
+END:VCALENDAR

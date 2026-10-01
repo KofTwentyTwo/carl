@@ -82,6 +82,28 @@ def seal(root, destination, source, repository, run, maven_repository=None):
         or len(browser["checks"]) != len(set(browser["checks"]))
     ):
         raise ValueError("Actual packaged browser evidence must pass")
+    docked = json.loads((root / "target/docked-chat-browser-evidence/docked-chat-report.json").read_text())
+    if (
+        docked.get("status") != "PASS"
+        or not docked.get("checks")
+        or len(docked["checks"]) != len(set(docked["checks"]))
+        or docked.get("apiResponsesMocked") is not False
+        or docked.get("liveModel") is not False
+        or docked.get("expectedOutcome") != "UNKNOWN"
+        or docked.get("distributionUnchanged") is not True
+    ):
+        raise ValueError("Actual packaged docked-chat evidence must pass")
+    widths = {item.get("viewport", {}).get("width") for item in docked.get("runs", [])}
+    if not any(isinstance(width, int) and width >= 1000 for width in widths) or not any(
+        isinstance(width, int) and 0 < width <= 500 for width in widths
+    ):
+        raise ValueError("Actual desktop and narrow docked-chat runs are required")
+    actual_distribution = {
+        str(path.relative_to(root / "target/agent")): digest(path)
+        for path in sorted((root / "target/agent").rglob("*")) if path.is_file()
+    }
+    if docked.get("distributionFileHashes") != actual_distribution:
+        raise ValueError("Docked-chat evidence differs from the exact candidate distribution")
     scans = runpy.run_path(str(root / "scripts/verify-security.py"))
     packages = {
         name: scans["validate_trivy"](
@@ -117,6 +139,8 @@ def seal(root, destination, source, repository, run, maven_repository=None):
         "security/*.json",
         "site/jacoco/jacoco.xml",
         "browser-evidence/*",
+        "docked-chat-browser-evidence/*.json",
+        "docked-chat-browser-evidence/*.png",
         "release-preparation.json",
     ):
         evidence.extend(
@@ -145,6 +169,7 @@ def seal(root, destination, source, repository, run, maven_repository=None):
             "errors": 0,
             "skipped": 0,
             "browserChecks": browser["checks"],
+            "dockedChatChecks": docked["checks"],
             "inventoriedJavaPackages": packages,
             "liveProviders": "NOT_QUALIFIED",
             "deployment": "NOT_REQUESTED",
@@ -180,6 +205,8 @@ def verify(directory, source=None, version=None, channel=None):
         qualification.get("tests", 0) < 1
         or any(qualification.get(key) != 0 for key in ("failures", "errors", "skipped"))
         or not qualification.get("browserChecks")
+        or not qualification.get("dockedChatChecks")
+        or len(qualification["dockedChatChecks"]) != len(set(qualification["dockedChatChecks"]))
     ):
         raise ValueError("Missing passing mandatory qualification")
     files = manifest.get("files", {})

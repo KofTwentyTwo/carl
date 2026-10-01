@@ -5,6 +5,8 @@
 ### Added
 
 - Initial Carl AI household agent with scoped financial records, planning, reports, drafts, native administration and explicit family workflows.
+- Native docked chat, app/table-only navigation, System diagnostics and explicitly saved dashboard selections on qualified Next UI RC.8 development artifacts.
+- Reproducible public fictional household imports and typed home/mortgage profiles linked to authoritative accounts with protected revision history.
 - Synthetic PostgreSQL, native HTTP and packaged browser qualification; signed release evidence for development, release candidates and stable versions.
 
 ### Security

@@ -2,7 +2,7 @@
 
 Carl is one standalone agent application with authoritative PostgreSQL state, deterministic domain capabilities, model reasoning, native QQQ administration and the authenticated family API. Governing scope is the preserved [baseline](REQUIREMENTS.md), [financial expansion](FINANCIAL-PLANNING-REQUIREMENTS.md), [Monarch imports](MONARCH-IMPORT.md), [Synology authority](CALENDAR-REMINDERS.md) and [UI requirements](UI-REQUIREMENTS.md).
 
-Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh packaged browser checks including exact plan/task persistence across a JVM restart;22 evaluation assertions. Fresh distribution and local image each inventory269 Java packages with zero HIGH/CRITICAL findings. See [shared plan/restart evidence](evidence/2026-10-01-shared-plan-restart.json). The original377-test/59-browser qualification retains its exact older package provenance in [RC7 evidence](evidence/2026-09-30-current-rc7-preview-qualification.json); the earlier frozen synthetic preview remains available. The [new running preview](evidence/2026-10-01-current-running-preview.json) uses the current008af67 package and passes15 Talk/navigation/dashboard checks plus two acknowledged ESB events.
+Current controlled qualification:408 tests,113 browser checks across seven final RC8 suites,10 public-generator tests, actual public PostgreSQL reconciliation,22 evaluation assertions and269-package distribution/image scans with zero HIGH/CRITICAL findings. See [current exact evidence](evidence/2026-10-01-rc8-docked-public-qualification.json). Earlier qualifications retain their separate package provenance in SESSION-STATE and dated evidence.
 
 ## Implemented and controlled-qualified
 
@@ -33,7 +33,7 @@ Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh 
 - [x] Verify foundation main0.5.0-SNAPSHOT publication at0b6f437/run36811134831: signatures,66 staged hashes,nine remote Maven identities and17 passing fresh hosted consumer tests. Local registry/OCI credential access remains unperformed.
 - [x] Independently qualify protected foundation PR16/main1a7abd/run36820241402:470 source hashes,66 staged archive files,nine hosted Maven identities,17 fresh remote-consumer tests and offline signed evidence; [publication proof](evidence/2026-10-01-foundation-pr16-publication.json). Carl-specific remote consumption remains blocked.
 - [ ] Obtain authorized FOUNDATION_PACKAGES_TOKEN and prove fresh Carl Maven resolution/hosted access. Local recovered artifacts do not prove remote consumption.
-- [ ] Unblock Carl push credentials: SSH agent refuses signing; existing HTTPS OAuth lacksworkflow scope. Then complete protected Carl PR/main/development publication.
+- [ ] Complete Carl PR/main/development publication after required hosted checks. HTTPS workflow scope is now available; the historical SSH refusal does not block an HTTPS push. Private Maven/package access and matching qualified release baseline remain required.
 - [ ] Select and qualify a non-snapshot QQQ/Quick Search closure and matching immutable foundation release before Carl RC/stable. Timestamped snapshots remain rejected by unchanged release enforcement.
 - [ ] Qualify a supported upstream native state-provider shutdown correction. The isolated earlier proposal is uninstalled/unpublished; no daemon/thread/process bypass.
 - [x] Integrate reviewed representative synthetic evaluation tooling and CI assertion gate:22 deterministic tests, actual PostgreSQL/API/native record checks and five unchanged offline Talk checks. Six live cases and human prose review remain BLOCKED/PENDING; see [evaluation guide](EVALUATION.md) and [controlled evidence](evidence/2026-10-01-controlled-model-evaluation.json).
@@ -43,4 +43,9 @@ Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh 
 - [ ] Agree model usage/alerts, retention/deletion, backup expiry, access revocation and operating policies before real-data use.
 - [ ] Separately qualify any requested production environment, TLS/identity/operator, recovery targets, encrypted restore and upgrade/rollback. Deployment has not been requested.
 
-The current synthetic preview is https://localhost:51051 (runtime source008af67; prior64503 preview retained): sign in as Alice, then Carl AI → Overview → Talk to Carl. Offline receipts are not live answers. Requirement statuses remain individually tracked in [the evidence map](REQUIREMENT-EVIDENCE.md); no whole-product, live-provider or release completion is claimed.
+The current full fictional household preview is https://localhost:63173 (Alice; frozen final RC8 app3c9dedbf). Use **Chat with Carl** in the lower-left dock. Its model is disconnected. Apps/tables-only navigation, System Operations/ESB/admin diagnostics, saved dashboard selections and typed homes/mortgages are qualified; prior previews remain preserved. Live/hosted/release/production states remain separate.
+
+
+October 1 active work: finish combined RC8/docked-chat backend coverage and packaged browser qualification; preserve native provider shutdown and immutable/live publication holds.
+
+October1 final local implementation/qualification passes; final documentation/source closure and signed Carl PR delivery are in progress. Private Maven returns401, live model credential access is unresolved, and immutable RC/stable dependencies remain unavailable.

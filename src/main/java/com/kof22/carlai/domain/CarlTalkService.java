@@ -51,6 +51,13 @@ public final class CarlTalkService
    {
    }
 
+
+
+   /** A current-authorized transcript row; the stored user message has already been redacted. */
+   public record Transcript(String selected, String message, Message response)
+   {
+   }
+
    private ClientService clients()
    {
       var current = clients;
@@ -201,6 +208,27 @@ public final class CarlTalkService
          result.add(new Choice(String.join(",", rows.stream().map(row -> row.get("id").toString()).toList()), "Everyone listed: " + String.join(", ", rows.stream().map(row -> row.get("label").toString()).toList())));
       }
       requireUnchanged(member, principal);
+      return List.copyOf(result);
+   }
+
+
+
+   /** Reads at most fifty recent turns, rechecking every saved source before returning any text. */
+   public List<Transcript> history(String principal, String selected)
+   {
+      UUID[] selectedIds = ids(selected);
+      read(principal, selected);
+      var initial = member(principal);
+      var rows = service.transaction(c -> CarlService.rows(c, "SELECT request_id,conversation_message FROM carl_client_workflow WHERE conversation_id=? AND kind='conversation' AND permission_revision=? ORDER BY created_at DESC,request_id DESC LIMIT 50", selectedIds[0], Long.parseLong(initial.permissionRevision())));
+      var result = new ArrayList<Transcript>();
+      for(var row : rows.reversed())
+      {
+         String identity = selectedIds[0] + "/" + row.get("request_id");
+         var response = read(principal, identity);
+         Object message = row.get("conversation_message");
+         result.add(new Transcript(identity, message == null ? "Message unavailable" : message.toString(), response));
+      }
+      requireUnchanged(initial, principal);
       return List.copyOf(result);
    }
 

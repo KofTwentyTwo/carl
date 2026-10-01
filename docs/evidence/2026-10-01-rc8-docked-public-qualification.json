@@ -1,0 +1,709 @@
+{
+  "schema": 1,
+  "date": "2026-10-01",
+  "status": "PASS",
+  "scope": "Local controlled final development package; not live integration, remote release or deployment",
+  "baseline": "793d44c3d152f672a44d962aad8e86165a25d669",
+  "application": "Carl AI",
+  "applicationVersion": "0.1.0-SNAPSHOT",
+  "foundationVersion": "0.5.0-SNAPSHOT",
+  "frontend": {
+    "version": "1.0.0-RC.8",
+    "commit": "cd3d4731d1910e68e994da9c74a8c28a2f1b7c1c",
+    "patchSha256": "5c2355b4b2b023b47e1770dcae78a0eb8edf4073ad7c6ba84666c0aaff772883"
+  },
+  "qqq": "Owner-approved exact4.1 timestamped development pins; no published4.1RC",
+  "command": "JAVA_HOME=<Java21> mvn -o -B -ntp -Dmaven.repo.local=<qualified-isolated-cache> clean verify",
+  "tests": {
+    "tests": 408,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "BRANCH": {
+      "type": "BRANCH",
+      "missed": "2898",
+      "covered": "6412"
+    },
+    "LINE": {
+      "type": "LINE",
+      "missed": "1495",
+      "covered": "10936"
+    }
+  },
+  "qualityFloors": {
+    "line": 0.8,
+    "branch": 0.6,
+    "unchanged": true
+  },
+  "package": {
+    "files": 251,
+    "appJarSha256": "3c9dedbfb8c7e70c25937614ad0dfa6a148d9627549ac756310bbb69ca97dbf2",
+    "distributionInventorySha256": "6ac606b55e45129e5d14833d819f1672d13c074d931c6bc909a15d5a7afff936",
+    "exactRootAndFrozenBytes": true
+  },
+  "publicFixture": {
+    "exitCode": 0,
+    "generatorTests": 10,
+    "exactGeneratedBytesMatch": true,
+    "facts": {
+      "privateSharedAndRevocation": "PASS",
+      "reconciledAccounts": 35,
+      "mode": "controlled",
+      "providerCalls": 0,
+      "duplicateSeed": "PASS",
+      "counts": {
+        "properties": 3,
+        "transactions": 10920,
+        "bills": 4,
+        "balances": 22365,
+        "records": 11014,
+        "artifacts": 5,
+        "accounts": 36,
+        "corrections": 10931,
+        "units": 3
+      },
+      "overlapCorrectionConflict": "PASS"
+    },
+    "cleanup": {
+      "capturedAt": "2026-10-01T14:03:36.557283+00:00",
+      "jvmPid": 84312,
+      "ownershipProof": "Exact fixture classname process plus lsof TCP connection matching disposable PostgreSQL mapped port65368 and Ryuk65353",
+      "connections": [
+        "p84312",
+        "f301",
+        "nlocalhost:65362->localhost:65353",
+        "f305",
+        "nlocalhost:52165->localhost:65368"
+      ],
+      "containers": {
+        "postgres": {
+          "id": "e0e6ec3575298f3f41d90733680ab2b36caf820b4cb3c7d74fa693f764dd1615",
+          "sessionId": "bb35387e-854a-4134-856f-e3e878192698",
+          "created": "2026-10-01T14:02:46.352501504Z",
+          "ports": {
+            "5432/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "65368",
+                "connectEx": 61
+              },
+              {
+                "HostIp": "::",
+                "HostPort": "65368"
+              }
+            ]
+          },
+          "inspectExit": 1,
+          "absent": true
+        },
+        "ryuk": {
+          "id": "7fde210bbc13c70aa3bb069fb0938061ca04aa7f8985559065f3352e3ec51add",
+          "sessionId": null,
+          "created": "2026-10-01T14:02:46.133687171Z",
+          "ports": {
+            "8080/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "65353",
+                "connectEx": 61
+              },
+              {
+                "HostIp": "::",
+                "HostPort": "65353"
+              }
+            ]
+          },
+          "inspectExit": 1,
+          "absent": true
+        }
+      },
+      "jvmTerminal": true,
+      "verifiedAt": "2026-10-01T14:05:24.470994+00:00",
+      "runExitCode": 0,
+      "cleanupDisposition": "Owned JVM terminal; disposable PostgreSQL and Ryuk removed; no unrelated termination actions."
+    }
+  },
+  "qbitsEvents": {
+    "payloadAuthorityIgnored": true,
+    "consumedEvents": 2,
+    "destination": "carlIndexChanges",
+    "acknowledgedEvents": 2,
+    "titleRestored": true,
+    "status": "PASS",
+    "process": "carlRefreshSearchIndex",
+    "nativeTelemetry": {
+      "labelMatches": true,
+      "expectedAdded": 2,
+      "added": 2,
+      "acknowledged": 2,
+      "stepLogged": false,
+      "expectedAcknowledged": 2,
+      "deadLetters": 0,
+      "consumerCount": 1,
+      "remaining": 0
+    },
+    "firstEventMillis": 498
+  },
+  "qbitsCleanup": {
+    "runExitCode": 0,
+    "checkedAt": "2026-10-01T14:10:11.284105+00:00",
+    "containerSessionId": "ade04c42-d4ac-44f7-8b83-93b9dcfb0b22",
+    "ownershipBasis": "Only new OpenSearch+PostgreSQL session pair within exact final QBits gate window; same synthetic fixture resources. Unrelated parallel PostgreSQL events excluded.",
+    "containers": [
+      {
+        "id": "1850a793550f7ca5799d840b6b4852c8bfb998f3d6fbbf4abc4ba1a5d5f0cf06",
+        "image": "postgres:16-alpine",
+        "createdAtUnix": 1790863547,
+        "removed": true,
+        "events": [
+          {
+            "action": "kill",
+            "time": 1790863593,
+            "signal": "9",
+            "exitCode": null
+          },
+          {
+            "action": "die",
+            "time": 1790863593,
+            "signal": null,
+            "exitCode": "137"
+          },
+          {
+            "action": "destroy",
+            "time": 1790863593,
+            "signal": null,
+            "exitCode": null
+          }
+        ]
+      },
+      {
+        "id": "6cd0d3f2d39736b1051cce0c2f93f49b5689550c4913e10d79ff235bffbe5e9e",
+        "image": "opensearchproject/opensearch:2.19.1",
+        "createdAtUnix": 1790863551,
+        "removed": true,
+        "events": [
+          {
+            "action": "kill",
+            "time": 1790863593,
+            "signal": "9",
+            "exitCode": null
+          },
+          {
+            "action": "die",
+            "time": 1790863593,
+            "signal": null,
+            "exitCode": "137"
+          },
+          {
+            "action": "destroy",
+            "time": 1790863593,
+            "signal": null,
+            "exitCode": null
+          }
+        ]
+      },
+      {
+        "id": "4582b8c969f9fd9bf2630daffa6191e43203b802b87b9fd4b4d4eb55996c7436",
+        "image": "testcontainers/ryuk:0.12.0",
+        "removed": true,
+        "ownershipBasis": "Ryuk container name includes exact Testcontainers session UUID",
+        "events": [
+          {
+            "action": "die",
+            "time": 1790863605,
+            "exitCode": "0"
+          },
+          {
+            "action": "destroy",
+            "time": 1790863605,
+            "exitCode": null
+          }
+        ]
+      }
+    ],
+    "ports": [
+      {
+        "role": "proxy",
+        "port": 65096,
+        "connectEx": 61,
+        "closed": true
+      },
+      {
+        "role": "artemis",
+        "port": 65159,
+        "connectEx": 61,
+        "closed": true
+      }
+    ],
+    "matchingQBitsRunnersRemaining": [],
+    "fixtureExitZeroAwaitedByUnchangedGate": true,
+    "pidCaptureLimitation": "Live PID helper failed on ps header before persisting PID. CLI exit0 is observed and the unchanged runner explicitly awaits its owned fixture exit0. No exact final QBits PID number or global fixture-process absence is claimed; other owner previews use this distribution.",
+    "shutdown": "Testcontainers container SIGKILL/137 destruction is disposal, not graceful container exit; no independent signals sent."
+  },
+  "browser": {
+    "ordinary": {
+      "status": "PASS",
+      "checks": [
+        "packaged-relocated-TLS-OIDC-login",
+        "native-authoritative-financial-account",
+        "native-two-file-upload-preview-confirm-apply",
+        "native-narrow-two-file-repeat-import",
+        "imported-record-visible-in-QQQ",
+        "native-user-column-preference",
+        "native-narrow-record-detail",
+        "persisted-versioned-plan-visible",
+        "packaged-process-restart-retains-exact-plan-and-task-records",
+        "native-permission-checked-plan-pdf-download",
+        "native-scoped-carlCashPlans",
+        "native-scoped-carlFinancialGoals",
+        "native-scoped-carlFinancingOffers",
+        "native-scoped-carlProperties",
+        "native-scoped-carlRentalUnits",
+        "native-scoped-carlExpenses",
+        "native-tax-evidence-checklist",
+        "native-bounded-calendar-refresh-over-controlled-HTTPS",
+        "native-authoritative-calendar-agenda",
+        "native-scoped-appointment-window-suggestions",
+        "native-selected-portfolio-comparison",
+        "native-cash-versus-store-finance-purchase-guidance",
+        "native-human-transaction-with-source-evidence",
+        "native-category-budget-actuals",
+        "native-protected-vendor-draft-download",
+        "native-shared-reminder-sync-and-human-reported-completion",
+        "native-explicit-private-presentation-preference",
+        "native-saved-multi-property-allocation-preview-apply",
+        "native-focused-report-with-source-coverage",
+        "native-protected-report-pdf-and-text-downloads",
+        "native-selected-account-property-balance-review",
+        "native-logout-and-revoked-session-replay"
+      ],
+      "reportSha256": "ce8feeb1da958a0588a95ba57501b9d5b6a1143ce18078bf8df0c6da54382f5b",
+      "syntheticOnly": true,
+      "liveModel": false
+    },
+    "dashboards": {
+      "status": "PASS",
+      "checks": [
+        "en-US-native-nested-groups-and-stable-account-route",
+        "en-US-actual-default-home-title-favicon",
+        "en-US-native-ISO-controls-cash-and-card-spending-accessible-SVG-table",
+        "en-US-distinct-saved-balance-choice-and-explicit-currency-gaps",
+        "en-US-goal-priority-current-plan-and-saved-observation-distinctions",
+        "en-US-narrow-native-controls-SVG-and-table-scroll",
+        "en-US-actual-v1-POST-exact-saved-choice",
+        "en-US-public-native-login-branding",
+        "en-GB-native-nested-groups-and-stable-account-route",
+        "en-GB-actual-default-home-title-favicon",
+        "en-GB-native-ISO-controls-cash-and-card-spending-accessible-SVG-table",
+        "en-GB-distinct-saved-balance-choice-and-explicit-currency-gaps",
+        "en-GB-goal-priority-current-plan-and-saved-observation-distinctions",
+        "en-GB-narrow-native-controls-SVG-and-table-scroll",
+        "en-GB-actual-v1-POST-exact-saved-choice",
+        "en-GB-public-native-login-branding",
+        "verified-Bob-private-report-guess-and-cash-privacy",
+        "current-revocation-removes-rendered-facts-and-choices"
+      ],
+      "reportSha256": "627b79371a1661dd502402de74801cceba6797096a9d050e2c484ee9bab67db7",
+      "syntheticOnly": true,
+      "liveModel": false
+    },
+    "talk": {
+      "status": "PASS",
+      "checks": [
+        "native-private-default-conversation-form",
+        "disconnected-model-truthful-failure-no-fabricated-answer",
+        "narrow-conversation-no-document-overflow",
+        "saved-response-selector-mounted-and-authorized",
+        "verified-other-member-cannot-select-private-response"
+      ],
+      "reportSha256": "a2a1905089639ae53e70a5c8cdd865dc593dd714d1da42d508a5c68e4fd55114",
+      "syntheticOnly": true,
+      "liveModel": false
+    },
+    "dockedOwned": {
+      "status": "PASS",
+      "checks": [
+        "desktop-actual-Carl-AI-application-title-and-header",
+        "desktop-actual-visible-app-table-only-sidebar-System-Operations-nesting",
+        "desktop-actual-disabled-optional-ESB-absent-from-metadata-and-sidebar",
+        "desktop-actual-packaged-Material-Icons-font-200",
+        "desktop-docked-chat-focus-private-default-and-empty-composer",
+        "desktop-expand-dock-minimize-focus-draft-persistence-on-real-navigation-and-viewport-fit",
+        "desktop-actual-disconnected-UNKNOWN-never-fabricates-completion-or-retries-POST",
+        "desktop-private-draft-and-transcript-never-enter-browser-storage",
+        "desktop-actual-other-member-denied-private-history-and-thread-selection",
+        "desktop-explicit-selected-sharing-frozen-on-creation-and-UNKNOWN",
+        "desktop-selected-member-reads-real-shared-history-without-inference-replay",
+        "desktop-actual-logout-revokes-session-and-new-owner-clears-private-chat-state",
+        "mobile-actual-Carl-AI-application-title-and-header",
+        "mobile-actual-visible-app-table-only-sidebar-System-Operations-nesting",
+        "mobile-actual-disabled-optional-ESB-absent-from-metadata-and-sidebar",
+        "mobile-actual-packaged-Material-Icons-font-200",
+        "mobile-docked-chat-focus-private-default-and-empty-composer",
+        "mobile-expand-dock-minimize-focus-draft-persistence-on-real-navigation-and-viewport-fit",
+        "mobile-actual-disconnected-UNKNOWN-never-fabricates-completion-or-retries-POST",
+        "mobile-private-draft-and-transcript-never-enter-browser-storage",
+        "mobile-actual-other-member-denied-private-history-and-thread-selection",
+        "mobile-explicit-selected-sharing-frozen-on-creation-and-UNKNOWN",
+        "mobile-selected-member-reads-real-shared-history-without-inference-replay",
+        "mobile-actual-logout-revokes-session-and-new-owner-clears-private-chat-state"
+      ],
+      "reportSha256": "dbef57ac1c17fcfc8df200f8cf37034b5580750797a512dde6cdb52899265ee7",
+      "syntheticOnly": true,
+      "liveModel": false,
+      "runs": [
+        {
+          "qbits": {
+            "search": "DISABLED",
+            "broker": "DISABLED"
+          },
+          "esbEnabled": false,
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "startRequests": 2,
+          "replyRequests": 0,
+          "pollReads": 3,
+          "statuses": [
+            "PENDING",
+            "UNKNOWN",
+            "UNKNOWN",
+            "PENDING",
+            "UNKNOWN"
+          ],
+          "pageErrors": [],
+          "fontSha256": "ef149f08bdd2ff09a4e2c8573476b7b0f3fbb15b623954ade59899e7175bedda"
+        },
+        {
+          "qbits": {
+            "search": "DISABLED",
+            "broker": "DISABLED"
+          },
+          "esbEnabled": false,
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "startRequests": 2,
+          "replyRequests": 0,
+          "pollReads": 3,
+          "statuses": [
+            "PENDING",
+            "UNKNOWN",
+            "UNKNOWN",
+            "PENDING",
+            "UNKNOWN"
+          ],
+          "pageErrors": [],
+          "fontSha256": "ef149f08bdd2ff09a4e2c8573476b7b0f3fbb15b623954ade59899e7175bedda"
+        }
+      ],
+      "distributionUnchanged": true,
+      "ownedFixtureStoppedCleanly": true,
+      "existingFixtureLeftRunning": false,
+      "nativeQBitsShutdownQualified": false
+    },
+    "qbits": {
+      "status": "PASS",
+      "checks": [
+        "actual-native-global-search-through-QBit-current-private-account",
+        "actual-native-ESB-connected-provider-destination-hidden-service-trigger-and-denied-payload-route",
+        "actual-Artemis-CloudEvent-fixed-native-trigger-consumed-acknowledged-no-dead-letter-and-index-updated-before-periodic-refresh",
+        "other-verified-member-cannot-search-private-account",
+        "existing-cookie-search-rechecks-current-finance-access-after-revocation"
+      ],
+      "reportSha256": "3910ad1d442326277137d80dc36ffce13f414fe7a34f123665f4c50186c7b2a3",
+      "syntheticOnly": true,
+      "liveModel": false
+    },
+    "publicUI": {
+      "status": "PASS",
+      "checks": [
+        "actual-initial-Overview-explicit-saved-September-dates-currency-plan-and-data",
+        "actual-Money-cashflow-Sankey-and-saved-balance-load-without-manual-selections",
+        "native-authoritative-home-profiles-and-primary-use-visible",
+        "ADMIN-native-current-database-table-and-storage-information",
+        "ordinary-member-direct-database-diagnostics-denied"
+      ],
+      "reportSha256": "5ba5457c83e20cdaf09649d86e6635d2cb9ff15d1b83ff16e99da7d9e9d3b24b",
+      "syntheticOnly": true,
+      "liveModel": false
+    },
+    "publicDockedESB": {
+      "status": "PASS",
+      "checks": [
+        "desktop-actual-Carl-AI-application-title-and-header",
+        "desktop-actual-visible-app-table-only-sidebar-System-Operations-nesting",
+        "desktop-actual-enabled-ESB-ready-and-nested-under-System",
+        "desktop-actual-packaged-Material-Icons-font-200",
+        "desktop-docked-chat-focus-private-default-and-empty-composer",
+        "desktop-expand-dock-minimize-focus-draft-persistence-on-real-navigation-and-viewport-fit",
+        "desktop-actual-disconnected-UNKNOWN-never-fabricates-completion-or-retries-POST",
+        "desktop-private-draft-and-transcript-never-enter-browser-storage",
+        "desktop-actual-other-member-denied-private-history-and-thread-selection",
+        "desktop-explicit-selected-sharing-frozen-on-creation-and-UNKNOWN",
+        "desktop-selected-member-reads-real-shared-history-without-inference-replay",
+        "desktop-actual-logout-revokes-session-and-new-owner-clears-private-chat-state",
+        "mobile-actual-Carl-AI-application-title-and-header",
+        "mobile-actual-visible-app-table-only-sidebar-System-Operations-nesting",
+        "mobile-actual-enabled-ESB-ready-and-nested-under-System",
+        "mobile-actual-packaged-Material-Icons-font-200",
+        "mobile-docked-chat-focus-private-default-and-empty-composer",
+        "mobile-expand-dock-minimize-focus-draft-persistence-on-real-navigation-and-viewport-fit",
+        "mobile-actual-disconnected-UNKNOWN-never-fabricates-completion-or-retries-POST",
+        "mobile-private-draft-and-transcript-never-enter-browser-storage",
+        "mobile-actual-other-member-denied-private-history-and-thread-selection",
+        "mobile-explicit-selected-sharing-frozen-on-creation-and-UNKNOWN",
+        "mobile-selected-member-reads-real-shared-history-without-inference-replay",
+        "mobile-actual-logout-revokes-session-and-new-owner-clears-private-chat-state"
+      ],
+      "reportSha256": "1c2672b5dedcf44e9363c71655fe109d2c21bfd5cf03b4799bdf7cc89b242e53",
+      "syntheticOnly": true,
+      "liveModel": false,
+      "runs": [
+        {
+          "qbits": {
+            "search": "READY",
+            "broker": "READY"
+          },
+          "esbEnabled": true,
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "startRequests": 2,
+          "replyRequests": 0,
+          "pollReads": 3,
+          "statuses": [
+            "PENDING",
+            "UNKNOWN",
+            "UNKNOWN",
+            "PENDING",
+            "UNKNOWN"
+          ],
+          "pageErrors": [],
+          "fontSha256": "ef149f08bdd2ff09a4e2c8573476b7b0f3fbb15b623954ade59899e7175bedda"
+        },
+        {
+          "qbits": {
+            "search": "READY",
+            "broker": "READY"
+          },
+          "esbEnabled": true,
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "startRequests": 2,
+          "replyRequests": 0,
+          "pollReads": 3,
+          "statuses": [
+            "PENDING",
+            "UNKNOWN",
+            "UNKNOWN",
+            "PENDING",
+            "UNKNOWN"
+          ],
+          "pageErrors": [],
+          "fontSha256": "ef149f08bdd2ff09a4e2c8573476b7b0f3fbb15b623954ade59899e7175bedda"
+        }
+      ],
+      "distributionUnchanged": true,
+      "ownedFixtureStoppedCleanly": false,
+      "existingFixtureLeftRunning": true,
+      "nativeQBitsShutdownQualified": false
+    }
+  },
+  "browserChecks": 113,
+  "screenshotsInspected": [
+    "desktop-01-chat-draft.png",
+    "mobile-02-private-unknown.png",
+    "overview.png",
+    "homes.png",
+    "database.png",
+    "seven ordinary/dashboard/Talk views and three QBits views"
+  ],
+  "security": {
+    "status": "PASS",
+    "recordedAt": "2026-10-01T14:09:27.213437+00:00",
+    "scope": "Independent final frozen Carl RC8 layout distribution and existing successful local artifact/image scan identity proof only",
+    "source": "/Users/james.maes/Git.Local/KofTwentyTwo/carl",
+    "distribution": "/Users/james.maes/.codex/work/carl-rc8-final-preview/agent",
+    "buildDistribution": "/Users/james.maes/Git.Local/KofTwentyTwo/carl/target/agent",
+    "distributionFileCount": 251,
+    "distributionUnchanged": true,
+    "buildDistributionMatchesFrozen": true,
+    "appJarSha256": "3c9dedbfb8c7e70c25937614ad0dfa6a148d9627549ac756310bbb69ca97dbf2",
+    "dockerfileSha256": "93d11fd4f3e677cf86bb3884ac96fc573bdb995f5e5370308a9342f56a39f4ce",
+    "dockerIgnoreSha256": "d903fa37f51ca5a13a8598f67882094e62f6d35df801fd20eccd87cc67b27bc7",
+    "scanScriptSha256": "8c1fb3d7f7179cc5125f92eadea41ca12bff440190fb6407e5575935262f288f",
+    "scanner": "aquasec/trivy:0.74.0@sha256:62b1e65e8869bc4b4c6aa4fa2b21595256c7c2f6018a9d9ad61caf87187c1969",
+    "image": {
+      "tag": "carl-final-layout-security:20261001-3c9dedbfb8c7",
+      "dockerInspectImageId": "sha256:e697f9ef14f3f8e1ea0dc432b909b6fdfda8641aa20834f2042262669f22e72b",
+      "descriptorMediaType": "application/vnd.oci.image.index.v1+json",
+      "scanImageConfigurationDigest": "sha256:c88188f257aa6bb9b3253868873a82187e23c0da4549ea65d314de669b1edf9f",
+      "architecture": "arm64",
+      "os": "linux",
+      "runtimeUser": "10001:10001",
+      "scanMatchesExportConfig": true,
+      "inspectExportScanRootFsMatch": true,
+      "allLayerBlobsAndDiffIdsVerified": true,
+      "imageAppFilesMatchFrozenDistribution": true,
+      "imageAppFileCount": 251,
+      "allAppFileOwnershipMatchesRuntimeUser": true
+    },
+    "javaPackageCounts": {
+      "dependencies": 269,
+      "image": 269
+    },
+    "highCriticalFindings": {
+      "dependencies": 0,
+      "image": 0
+    },
+    "javaInventoriesMatch": true,
+    "javaInventorySha256": "6f63ddd4ebd154784c9583f48c16d583e0f7138ec8e98aa64b27a85f487b73b2",
+    "evidence": {
+      "final-input-inventory.json": {
+        "sha256": "6a8d8ae201f7d49f547aa892bb51edc08d5487e87aefd8ac764235f4d8cbc18c",
+        "bytes": 83950
+      },
+      "dependencies.json": {
+        "sha256": "ffe27092ad3e6a2bc981a69b474756992b1de537bb1966a08bdd78661b07c6a5",
+        "bytes": 105921
+      },
+      "image.json": {
+        "sha256": "34174ce2820cebf112ed23db404ab02b445d077d1cb0f94f633e7598a7f5d293",
+        "bytes": 846781
+      },
+      "final-image-inspect.json": {
+        "sha256": "04fd99ca9db2c1e60908375de4a6b66f190c4e924cd5a627a4f142f9437a3db0",
+        "bytes": 2507
+      },
+      "final-export-manifest.json": {
+        "sha256": "2713af48cbf512e372ff5958141b13d12563088be4106e4924cbaa0abc6eff22",
+        "bytes": 993
+      },
+      "final-export-index.json": {
+        "sha256": "180edea0c2cd0708c11e8e918c318792d9d692550aadc43b159ffb07f86e9380",
+        "bytes": 495
+      },
+      "final-export-descriptor.json": {
+        "sha256": "b3575c8c8ddb991cef6e584ce6bf26ae5752ab6e629aa0fb9fac21158fb25449",
+        "bytes": 857
+      },
+      "final-export-platform-manifest.json": {
+        "sha256": "e0dfd8352ce9204594c368b810a51177a476603f34a5a4df10bfc4fdb37dfcd7",
+        "bytes": 2008
+      },
+      "final-export-config.json": {
+        "sha256": "c88188f257aa6bb9b3253868873a82187e23c0da4549ea65d314de669b1edf9f",
+        "bytes": 10492
+      },
+      "final-layer-rootfs-proof.json": {
+        "sha256": "32fa2ae74dbe1478d8de3a9d9e2db3b572322921caa83dcfc0ec58b0652d733b",
+        "bytes": 2148
+      },
+      "final-export-app-inventory.json": {
+        "sha256": "c310b6796091cfa99a38b3fda5f979648e284f20433000b75a45ca40960acde1",
+        "bytes": 39443
+      },
+      "final-export-app-ownership.json": {
+        "sha256": "578678377770f797fbf4ab8aa4adc84184da951411d77b78e3e0b43a9bfaa1c6",
+        "bytes": 27993
+      },
+      "final-java-inventory.json": {
+        "sha256": "6f63ddd4ebd154784c9583f48c16d583e0f7138ec8e98aa64b27a85f487b73b2",
+        "bytes": 52596
+      },
+      "final-image-proof.tar": {
+        "sha256": "9cde734142cfc4132c3200eea7a164917a7c735dd844f98e3ece76415f51a95a",
+        "bytes": 273529856
+      },
+      "final-dependency-scan.log": {
+        "sha256": "f225dfad585607610b7f05d9456babb06024796979fd68e8ca497ee28ba678e8",
+        "bytes": 1318
+      },
+      "final-image-build.log": {
+        "sha256": "a9f3d1e490fef932f52d5b7c535446ee52895605e2cd749b61329c9664319ae3",
+        "bytes": 2143
+      },
+      "final-image-scan.log": {
+        "sha256": "b2b96e06db3db787a6e146267d0042f746e6fb84cf8656fbd09f6fcc99f901a9",
+        "bytes": 770
+      },
+      "verify-final-identity.py": {
+        "sha256": "689f58ac6b30b6117fd487922884f5b9870be6915b761f5f3f452b4335a4d341",
+        "bytes": 9758
+      }
+    },
+    "commandsRunByReviewer": [
+      "docker image inspect --format json carl-final-layout-security:20261001-3c9dedbfb8c7",
+      "docker image save --output final-image-proof.tar carl-final-layout-security:20261001-3c9dedbfb8c7",
+      "python3 verify-final-identity.py"
+    ],
+    "limits": {
+      "nativeShutdownGap": "UNCHANGED_NOT_QUALIFIED",
+      "liveProviders": "NOT_CALLED",
+      "publication": "NOT_PERFORMED",
+      "sourceEdits": false,
+      "applicationRuntimeContainerStarted": false,
+      "unrelatedImagesOrVolumesRemoved": false,
+      "priorEvidenceOverwritten": false,
+      "scansRepeated": false,
+      "packagedBrowserQualification": "SEPARATE_FINAL_55_CHECKS_PASS"
+    }
+  },
+  "tooling": {
+    "releasePolicyTests": 9,
+    "controlledEvaluationAssertions": 22,
+    "actionlint": "PASS",
+    "zizmorMediumAndHigher": "PASS with existing low self-reference baseline unchanged"
+  },
+  "preview": {
+    "url": "https://localhost:63173",
+    "session": 80348,
+    "dataset": "Full public fictional household",
+    "model": "DISCONNECTED",
+    "qbits": {
+      "search": "READY",
+      "broker": "READY"
+    },
+    "olderPreviewsPreserved": true
+  },
+  "privateMavenAccess": {
+    "status": "BLOCKED",
+    "httpStatus": 401,
+    "existingCredential": "GitHub CLI credential; no secret persisted"
+  },
+  "immutableRelease": {
+    "command": "python3 scripts/release-policy.py --prepare 0.1.0-rc.1",
+    "exitCode": 1,
+    "state": "BLOCKED",
+    "reason": "Current development parent0.5.0-SNAPSHOT differs from independently qualified immutable foundation0.4.1 release baseline",
+    "sourcePomUnchanged": true,
+    "noGuardRelaxed": true,
+    "privateMavenRead": "HTTP401 with existing GitHub credential"
+  },
+  "qualificationProofs": [
+    {
+      "name": "final-verification.json",
+      "sha256": "85cb49f83e6a79bbd16fee6446fa35cc7691ec9637c9cd53dd6b637f49a85f55"
+    },
+    {
+      "name": "final-qualification.json",
+      "sha256": "aaae49425880044b154fec3c06e35cac10c986c55ccf370732330d679242b3fb"
+    }
+  ],
+  "limitations": [
+    "Live model credential access remains blocked; six live evaluations unperformed",
+    "Real household identities/data/model policies and Synology integration remain unqualified",
+    "Selected published native state-provider shutdown API gap unchanged",
+    "Timestamped QQQ snapshots are not RC/stable dependencies; immutable foundation baseline unchanged",
+    "Test fixture cleanup and forced disposable-container removal do not qualify production graceful shutdown",
+    "Final documentation source scan and protected delivery recorded separately"
+  ]
+}

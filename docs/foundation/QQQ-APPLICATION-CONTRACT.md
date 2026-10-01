@@ -183,5 +183,68 @@ capabilities expire after 30 minutes and are bounded; restart or a new authentic
 requires generating the export again. Arbitrary tables, raw paths, unregistered references,
 other process outputs and cross-session links cannot grant access. The storage backend must
 recheck current domain record/source/field permissions and permission epoch on every read.
+In development 0.5, native `/download/<filename>` and versioned `/qqq/v1/download/<filename>` routes use
+this same gate and bounded single-segment filename grammar. Neither path authorizes a
+filesystem target or relaxes the session capability, origin, process or backend checks.
 Protected download responses use `Cache-Control: no-store`; client code must not persist
 protected bytes in an offline cache. Basic local administration cannot enable this policy.
+
+## Shared native conversation service
+
+Consumers can override `Components.clientServiceReady(ClientService)` to retain a reference
+for native conversational processes. The hook runs once after the configured family API's
+service and explicit workflow graph are constructed, before administration metadata starts.
+The host owns the service, durable conversation store, workers and shutdown; consumers must
+not close it or construct a second service/store lease. When the family API is disabled the
+hook is not called, and the interface must report unavailable conversation capability.
+
+Native processes derive a current member from the verified QQQ principal, then use
+`ClientService.create` and `ClientService.workflow` for private-by-default conversations and
+explicit immutable sharing. Recheck current consumer membership and permission revision
+before returning a result. Do not fabricate a `ClientWorkflow.Context`, accept caller identity
+from form fields, or bypass stored conversation scope. A service reference does not authorize
+a model call, live account connection or excluded external action.
+
+## Development Quick Search and ESB extensions
+
+The 0.5 development line adds `Components.administrationExtensions(NativeStores)`;
+its default is `NativeQBits.disabled()` and makes no search or broker connection.
+Return one owned `NativeQBits(Optional<NativeQuickSearch>, Set<String> esbProcesses)`
+after consumer stores exist. Supply consumer source/backend/ESB trigger metadata through
+`metadata()` before the shared extension producer runs. Use the native QBit configuration
+and ESB provider/destination/trigger types; do not replace them with a consumer search server.
+
+`NativeQuickSearch(QuickSearchQBitConfig, AuthoritativeSearchAccess)` uses the native
+index but serves display text from the authoritative consumer access adapter. Implement
+`allowedRecordIds(tableName)` and `resolve(tableName, recordId)` against current verified
+`QContext` identity and domain permissions. Indexed labels/highlights are not authorization.
+The native `/qqq/v1/search` POST route checks current operator/table access and allows only
+`searchTerm`, `tableNames` and `limitPerTable`; alternate unscoped plugin routes are denied.
+The implementation bounds configured tables, allowed IDs, candidates, response bytes and
+request time; a partial result is not an exhaustive total.
+
+ESB process names are an explicit allowlist, and each requires registered native triggers
+with trusted run-as session suppliers. `NativeServiceIdentity` fixes the service principal,
+grants and immutable row keys in composition. Never accept these, SQL targets, provider
+endpoints or credentials from broker messages. Native Java source actions still require
+explicit table/process permission checks in addition to row locks. Index reconciliation
+must inspect actual native run outcomes, including per-item failures, before acknowledging
+completion; consumer SQL imports do not automatically invoke QQQ table-event customizers.
+
+The host owns optional runtime services and cleanup. A service must release its own
+allocations if its `start` fails; generic native lifecycle stops successfully started services.
+Provider outages must not remove access to local authoritative data. Bound the actual native
+backend's connection/socket reads as well as consumer-specific data sources and query time.
+Test real index/broker/database paths, current revocation, guessed IDs, forged events,
+failed starts and shutdown. The selected published QQQ4.1 development snapshot still has
+a process-global state-provider shutdown gap; the reviewed upstream proposal is not installed.
+This development API is not a claim of a remotely published or production-qualified release.
+
+
+## Optional native docked chat
+
+A consumer can return `Optional<NativeChat>` from `Components.chat()` to expose a docked browser conversation window on the existing authenticated Next administration listener. The default is empty. The component factory must bind the port to the same host-owned `ClientService` supplied by `clientServiceReady`; do not create a second conversation store/runtime. Use the verified principal supplied to every port method and recheck current membership, audience, source/field permissions and permission revision before returning threads, history or results. Registration does not authorize live model calls or excluded tools.
+
+`GET /kof22/chat` returns enabled/label/sharingEnabled. Threads and members are bare choice arrays. History returns `{selected,messages}`; start/reply/read return `{selected,status,text}` with a canonical conversation/request UUID pair. Private starts contain no participants. Shared starts require an explicit permitted audience of at most fifteen other members. Requests require verified native authentication and same-origin browser context. JSON writes reject unexpected fields, duplicate keys, invalid identities and oversized bodies; errors never expose provider/database diagnostics. Masked missing or revoked client access becomes the same native403 so the browser clears displayed private history. Responses are bounded and `Cache-Control: no-store`.
+
+The dock keeps only in-memory text, clears it on logout/identity loss and supports minimize/expand, keyboard send and accessible history/composer. Pending reads are bounded; a failed or unknown POST is never retried automatically. The consumer should return the latest included request as history selection, bound aggregate encoded history, mark omitted older messages, and retain saved-answer freshness/stale warnings. These development interfaces require combined backend/consumer/browser qualification; they do not establish internet deployment or live inference readiness.

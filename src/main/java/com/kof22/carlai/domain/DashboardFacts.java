@@ -358,6 +358,10 @@ public final class DashboardFacts
          {
             throw new SecurityException("Current financial dashboard access required");
          }
+         if(recipient.equals(scope.principal()))
+         {
+            NativeReadScope.check(actor);
+         }
       }
    }
 

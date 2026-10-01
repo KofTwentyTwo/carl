@@ -55,15 +55,15 @@ final class CarlTools
             (arguments, caller) -> read(arguments, caller, Set.of("from", "through"), (input, scope) -> service.billSummary(scope, date(input, "from"), date(input, "through")))),
          ToolBinding.forCaller(new ToolDefinition("carl_read_finances", "Read permission-scoped dated accounts and classified transactions. Returns partial coverage and missing facts; signed balances are not a complete household net worth. No financial action is performed.", rangeSchema()),
             (arguments, caller) -> read(arguments, caller, Set.of("from", "through"), (input, scope) -> finance.overview(scope, date(input, "from"), date(input, "through")))),
-         ToolBinding.forCaller(new ToolDefinition("carl_read_records", "Read Carl's permitted calendar, vendors, vendor work, property or saved artifact records. Drafts have not been sent; calendar suggestions do not reserve time.", "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"kind\":{\"type\":\"string\",\"enum\":[\"calendar\",\"vendors\",\"work\",\"properties\",\"artifacts\",\"cashPlans\",\"financialGoals\",\"financingOffers\",\"taxProperties\",\"tax\",\"rentalUnits\",\"rentalSources\",\"rentDues\",\"rentApplications\",\"expenses\",\"expenseActuals\",\"expenseSettlements\",\"budgets\",\"debts\",\"portfolioMoves\",\"calendarConnections\"]}},\"required\":[\"kind\"]}"),
+         ToolBinding.forCaller(new ToolDefinition("carl_read_records", "Read Carl's permitted calendar, vendors, vendor work, property/home profile or saved artifact records. Drafts have not been sent; calendar suggestions do not reserve time.", "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"kind\":{\"type\":\"string\",\"enum\":[\"calendar\",\"vendors\",\"work\",\"properties\",\"homes\",\"artifacts\",\"cashPlans\",\"financialGoals\",\"financingOffers\",\"taxProperties\",\"tax\",\"rentalUnits\",\"rentalSources\",\"rentDues\",\"rentApplications\",\"expenses\",\"expenseActuals\",\"expenseSettlements\",\"budgets\",\"debts\",\"portfolioMoves\",\"calendarConnections\"]}},\"required\":[\"kind\"]}"),
             (arguments, caller) -> read(arguments, caller, Set.of("kind"), (input, scope) ->
             {
                String kind = input.path("kind").asText();
-               if(!Set.of("calendar", "vendors", "work", "properties", "artifacts", "cashPlans", "financialGoals", "financingOffers", "taxProperties", "tax", "rentalUnits", "rentalSources", "rentDues", "rentApplications", "expenses", "expenseActuals", "expenseSettlements", "budgets", "debts", "portfolioMoves", "calendarConnections").contains(kind))
+               if(!Set.of("calendar", "vendors", "work", "properties", "homes", "artifacts", "cashPlans", "financialGoals", "financingOffers", "taxProperties", "tax", "rentalUnits", "rentalSources", "rentDues", "rentApplications", "expenses", "expenseActuals", "expenseSettlements", "budgets", "debts", "portfolioMoves", "calendarConnections").contains(kind))
                {
                   throw new IllegalArgumentException("Unsupported kind");
                }
-               return service.view(scope, kind);
+               return kind.equals("homes") ? new com.kof22.carlai.domain.HomeRecords(service).records(scope) : service.view(scope, kind);
             })));
    }
    private interface Read

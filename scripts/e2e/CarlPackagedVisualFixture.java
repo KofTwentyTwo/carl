@@ -41,14 +41,21 @@ public final class CarlPackagedVisualFixture
    private final boolean dashboards;
    private final boolean evaluation;
    private java.util.Map<String, Object> evaluationManifest;
+   private final Path publicDataset;
+   private java.util.Map<String, Object> publicSeed;
    private long seededPlanId;
    private java.util.UUID seededTaskId;
 
-   private CarlPackagedVisualFixture(Path distribution, boolean dashboards, boolean evaluation) throws Exception
+   private CarlPackagedVisualFixture(Path distribution, boolean dashboards, boolean evaluation, Path publicDataset) throws Exception
    {
       this.distribution = distribution.toAbsolutePath();
       this.dashboards = dashboards;
       this.evaluation = evaluation;
+      this.publicDataset = publicDataset;
+      if(publicDataset != null && (dashboards || evaluation))
+      {
+         throw new IllegalArgumentException("Public household preview uses its own complete dataset");
+      }
       if(evaluation && "true".equals(System.getenv("CARL_PREVIEW_LIVE_MODEL")) && (System.getenv("CARL_EVALUATION_MODEL") == null || System.getenv("CARL_EVALUATION_MODEL").isBlank()))
       {
          throw new IllegalStateException("Evaluation live model identity requires explicit CARL_EVALUATION_MODEL");
@@ -66,14 +73,18 @@ public final class CarlPackagedVisualFixture
       try(var connection = source.getConnection(); var sql = connection.createStatement())
       {
          DatabaseBootstrap.initializeReader(connection, "browser_reader", "synthetic-reader");
-         for(String view : java.util.List.of("bill","vendor","work","account","property","artifact","calendar","transaction","budget","tax","calendar_connection", "import_review", "plan", "plan_step", "native_plan_step", "native_calendar_operation", "member", "debt", "cash_plan", "calendar_operation", "financial_goal", "financing_offer", "tax_property", "rental_property", "rental_unit", "rental_source", "rent_due", "rent_application", "expense", "expense_actual", "expense_settlement", "portfolio_move", "draft_revision", "reminder_observation", "manual_transaction", "preference", "rental_review", "rental_review_component", "rental_review_share", "tax_reference", "tax_alternative", "rental_shock", "balance_selection", "rental_baseline_selection", "plan_effect"))
+         for(String view : java.util.List.of("bill","vendor","work","account","property","artifact","calendar","transaction","budget","tax","calendar_connection", "import_review", "plan", "plan_step", "native_plan_step", "native_calendar_operation", "member", "debt", "cash_plan", "calendar_operation", "financial_goal", "financing_offer", "tax_property", "rental_property", "rental_unit", "rental_source", "rent_due", "rent_application", "expense", "expense_actual", "expense_settlement", "portfolio_move", "draft_revision", "reminder_observation", "manual_transaction", "preference", "rental_review", "rental_review_component", "rental_review_share", "tax_reference", "tax_alternative", "rental_shock", "balance_selection", "rental_baseline_selection", "plan_effect", "home", "home_history"))
          { sql.execute("GRANT SELECT ON carl_"+view+"_view TO browser_reader"); }
          sql.execute("INSERT INTO carl_household(id,name,display_zone) VALUES(1,'Synthetic Household','America/Chicago')");
-         sql.execute("INSERT INTO carl_member(id,household_id,principal,label,can_manage) VALUES(1,1,'alice','Synthetic Alice',true),(2,1,'bob','Synthetic Bob',true)");
+         sql.execute(publicDataset == null
+            ? "INSERT INTO carl_member(id,household_id,principal,label,can_manage) VALUES(1,1,'alice','Synthetic Alice',true),(2,1,'bob','Synthetic Bob',true)"
+            : "INSERT INTO carl_member(id,household_id,principal,label,can_manage) VALUES(1,1,'alice','Fictional Aster',true),(2,1,'bob','Fictional Basil',true)");
          sql.execute("INSERT INTO carl_permission(member_id,domain,details) SELECT m.id,d,true FROM carl_member m CROSS JOIN unnest(ARRAY['BILLS','VENDORS','CALENDAR','FINANCE','TAX','SETTINGS']) d");
          connection.commit();
       }
       var carl=new com.kof22.carlai.domain.CarlService(source,java.time.Clock.systemUTC());
+      if(publicDataset == null)
+      {
       var finance=new com.kof22.carlai.domain.FinancialRecords(carl);
       long account=finance.createAccount("alice","Synthetic Checking","CASH","USD",true,java.math.BigDecimal.ONE,"PRIVATE","Synthetic browser acceptance evidence");
       new com.kof22.carlai.domain.MonarchImportWorkflow(carl).mapAccount("alice","Checking",account);
@@ -126,6 +137,23 @@ public final class CarlPackagedVisualFixture
             evaluationManifest.put(kind, carl.view(com.kof22.carlai.domain.CarlService.Scope.privateFor("alice"),kind));
          }
       }
+      new com.kof22.carlai.domain.RentalRecords(carl).createProperty("alice",java.util.UUID.randomUUID(),"Synthetic second rental house","PRIVATE","Synthetic second title",new com.kof22.carlai.domain.RentalRecords.PropertyValues("USD","Chester, Illinois",java.math.BigDecimal.ONE,null,null,null,null,null,null,null,null,null,null));
+      carl.generateDraft(com.kof22.carlai.domain.CarlService.Scope.privateFor("alice"),java.util.UUID.randomUUID(),vendorWork,"FOLLOW_UP");
+      }
+      else
+      {
+         publicSeed = com.kof22.carlai.domain.CarlPublicHouseholdSeed.seed(carl, publicDataset);
+         seededPlanId = ((Number) publicSeed.get("planId")).longValue();
+         seededTaskId = java.util.UUID.fromString(((java.util.List<?>) publicSeed.get("taskIds")).getFirst().toString());
+         var preferences = new com.kof22.carlai.domain.DomainPreferences(carl);
+         for(String principal : java.util.List.of("alice", "bob"))
+         {
+            for(var choice : java.util.Map.of("DASHBOARD_FROM", publicSeed.get("reportFrom").toString(), "DASHBOARD_THROUGH", publicSeed.get("reportThrough").toString(), "DASHBOARD_CURRENCY", publicSeed.get("currency").toString(), "DASHBOARD_PLAN", publicSeed.get("planId").toString(), "DASHBOARD_BALANCE", publicSeed.get("balanceId").toString()).entrySet())
+            {
+               preferences.set(principal, java.util.UUID.nameUUIDFromBytes(("carl-public-default:" + principal + ":" + choice.getKey()).getBytes(java.nio.charset.StandardCharsets.UTF_8)), "MEMBER", choice.getKey(), choice.getValue(), "Explicit fictional public preview selection; no real household default");
+            }
+         }
+      }
       identity = new NativeVisualIdentity(temporary);
       var store = java.security.KeyStore.getInstance("PKCS12");
       try(var input = Files.newInputStream(temporary.resolve("synthetic-issuer.p12")))
@@ -144,8 +172,6 @@ public final class CarlPackagedVisualFixture
       {
          nativePort = socket.getLocalPort();
       }
-      new com.kof22.carlai.domain.RentalRecords(carl).createProperty("alice",java.util.UUID.randomUUID(),"Synthetic second rental house","PRIVATE","Synthetic second title",new com.kof22.carlai.domain.RentalRecords.PropertyValues("USD","Chester, Illinois",java.math.BigDecimal.ONE,null,null,null,null,null,null,null,null,null,null));
-      carl.generateDraft(com.kof22.carlai.domain.CarlService.Scope.privateFor("alice"),java.util.UUID.randomUUID(),vendorWork,"FOLLOW_UP");
       if(dashboards)
       {
          var seed = CarlDashboardVisualSeed.seed(carl);
@@ -170,7 +196,7 @@ public final class CarlPackagedVisualFixture
       properties.setProperty("kof22.agent.qqq.oidc.issuer", identity.issuer);
       properties.setProperty("kof22.agent.qqq.oidc.audience", "native-admin");
       properties.setProperty("kof22.agent.qqq.oidc.client-id", "synthetic-client");
-      properties.setProperty("kof22.agent.rbac.users.alice", "OPERATOR");
+      properties.setProperty("kof22.agent.rbac.users.alice", publicDataset == null ? "OPERATOR" : "ADMIN");
       properties.setProperty("kof22.agent.rbac.users.bob", "OPERATOR");
       properties.setProperty("kof22.agent.slack.enabled", "false");
       properties.setProperty("kof22.agent.mcp.enabled", "false");
@@ -305,6 +331,10 @@ public final class CarlPackagedVisualFixture
       proxy.start();
       System.out.println("PACKAGED_UI=" + origin);
       System.out.println("PACKAGED_APPLICATION=ordinary-app.jar-with-lib");
+      if(publicSeed != null)
+      {
+         System.out.println("PACKAGED_PUBLIC_DATA=" + new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(publicSeed));
+      }
       System.out.println("PACKAGED_PLAN_SEED=" + new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(java.util.Map.of("planId",seededPlanId,"taskId",seededTaskId)));
       if(evaluation)
       {
@@ -510,7 +540,19 @@ public final class CarlPackagedVisualFixture
    {
       System.setProperty("qqq.logger.logSessionId.disabled", "true");
       System.setProperty("qqq.rdbms.logSQL", "false");
-      var fixture = new CarlPackagedVisualFixture(Path.of(arguments[0]), java.util.List.of(arguments).contains("--dashboards"), java.util.List.of(arguments).contains("--evaluation"));
+      Path publicDataset = null;
+      for(String argument : arguments)
+      {
+         if(argument.startsWith("--public-dataset="))
+         {
+            if(publicDataset != null)
+            {
+               throw new IllegalArgumentException("Select one public fixture directory");
+            }
+            publicDataset = Path.of(argument.substring("--public-dataset=".length())).toAbsolutePath();
+         }
+      }
+      var fixture = new CarlPackagedVisualFixture(Path.of(arguments[0]), java.util.List.of(arguments).contains("--dashboards"), java.util.List.of(arguments).contains("--evaluation"), publicDataset);
       Runtime.getRuntime().addShutdownHook(new Thread(fixture::close));
       try
       {

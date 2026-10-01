@@ -4,6 +4,7 @@ package com.kof22.carlai;
 
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import com.kof22.agentadmin.OperatorPermissions;
 import com.kof22.agentcore.security.Role;
 import com.kof22.carlai.domain.CarlService;
 import com.kof22.carlai.domain.DashboardFacts;
+import com.kof22.carlai.domain.DomainPreferences;
 
 
 /** Native widgets use explicit filters, current verified identity and read-only financial facts. */
@@ -81,6 +83,7 @@ final class CarlDashboards
    public static final class Renderer extends AbstractWidgetRenderer implements InitializableViaCodeReference
    {
       private DashboardFacts facts;
+      private DomainPreferences preferences;
 
       /** QQQ requires a public no-argument renderer constructor. */
       public Renderer()
@@ -97,6 +100,7 @@ final class CarlDashboards
             throw new IllegalArgumentException("Carl dashboard requires the application service");
          }
          facts = new DashboardFacts(bound.service);
+         preferences = new DomainPreferences(bound.service);
       }
 
 
@@ -108,13 +112,32 @@ final class CarlDashboards
          facts.requireAccess(scope);
          var metadata = (QWidgetMetaData) input.getWidgetMetaData();
          var output = new RawHTML(metadata.getLabel(), CarlDashboardHtml.selection(metadata.getName()));
-         if(input.getQueryParams() == null)
+         var parameters = new LinkedHashMap<String, String>();
+         if(input.getQueryParams() != null)
          {
-            input.withUrlParams(Map.of());
+            parameters.putAll(input.getQueryParams());
          }
-         if(setupDropdowns(input, metadata, output))
+         Map<String, String> saved;
+         try
          {
-            var parameters = input.getQueryParams();
+            saved = preferences.effective(scope.principal());
+         }
+         catch(SecurityException unavailable)
+         {
+            saved = Map.of();
+         }
+         for(var entry : Map.of("from", "DASHBOARD_FROM", "through", "DASHBOARD_THROUGH", "carlDashboardCurrency", "DASHBOARD_CURRENCY", "carlPlans", "DASHBOARD_PLAN", "carlSavedBalanceSheets", "DASHBOARD_BALANCE").entrySet())
+         {
+            if(!parameters.containsKey(entry.getKey()) && saved.containsKey(entry.getValue()))
+            {
+               parameters.put(entry.getKey(), saved.get(entry.getValue()));
+            }
+         }
+         input.withUrlParams(parameters);
+         boolean selectedFilters = setupDropdowns(input, metadata, output);
+         output.setDropdownDefaultValueList(output.getDropdownNameList().stream().map(parameters::get).toList());
+         if(selectedFilters)
+         {
             String name = metadata.getName();
             try
             {

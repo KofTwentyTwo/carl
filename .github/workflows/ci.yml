@@ -35,6 +35,8 @@ jobs:
           persist-credentials: false
       - name: Verify release policy and evidence validators
         run: python3 -m unittest discover -s scripts/tests -p 'test_release.py'
+      - name: Verify public household fixtures
+        run: python3 -m unittest discover -s scripts/tests -p 'test_public_household.py'
       - name: Prepare exact candidate version
         if: inputs.candidate_version != ''
         env:
@@ -57,6 +59,11 @@ jobs:
             exit 1
           fi
           mvn -B -ntp --settings config/maven/settings.xml.example verify
+      - name: Verify actual public household reconciliation
+        env:
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          MAVEN_SETTINGS: config/maven/settings.xml.example
+        run: bash scripts/verify-public-household.sh
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
@@ -83,6 +90,14 @@ jobs:
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
         run: bash scripts/verify-talk-browser.sh
+      - name: Verify packaged docked chat and System navigation
+        env:
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          MAVEN_SETTINGS: config/maven/settings.xml.example
+          CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
+          CARL_DOCKED_QBITS: 'false'
+          CARL_DOCKED_REQUIRE_ESB: 'false'
+        run: bash scripts/verify-docked-chat-browser.sh
       - name: Verify packaged Quick Search and ESB
         env:
           GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
@@ -114,6 +129,8 @@ jobs:
             target/dashboard-browser-evidence/*.png
             target/talk-browser-evidence/*.json
             target/talk-browser-evidence/*.png
+            target/docked-chat-browser-evidence/*.json
+            target/docked-chat-browser-evidence/*.png
             target/qbits-browser-evidence/*.json
             target/qbits-browser-evidence/*.png
       - name: Seal exact verified candidate

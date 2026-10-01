@@ -166,6 +166,7 @@ class ReleaseTests(unittest.TestCase):
             "target/surefire-reports",
             "target/site/jacoco",
             "target/browser-evidence",
+            "target/docked-chat-browser-evidence",
             "target/security",
             "target/agent/bin",
             "target/agent/lib",
@@ -201,6 +202,9 @@ class ReleaseTests(unittest.TestCase):
         (root / "target/browser-evidence/report.json").write_text(
             '{"status":"PASS","checks":["synthetic-authenticated-native-flow"]}'
         )
+        (root / "target/docked-chat-browser-evidence/docked-chat-report.json").write_text(
+            '{"status":"PASS","checks":["synthetic-docked-chat-flow"]}'
+        )
         scan = {
             "SchemaVersion": 2,
             "Results": [
@@ -217,6 +221,19 @@ class ReleaseTests(unittest.TestCase):
         (root / "target/agent/bin/agent").write_text("synthetic executable fixture")
         (root / "target/agent/lib/synthetic.jar").write_text("synthetic jar fixture")
         (root / "target/candidate-image.tar").write_text("synthetic image fixture")
+        (root / "target/agent/app.jar").write_text("synthetic application fixture")
+        docked = {
+            "status": "PASS", "checks": ["synthetic-docked-chat-flow"],
+            "apiResponsesMocked": False, "liveModel": False, "expectedOutcome": "UNKNOWN",
+            "distributionUnchanged": True,
+            "runs": [{"viewport": {"width": 1440, "height": 1000}},
+                     {"viewport": {"width": 390, "height": 844}}],
+            "distributionFileHashes": {
+                str(path.relative_to(root / "target/agent")): EVIDENCE["digest"](path)
+                for path in (root / "target/agent").rglob("*") if path.is_file()
+            },
+        }
+        (root / "target/docked-chat-browser-evidence/docked-chat-report.json").write_text(json.dumps(docked))
 
     def seal(self, root):
         return EVIDENCE["seal"](
@@ -235,6 +252,36 @@ class ReleaseTests(unittest.TestCase):
             (root / "delivery/qualification-evidence.zip").write_bytes(b"tampered")
             with self.assertRaises(ValueError):
                 EVIDENCE["verify"](root / "delivery", SHA)
+
+    def test_missing_or_failed_docked_chat_evidence_cannot_release(self):
+        for report in (None, {"status": "FAIL", "checks": ["one"]},
+                       {"status": "PASS", "checks": []},
+                       {"status": "PASS", "checks": ["same", "same"]}):
+            with self.subTest(report=report), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                self.fixture(root)
+                evidence = root / "target/docked-chat-browser-evidence/docked-chat-report.json"
+                if report is None:
+                    evidence.unlink(missing_ok=True)
+                else:
+                    evidence.parent.mkdir(exist_ok=True)
+                    evidence.write_text(json.dumps(report))
+                with self.assertRaises((ValueError, FileNotFoundError)):
+                    self.seal(root)
+
+    def test_stale_mocked_or_single_viewport_docked_evidence_cannot_release(self):
+        for mutation in ({"distributionFileHashes": {"app.jar": "0" * 64}},
+                         {"apiResponsesMocked": True}, {"liveModel": True},
+                         {"runs": [{"viewport": {"width": 1440, "height": 1000}}]}):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                self.fixture(root)
+                path = root / "target/docked-chat-browser-evidence/docked-chat-report.json"
+                report = json.loads(path.read_text())
+                report.update(mutation)
+                path.write_text(json.dumps(report))
+                with self.assertRaises(ValueError):
+                    self.seal(root)
 
     def test_failed_skipped_browser_scanner_or_dependency_evidence_cannot_release(self):
         mutations = (

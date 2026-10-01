@@ -31,6 +31,7 @@ import com.kof22.agentcore.store.AgentMigrations;
 import com.kof22.carlai.AgentApplication;
 import com.kof22.carlai.domain.BudgetRecords;
 import com.kof22.carlai.domain.CarlService;
+import com.kof22.carlai.domain.DomainPreferences;
 import com.kof22.carlai.domain.FinancialRecords;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -48,6 +49,8 @@ class CarlDashboardNativeTest
    @Test
    void authenticatedNativeWidgetsRenderRealExactFactsAndDenyPrivateGuessesAndRevokedCallers() throws Exception
    {
+      com.kingsrook.qqq.backend.core.context.QContext.clear();
+      com.kingsrook.qqq.backend.module.rdbms.jdbc.ConnectionManager.resetConnectionProviders();
       try(var database = new PostgreSQLContainer<>("postgres:16-alpine"))
       {
          database.start();
@@ -56,8 +59,8 @@ class CarlDashboardNativeTest
          try(var c = data.getConnection(); var sql = c.createStatement())
          {
             sql.execute("INSERT INTO carl_household(id,name,display_zone) VALUES(1,'Synthetic dashboard','America/Chicago')");
-            sql.execute("INSERT INTO carl_member(id,household_id,principal,label,can_manage) VALUES(1,1,'alice','Owner',true),(2,1,'bob','Reader',false)");
-            sql.execute("INSERT INTO carl_permission(member_id,domain,details) VALUES(1,'FINANCE',true),(2,'FINANCE',true)");
+            sql.execute("INSERT INTO carl_member(id,household_id,principal,label,can_manage) VALUES(1,1,'alice','Owner',true),(2,1,'bob','Reader',false),(3,1,'admin-owner','Synthetic admin owner',true)");
+            sql.execute("INSERT INTO carl_permission(member_id,domain,details) VALUES(1,'FINANCE',true),(2,'FINANCE',true),(1,'SETTINGS',true),(2,'SETTINGS',true),(3,'SETTINGS',true)");
             sql.execute("CREATE ROLE carl_dashboard_reader LOGIN PASSWORD 'synthetic-reader'");
             sql.execute("GRANT USAGE ON SCHEMA public TO carl_dashboard_reader");
             for(var table : AdminApplication.READER_COLUMNS.entrySet())
@@ -99,7 +102,7 @@ class CarlDashboardNativeTest
          keyServer.start();
          try
          {
-            var identity = new BearerIdentity(issuer, "carl-admin", "synthetic-client", new RbacService(Map.of("alice", Role.OPERATOR, "bob", Role.OPERATOR)), ignored -> jwk);
+            var identity = new BearerIdentity(issuer, "carl-admin", "synthetic-client", new RbacService(Map.of("alice", Role.OPERATOR, "bob", Role.OPERATOR, "admin-owner", Role.ADMIN, "unmapped-admin", Role.ADMIN)), ignored -> jwk);
             var configuration = NativeAgentConfiguration.load(Path.of("config/agent.properties"), Map.of(), "--kof22.agent.db.url=" + database.getJdbcUrl(), "--kof22.agent.db.username=" + database.getUsername(), "--kof22.agent.db.password=" + database.getPassword(), "--kof22.agent.qqq.db-password=synthetic-reader", "--kof22.agent.anthropic-api-key=synthetic-no-provider");
             var components = AgentApplication.components();
             components.validate(configuration);
@@ -117,10 +120,45 @@ class CarlDashboardNativeTest
                assertTrue(metadata.body().contains("Carl AI"));
                assertTrue(metadata.body().contains("carlMoney"));
                assertTrue(metadata.body().contains("carlCashFlow"));
+               String adminOwner = token(issuer, "admin-owner", publicKey, privateKey);
+               var storage = get(http, base, "/widget/carlDatabaseDiagnostics", adminOwner);
+               assertEquals(200, storage.statusCode(), storage.body());
+               assertTrue(storage.body().contains("Carl PostgreSQL"), storage.body());
+               assertTrue(storage.body().contains("carl_household"), storage.body());
+               assertTrue(storage.body().contains("Table bytes"), storage.body());
+               assertFalse(storage.body().contains(database.getJdbcUrl()));
+               assertFalse(storage.body().contains("synthetic-reader"));
+               assertTrue(metadata.body().contains("carlSystem"));
+               for(String deniedToken : List.of(alice, bob, token(issuer, "unmapped-admin", publicKey, privateKey)))
+               {
+                  var deniedStorage = get(http, base, "/widget/carlDatabaseDiagnostics", deniedToken);
+                  assertTrue(deniedStorage.statusCode() >= 400, deniedStorage.body());
+                  assertFalse(deniedStorage.body().contains("carl_household"), deniedStorage.body());
+                  assertFalse(deniedStorage.body().contains("Table bytes"), deniedStorage.body());
+               }
+               try(var c = data.getConnection(); var sql = c.createStatement())
+               {
+                  sql.execute("UPDATE carl_permission SET details=false WHERE member_id=3 AND domain='SETTINGS'");
+               }
+               var revokedStorage = get(http, base, "/widget/carlDatabaseDiagnostics", adminOwner);
+               assertTrue(revokedStorage.statusCode() >= 400, revokedStorage.body());
+               assertFalse(revokedStorage.body().contains("carl_household"), revokedStorage.body());
+               assertFalse(revokedStorage.body().contains("Table bytes"), revokedStorage.body());
                var missing = get(http, base, "/widget/carlCashFlow", alice);
                assertEquals(200, missing.statusCode(), missing.body());
                assertTrue(missing.body().contains("Please select"), missing.body());
                assertFalse(missing.body().contains("125.25"));
+               var preferences = new DomainPreferences(service);
+               preferences.set("alice", UUID.randomUUID(), "MEMBER", "DASHBOARD_FROM", "2026-09-01", "Synthetic selected reporting period");
+               preferences.set("alice", UUID.randomUUID(), "MEMBER", "DASHBOARD_THROUGH", "2026-09-30", "Synthetic selected reporting period");
+               preferences.set("alice", UUID.randomUUID(), "MEMBER", "DASHBOARD_CURRENCY", "USD", "Synthetic selected presentation currency");
+               var savedDefaults = get(http, base, "/widget/carlCashFlow", alice);
+               assertEquals(200, savedDefaults.statusCode(), savedDefaults.body());
+               assertTrue(savedDefaults.body().contains("125.25 USD"), savedDefaults.body());
+               assertFalse(savedDefaults.body().contains("Please select"), savedDefaults.body());
+               assertTrue(savedDefaults.body().contains("2026-09-01"), savedDefaults.body());
+               var otherDefaults = get(http, base, "/widget/carlCashFlow", bob);
+               assertTrue(otherDefaults.body().contains("Please select"), otherDefaults.body());
                String query = "?from=2026-09-01&through=2026-09-30&carlDashboardCurrency=USD";
                var cash = get(http, base, "/widget/carlCashFlow" + query, alice);
                assertEquals(200, cash.statusCode(), cash.body());
@@ -157,6 +195,11 @@ class CarlDashboardNativeTest
          {
             keyServer.stop(0);
          }
+      }
+      finally
+      {
+         com.kingsrook.qqq.backend.core.context.QContext.clear();
+         com.kingsrook.qqq.backend.module.rdbms.jdbc.ConnectionManager.resetConnectionProviders();
       }
    }
 
