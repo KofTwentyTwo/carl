@@ -106,3 +106,7 @@ No live account connection, personal data, external financial action or deployme
 - [ ] Read the already-authorized personal Claude token after1Password is unlocked/CLI approved; qualify bounded synthetic live model answers. Current model remains disconnected.
 - [ ] Supply authorized FOUNDATION_PACKAGES_TOKEN, requalify push/signing access and complete protected Carl development/RC/main release. No bypass or publication is claimed.
 - [ ] Qualify real family identities, designated Synology collections, model data policy and operating decisions. Production deployment remains separate and unrequested.
+
+- [x] Sign and independently verify current source commitbd3874d; current source/documentation scan finds zero secrets.
+- [ ] Unblock delivery credentials: SSH agent currently refuses signing and existing HTTPS OAuth lacksworkflow scope. Both push attempts failed without remote branch change.
+- [ ] Qualify a supported upstream native state-provider shutdown correction; do not install the earlier isolated proposal or bypass it with daemon/thread/process tricks.
