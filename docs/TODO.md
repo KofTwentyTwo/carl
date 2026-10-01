@@ -33,7 +33,8 @@ Current controlled qualification:408 tests,113 browser checks across seven final
 - [x] Verify foundation main0.5.0-SNAPSHOT publication at0b6f437/run36811134831: signatures,66 staged hashes,nine remote Maven identities and17 passing fresh hosted consumer tests. Local registry/OCI credential access remains unperformed.
 - [x] Independently qualify protected foundation PR16/main1a7abd/run36820241402:470 source hashes,66 staged archive files,nine hosted Maven identities,17 fresh remote-consumer tests and offline signed evidence; [publication proof](evidence/2026-10-01-foundation-pr16-publication.json). Carl-specific remote consumption remains blocked.
 - [ ] Obtain authorized FOUNDATION_PACKAGES_TOKEN and prove fresh Carl Maven resolution/hosted access. Local recovered artifacts do not prove remote consumption.
-- [ ] Complete Carl PR/main/development publication after required hosted checks. HTTPS workflow scope is now available; the historical SSH refusal does not block an HTTPS push. Private Maven/package access and matching qualified release baseline remain required.
+- [x] Sign and push current implementation; [draft PR1](https://github.com/KofTwentyTwo/carl/pull/1) is reviewable. Latest source03ffa899 signature is verified; canonical10-file Git export matches the generator.
+- [ ] Pass hosted Carl application/package/browser checks, then merge/publish. [Run36876709062](https://github.com/KofTwentyTwo/carl/actions/runs/36876709062) stops at missing FOUNDATION_PACKAGES_TOKEN; earlier source/public generator/release validators pass. Matching qualified immutable foundation baseline remains required for RC/stable.
 - [ ] Select and qualify a non-snapshot QQQ/Quick Search closure and matching immutable foundation release before Carl RC/stable. Timestamped snapshots remain rejected by unchanged release enforcement.
 - [ ] Qualify a supported upstream native state-provider shutdown correction. The isolated earlier proposal is uninstalled/unpublished; no daemon/thread/process bypass.
 - [x] Integrate reviewed representative synthetic evaluation tooling and CI assertion gate:22 deterministic tests, actual PostgreSQL/API/native record checks and five unchanged offline Talk checks. Six live cases and human prose review remain BLOCKED/PENDING; see [evaluation guide](EVALUATION.md) and [controlled evidence](evidence/2026-10-01-controlled-model-evaluation.json).
@@ -49,3 +50,5 @@ The current full fictional household preview is https://localhost:63173 (Alice; 
 October 1 active work: finish combined RC8/docked-chat backend coverage and packaged browser qualification; preserve native provider shutdown and immutable/live publication holds.
 
 October1 final local implementation/qualification passes; final documentation/source closure and signed Carl PR delivery are in progress. Private Maven returns401, live model credential access is unresolved, and immutable RC/stable dependencies remain unavailable.
+
+Current delivery: [signed/pushed draft PR1 and exact credential hold](evidence/2026-10-01-rc8-delivery-status.json); no Carl merge or release.

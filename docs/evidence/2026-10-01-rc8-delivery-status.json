@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-01",
+  "applicationCommit": "03ffa8992b65886cc7a6dd9938cf4f3c1cc84423",
+  "githubSignatureVerified": true,
+  "push": "PASS",
+  "pullRequest": "https://github.com/KofTwentyTwo/carl/pull/1",
+  "isDraft": true,
+  "hostedRun": 36876709062,
+  "hostedStatus": "BLOCKED",
+  "githubConclusion": "failure",
+  "sourceSecrets": "PASS",
+  "publicGenerator": "PASS",
+  "releasePolicyValidators": "PASS",
+  "failingStep": "Verify actual application",
+  "reason": "FOUNDATION_PACKAGES_TOKEN with read:packages and private foundation access is absent",
+  "laterApplicationBrowserImageSteps": "SKIPPED \u2014 not PASS",
+  "privateMavenRead": 401,
+  "noMergeNoRelease": true,
+  "canonicalGitArchive": {
+    "state": "PASS",
+    "gitCommit": "03ffa8992b65886cc7a6dd9938cf4f3c1cc84423",
+    "files": 10,
+    "gitArchiveExactlyMatchesGeneratorAndQualifiedWorkingFixture": true,
+    "filesSha256": [
+      {
+        "path": "household.json",
+        "sha256": "bd8f1dc01dfef09f9899e126eed37468665f5bcb41c9b950df2fa6f87f7c5bad"
+      },
+      {
+        "path": "transactions.csv",
+        "sha256": "ca450d3fdb44988b1c3ac75741c2a39f6abcc7b1cc855ce5bd2e97f87218f315"
+      },
+      {
+        "path": "balances.csv",
+        "sha256": "3569cbae6cb864a9b331be8557d1d7413379e86c7c0534af873c2d6a74b4d203"
+      },
+      {
+        "path": "case-overlap.csv",
+        "sha256": "5ba390fb031256bc48f905ae4b6254bc60e7c20e42ae19114438bd0b2b1fe384"
+      },
+      {
+        "path": "case-correction.csv",
+        "sha256": "7ee790e90d0b29a788b4991bdf791a35f3e82202cadf22425254b46e48e0c456"
+      },
+      {
+        "path": "case-balanceConflict.csv",
+        "sha256": "22967c9aea82f6cf808d6e3554c500464303f3fa2f01982319b9203108fdcb36"
+      },
+      {
+        "path": "case-missingAmount.csv",
+        "sha256": "e28d5eff0abbb0d9a7b95ad198facd9717e4d26d1a4b7aa60b03294999367c80"
+      },
+      {
+        "path": "case-omitted.csv",
+        "sha256": "fd255ecc0445a9e9fa262c8bd0c4b4d47d00c51f5634a3da2e3fe7b2a09b3829"
+      },
+      {
+        "path": "calendar.ics",
+        "sha256": "884be62aeb3e5e08db9c244876db47fc50438988a2f4dfa32a44a955c5e167a2"
+      },
+      {
+        "path": "reminders.ics",
+        "sha256": "c347e00b84e6463c1e9142204bd07083e1eb30898e5045e986ffd1055336e8dd"
+      }
+    ]
+  }
+}
