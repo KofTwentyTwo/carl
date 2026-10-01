@@ -1,0 +1,3 @@
+# Copyright (C) 2026 KofTwentyTwo
+# Preserve canonical public iCalendar bytes across clones and platform settings.
+fixtures/public-household/*.ics -text
