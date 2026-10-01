@@ -1,7 +1,7 @@
 # Configuration
 
 Native applications load one Java properties file, followed by optional `--key=value`
-overrides. The generator writes [`config/agent.properties`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/scripts/templates/agent.properties).
+overrides. The generator writes [`config/agent.properties`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/scripts/templates/agent.properties).
 File values are overridden by matching environment variables, then command-line arguments.
 Never put secrets in arguments or committed files. Complete `${ENV_NAME}` values resolve an
 explicit environment alias; embedded/default-value expressions are not supported.
@@ -42,7 +42,7 @@ All keys in this table are under `kof22.agent`.
 | `anthropic-base-url` | Provider environment/default | Optional endpoint override |
 | `model.id` | `claude-sonnet-5` | Source default; select a model available to your provider account before a live call |
 | `model.max-tokens` | `16000` | Maximum output tokens per provider request |
-| `slack.enabled` | `true` | Missing bot/app tokens fail startup; disabling is supported for local development |
+| `slack.enabled` | `true` | Missing bot/app tokens fail startup; disabling is supported for local development or production with the client API |
 | `slack.bot-token`, `slack.app-token` | None | Required when the default Slack connector is active |
 | `rbac.users` | Empty map | Principal to `VIEWER`, `OPERATOR`, `APPROVER`, or `ADMIN`; unassigned principals are `VIEWER` |
 | `approval.ttl` | `4h` | Pending approval lifetime |
@@ -75,7 +75,7 @@ These properties are under `kof22.agent.limits`.
 | `max-concurrent-turns` | 8 |
 | `turn-timeout` | `2m` |
 
-The limits are validated by [RuntimeLimits](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/src/main/java/com/kof22/agentcore/runtime/RuntimeLimits.java). Character limits are not token or currency estimates. The output-token allowance shrinks over provider requests, and the current provider loop also has a ten-iteration bound. See [Runtime contract](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/docs/RUNTIME-CONTRACT.md).
+The limits are validated by [RuntimeLimits](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/src/main/java/com/kof22/agentcore/runtime/RuntimeLimits.java). Character limits are not token or currency estimates. The output-token allowance shrinks over provider requests, and the current provider loop also has a ten-iteration bound. See [Runtime contract](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/RUNTIME-CONTRACT.md).
 
 ## Governance and privacy
 
@@ -157,7 +157,7 @@ sh target/agent/bin/agent /absolute/path/agent.properties
 
 Use absolute persona/job paths when the external file is outside the distribution.
 Set `kof22.agent.deployment.mode=PRODUCTION` for the personal server: startup requires
-enabled Slack/authenticated MCP, operator-mode QQQ behind HTTPS, distinct restricted runtime
+enabled Slack/authenticated MCP or the dedicated client API, operator-mode QQQ behind HTTPS, distinct restricted runtime
 and reader identities, and safe provider/domain destinations. The listener binds literal
 loopback behind the proxy. See [Personal server](PERSONAL-SERVER.md),
 [Database roles](DATABASE-ROLES.md) and [Migrations](MIGRATIONS.md).
@@ -173,3 +173,18 @@ loopback behind the proxy. See [Personal server](PERSONAL-SERVER.md),
 | `KOF22_LIVE_SMOKE` | Core live-smoke test | Only literal `true` enables the separately authorized real-provider test |
 
 These are tooling controls, not runtime agent properties. See [Testing](TESTING.md) and [Artifacts](ARTIFACTS.md).
+
+
+## Native client API
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `client-api.enabled` | `false` | Register the family API on the native listener; requires consumer `FamilyAccess` |
+| `client-api.issuer` | absent | Exact HTTPS JWT issuer; fixed issuer JWKS endpoint |
+| `client-api.audience` | absent | Dedicated access-token audience, different from the QQQ operator audience |
+
+These keys use the `kof22.agent.` prefix. See [CLIENT-API.md](CLIENT-API.md) for the exact
+access-token profile, permission epoch and production proxy requirements. Enabled client API
+can satisfy the production interactive-transport requirement without Slack or MCP; scheduled
+Slack delivery remains unavailable. Consumer `Components.uploadPolicy()` is an explicit
+optional Java component setting, described in the [QQQ contract](QQQ-APPLICATION-CONTRACT.md).

@@ -6,12 +6,16 @@ package com.kof22.carlai.domain;
 
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /** Owner-selected priorities and evidenced investment context, independent of inferred balance thresholds. */
@@ -42,6 +46,68 @@ public final class FinancialGoals
          CarlService.bump(c, actor.householdId());
          return id;
       });
+   }
+
+   /** Immutable original outcome of one explicitly requested human priority correction. */
+   public record PriorityRevision(UUID requestId, long goal, long revision, String principal,
+      int beforePriority, int afterPriority, String reason)
+   {
+   }
+
+   /** Corrects only the selected priority, preserving owner stage/context and immutable retry history. */
+   public PriorityRevision revisePriority(String principal, UUID request, long goal, long expectedRevision, int priority, String reason)
+   {
+      return service.transaction(c -> revisePriority(c, principal, request, goal, expectedRevision, priority, reason));
+   }
+
+
+
+   /** Reuses the authenticated completion transaction while retaining all current authorization and revision guards. */
+   PriorityRevision revisePriority(Connection c, String principal, UUID request, long goal, long expectedRevision, int priority, String reason) throws SQLException
+   {
+      CarlService.bounded(reason, 4000, "priority revision reason");
+      if(request == null || expectedRevision < 1 || priority < 1 || priority > 100 || reason == null || reason.isBlank())
+      {
+         throw new IllegalArgumentException("An explicit priority, expected revision, request ID and human reason are required");
+      }
+      String digest = BillCsv.hash(CarlService.json(Map.of("goal", goal, "expectedRevision", expectedRevision, "priority", priority, "reason", reason)));
+      var actor = CarlService.member(c, principal);
+      CarlService.rows(c, "SELECT id FROM carl_household WHERE id=? FOR UPDATE", actor.householdId());
+      actor = CarlService.manager(c, principal, "FINANCE");
+      CarlService.requireRecord(c, principal, goal);
+      CarlService.rows(c, "SELECT id FROM carl_record WHERE id=? FOR UPDATE", goal);
+      var found = CarlService.rows(c, "SELECT * FROM carl_financial_goal_view WHERE principal=? AND id=?", principal, goal);
+      if(found.size() != 1)
+      {
+         throw new SecurityException("Financial goal unavailable");
+      }
+      if(CarlService.request(c, actor, request, "GOAL_PRIORITY_REVISION", digest) != null)
+      {
+         String detail = CarlService.rows(c, "SELECT detail FROM carl_request WHERE id=?", request).getFirst().get("detail").toString();
+         try
+         {
+            return new ObjectMapper().readValue(detail, PriorityRevision.class);
+         }
+         catch(java.io.IOException invalid)
+         {
+            throw new IllegalStateException("Stored priority receipt requires reconciliation", invalid);
+         }
+      }
+      var before = found.getFirst();
+      if(CarlService.number(before, "revision") != expectedRevision)
+      {
+         throw new IllegalArgumentException("Goal changed; review the current explicit priorities");
+      }
+      int prior = ((Number) before.get("priority")).intValue();
+      long revision = Math.addExact(expectedRevision, 1);
+      var receipt = new PriorityRevision(request, goal, revision, principal, prior, priority, reason);
+      CarlService.execute(c, "UPDATE carl_financial_goal SET priority=?,selected_by=?,updated_at=now() WHERE record_id=?", priority, actor.id(), goal);
+      CarlService.execute(c, "INSERT INTO carl_correction(record_id,member_id,reason,before_value,after_value) VALUES(?,?,?,?,?)", goal, actor.id(), reason,
+         CarlService.json(Map.of("priority", prior, "revision", expectedRevision)), CarlService.json(Map.of("priority", priority, "revision", revision, "requestId", request)));
+      CarlService.execute(c, "UPDATE carl_record SET revision=? WHERE id=?", revision, goal);
+      CarlService.bump(c, actor.householdId());
+      CarlService.complete(c, request, goal, "COMPLETE", CarlService.json(receipt));
+      return receipt;
    }
 
 

@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "milestone": "current-source focused native Talk/QBits recovery",
+  "date": "2026-09-30",
+  "foundation": "0.5.0-SNAPSHOT exact locally recovered development closure; not remote publication proof",
+  "command": "mvn -o -B -ntp -Dmaven.repo.local=/Users/james.maes/.codex/work/carl-development-m2 -Dtest=CarlTalkServiceTest,CarlTalkHtmlTest,CarlNativeHttpTest,CarlConversationAuthorizationTest,CarlQBitsNativeTest spotless:apply test",
+  "result": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "finished": "2026-09-30T20:45:25-05:00",
+    "log": "/Users/james.maes/.codex/work/carl-ui-recovery/final-focused-with-choice-green.log"
+  },
+  "regressions": [
+    {
+      "test": "CarlQBitsNativeTest.actualConsumerSearchIndexesCurrentRecordsAndDiscardsAnAssembledResponseOnRevocation",
+      "red": "isolated copy omits CarlNativeReadScope registration; actual authenticated HTTP expected403/actual200 after earlier result accumulated",
+      "red_log": "/Users/james.maes/.codex/work/carl-ui-recovery/scope-red.log",
+      "green": "whole response403; no private titles, recordLabel or snippet"
+    },
+    {
+      "test": "CarlConversationAuthorizationTest.contextRevocationBeforeInferenceMakesZeroRealProviderRequests",
+      "red": "isolated copy omits immediately-pre-inference authorization; assertion expected0/actual1 real SDK HTTP requests, no setup errors",
+      "red_log": "/Users/james.maes/.codex/work/carl-ui-recovery/provider-scope-red.log",
+      "green": "zero SDK HTTP transmissions after revocation during final context catalog assembly"
+    },
+    {
+      "test": "CarlTalkServiceTest.nativeAndClientUseOneHostStoreWithPrivateDefaultExplicitSharedAndCurrentRevocation",
+      "green": "current source mid-loop saved-message outcome revokes BILLS; complete choice response denied rather than returning assembled preview"
+    }
+  ],
+  "qualification": {
+    "controlled_domain": "PASS focused only",
+    "whole_current_source": "PENDING coordinator full gate",
+    "packaged_browser": "PENDING coordinator",
+    "actual_broker_event": "PENDING fixture/browser qualification",
+    "live_household_integrations": "BLOCKED separate identity/account/data decisions",
+    "production_deployment": "NOT REQUESTED"
+  },
+  "foundation_java_changed": false,
+  "sources": [
+    {
+      "path": "src/main/java/com/kof22/carlai/AgentApplication.java",
+      "sha256": "6b6ebca1844579197cff8e9722087a7aee19a99f334ccb1f2375483ccf35bf5d"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlMetadata.java",
+      "sha256": "e56dd30852bdd159a97a7d20a79bc27c22fb9214d190e055d3957676b64642f7"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlProcessScope.java",
+      "sha256": "39052970c5596835ffd71071cc742ae2af1c430fbda30d0d0319bbfb29bcfc77"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlNativeReadScope.java",
+      "sha256": "fe414d001a32f1e30fb8871f9b7c711cb0ddb2b373272ca9f830a1becfe5ce7a"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlIndexRefresh.java",
+      "sha256": "9162f3eccbcb27cee0f393c233c684487e9c7bbdc01f0305beed5b69efa313f2"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlQBits.java",
+      "sha256": "132e66ea27a1b5d62e85bd6295d45db6c86df6840e926b255660e9e974c5d85f"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTalkChoices.java",
+      "sha256": "885106c322d95bfe181eac0568dd0e54f023b77689df9fb1c598518690d5e104"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTalkHtml.java",
+      "sha256": "6436a26c110f1a643af82397b7fd6cac5073396d17fa449985533725ebab3dbf"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTalkProcesses.java",
+      "sha256": "7477f0c8861d7db684b047960927c5ca16a7430f6a4873c61008e535e1aa68db"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlTalkService.java",
+      "sha256": "e4860921b9a707e976f77b711eb561fe440fb877b9ccb25c21c8de83506f42b1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlSearchAccess.java",
+      "sha256": "a8d7c4d6226843662935eb6aaf5b7fb3254108c61f3d3a11ba56bebe5860d22d"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/NativeReadScope.java",
+      "sha256": "056b0bcf76c80a18da537f9d5b56695511b2753274f976c3d05e039fccbefd05"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlConversation.java",
+      "sha256": "72496d1544735a493630c6f877265cfdd073ddfbc08f219e07984c118f297ef5"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlTalkHtmlTest.java",
+      "sha256": "af737740726aa4cfb7aa66773451480dbe0d75ed3e152531cb542709e380b6e3"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlTalkServiceTest.java",
+      "sha256": "71df2c517c02f0bd98e6d1567f3c47da3fb924f1cf64c214486a17cd378895c2"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlQBitsNativeTest.java",
+      "sha256": "3391e8ba4c571e74113e78e3bf0f440ca41fe67646ff7abdac6952611159ae9a"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CarlConversationAuthorizationTest.java",
+      "sha256": "b783c9e975eacdf42a64313f8abbdfcbc41822488d4eb6d3c87f9081e381eb97"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlNativeHttpTest.java",
+      "sha256": "5aa7365d1a391d198fe9aa859cf6e230fcebdc8165f57349232b299fd7c45a9e"
+    }
+  ]
+}

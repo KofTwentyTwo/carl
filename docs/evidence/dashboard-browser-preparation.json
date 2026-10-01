@@ -1,0 +1,94 @@
+{
+  "status": "REVIEWED_BROWSER_PREPARATION_INTEGRATED_NOT_EXECUTED",
+  "handoff": {
+    "source": "/private/tmp/carl-ui-browser",
+    "status": "PREPARED; matching packaged browser execution and visual review pending",
+    "files": [
+      {
+        "path": "scripts/e2e/browser.cjs",
+        "baselineSha256": "48e033809bc6d0db4d9823c4af11e55f468a7c3ecc8090333c13feec986b13ae",
+        "sha256": "a38f842be30a4a1a5f6a1c1fe40453e00ced84ce59183338b14b81dc954a0cc7",
+        "bytes": 27157
+      },
+      {
+        "path": "scripts/e2e/CarlPackagedVisualFixture.java",
+        "baselineSha256": "71748165bba3950fa50c32218afc219ab335eb4b7d46c4266bd0f14278abba1d",
+        "sha256": "ba49bf6adebb892ba4b8ea1d54c4039bf7594e1c23a669a75a0c9b943d9f7cdb",
+        "bytes": 24737
+      },
+      {
+        "path": "scripts/e2e/NativeVisualIdentity.java",
+        "baselineSha256": "8ec815b5f66a9ad5d3883f08ad2feaf5cea0e7f9c6dbc39cf558eb0fd791c35e",
+        "sha256": "64c692c660e2a39172daada297fe483790fbece7ce41ea6e21641def30126c6b",
+        "bytes": 13376
+      },
+      {
+        "path": "scripts/e2e/CarlDashboardVisualSeed.java",
+        "baselineSha256": null,
+        "sha256": "d03d06ed01d6c3f0ec79f2d0ef3758ceb22cccac9e1ba823c47896facbdc7607",
+        "bytes": 8113
+      },
+      {
+        "path": "scripts/e2e/CarlDashboardSeedCheck.java",
+        "baselineSha256": null,
+        "sha256": "2c5f56a6e618cd13cdc8cfce06e52da0b288b46c3dbe0e02790e3458bbbcb946",
+        "bytes": 3117
+      },
+      {
+        "path": "scripts/e2e/dashboard-browser.cjs",
+        "baselineSha256": null,
+        "sha256": "ec6f547e462c0e7396960779ada2b57211af7e6626ed8d5cd76ab339648259e9",
+        "bytes": 14927
+      },
+      {
+        "path": "scripts/verify-dashboard-browser.sh",
+        "baselineSha256": null,
+        "sha256": "ee4ac6d6857a5b7e8547a10cb2cdb450cc64a45fba144503c0500f2e7da74e2a",
+        "bytes": 1060
+      }
+    ],
+    "verification": {
+      "javaFixtureCompile": "PASS /private/tmp/carl-ui-browser-fixture-compile.log",
+      "nodeSyntax": "PASS browser.cjs and dashboard-browser.cjs",
+      "shellSyntax": "PASS verify-dashboard-browser.sh",
+      "realPostgreSqlSeed": {
+        "terminal": 73423,
+        "exit": 0,
+        "log": "/private/tmp/carl-dashboard-seed-check.log",
+        "facts": "/private/tmp/carl-dashboard-seed-proof.json",
+        "status": "PASS; not browser acceptance"
+      },
+      "historicalChecksPreserved": true,
+      "historicalPushCount": 26
+    },
+    "pending": [
+      "Parent must supply qualified matching development backend + RC4 distribution before browser acceptance.",
+      "Run historical31 flows and new dashboard suite, fix actual evidence gaps, retain screenshots for parent visual review.",
+      "No screenshots or packaged RC4 PASS asserted by preparation."
+    ],
+    "sourceBrandingAudit": [
+      "RC4 login reads authMetadata.branding and renders login-app-name/login-logo, title Sign in | appName and applyBrandingTheme favicon. Backend public authentication metadata must supply branding.",
+      "Signed-in dashboard applies full metaData.branding and buildDocumentTitle plus head observer; data:image/svg+xml;base64 is supported.",
+      "Static initial HTML defaults QQQ Admin until metadata loads; no Carl-specific shared frontend edits made."
+    ],
+    "sourceContractChecks": {
+      "defaultLanding": "Root route / redirects to /app; the foundation landing query uses router.replace(/app/${landingApp}). Test requires /app/carlOverview, with Carl factory landingApp hook parent-owned and pending matching API.",
+      "bobFixture": "CarlPackagedVisualFixture seeds Bob active in household1, grants FINANCE/details=true via permission cross join, and writes kof22.agent.rbac.users.bob=OPERATOR. NativeVisualIdentity emits signed Bob ID/access tokens from the declared Bob button."
+    }
+  },
+  "review": {
+    "existingHistoricalChecksRetained": true,
+    "realNativeInputsAndV1Requests": true,
+    "expectedLandingMatchesActualFrontendContract": true,
+    "verifiedSyntheticBobConfigured": true,
+    "currentRevocationAndPrivateIdAssertions": true,
+    "fixtureIsolatedFromRunningDemo": true
+  },
+  "acceptance": "PENDING matching qualified foundation, packaged execution and visual review",
+  "originalIntegratedChecks": {
+    "nodeSyntax": "PASS both browser scripts",
+    "shellSyntax": "PASS verify-dashboard-browser.sh",
+    "allJavaFixturesCompile": "PASS against current367-test package and verified stable cache",
+    "docsLinks": "PASS 37 maintained Markdown files"
+  }
+}

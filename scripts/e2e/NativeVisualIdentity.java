@@ -85,8 +85,21 @@ final class NativeVisualIdentity implements AutoCloseable
       }
       var managers = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
       managers.init(store, "synthetic-only".toCharArray());
+      var certificates = KeyStore.getInstance(KeyStore.getDefaultType());
+      try(var input = Files.newInputStream(Path.of(System.getProperty("java.home"), "lib", "security", "cacerts")))
+      {
+         certificates.load(input, "changeit".toCharArray());
+      }
+      certificates.setCertificateEntry("carl-synthetic-issuer", store.getCertificate("issuer"));
+      Path trustPath = temporaryDirectory.resolve("synthetic-trust.p12");
+      Files.createFile(trustPath, java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
+         java.nio.file.attribute.PosixFilePermissions.fromString("rw-------")));
+      try(var output = Files.newOutputStream(trustPath))
+      {
+         certificates.store(output, "synthetic-only".toCharArray());
+      }
       var trust = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-      trust.init(store);
+      trust.init(certificates);
       var tls = SSLContext.getInstance("TLS");
       tls.init(managers.getKeyManagers(), trust.getTrustManagers(), null);
       var generator = KeyPairGenerator.getInstance("RSA");
@@ -181,9 +194,26 @@ final class NativeVisualIdentity implements AutoCloseable
          var p = parameters(exchange.getRequestURI().getRawQuery());
          if(!"POST".equals(exchange.getRequestMethod()) && !"none".equals(p.get("prompt")))
          {
-            reply(exchange, 200, "text/html; charset=UTF-8", "<html><body><h1>Local native QQQ acceptance</h1><p>Synthetic operator Alice. Disposable PostgreSQL data only.</p><form method='POST'><button type='submit'>Sign in as Alice</button></form></body></html>");
+            reply(exchange, 200, "text/html; charset=UTF-8", "<html><body><h1>Sign in to Carl AI</h1><p>This preview uses fictional household data. Choose a synthetic family member.</p><form method='POST'><button type='submit' name='subject' value='alice'>Sign in as Alice</button><button type='submit' name='subject' value='bob'>Sign in as Bob</button></form></body></html>");
             return;
          }
+         String subject = "alice";
+         String cookie = exchange.getRequestHeaders().getFirst("Cookie");
+         if(cookie != null && java.util.Arrays.stream(cookie.split(";")).anyMatch(value -> value.trim().equals("syntheticOperator=bob")))
+         {
+            subject = "bob";
+         }
+         if("POST".equals(exchange.getRequestMethod()))
+         {
+            subject = parameters(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8)).getOrDefault("subject", "alice");
+            if(!java.util.Set.of("alice", "bob").contains(subject))
+            {
+               reply(exchange, 400, "text/plain", "Declared synthetic actor required");
+               return;
+            }
+            exchange.getResponseHeaders().add("Set-Cookie", "syntheticOperator=" + subject + "; Path=/; HttpOnly; Secure; SameSite=Lax");
+         }
+         p.put("syntheticSubject", subject);
          var code = java.util.UUID.randomUUID().toString();
          codes.put(code, p);
          var result = java.util.Map.of("code", code, "state", p.getOrDefault("state", ""));
@@ -245,20 +275,43 @@ final class NativeVisualIdentity implements AutoCloseable
          {
             throw new IllegalStateException(e);
          }
+         String subject = auth.get("syntheticSubject");
+         String label = subject.equals("bob") ? "Bob (synthetic)" : "Alice (synthetic)";
          var id = JWT.create().withKeyId("native-synthetic").withIssuer(issuer).withAudience("synthetic-client")
-            .withSubject("alice").withIssuedAt(Instant.now()).withExpiresAt(Instant.now().plusSeconds(1800))
-            .withClaim("nonce", auth.get("nonce")).withClaim("name", "Alice (synthetic)").withClaim("email", "alice@example.invalid")
+            .withSubject(subject).withIssuedAt(Instant.now()).withExpiresAt(Instant.now().plusSeconds(1800))
+            .withClaim("nonce", auth.get("nonce")).withClaim("name", label).withClaim("email", subject + "@example.invalid")
             .sign(Algorithm.RSA256((RSAPublicKey) key.getPublic(), (RSAPrivateKey) key.getPrivate()));
-         reply(exchange, 200, "application/json", json.writeValueAsString(java.util.Map.of("access_token", token("alice", Instant.now().plusSeconds(1800), "native-admin"), "id_token", id, "token_type", "Bearer", "expires_in", 1800, "scope", auth.getOrDefault("scope", "openid profile email"))));
+         reply(exchange, 200, "application/json", json.writeValueAsString(java.util.Map.of("access_token", token(subject, Instant.now().plusSeconds(1800), "native-admin"), "id_token", id, "token_type", "Bearer", "expires_in", 1800, "scope", auth.getOrDefault("scope", "openid profile email"))));
       });
       server.createContext("/v2/logout", exchange ->
       {
          var p = parameters(exchange.getRequestURI().getRawQuery());
+         exchange.getResponseHeaders().add("Set-Cookie", "syntheticOperator=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax");
          exchange.getResponseHeaders().set("Location", p.getOrDefault("returnTo", "/"));
          exchange.sendResponseHeaders(302, -1);
          exchange.close();
       });
-      server.createContext("/userinfo", exchange -> reply(exchange, 200, "application/json", "{\"sub\":\"alice\",\"name\":\"Alice (synthetic)\"}"));
+      server.createContext("/userinfo", exchange ->
+      {
+         String authorization = exchange.getRequestHeaders().getFirst("Authorization");
+         try
+         {
+            if(authorization == null || !authorization.startsWith("Bearer "))
+            {
+               throw new IllegalArgumentException("Synthetic bearer required");
+            }
+            String subject = JWT.require(Algorithm.RSA256((RSAPublicKey) key.getPublic(), (RSAPrivateKey) key.getPrivate())).withIssuer(issuer).withAudience("native-admin").build().verify(authorization.substring(7)).getSubject();
+            if(!java.util.Set.of("alice", "bob").contains(subject))
+            {
+               throw new IllegalArgumentException("Declared synthetic actor required");
+            }
+            reply(exchange, 200, "application/json", json.writeValueAsString(java.util.Map.of("sub", subject, "name", subject.equals("bob") ? "Bob (synthetic)" : "Alice (synthetic)")));
+         }
+         catch(RuntimeException invalid)
+         {
+            reply(exchange, 401, "application/json", "{\"error\":\"invalid_token\"}");
+         }
+      });
    }
 
 

@@ -69,6 +69,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
         run: bash scripts/verify-browser.sh
+      - name: Verify packaged financial dashboards
+        env:
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          MAVEN_SETTINGS: config/maven/settings.xml.example
+          CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
+        run: bash scripts/verify-dashboard-browser.sh
+      - name: Verify packaged Carl conversations
+        env:
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          MAVEN_SETTINGS: config/maven/settings.xml.example
+          CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
+        run: bash scripts/verify-talk-browser.sh
+      - name: Verify packaged Quick Search and ESB
+        env:
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          MAVEN_SETTINGS: config/maven/settings.xml.example
+          CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
+        run: bash scripts/verify-qbits-browser.sh
       - run: docker build --tag agent-candidate:ci .
       - name: Scan packaged dependencies and image
         run: |
@@ -90,6 +108,12 @@ jobs:
             target/browser-evidence/*.json
             target/browser-evidence/*.png
             target/browser-evidence/*.pdf
+            target/dashboard-browser-evidence/*.json
+            target/dashboard-browser-evidence/*.png
+            target/talk-browser-evidence/*.json
+            target/talk-browser-evidence/*.png
+            target/qbits-browser-evidence/*.json
+            target/qbits-browser-evidence/*.png
       - name: Seal exact verified candidate
         if: inputs.candidate_version != ''
         run: python3 scripts/release-evidence.py seal target/delivery

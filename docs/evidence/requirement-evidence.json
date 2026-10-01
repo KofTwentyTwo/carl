@@ -4,6 +4,11 @@
     "evidence": "AgentApplicationTest; ConformanceTest; CarlNativeHttpTest; CarlFamilyHttpTest",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
+  "FND-02": {
+    "status": "BLOCKED",
+    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; config/release/foundation.json",
+    "limitation": "Current parent0.5.0-SNAPSHOT is a locally qualified development closure. Immutable0.4.1 remains the independently published baseline. Matching remote0.5 publication and fresh credentialed consumer/hosted access remain blocked; local install is not publication."
+  },
   "FND-03": {
     "status": "PASS",
     "evidence": "AgentApplicationTest; ConformanceTest; CarlNativeHttpTest; CarlFamilyHttpTest",
@@ -39,11 +44,6 @@
     "evidence": "AgentApplicationTest; ConformanceTest; CarlNativeHttpTest; CarlFamilyHttpTest",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "FND-02": {
-    "status": "PASS",
-    "evidence": "docs/evidence/foundation-0.4.0-artifacts.json; signed foundation publication run36670072139",
-    "limitation": "Qualified immutable0.4.0/sourcebb25a; nine recovered artifact bytes match signed remote publication. Final299-test consumer gate passes. Fresh consumer Maven/hosted credentials remain a separate release prerequisite."
-  },
   "BILL-01": {
     "status": "PASS",
     "evidence": "BillCsvTest; CarlServiceTest.at01at02ImportExactCurrenciesAndDuplicateIdentity; at03at09at17MissingBillsAndUntrustedTextRemainFactsAfterAttributedCorrection; docs/BILL-IMPORT.md",
@@ -64,14 +64,14 @@
     "evidence": "BillCsvTest; CarlServiceTest.at01at02ImportExactCurrenciesAndDuplicateIdentity; at03at09at17MissingBillsAndUntrustedTextRemainFactsAfterAttributedCorrection; docs/BILL-IMPORT.md",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "BILL-06": {
-    "status": "PASS",
-    "evidence": "BillCsvTest; CarlServiceTest.at01at02ImportExactCurrenciesAndDuplicateIdentity; at03at09at17MissingBillsAndUntrustedTextRemainFactsAfterAttributedCorrection; docs/BILL-IMPORT.md",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
   "BILL-05": {
     "status": "PASS",
     "evidence": "FocusedReportsTest.comparableRecordsCarryExactSourcesAndChangedCoverageBlocksDifferences",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
+  "BILL-06": {
+    "status": "PASS",
+    "evidence": "BillCsvTest; CarlServiceTest.at01at02ImportExactCurrenciesAndDuplicateIdentity; at03at09at17MissingBillsAndUntrustedTextRemainFactsAfterAttributedCorrection; docs/BILL-IMPORT.md",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "CAL-01": {
@@ -134,20 +134,20 @@
     "evidence": "FocusedReportsTest; ReportRecoveryTest; CarlServiceTest.at11NarrationFailurePreservesFacts",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "RPT-05": {
-    "status": "PASS",
-    "evidence": "FocusedReportsTest; ReportRecoveryTest; CarlServiceTest.at11NarrationFailurePreservesFacts",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
   "RPT-04": {
     "status": "PASS",
     "evidence": "ArtifactExportsTest; CarlReportExportNativeTest; familyExportsUseExplicitBytePagesAndRecheckEveryRecipient",
     "limitation": "Protected native/family copy, byte-paged export and revocation pass; final packaged PDF/text downloads and visual inspection pass."
   },
+  "RPT-05": {
+    "status": "PASS",
+    "evidence": "FocusedReportsTest; ReportRecoveryTest; CarlServiceTest.at11NarrationFailurePreservesFacts",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
   "CHAT-01": {
     "status": "BLOCKED",
-    "evidence": "AgentApplicationTest.actualApplicationPersistsConversationsAndServesAuthenticatedAdministration; CarlFamilyHttpTest",
-    "limitation": "Existing tests separately cover a mocked SDK loop and explicit family workflow routes with a mocked session. Ordinary natural-language orchestration into authorized report/draft generation and one actual SDK/HTTP-to-domain-to-QQQ acceptance test remain missing. Qualified upstream continuation/completion repair and later live model/entrypoint qualification are also required."
+    "evidence": "CarlConversationHttpTest; CarlTalkServiceTest; CarlTalkHtmlTest; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Actual controlled SDK/HTTP-to-domain-to-QQQ reports/drafts and financial/plan workflows pass current377 tests. Native Talk shares the sole host-owned service and passes packaged/running UI checks. Live model/client acceptance remains blocked by1Password access and real identity/data decisions; offline UI is not a live answer."
   },
   "CHAT-02": {
     "status": "BLOCKED",
@@ -232,7 +232,7 @@
   "REL-04": {
     "status": "BLOCKED",
     "evidence": "ConformanceTest; AgentApplicationTest; CarlServiceTest.workflowDeadlineCancelsSlowDatabaseReadAndLeavesServiceResponsive",
-    "limitation": "Historical controlled runtime diagnostics pass; incomplete-provider-stop correction is held pending qualified upstream/consumer artifacts, and agreed live budget/alert/provider usage policy remains unresolved."
+    "limitation": "Runtime controls/diagnostics pass controlled fixtures; agreed live budget/alert/provider usage policy is unresolved."
   },
   "REL-05": {
     "status": "BLOCKED",
@@ -259,40 +259,20 @@
     "evidence": "FinancialPlanningTest; DebtPortfolioTest; FinancingScenariosTest; PortfolioRestructuringTest; PortfolioPlansTest",
     "limitation": "Supplied terms and supported monthly models only; unqualified timing/approval/collateral/full cash coverage remain explicit conditional gaps."
   },
-  "FIN-05": {
-    "status": "PASS",
-    "evidence": "FinancialPlanningTest; DebtPortfolioTest; FinancingScenariosTest; PortfolioRestructuringTest; PortfolioPlansTest",
-    "limitation": "Supplied terms and supported monthly models only; unqualified timing/approval/collateral/full cash coverage remain explicit conditional gaps."
-  },
-  "FIN-14": {
-    "status": "PASS",
-    "evidence": "FinancialPlanningTest; DebtPortfolioTest; FinancingScenariosTest; PortfolioRestructuringTest; PortfolioPlansTest",
-    "limitation": "Supplied terms and supported monthly models only; unqualified timing/approval/collateral/full cash coverage remain explicit conditional gaps."
-  },
   "FIN-04": {
     "status": "PASS",
     "evidence": "CashFlowTest; ExpenseForecastTest; ExpenseRecordsTest; BudgetPreferencesTest; CarlServiceTest.selectedExpensesAndReserveEarmarksConstrainPurchaseAndRemainPermissionScoped",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "FIN-18": {
+  "FIN-05": {
     "status": "PASS",
-    "evidence": "CashFlowTest; ExpenseForecastTest; ExpenseRecordsTest; BudgetPreferencesTest; CarlServiceTest.selectedExpensesAndReserveEarmarksConstrainPurchaseAndRemainPermissionScoped",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
+    "evidence": "FinancialPlanningTest; DebtPortfolioTest; FinancingScenariosTest; PortfolioRestructuringTest; PortfolioPlansTest",
+    "limitation": "Supplied terms and supported monthly models only; unqualified timing/approval/collateral/full cash coverage remain explicit conditional gaps."
   },
   "FIN-06": {
     "status": "PASS",
     "evidence": "CarlServiceTest.versionedPlanRequiresAgreementCurrentRevisionAndExplicitCompletionEvidence; familyPlanIntentsShareNativeStateAtomicallyAndRecheckAudienceOnPdfRetrieval; PlanPdfRendererTest",
     "limitation": "Versioned plans, financial figures, protected PDF/native/family exports pass final stable gate and visual inspection; action remains human-led."
-  },
-  "FIN-11": {
-    "status": "PASS",
-    "evidence": "CarlServiceTest.versionedPlanRequiresAgreementCurrentRevisionAndExplicitCompletionEvidence; familyPlanIntentsShareNativeStateAtomicallyAndRecheckAudienceOnPdfRetrieval; PlanPdfRendererTest",
-    "limitation": "Versioned plans and protected reports retain source evidence and current audience through native/family retrieval; final gate and visuals pass."
-  },
-  "FIN-17": {
-    "status": "PASS",
-    "evidence": "CarlServiceTest.versionedPlanRequiresAgreementCurrentRevisionAndExplicitCompletionEvidence; familyPlanIntentsShareNativeStateAtomicallyAndRecheckAudienceOnPdfRetrieval; PlanPdfRendererTest",
-    "limitation": "Plan agreement, assignment/history, reviewed calendar publication and financial PDF exports pass controlled final gate/browser; live Synology remains separately unqualified."
   },
   "FIN-07": {
     "status": "PASS",
@@ -314,15 +294,25 @@
     "evidence": "TaxPreparationTest; TaxPlanningRecordsTest; CarlTaxPlanningNativeTest",
     "limitation": "Tax packets and conditional alternatives only. Unsupported rules remain UNDETERMINED; no filing/entity/professional approval or tax savings inferred."
   },
+  "FIN-11": {
+    "status": "PASS",
+    "evidence": "CarlServiceTest.versionedPlanRequiresAgreementCurrentRevisionAndExplicitCompletionEvidence; familyPlanIntentsShareNativeStateAtomicallyAndRecheckAudienceOnPdfRetrieval; PlanPdfRendererTest",
+    "limitation": "Versioned plans and protected reports retain source evidence and current audience through native/family retrieval; final gate and visuals pass."
+  },
   "FIN-12": {
     "status": "BLOCKED",
-    "evidence": "CarlReadToolsTest; CarlFamilyHttpTest; family financial workflow tests",
-    "limitation": "Controlled complete domain/tool/family/native paths and final299-test/31-browser checks pass; live model behavior and actual family entrypoint qualification remain outstanding."
+    "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Report/draft, purchase/budget, debt comparison/DRAFT plan, rental/tax/investment/balance/expense and interactive plan workflows pass actual controlled SDK/HTTP/PostgreSQL/QQQ current377-test and packaged gates. Representative live model/family acceptance remains blocked."
   },
   "FIN-13": {
     "status": "PASS",
     "evidence": "MonarchCsvTest; CarlServiceTest mon* tests; CarlNativeHttpTest; browser native-two-file-upload-preview-confirm-apply",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
+  "FIN-14": {
+    "status": "PASS",
+    "evidence": "FinancialPlanningTest; DebtPortfolioTest; FinancingScenariosTest; PortfolioRestructuringTest; PortfolioPlansTest",
+    "limitation": "Supplied terms and supported monthly models only; unqualified timing/approval/collateral/full cash coverage remain explicit conditional gaps."
   },
   "FIN-15": {
     "status": "PASS",
@@ -330,8 +320,18 @@
     "limitation": "Immutable expected effects and later selected observations pass domain/native/family tests; no task completion or external financial action is inferred."
   },
   "FIN-16": {
+    "status": "BLOCKED",
+    "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Natural-language kitchen-table purchase/purchase-negative/purchase-budget scenarios now invoke current-authorized deterministic cash/expense/reserve services and persist the same protected artifact shown by QQQ. Current377-test gate and typed browser purchase flow pass. Representative live model interpretation remains blocked."
+  },
+  "FIN-17": {
     "status": "PASS",
-    "evidence": "PurchaseChoicesTest; PurchaseAffordabilityTest; PurchaseAssessmentsTest; familyPurchaseOptionsReturnBoundedFactsAndExplicitRepaymentPages; browser purchase comparison",
+    "evidence": "CarlServiceTest.versionedPlanRequiresAgreementCurrentRevisionAndExplicitCompletionEvidence; familyPlanIntentsShareNativeStateAtomicallyAndRecheckAudienceOnPdfRetrieval; PlanPdfRendererTest",
+    "limitation": "Plan agreement, assignment/history, reviewed calendar publication and financial PDF exports pass controlled final gate/browser; live Synology remains separately unqualified."
+  },
+  "FIN-18": {
+    "status": "PASS",
+    "evidence": "CashFlowTest; ExpenseForecastTest; ExpenseRecordsTest; BudgetPreferencesTest; CarlServiceTest.selectedExpensesAndReserveEarmarksConstrainPurchaseAndRemainPermissionScoped",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "FIN-19": {
@@ -340,9 +340,9 @@
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "FIN-20": {
-    "status": "PASS",
-    "evidence": "InvestmentPlanningTest; CarlServiceTest.investmentScenarioPreservesExplicitOwnerStageAndUncertainty",
-    "limitation": "Explicit goal/stage and educational scenarios; no security selection, suitability guarantee or trades."
+    "status": "BLOCKED",
+    "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Attributed priority revisions, source-linked debt-versus-uncertain-return comparisons and same-plan rebase/current-intent conversations pass current377 tests and matching packaged dashboard checks. Live model/household acceptance remains blocked."
   },
   "FAT-01": {
     "status": "PASS",
@@ -369,11 +369,6 @@
     "evidence": "FinancialPlanningTest; DebtPortfolioTest; PortfolioPlansTest",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "FAT-11": {
-    "status": "PASS",
-    "evidence": "FinancialPlanningTest; DebtPortfolioTest; PortfolioPlansTest",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
   "FAT-06": {
     "status": "PASS",
     "evidence": "RentalRecordsTest.fat06PersistedSourceSplitRentApplicationAndReportReconcile; RentalEconomicsTest",
@@ -391,13 +386,18 @@
   },
   "FAT-09": {
     "status": "BLOCKED",
-    "evidence": "CarlFamilyHttpTest; family financial workflow tests",
-    "limitation": "Controlled financial family workflows pass with current access; live model and actual client qualification remain separate blockers."
+    "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Actual controlled natural-language debt comparison, draft creation, agreement/tasks/check-ins/rebase/PDF and observed effects use the same authorized domain services. Current377-test and matching package gates pass. Live interpretation/family acceptance remains blocked."
   },
   "FAT-10": {
     "status": "PASS",
     "evidence": "CarlReadToolsTest; closed provider/tool catalogs",
     "limitation": "No payment, filing, transfer, application or vendor-send capability. Designated Synology organizational writes are separate."
+  },
+  "FAT-11": {
+    "status": "PASS",
+    "evidence": "FinancialPlanningTest; DebtPortfolioTest; PortfolioPlansTest",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "FAT-12": {
     "status": "PASS",
@@ -409,20 +409,15 @@
     "evidence": "PortfolioRestructuringTest; PortfolioPlansTest; FinancingScenariosTest; PurchaseChoicesTest",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "FAT-22": {
-    "status": "PASS",
-    "evidence": "PortfolioRestructuringTest; PortfolioPlansTest; FinancingScenariosTest; PurchaseChoicesTest",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
   "FAT-14": {
     "status": "PASS",
     "evidence": "PlanEffectsTest; CarlPlanEffectNativeTest",
     "limitation": "PlanEffectsTest and CarlPlanEffectNativeTest pass; family exact-audience/revocation acceptance and nullable report figures included."
   },
   "FAT-15": {
-    "status": "PASS",
-    "evidence": "PurchaseAssessmentsTest; PurchaseAffordabilityTest; CarlServiceTest.selectedExpensesAndReserveEarmarksConstrainPurchaseAndRemainPermissionScoped",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
+    "status": "BLOCKED",
+    "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Actual controlled natural-language purchase/purchase-negative/purchase-budget SDK/HTTP scenarios call deterministic calculators, persist protected reports and inspect the same result through QQQ. Current377-test gate passes; representative live model evaluation remains blocked."
   },
   "FAT-16": {
     "status": "PASS",
@@ -434,15 +429,10 @@
     "evidence": "PurchaseAssessmentsTest; PurchaseAffordabilityTest; CarlServiceTest.selectedExpensesAndReserveEarmarksConstrainPurchaseAndRemainPermissionScoped",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "FAT-21": {
-    "status": "PASS",
-    "evidence": "PurchaseAssessmentsTest; PurchaseAffordabilityTest; CarlServiceTest.selectedExpensesAndReserveEarmarksConstrainPurchaseAndRemainPermissionScoped",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
   "FAT-18": {
-    "status": "PASS",
+    "status": "BLOCKED",
     "evidence": "CarlServiceTest.familyPlanIntentsShareNativeStateAtomicallyAndRecheckAudienceOnPdfRetrieval",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
+    "limitation": "Typed family plan intents pass; they do not prove family conversation creates assigned tasks, records progress/obstacles and revises the plan. This is an implementation gap, separate from live qualification."
   },
   "FAT-19": {
     "status": "PASS",
@@ -454,19 +444,49 @@
     "evidence": "ExpenseForecastTest; ExpenseRecordsTest; earlierReserveAllocationRemainsProtectedOnceAcrossMultipleSettlementLinks",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "FAT-23": {
+  "FAT-21": {
     "status": "PASS",
-    "evidence": "InvestmentPlanningTest; investmentScenarioPreservesExplicitOwnerStageAndUncertainty",
+    "evidence": "PurchaseAssessmentsTest; PurchaseAffordabilityTest; CarlServiceTest.selectedExpensesAndReserveEarmarksConstrainPurchaseAndRemainPermissionScoped",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
+  "FAT-22": {
+    "status": "PASS",
+    "evidence": "PortfolioRestructuringTest; PortfolioPlansTest; FinancingScenariosTest; PurchaseChoicesTest",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
+  "FAT-23": {
+    "status": "BLOCKED",
+    "evidence": "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "GoalTradeoffsTest and actual controlled conversational HTTP cases prove priority revisions, known debt costs versus uncertain returns, source staleness, explicit same-plan rebase and permissions. Current377-test/package/security gates pass. Live acceptance remains blocked."
   },
   "MON-01": {
     "status": "PASS",
     "evidence": "MonarchCsvTest; CarlServiceTest.mon01mon04TransactionsRetainSourceRevisionsAndNeverDeleteMissingRows; monRepeatBalancesDoesNotInvalidateFactsAndMissingMappingRetainsPartialStatus",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
+  "MON-02": {
+    "status": "PASS",
+    "evidence": "CarlServiceTest.monarchFullExportSizedImportAndRetryPersistTwentyFiveThousandRows; monarchBalanceHistoryAcceptsFiftyThousandDatedObservations; MonarchCsvTest.boundedLargeExportPreservesOneHundredThousandOpaqueIdentities",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
   "MON-03": {
     "status": "PASS",
     "evidence": "MonarchCsvTest; CarlServiceTest.mon01mon04TransactionsRetainSourceRevisionsAndNeverDeleteMissingRows; monRepeatBalancesDoesNotInvalidateFactsAndMissingMappingRetainsPartialStatus",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
+  "MON-04": {
+    "status": "PASS",
+    "evidence": "CarlServiceTest.monarchFullExportSizedImportAndRetryPersistTwentyFiveThousandRows; monarchBalanceHistoryAcceptsFiftyThousandDatedObservations; MonarchCsvTest.boundedLargeExportPreservesOneHundredThousandOpaqueIdentities",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
+  "MON-05": {
+    "status": "PASS",
+    "evidence": "CarlServiceTest.fat02TransferPairDoesNotBecomeIncomeAndReconciliationShowsDifference; BudgetPreferencesTest",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
+  "MON-06": {
+    "status": "PASS",
+    "evidence": "CarlNativeHttpTest; securityReconciliationAndImportPreviewRespectTransactionAndAccountPermissions; MonarchCsvTest.preservesOpaqueIdsMultilineNotesAndUntrustedOwner",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "MON-07": {
@@ -489,44 +509,24 @@
     "evidence": "MonarchCsvTest; CarlServiceTest.mon01mon04TransactionsRetainSourceRevisionsAndNeverDeleteMissingRows; monRepeatBalancesDoesNotInvalidateFactsAndMissingMappingRetainsPartialStatus",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "MON-02": {
+  "MON-11": {
     "status": "PASS",
-    "evidence": "CarlServiceTest.monarchFullExportSizedImportAndRetryPersistTwentyFiveThousandRows; monarchBalanceHistoryAcceptsFiftyThousandDatedObservations; MonarchCsvTest.boundedLargeExportPreservesOneHundredThousandOpaqueIdentities",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
-  "MON-04": {
-    "status": "PASS",
-    "evidence": "CarlServiceTest.monarchFullExportSizedImportAndRetryPersistTwentyFiveThousandRows; monarchBalanceHistoryAcceptsFiftyThousandDatedObservations; MonarchCsvTest.boundedLargeExportPreservesOneHundredThousandOpaqueIdentities",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
+    "evidence": "browser native-two-file-upload-preview-confirm-apply; narrow record/source inspection",
+    "limitation": "Actual desktop and390px narrow two-file upload/preview/explicit-apply/repeat checks pass in packaged browser."
   },
   "MON-12": {
     "status": "PASS",
     "evidence": "CarlServiceTest.monarchFullExportSizedImportAndRetryPersistTwentyFiveThousandRows; monarchBalanceHistoryAcceptsFiftyThousandDatedObservations; MonarchCsvTest.boundedLargeExportPreservesOneHundredThousandOpaqueIdentities",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
-  "MON-05": {
+  "MON-13": {
     "status": "PASS",
-    "evidence": "CarlServiceTest.fat02TransferPairDoesNotBecomeIncomeAndReconciliationShowsDifference; BudgetPreferencesTest",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
-  "MON-06": {
-    "status": "PASS",
-    "evidence": "CarlNativeHttpTest; securityReconciliationAndImportPreviewRespectTransactionAndAccountPermissions; MonarchCsvTest.preservesOpaqueIdsMultilineNotesAndUntrustedOwner",
+    "evidence": "CarlServiceTest.mon12mon13TwoFileReviewPreservesPartialBalanceConflictAndCanResume",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "MON-14": {
     "status": "PASS",
     "evidence": "CarlNativeHttpTest; securityReconciliationAndImportPreviewRespectTransactionAndAccountPermissions; MonarchCsvTest.preservesOpaqueIdsMultilineNotesAndUntrustedOwner",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
-  "MON-11": {
-    "status": "PASS",
-    "evidence": "browser native-two-file-upload-preview-confirm-apply; narrow record/source inspection",
-    "limitation": "Actual desktop and390px narrow two-file upload/preview/explicit-apply/repeat checks pass in packaged browser."
-  },
-  "MON-13": {
-    "status": "PASS",
-    "evidence": "CarlServiceTest.mon12mon13TwoFileReviewPreservesPartialBalanceConflictAndCanResume",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "MON-15": {
@@ -554,6 +554,11 @@
     "evidence": "CalendarPublicationServiceTest; CalDavClientTest; PlanCalendarCodecTest; calendarWorkflowPublishesOnlyUnderCurrentRealDomainAuthority",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
+  "SYN-05": {
+    "status": "PASS",
+    "evidence": "ReminderObservationsTest; browser native-shared-reminder-sync-and-human-reported-completion",
+    "limitation": "Controlled synthetic application contract; live qualification is separate."
+  },
   "SYN-06": {
     "status": "PASS",
     "evidence": "CalendarPublicationServiceTest; CalDavClientTest; PlanCalendarCodecTest; calendarWorkflowPublishesOnlyUnderCurrentRealDomainAuthority",
@@ -567,11 +572,6 @@
   "SYN-08": {
     "status": "PASS",
     "evidence": "CalendarPublicationServiceTest; CalDavClientTest; PlanCalendarCodecTest; calendarWorkflowPublishesOnlyUnderCurrentRealDomainAuthority",
-    "limitation": "Controlled synthetic application contract; live qualification is separate."
-  },
-  "SYN-05": {
-    "status": "PASS",
-    "evidence": "ReminderObservationsTest; browser native-shared-reminder-sync-and-human-reported-completion",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "SYN-09": {
@@ -618,5 +618,60 @@
     "status": "BLOCKED",
     "evidence": "docs/CALENDAR-REMINDERS.md",
     "limitation": "No authorized real endpoint/credentials/client qualification yet."
+  },
+  "UX-01": {
+    "status": "PASS",
+    "evidence": "CarlNavigationTest; CarlDashboardNativeTest;18 packaged dashboard checks; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Actual native nested groups, stable routes and contextual actions pass in matching RC7 en-US/en-GB browser."
+  },
+  "UX-02": {
+    "status": "PASS",
+    "evidence": "CarlNavigationTest; native login/dashboard title/favicon browser assertions; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Actual before/after-login native Carl name/title/favicon pass; lifecycle-managed branding survives head updates."
+  },
+  "UX-03": {
+    "status": "PASS",
+    "evidence": "DashboardFactsTest; CarlDashboardHtmlTest; saved-balance-choices-development-qualification.json",
+    "limitation": "Controlled scoped PostgreSQL fixtures verify exact cash and all-account spending, paired transfers, refunds, classification and explicit unknown principal/interest allocations. Live source coverage is separate."
+  },
+  "UX-04": {
+    "status": "PASS",
+    "evidence": "DashboardFactsTest; CarlSavedBalanceSheetsTest; CarlSavedBalanceSheetNativeTest",
+    "limitation": "Controlled selected saved balance sheets retain as-of/freshness/currency/gaps/double-count behavior; duplicate labels/current-source revocation pass actual native GET/widget HTTP. Matching RC4 v1/browser is separate."
+  },
+  "UX-05": {
+    "status": "PASS",
+    "evidence": "DashboardFactsTest; CarlDashboardHtmlTest; CarlConversationHttpTest",
+    "limitation": "Controlled current/version/stale plan facts separate projections, reports and selected observations; no checkbox or match establishes payment."
+  },
+  "UX-06": {
+    "status": "PASS",
+    "evidence": "CarlDashboardHtmlTest; DashboardFactsTest; native-dashboard-development-qualification.json",
+    "limitation": "Exact source figures reconcile bounded Sankey links and accessible tables, including refunds/surplus/deficit and separate currencies. Final packaged rendering is separate."
+  },
+  "UX-07": {
+    "status": "PASS",
+    "evidence": "CarlQBitsNativeTest; CarlConversationAuthorizationTest; actual other-member and current-revocation browser negatives; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Actual native global search rehydrates only current-authorized records; guessed private IDs and mid-request revocation deny whole assembled responses. Stored outputs retain source access checks."
+  },
+  "UX-08": {
+    "status": "PASS",
+    "evidence": "59 packaged browser checks; actual desktop/narrow visual review; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Matching RC7 desktop/narrow controls, SVG/table scrolling and no document overflow pass. Tall widgets require their internal scroll; a single viewport does not show every inner section."
+  },
+  "UX-09": {
+    "status": "PASS",
+    "evidence": "CarlQBitsNativeTest; actual OpenSearch/Artemis packaged qualification; qbits-event-report.json; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Actual native Quick Search uses OpenSearch2.19.1. Two real Artemis2.57.0 CloudEvents are consumed/acknowledged with zero dead letters and fixed index changes593ms before periodic refresh. Payload authority is ignored. Synthetic loopback fixtures only."
+  },
+  "UX-10": {
+    "status": "BLOCKED",
+    "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; foundation final prescribed verifier",
+    "limitation": "Current consumer377-test,59 matching packaged checks and fresh source/distribution/container scans pass unchanged floors. Independent final foundation full gate and authorized protected remote delivery remain pending; live/deployed states are separate."
+  },
+  "UX-11": {
+    "status": "BLOCKED",
+    "evidence": "CarlTalkServiceTest; CarlTalkHtmlTest; CarlNativeHttpTest; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Native Talk private default, explicit immutable sharing, readable protected outcomes, continuation links, pending/unknown polling and current revocation pass. Five matching packaged and five running preview UI checks pass offline. Owner-authorized live model replies remain blocked because1Password CLI authorization was dismissed."
   }
 }

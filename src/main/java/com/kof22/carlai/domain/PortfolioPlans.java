@@ -151,6 +151,15 @@ public final class PortfolioPlans
    public long compare(CarlService.Scope scope, UUID request, Set<Long> accounts, Set<Long> moves, LocalDate asOf,
       String currency, BigDecimal budget, int horizon, FinancialPlanning.Strategy rollover, String evidence)
    {
+      return compare(scope, request, accounts, moves, asOf, currency, budget, horizon, rollover, evidence, null);
+   }
+
+
+
+   /** Optional narration receives scoped facts; failure preserves deterministic figures and source revisions. */
+   public long compare(CarlService.Scope scope, UUID request, Set<Long> accounts, Set<Long> moves, LocalDate asOf,
+      String currency, BigDecimal budget, int horizon, FinancialPlanning.Strategy rollover, String evidence, CarlService.Narrator narrator)
+   {
       ids(accounts, 100);
       ids(moves, 20);
       date(asOf);
@@ -165,6 +174,10 @@ public final class PortfolioPlans
       new FinancialPlanning.PaymentTarget(1, budget);
       CarlService.bounded(evidence, 4000, "budget assumption evidence");
       String digest = BillCsv.hash(CarlService.json(Map.of("operation", "PORTFOLIO_COMPARISON", "accounts", accounts.stream().sorted().toList(), "moves", moves.stream().sorted().toList(), "asOf", asOf, "currency", currency, "budget", budget, "horizon", horizon, "rollover", rollover, "evidence", evidence)));
+      if(narrator != null)
+      {
+         digest = BillCsv.hash(digest + ":NARRATION_REQUESTED");
+      }
       Long prior = service.claimArtifact(scope, request, "FINANCIAL_PLAN", digest);
       if(prior != null)
       {
@@ -191,7 +204,23 @@ public final class PortfolioPlans
       {
          throw new IllegalArgumentException("Narrow portfolio or horizon; maximum report facts size is 2 MB");
       }
-      return service.saveArtifact(scope, request, "FINANCIAL_PLAN", asOf, asOf.plusMonths(horizon), facts, "", "NOT_REQUESTED", LIMITS, snapshot.sources(), null, resultGaps.isEmpty() ? "Portfolio comparison — affordability unqualified" : "Incomplete portfolio comparison — review input gaps", digest, snapshot.epoch());
+      String narrative = "";
+      String narrationState = "NOT_REQUESTED";
+      if(narrator != null)
+      {
+         try
+         {
+            narrative = java.util.Objects.requireNonNull(narrator.narrate(facts));
+            CarlService.bounded(narrative, 100000, "portfolio narrative");
+            narrationState = "COMPLETE";
+         }
+         catch(Exception unavailable)
+         {
+            narrative = "Narration failed; deterministic portfolio facts and assumptions are retained.";
+            narrationState = "FAILED";
+         }
+      }
+      return service.saveArtifact(scope, request, "FINANCIAL_PLAN", asOf, asOf.plusMonths(horizon), facts, narrative, narrationState, LIMITS, snapshot.sources(), null, resultGaps.isEmpty() ? "Portfolio comparison — affordability unqualified" : "Incomplete portfolio comparison — review input gaps", digest, snapshot.epoch());
    }
 
 

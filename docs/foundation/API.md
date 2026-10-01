@@ -1,6 +1,6 @@
 # API and extension points
 
-This is a Java library with MCP and native QQQ interfaces. The shared runtime does not define a REST `/chat` or `/approvals` controller. Applications normally inherit [`kof22-agent-parent`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/agent-parent/pom.xml), supply explicit native business components, and use the existing interfaces below. Dependency coordinates and versions are in [Artifacts](ARTIFACTS.md).
+This is a Java library with MCP and native QQQ interfaces. The shared runtime does not define a REST `/chat` or `/approvals` controller. Applications normally inherit [`kof22-agent-parent`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/agent-parent/pom.xml), supply explicit native business components, and use the existing interfaces below. Dependency coordinates and versions are in [Artifacts](ARTIFACTS.md).
 
 ## Authentication and caller identity
 
@@ -17,7 +17,7 @@ Roles are `VIEWER`, `OPERATOR`, `APPROVER`, and `ADMIN`. Unassigned callers reso
 
 ## Java conversation API
 
-Inject [`SessionManager`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/src/main/java/com/kof22/agentcore/session/SessionManager.java). Use the overload carrying identity and approval routing:
+Inject [`SessionManager`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/src/main/java/com/kof22/agentcore/session/SessionManager.java). Use the overload carrying identity and approval routing:
 
 ```java
 String reply = sessions.askReadOnly(
@@ -34,7 +34,7 @@ The caller's raw session key is scoped by the authenticated principal. `askReadO
 
 ## Register a business tool
 
-[`ToolRegistry.register(ToolBinding)`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/src/main/java/com/kof22/agentcore/security/ToolRegistry.java) accepts a provider-neutral definition plus a JSON-string executor. Names must match `{domain}_read_*` or `{domain}_write_*`, and duplicate names are rejected. Use a description that states units, scope, and the result shape; validate arguments in the handler before calling a deterministic business service.
+[`ToolRegistry.register(ToolBinding)`](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/src/main/java/com/kof22/agentcore/security/ToolRegistry.java) accepts a provider-neutral definition plus a JSON-string executor. Names must match `{domain}_read_*` or `{domain}_write_*`, and duplicate names are rejected. Use a description that states units, scope, and the result shape; validate arguments in the handler before calling a deterministic business service.
 
 Return business bindings from the same component factory used by the application main:
 
@@ -59,7 +59,7 @@ Imports are `com.kof22.agentadmin.bootstrap.NativeAgentApplication`, `NativeStor
 the same package, `ToolBinding`, `ToolDefinition`, `ToolResult` from
 `com.kof22.agentcore.runtime`, and `java.util.List`. For business records, use
 `ToolBinding.forCaller(definition, (arguments, caller) -> ...)`: the authenticated requester
-is separate from untrusted model arguments. The [native domain example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/examples/native-domain/README.md)
+is separate from untrusted model arguments. The [native domain example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/examples/native-domain/README.md)
 shares one authorized service between its QQQ process and caller-aware tool.
 
 The normal session path wraps registered tools with `ToolGate`. Reads execute with audit; authorized writes create a pending approval and execute only through the approval coordinator. Do not invoke a raw registered executor from a user-facing adapter. When Slack is disabled, audited read tools remain available; write capabilities are excluded because no approval delivery path exists.
@@ -150,4 +150,18 @@ The operational services are explicitly assembled Java objects; they are not aut
 
 ## Limits and errors
 
-Runtime admission, context, tool-call, token, and deadline limits are documented in [Runtime contract](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/docs/RUNTIME-CONTRACT.md). They are per-process controls. There is no configurable shared HTTP requests-per-minute limiter in these modules; configure body/rate limits at the deployment ingress when exposing the server. A timeout cannot prove an external write stopped, so inspect durable approval state before retrying an uncertain operation. See [Operations](OPERATIONS.md).
+The Anthropic adapter returns only nonblank terminal public text (`end_turn` or `refusal`).
+Truncation, paused/unrecognized stops and empty terminal responses raise `AgentRuntimeException`
+after recording received usage; there is no automatic retry or model fallback. Signed assistant
+content survives only inside the current tool loop, never as transcript content. See the
+[completion and continuation contract](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/RUNTIME-CONTRACT.md#anthropic-completion-and-continuation).
+
+Runtime admission, context, tool-call, token, and deadline limits are documented in [Runtime contract](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/RUNTIME-CONTRACT.md). They are per-process controls. There is no configurable shared HTTP requests-per-minute limiter in these modules; configure body/rate limits at the deployment ingress when exposing the server. A timeout cannot prove an external write stopped, so inspect durable approval state before retrying an uncertain operation. See [Operations](OPERATIONS.md).
+
+
+## Native family clients
+
+The opt-in [family client API](CLIENT-API.md) exposes verified household identity, private and
+explicit shared conversations, durable turns, and explicit consumer artifact workflows on the
+same native listener. See its [OpenAPI contract](client-api.openapi.json) and permission-revision
+requirements before implementing a mobile client. It does not grant external write authority.

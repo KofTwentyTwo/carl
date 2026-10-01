@@ -1,0 +1,128 @@
+{
+  "status": "INTEGRATED_REVIEWED; combined original-source clean gate PASS; real UI selector correction pending",
+  "foundationParent": "0.4.1",
+  "files": [
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlMetadata.java",
+      "bytes": 25455,
+      "sha256": "fc5705f5e28aaec745c7f9a9414f083ac985a65b1d46d0f9ee1c92accd69cecc",
+      "originalSha256": "6eac6db322f60f00c8bc029879bfb49ee4144d842838d2ea9fdab7f79211685f"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlNavigation.java",
+      "bytes": 5532,
+      "sha256": "402651ee8707ec8213be4e7780f3d96a6d244021d69b25d93dd80edb7703264e",
+      "originalSha256": null
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlDashboards.java",
+      "bytes": 5970,
+      "sha256": "57c95ba7215d85aaad6498dc5fbcddc1569bbc22d2be991d7be04d1a0e76aecd",
+      "originalSha256": null
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlDashboardHtml.java",
+      "bytes": 20354,
+      "sha256": "871cf7e8c00e1e1c1c045375b5024a08c01a4eac931631bbcf61defcf5b28f32",
+      "originalSha256": null
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DashboardFacts.java",
+      "bytes": 18802,
+      "sha256": "f32bbd5bd1e6b4a7a36d66a862976a0465cbed5a193c20841f51135e6d9ce6c4",
+      "originalSha256": null
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlNavigationTest.java",
+      "bytes": 3018,
+      "sha256": "e3e7d4553b40a58d7caa2cfe48ee48cb68dd9c5947ad5311cf238bd6808dc272",
+      "originalSha256": null
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlDashboardHtmlTest.java",
+      "bytes": 4996,
+      "sha256": "d4c6b106c96edb0fce118ac4d5c63b1caa2451ad17a64754eb1a7d682cb6d219",
+      "originalSha256": null
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/DashboardFactsTest.java",
+      "bytes": 16898,
+      "sha256": "633e71585ae7cb2d37641df890b1e440205456f6cbbc6918a411bbf38b5ca98b",
+      "originalSha256": null
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlDashboardNativeTest.java",
+      "bytes": 10500,
+      "sha256": "7a6ca65703d744ab52f75ebae90d7480dc9ac36691865ce330aaa78280e8dae9",
+      "originalSha256": null
+    },
+    {
+      "path": "docs/UI-REQUIREMENTS.md",
+      "bytes": 12633,
+      "sha256": "fc314745fd2a9a72894b6c442837d4c06e4db11e438de1c37282797e015984d2",
+      "originalSha256": "effb578e95de838dd5ba6ba7ba3af94fab7bb27bf95531955f09df2aa89fe22a"
+    }
+  ],
+  "stagedGate": {
+    "command": "mvn -o -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+    "terminal": 90231,
+    "exitCode": 0,
+    "tests": 352,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "lineCovered": 9782,
+    "lineTotal": 11132,
+    "branchCovered": 5706,
+    "branchTotal": 8319,
+    "log": "/private/tmp/carl-native-ui-final-verify.log",
+    "initialRED": "/private/tmp/carl-native-ui-red.log",
+    "initialRedTests": 7,
+    "initialRedFailures": 7
+  },
+  "sanitizerProof": {
+    "status": "PASS",
+    "evidence": "Synthetic renderer preview run through exact RC4 sanitizeHtml implementation; not packaged browser/live acceptance",
+    "sanitizerSourceSha256": "e739752263e9798042344d6fc7dd9117d1530e0b807c3c7dc15b1aa387034f7b",
+    "rawSha256": "68a9475a6332ba99329f624b59f3f057bebeaacf9638442a0903166a41cfa1ce",
+    "sanitizedSha256": "93f15de6ca89f5a7c03f27295b79202d16e85c5fb0c2933fdeff213331d4049b",
+    "svg": 1,
+    "paths": 3,
+    "tables": 3,
+    "exactAmounts": [
+      "1000.25 USD",
+      "125.25 USD",
+      "875.00 USD"
+    ],
+    "activeMarkup": 0
+  },
+  "review": "Native scoped read widgets, escaped inert HTML/SVG, stable navigation IDs, mixed cash/card/debt/investment cents, source/as-of/gap qualification and reported-versus-observed/current-version distinctions reviewed.",
+  "wholeProduct": "NOT_QUALIFIED; RC4 packaged visuals, landing adoption, QBits, final security and live qualification pending",
+  "originalSourceGate": {
+    "command": "mvn -o -B -ntp -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+    "terminalExitCode": 0,
+    "log": "/private/tmp/carl-integrated-ui-plan-verify.log",
+    "logSha256": "a77c23be454a8efcf3272723d42c07450ee0b140da6f50a7ebbb494526755a65",
+    "jarSha256": "d940f0f64efc8ae97add2f9365dbbaeac531f0e67f9c60fd4e5bbeee78cc6d71",
+    "tests": 362,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "coverage": {
+      "BRANCH": {
+        "type": "BRANCH",
+        "missed": "2742",
+        "covered": "5968"
+      },
+      "LINE": {
+        "type": "LINE",
+        "missed": "1390",
+        "covered": "10081"
+      }
+    }
+  },
+  "discoveredUiGaps": [
+    "RC4 localized date-picker wire mismatch reproduced by three real interaction tests; upstream integration patch correction is under full qualification.",
+    "Saved FINANCIAL_PLAN duplicate labels collapse native dropdown options; dedicated scoped selected-balance-sheet PVS correction is being implemented."
+  ]
+}

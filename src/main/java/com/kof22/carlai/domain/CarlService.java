@@ -270,12 +270,19 @@ public final class CarlService
    {
       String table = switch(kind)
       {
+         case "members" -> "carl_member_view";
+         case "plans" -> "carl_plan_view";
+         case "planEffects" -> "carl_plan_effect_view";
+         case "reminderObservations" -> "carl_reminder_observation_view";
          case "vendors" -> "carl_vendor_view";
          case "work" -> "carl_work_view";
          case "portfolioMoves" -> "carl_portfolio_move_view";
          case "debts" -> "carl_debt_view";
          case "accounts" -> "carl_account_view";
          case "properties" -> "carl_rental_property_view";
+         case "rentalScenarios" -> "carl_rental_shock_view";
+         case "taxAlternatives" -> "carl_tax_alternative_view";
+         case "taxReferences" -> "carl_tax_reference_view";
          case "transactions" -> "carl_transaction_view";
          case "budgets" -> "carl_budget_view";
          case "cashPlans" -> "carl_cash_plan_view";

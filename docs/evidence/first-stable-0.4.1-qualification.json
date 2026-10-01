@@ -1,0 +1,870 @@
+{
+  "status": "CURRENT_REVIEWED_SLICES_STABLE_GATE_PASS_PRODUCT_INCOMPLETE",
+  "command": "JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home mvn -o -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+  "foundation": {
+    "version": "0.4.1",
+    "source": "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+    "release": "https://github.com/KofTwentyTwo/kof22-agent-foundation/releases/tag/v0.4.1",
+    "qualificationRun": 36703216841,
+    "evidenceZipSha256": "c7179d13c0ce1e1820ca1708bebda89184776eeac73f4f468ca852546d1faa92",
+    "artifacts": {
+      "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.pom": "8566135b5ce53d51c2694b47b07a91538cea4d68e5d404e7deffe383060dcd04",
+      "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.jar": "21f05cd41f328b3509499d4b0705c2e3196a3d621f856f34eb7058f6074a6a5e",
+      "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1-tests.jar": "7a9775db00acdae6a8df7a650c1e5aa9a92863dd37b3c9cbb374a3a194aa3fdf",
+      "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.pom": "42860a4e97435c2d8aa87a9afdbf37053e6ec0b9851c680de1e77170848711d2",
+      "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.jar": "d03c1c146061299ae92a3477fab90644c4e763b6215a61f153d44f977ed727fc",
+      "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.pom": "5723faffdb3342711051a0f6813889518edacb9a32003152617f9781e64f9cd6",
+      "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.jar": "051e1e7f08a4f419b7bd41b1b5fb34d6bb453dedb07949d7e99ad24b8df06edc",
+      "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1-tests.jar": "ed0265f7ee64fb902458bad28106597bf1d8b50f74912c5df54122c708f62fba",
+      "com/kof22/kof22-agent-parent/0.4.1/kof22-agent-parent-0.4.1.pom": "36beb2ce963b7d899f288d781c70d19e6eeeaaf7179e88550338981a875d271c"
+    }
+  },
+  "localResolution": "Exact signed retained candidate bytes; no fresh consumer Maven fetch",
+  "sourceBase": "df6b373698552b1611e3683745bb46ae8113f68b",
+  "sourceInputsSha256": [
+    {
+      "path": "src/main/java/com/kof22/carlai/AgentApplication.java",
+      "sha256": "7336767a37615fde85afbd5fb2d1a5f4db8f41c9e0096cda5488e5e2332629a7"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ArtifactExportBackend.java",
+      "sha256": "d4ec494b02849ed021964bc3558f281a2fea7562f05837722e20a6f14ddc0719"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ArtifactExportProcesses.java",
+      "sha256": "eed541a3f4db53675dfd5e954e3cfad496a6cc4fbe4216ec412db285a2a9e6b5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/AvailabilityProcesses.java",
+      "sha256": "1c3fa2236657a492e3b29ee39f37eb4632b59deef2849ac26a532890ae694e46"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/BalanceSelectionProcesses.java",
+      "sha256": "bc6a3792502c22a0f91706e95b12828e920e6c8edc74a42de5db37e112fb0135"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/BalanceSheetProcesses.java",
+      "sha256": "19a7f9d273347f77d38425274150054e298a3d697e7f60897eec58a59fe1544c"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/BudgetProcesses.java",
+      "sha256": "1f906cb95a75d18d1b8bccafb59b0d1e6369b6f73ddf1e49fb8e67753eaabb56"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CalendarProcesses.java",
+      "sha256": "87163cfce532ed525de3033e0614969fb2b53b9fa64769d251f73a29d8b74753"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlExportBackend.java",
+      "sha256": "a75cda16f1699abc19ed78da00204fd9ba7e0775a342628fc16e60e69b9eed9b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlMetadata.java",
+      "sha256": "6eac6db322f60f00c8bc029879bfb49ee4144d842838d2ea9fdab7f79211685f"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlProcessScope.java",
+      "sha256": "75832760314f952347f1a93afa9129e58220c868b0ee7d15ca7f98b8bed172c1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTools.java",
+      "sha256": "815d414b86a338f4dcdc27f7b8844928b17c899d59ea663fbfa21c5b006abd90"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlUploadBackend.java",
+      "sha256": "afc5307857aa960f31ceb7439a04d0e8d1b9f1bde930cb830499b69a70fe9350"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CashProcesses.java",
+      "sha256": "8046626c4ebd1f2f23b149baaf9bef741022c59295e09799a1a3d6818401fb21"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ExpenseProcesses.java",
+      "sha256": "7dcc151fb6930d99e99321cf6ee3175e001eaf911b95da5b81786b8c0bfbaf75"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/GoalProcesses.java",
+      "sha256": "f6f165be121eb554ca9b8ad5721cc6045cb8f05af0380146ca4db87735ae02ad"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/MonarchUploadProcess.java",
+      "sha256": "2b3dbba0a512cd5b83b50425d98e695b9f3ae86f89412a189804304210bdca85"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/OfferProcesses.java",
+      "sha256": "285f6f50fae5116f4201bf94d2b91e8bd13d5ae86da67b05860fa846c63e8a91"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PlanEffectProcesses.java",
+      "sha256": "97f147cc1f25e4653c287c6f078511a41c8125753313d9bdb42b65f58c2ccb3c"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PlanProcesses.java",
+      "sha256": "b0ce35c0d91297de435233c5d15434f39adc86a35ed3d997eaf531d22f693c11"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PortfolioProcesses.java",
+      "sha256": "8aeb87a5bdc04e18ac4ce1914735d125a08af399f32f99a25ffc326fc5b6beb1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PreferenceProcesses.java",
+      "sha256": "1d9dc1911348f08145100b4bab207274fbc8bd5c9f08e4c4b27664c6544fd618"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PurchaseProcesses.java",
+      "sha256": "3cf1a706529dd4154ccc296f337b0dad15a2b8f1ab2c075e56d8e654ccc55f95"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/RentalProcesses.java",
+      "sha256": "e83ea35f0d406042d00da71fae52dcb31d8196349bc91375d50d26ccc7920075"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/RentalReviewProcesses.java",
+      "sha256": "20cb9098a7363eff16db29e8a6ea2e51430f5e109bacc6c1860e1bc288795057"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ReportProcesses.java",
+      "sha256": "d21181aedbac34a65f3e04dd3c47afdb731c7d3a15e37d61d734e1468d9a56f4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/TaxPlanningProcesses.java",
+      "sha256": "97f709b0a7d3a66d2a164eaaedb1de22318b13030f4bfdcf739a03abc213aaec"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/TaxProcesses.java",
+      "sha256": "df5a3b5b9fe1886e16c89be295227fd73665d426b1d90b3e3ea6638fc05dc03b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/VendorProcesses.java",
+      "sha256": "28afa6d9092252bb87aba592f0231369ec3413e52396beedb7cf57726706ab80"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/AgendaDecoder.java",
+      "sha256": "36a10db662338177c2467d9c99cdf17e42547c27f58361b97f19f1ad2f53cf14"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/CalDavClient.java",
+      "sha256": "f68eb11518f7731d4da1e08b9a6eb61b675b0080b0982bf7e92db7321c8c0161"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/CalendarPublicationService.java",
+      "sha256": "6a83af3fabbbe98544184882c05b60c26291c4ae4fef239e594dfedcd46cc0e5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/PlanCalendarCodec.java",
+      "sha256": "9b891a8e5bff66f332988bc652b8b034b7471686bb5f07588294aac4c9d30ba4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/ReminderStatus.java",
+      "sha256": "5a26b796507647bde1899cdbc8f61a6315aeb3f223ecf59b31c849a1695960b0"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ArtifactExports.java",
+      "sha256": "7bd85e191f8caa12696ffd37e7a5f2495c5e3552a0f8a5dc8144d8118dc80a75"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ArtifactPresentation.java",
+      "sha256": "02874aadf3b704f9071c936040b5bbe0e8f9fc60547a670eb1f1ca0b2c3d99fe"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/BalanceSheets.java",
+      "sha256": "bfbd8b7b3b99426c75624c99d37d174e6e9200a12c51d1e2c092bdcc0c2670a6"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/BillCsv.java",
+      "sha256": "ca0d5dcb665e7eb68eea0bcf6f3607201554aba8c0e16a67411946faf063f3e2"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/BudgetRecords.java",
+      "sha256": "84c7ddc3284b4d50eabd228b0c94c0c774cb388595442a498f897c4057c422ad"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarAgendaService.java",
+      "sha256": "795feaa17afde0027cde625538d1a4532b334df4fd506a6fe7dd2427d1167fd0"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarAvailability.java",
+      "sha256": "c34324787629f5f893f7b6b1b6d61b065dce35d41d3513ad08d0b499e3b9fe02"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarClientInput.java",
+      "sha256": "495a4069a85e9ca92b9a8b898369107fccab71ad775a588db046918f2cba8670"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarWorkflows.java",
+      "sha256": "fc49c496f69374690f305634f84218971319c4ba7a5b55653a9fdea87ca94dd0"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlClientWorkflows.java",
+      "sha256": "754c69fecbbc0ce45f6ff96e150b6ecbe3961b5263e24b3c0e09e88f67d1d855"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlConversation.java",
+      "sha256": "967be49652933c289c8304bfe2b7678832be0403b75de2eb1ec99fc075764b2e"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlFamilyAccess.java",
+      "sha256": "36147d70b6b796850114c937cc602efe346885cdc2525835de9e46549d6930a8"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlService.java",
+      "sha256": "b7a6bc1a34d833f43c4de1a45a01004659abe7e24be6f75f5f8ac2eea9882761"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CashFlow.java",
+      "sha256": "9c2cc849f2c26eaac7adffdaf924483db5392fa527106a9fd4832fd3e8b264a3"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CashPlans.java",
+      "sha256": "0aa618992738437138553b448a59fb58d86df92f914835218ec490d2b019b862"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DebtPlans.java",
+      "sha256": "13a311f6e5b8de2be021c5ad89f718b8ce441c485f21af391913bcd61d962d36"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DebtPortfolio.java",
+      "sha256": "ae28c2ffda07d04f96193bd255e3d96ad6d35ec7af509548556cddd3dfe812df"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DomainPreferences.java",
+      "sha256": "a33c149c2eb9713f8023fcdc3a73f1af37ddad3c993dc0622a38a5ff11fd1bc1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ExpenseForecast.java",
+      "sha256": "4fc5db81aed71b1745f94b0f4923dda4c2b5bf2afece3e2fd78f36a8587f5cab"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ExpenseRecords.java",
+      "sha256": "4297860acddf9293895ea9548d84b68427413f45221c618ca65b2ead4dbecedc"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancialGoals.java",
+      "sha256": "3a1127c10ae2249edfa7d6c64db74eb978eaca757a5770eadafe9765b9d9cdc1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancialPlanning.java",
+      "sha256": "887b54a7f5c6286a93b4245c8a1481b8116b212d1745088839232bd8aac0b223"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancialRecords.java",
+      "sha256": "b7d0fc59aac14f04213bcb5d2010dd9ed60f92f3c4666ba8c6ea46ab4ec272e2"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancingOffers.java",
+      "sha256": "c46f47d0c685819efc6bd456907842131ac1fb2669344e242f82f2c7ad7e8d1f"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancingScenarios.java",
+      "sha256": "d6da53c78791b6715ac861c7e1246a8267889a11e838fb7c3c32c418bb0169e5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FocusedReports.java",
+      "sha256": "1ca62d414294a1bbf7d65d348aea001af936ca2dc1d9dbb0dcf20c99b8023521"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/InvestmentPlanning.java",
+      "sha256": "a3442142000a787ef1834100162694e4c373aa50930f0b18723f0d7f3e468476"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/MonarchCsv.java",
+      "sha256": "abdf6d36f2b03274a65d81a500219174b0fa92410574ce6f304f823c3e94d4fd"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/MonarchImportWorkflow.java",
+      "sha256": "7003b166ffd1cfcbd0a868223eca1178f2942802348acb663fd7228075ca674e"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanCalendarAuthority.java",
+      "sha256": "8ef3a5dccfcadbac719e7aec286f0eba2a94b1d31f090ecf530d095ce8bd178b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanClientOperations.java",
+      "sha256": "32d97a7c18e1de20df840b0c771516caeb23f04ed39cefb879e207f7eaa6888a"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanEffects.java",
+      "sha256": "5769f455d1cb5bc04b38abef78c9a697e40120250cedbb7b46b000811562bef9"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanExports.java",
+      "sha256": "f423a0c6c0cd57179b813d35ad39581bc3d08bb6d96581aa0e40e552972f07ad"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanLifecycle.java",
+      "sha256": "51551d94dbce8c743f711fd6ffd8428b8629fa7b584171acc8de36b3a01feff4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PortfolioPlans.java",
+      "sha256": "655c39791e94f72274650c32ab4e081975d5b125adc30c9559ae07032f8da622"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PortfolioPresentation.java",
+      "sha256": "03bfd18bcf502a35dc854c69f0634028b5a1760fe3ccfc100ca35c932c3f1417"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PortfolioRestructuring.java",
+      "sha256": "7912da2d916993b28df68e651dc3d3975b5e4130b6c7816f547889528ff172bf"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchaseAffordability.java",
+      "sha256": "cefe99188ed124a7ca0407924ed69f6c507a72597e945172661471dd92b08a83"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchaseAssessments.java",
+      "sha256": "75de2bd1bf9e69a9f9dbf1e1d763e5e7e2ec0d3b14e7758581f0df2b663b3bab"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchaseChoices.java",
+      "sha256": "f8511ebc52cac1608e22ad49cd23ab326aaefb21e8884c0e6b9b9901c91d3fb6"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchasePresentation.java",
+      "sha256": "8157fc9892b6528d8ddabf636ce931c04565e8f7ebd952a39c43118898a8623b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ReminderObservations.java",
+      "sha256": "59cac304430383c0915a44bc8df697009998b4446064a530ef4c67149056200b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalAllocationReviews.java",
+      "sha256": "5e3ce0d7fd4f9e44f92140408e7000a1161942b6829ce286c2769c779861eb52"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalEconomics.java",
+      "sha256": "bb6ae6676aa6ce0e24814dd9c68aa1e7eb154f8cac16d4d7d1ada1260c4188ec"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalRecords.java",
+      "sha256": "3fe79ecbaef35d308537fc0e9b658912e2c674bc0464102dd179c5afac6623e4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalStress.java",
+      "sha256": "7870b9ee7dc3e845e5abaaa9cbd0e0d0974c70601177af39795db37f2701a5f7"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ReportRecovery.java",
+      "sha256": "ff34ad38e861434d2edf6556ace53103e248069d6577089e1b436af15ace3734"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/TaxPlanningRecords.java",
+      "sha256": "70c07f6aac9fd23c4508ec0b68255edd842de83ecdb9bc4db6ae5f2ca5dd8ab6"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/TaxPreparation.java",
+      "sha256": "8525f30ff63267058c5ad14a5a719aa0c7ad01d1f4292415bb946e6d4da78c51"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/TaxRecords.java",
+      "sha256": "a012c089e1f12aa628daeeb3cf856e3f58330d45dde6d8f7c50fa90a95f1cff5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/VendorRecords.java",
+      "sha256": "c89bc4641bebb7f11d22a81296b15ee1d30ea2ce65eae210067a9869cf22c615"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/report/FinancialReportFigures.java",
+      "sha256": "eb0e4d675d1b4fa52257b928265c2697168fb306b3b2515c95856edcd4649bb4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/report/PlanPdfRenderer.java",
+      "sha256": "e87d2935de25fae8c76637e80aa3ced1199c35d03fe61a0853ccae4c145e2f54"
+    },
+    {
+      "path": "src/main/resources/db/migration/V10__permitted_member_labels.sql",
+      "sha256": "8175b2b1a962693f751b325dda4f48c664634c79debf498e8dfa967cc9cd5b5d"
+    },
+    {
+      "path": "src/main/resources/db/migration/V11__calendar_connection_coverage.sql",
+      "sha256": "d786f841e3d58bbeee44a582f52d894caca4d69130f498a024dcf1d038153912"
+    },
+    {
+      "path": "src/main/resources/db/migration/V12__protected_plan_exports.sql",
+      "sha256": "75f136cc5265d7ace6adf7cc167b93c223f292b8e8611ddf9b40684f8e52c39e"
+    },
+    {
+      "path": "src/main/resources/db/migration/V1__carl_domain.sql",
+      "sha256": "f7ab202cb79350d09dd760806fcf26828978464654f3f666af5d63728f473382"
+    },
+    {
+      "path": "src/main/resources/db/migration/V20__calendar_publication_outbox.sql",
+      "sha256": "a151a7c828403cf5737d79647e3bd51b19f9128e86be423b3f31166c8bf51c20"
+    },
+    {
+      "path": "src/main/resources/db/migration/V21__calendar_domain_relationships.sql",
+      "sha256": "8ce6141f6a804f6867c9505de920d47474a5b9bc6f99469d3ad13a7a90087fa9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V22__financial_client_workflows.sql",
+      "sha256": "c96c07f057f25911cda025273818bd9e2967a0b9fbee0dc04b298411b82bfc86"
+    },
+    {
+      "path": "src/main/resources/db/migration/V23__permitted_busy_calendar_reports.sql",
+      "sha256": "53e8d0c18ff78fad5757f296a475b79d0ea074fed4026f538d3c7c9dbe38296f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V24__debt_payment_assumptions.sql",
+      "sha256": "6246d4993690d80d341e4638745c7894f683c74fe21d9a6134072822d0bec37e"
+    },
+    {
+      "path": "src/main/resources/db/migration/V25__dated_cash_plans.sql",
+      "sha256": "c38602bb8069032a650c20f8b5d068f47b2dd4698d9dc3d031e43c33aac1be45"
+    },
+    {
+      "path": "src/main/resources/db/migration/V26__purchase_client_workflow.sql",
+      "sha256": "20e60717d2db465f0d6bcc53ac9473ee5e623d25b78beecc74fb61c08ebebe1d"
+    },
+    {
+      "path": "src/main/resources/db/migration/V27__calendar_operation_status_view.sql",
+      "sha256": "d27e0691a46ede09baa841d7046493af432a2a0665f1664ee21d3e1a8b217cac"
+    },
+    {
+      "path": "src/main/resources/db/migration/V28__owner_financial_goals.sql",
+      "sha256": "3e52591a6db389de83cfa9ee04d61ded05532af858c3f45e7118fdb0c72dbdbb"
+    },
+    {
+      "path": "src/main/resources/db/migration/V29__financing_offer_terms.sql",
+      "sha256": "d9d70a44460602cf589324e22a548be50b5233266f9025b11359a07f14ba8364"
+    },
+    {
+      "path": "src/main/resources/db/migration/V2__monarch_upload_reviews.sql",
+      "sha256": "c65dc3f9268d7a00a62266fca017d40c5d8333124533891f21a5a999ed637980"
+    },
+    {
+      "path": "src/main/resources/db/migration/V30__rental_workflows.sql",
+      "sha256": "3885a41d605efdf2f2cb2b870e04d23703cb14bd6170d279c31aa383adf659a3"
+    },
+    {
+      "path": "src/main/resources/db/migration/V31__offer_client_workflow.sql",
+      "sha256": "0ac16f6df90fee8883325a03dd7db3bd2893913c9cf6c99b7e72c46d898356be"
+    },
+    {
+      "path": "src/main/resources/db/migration/V32__tax_preparation_context.sql",
+      "sha256": "c80a0c083367482b07bf75756ad8efd10190b2637b914b2fbe3c657e997ec2b9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V33__expense_forecasts.sql",
+      "sha256": "69534c59407cac25a9e045372aba665e32ab9c4d9d3b05b609242503ea9e80a9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V34__tax_dependencies_and_family_reports.sql",
+      "sha256": "4550141db13aaa3ea57d096e94289f5b7effba5ac6b4b03e4f3f69c386081f0e"
+    },
+    {
+      "path": "src/main/resources/db/migration/V35__portfolio_restructuring.sql",
+      "sha256": "4a8d6299735aa630608c22c8cb0fb4a438b524d56373e846f47b54d21340ae76"
+    },
+    {
+      "path": "src/main/resources/db/migration/V36__family_plan_workflows.sql",
+      "sha256": "657391948a794a13ada9e1a10ad70322be54aa34261b298edd63f1647c62bb6c"
+    },
+    {
+      "path": "src/main/resources/db/migration/V37__family_plan_replanning.sql",
+      "sha256": "6817b275c0b85a8583e865de7a5ff12555934af3e7c1ed5adb73f37c56b8b928"
+    },
+    {
+      "path": "src/main/resources/db/migration/V38__calendar_agenda_projection.sql",
+      "sha256": "2149e0bbf34fbecd7b0d7fb334ad869d655dc3dbd72dac630e53832dcc21bfcc"
+    },
+    {
+      "path": "src/main/resources/db/migration/V39__rental_allocation_reviews.sql",
+      "sha256": "0e23369009708e46737e32c7e411516110211a33284142c5fea9b21af2bb985f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V3__permission_epochs.sql",
+      "sha256": "2ba72d017d2b25b6561489302b4f055a91b64b7e16d53bf450fb5a64abb96700"
+    },
+    {
+      "path": "src/main/resources/db/migration/V40__portfolio_family_workflows.sql",
+      "sha256": "ed7470643d88d91c20a0b9d15122fce042ad78f8a9272910cf9fcf8bfde932c1"
+    },
+    {
+      "path": "src/main/resources/db/migration/V41__vendor_draft_versions.sql",
+      "sha256": "8fe0bcce4c1aa14727c3abe4845e4c46825e199cb03d87e064943377ae94b25a"
+    },
+    {
+      "path": "src/main/resources/db/migration/V42__manual_transactions_and_budgets.sql",
+      "sha256": "54809933a17c3c7facd2c9737f8694eeb3acd43347c7044e4b866d69111fa260"
+    },
+    {
+      "path": "src/main/resources/db/migration/V43__domain_preferences.sql",
+      "sha256": "9fdb35d270030088432066dc0716c80c75b6d18d049a9f99bbdb93e73b2a463c"
+    },
+    {
+      "path": "src/main/resources/db/migration/V44__purchase_options_workflows.sql",
+      "sha256": "f7242ec43b3ab4cd51016e330c7c3d21ba77a56e4f43aecbdc8cb4ae0a56520f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V45__reminder_observation_review.sql",
+      "sha256": "8f4d563e60e85e3a268eeaacf456a72734360ce2e212c968a0bd583e414042e1"
+    },
+    {
+      "path": "src/main/resources/db/migration/V46__tax_planning_sources.sql",
+      "sha256": "8dad8f3d4d8ca5e8d9b602ef2fda0e200bddde86a4280456836e424bfc361f51"
+    },
+    {
+      "path": "src/main/resources/db/migration/V47__report_recovery_and_focused_reports.sql",
+      "sha256": "ec770435ea4108866814b68ca5addcbc51cb229f5ae764b6f919e7a9eb712de7"
+    },
+    {
+      "path": "src/main/resources/db/migration/V48__protected_report_exports.sql",
+      "sha256": "7c7c90fd044f86df655ebeff3fd57335eddf187fda1b4bd767794ae6b476caa0"
+    },
+    {
+      "path": "src/main/resources/db/migration/V49__rental_stress_assumptions.sql",
+      "sha256": "1b87b762cb26cef334651a4f9b3a4b87574043a2ad97a1d1535309476e358050"
+    },
+    {
+      "path": "src/main/resources/db/migration/V4__artifact_source_versions.sql",
+      "sha256": "564ae29602df6e24443e590f98259e87d6155d46db8d30d420bd29944bbfcb7c"
+    },
+    {
+      "path": "src/main/resources/db/migration/V50__plan_effect_expectations.sql",
+      "sha256": "21f1ad0b84e0bd850e3b7af0cdf111df886f929a2191183eb762c506fedd9683"
+    },
+    {
+      "path": "src/main/resources/db/migration/V51__report_and_tax_client_workflows.sql",
+      "sha256": "1a96dbf8da0403028f51acc6a48081ea8d50e3e14b1ac98c93e882d7b0dee730"
+    },
+    {
+      "path": "src/main/resources/db/migration/V52__native_uuid_choices.sql",
+      "sha256": "b027810f9369af29757172d90d03a3d8de15dde31239a61854e61f474de76d0a"
+    },
+    {
+      "path": "src/main/resources/db/migration/V53__family_balance_workflows.sql",
+      "sha256": "01175e196f648da26674af1a27e9705ff0bb780f9aae7e2e06eb0bbbc93eb310"
+    },
+    {
+      "path": "src/main/resources/db/migration/V54__native_balance_selection.sql",
+      "sha256": "ef975a9a748d3f06d4a58f67be097cc5de65118c9563acbd8f379431d99e173f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V55__family_report_export_workflows.sql",
+      "sha256": "fddd6936a9697a91d746231d2eaa044e80bdabdfa104f56c441b70d71574efa8"
+    },
+    {
+      "path": "src/main/resources/db/migration/V56__family_plan_effect_workflows.sql",
+      "sha256": "46cdedaae5ba0dee688b878b27d0b65bc0f49023f875dd4605ea0008bac092d9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V57__conversational_workflow.sql",
+      "sha256": "29dd4a4bf5713de3fb048812a6d5156a877a6a00e4798cbabff65c87b7b82f71"
+    },
+    {
+      "path": "src/main/resources/db/migration/V5__client_workflows.sql",
+      "sha256": "423e3002caf1d91046f87f89d415c60cf75f9965eebb469dd3d1620782215cbb"
+    },
+    {
+      "path": "src/main/resources/db/migration/V6__debt_projection_inputs.sql",
+      "sha256": "f002463d459bff050ed0244e2079b7757e48065863a498dc20ed696f52472b45"
+    },
+    {
+      "path": "src/main/resources/db/migration/V7__artifact_permission_snapshots.sql",
+      "sha256": "42d2f9561c3fe2b8cb0710a8e104afb538203cbc951b136201222c35836f0925"
+    },
+    {
+      "path": "src/main/resources/db/migration/V8__artifact_audience_expansion.sql",
+      "sha256": "ac8f165865f8adaf13ac8586fac46f2f2efcdf07e5052b87fc194237a4f81421"
+    },
+    {
+      "path": "src/main/resources/db/migration/V9__versioned_household_plans.sql",
+      "sha256": "ce58582c3b391ef783abece3fde9c96ad270b176ae2a68ae229c03023be59011"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlBalanceSheetNativeTest.java",
+      "sha256": "d6d38bdf94ad3ee217da813218babc8e80c5304c739d3e2771a245f266dff0b2"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlNativeHttpTest.java",
+      "sha256": "99382fb6ab7d66e1945f4468eccabe5bad244f5694ca49e97c728de4dc39f625"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlPlanEffectNativeTest.java",
+      "sha256": "859f26f01a530f710dba9545d482ad7f2f4a0e757af882905b3ddca2787264d3"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlRentalReviewNativeTest.java",
+      "sha256": "e0121e47930278265dbd294bf04e400f7a390804fe4f03d86fa68a27fc9b8584"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlReportExportNativeTest.java",
+      "sha256": "328fe111d56f2e3ba7bfa80140d597df28f17ee3f86a6045966681f1fbe40a91"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlReportNativeTest.java",
+      "sha256": "d90af5894ea042e3f6e0adb6eddbd81eac8fbd7ef5828295e65db38053616b9e"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlTaxPlanningNativeTest.java",
+      "sha256": "32498615a3ecd8d36c0cb88da1c02f02da7fd235576aa7c2b419fdb64cff085f"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlVendorNativeTest.java",
+      "sha256": "dfe491207b685ebb06959e4a0a03afb4f8d548a79075cfd8c4d85a3f3f034250"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java",
+      "sha256": "f37d2380b48d4ee478a004c0816743b31a63b472aa2742ed612016c009be8b36"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/client/CarlFamilyHttpTest.java",
+      "sha256": "5b58230a06101a49a5ad40de7609027b034d2cb617d8b301c9df4264324646ef"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/AgentApplicationTest.java",
+      "sha256": "25095e283c52ff9cc1c0c44f490b6c669eea7d74d5898c05539d8514d3c29656"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/ArtifactExportMetadataFixture.java",
+      "sha256": "ff5c4bb562dd5a627381930e024b3a1df04038ff717e3071247d781ff2e221bb"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/BalanceSheetMetadataFixture.java",
+      "sha256": "b5b3cc1dbcd28b496fbb653901588330af096fb9bca31d84cd2fe199cec78c93"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/BudgetPreferenceMetadataTest.java",
+      "sha256": "0633a7cc2143c0d5d2dd4dcb8203a7f2d862a114becb24f1131b7f4a4f347bf3"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlReadToolsTest.java",
+      "sha256": "1251e5dc661eae343aebbe95adf1cf0ccf7601ae5d604c460957d666432e3e73"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlRuntimeAdmissionTest.java",
+      "sha256": "a7617aafa1714dd15bc6f9f875686e29a4fc9c8eab7223214d5024a643fd1115"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/ConformanceTest.java",
+      "sha256": "8e4502b32d30f2c7244cb327e05c09edc34157b12d85f0777324e68ed61e421e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/PlanEffectMetadataFixture.java",
+      "sha256": "68084c6960d85e81a76d018c7c7bea3322e53d1a7eb65aa8d95ea23d91c65971"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/RentalReviewMetadataFixture.java",
+      "sha256": "374877bf2bd7e41e69aaaef3897de117d42e9b57c9922fced8502e043a3bd092"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/ReportMetadataFixture.java",
+      "sha256": "f8b93405a6c99fd75ebaf31e18371fcfd9b1400f722c086c2f408a26d18ecb05"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/TaxPlanningMetadataFixture.java",
+      "sha256": "c52bcce986b619ceceec075b2c375ea61b2892a7634d3fb1a61034d779f7460c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/VendorMetadataFixture.java",
+      "sha256": "71c50e81b0405cc67c4433f34055a3a91f20090126bc3c87cd3584f439ce393c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/AgendaDecoderTest.java",
+      "sha256": "410515fc142f233e14ed13201192e2b4d93261a4e5e60645096a215d253c29e4"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/CalDavClientTest.java",
+      "sha256": "abea41bebdc497bb7f0385a95a0c8baedb39c1d517ebf4aafa7ae942b78abf73"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/CalendarPublicationServiceTest.java",
+      "sha256": "696ad8286a64cc8123df63fe12b15b5b06f1164480eeb93621d21ce2f0d91b4e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/PlanCalendarCodecTest.java",
+      "sha256": "7725b193add254314165366b39522851f17de0d0aa777e1005fbdf41b9126334"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/ReminderStatusTest.java",
+      "sha256": "621b9d35db00dcaa73451104b69cf4e3d22419702714867a5e39d523b73e1803"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ArtifactExportsTest.java",
+      "sha256": "42f9649cea190c560ece1cf1ed3d615727913d72758677bf25107224551f4526"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/BalanceSheetsTest.java",
+      "sha256": "a292006778809d156f1807982e8e5c79d519bfa553c4736ae269180d388a1f48"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/BillCsvTest.java",
+      "sha256": "8f4e3456d6ea21748c12f76c024a6f1adf37d67cafa747cec7cbf6b2e90c10c9"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/BudgetPreferencesTest.java",
+      "sha256": "ed7d03eed67d35f8a981009b8f2e80c843875c0f3ca1dcff6ee1f123bf81b302"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CalendarAgendaServiceTest.java",
+      "sha256": "da3fcf37a616165cf5acd47c8f87dc40be826026f98d8328b470a055bcb9632a"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CalendarAvailabilityTest.java",
+      "sha256": "44ddef2312b8a7d87aa48901536b1eb14324118f13aab6ed583db70dfe70eb1e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CanonicalRequestsTest.java",
+      "sha256": "9b0f08c8c1e1bf595af849b316965b5dd4cf9bfcc5721ef5c3915330b6f53d52"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CarlServiceTest.java",
+      "sha256": "d7c74999f17ead08a9c62b1294febb9da8785cef68f5c886705936c1a904c9e5"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CashFlowTest.java",
+      "sha256": "7dabd76da625fdf8acce94756815227fb517a0d10253db3d0bc681369124cbf3"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/DebtPortfolioTest.java",
+      "sha256": "803fad728f6378dd183b65badfd1c0329f77fc3a562191146f7bddf83b6794e9"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ExpenseForecastTest.java",
+      "sha256": "97dc4e022ad589f4c5fb292e86be3fa39f762565a6ce2bf345bdce3ab40d0770"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ExpenseRecordsTest.java",
+      "sha256": "04ec35d36d966fb2e0e425bbd0a04c102883a95ca8e892c18d48c5ad620c5f50"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/FinancialPlanningTest.java",
+      "sha256": "98b80256f0afbab1e49d077f885c7ed15c9873a14d95f6a73326fbcd2a774d34"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/FinancingScenariosTest.java",
+      "sha256": "b85c0253ff2d51b18f766bf20f01d57ecf0dfe2ff2df73fdf287de2d9f844343"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/FocusedReportsTest.java",
+      "sha256": "467c9541cbef00b9dd5479fdc8b13a7ea00a4dbb9a3c536f3a83be95fc1251a7"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/InvestmentPlanningTest.java",
+      "sha256": "845ff6093bcd91204e813accc5f6c0cfe0acfa4ed952e3fa80f09de11f770d37"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/MonarchCsvTest.java",
+      "sha256": "47932a993d0e9731a12cf124c474878b506681a035f78207801f93f295c94218"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PlanEffectsTest.java",
+      "sha256": "f5a2dc0e49747990b8d8949e1af8487480cec54f3f1ce72b8c5f5981e545b5b2"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PortfolioPlansTest.java",
+      "sha256": "5f9add19c93a2d7727199070ca969f243515b9bd0617a54cc61358cd68944343"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PortfolioRestructuringTest.java",
+      "sha256": "18a6d56acfdaafb38dbfede157f1d01929e5334229e9a6926556e59a3c54fcd9"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PurchaseAffordabilityTest.java",
+      "sha256": "428c5b37fb8b95cf6f9bbef8d730c2498c236d12e32ee68e192777bc83a2f00c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PurchaseAssessmentsTest.java",
+      "sha256": "a6b5dbeaa38c6e61971ce301bfc34605dc7e150a206a6a5ca41e5a7af4ee0195"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PurchaseChoicesTest.java",
+      "sha256": "8bec1e659b2fa00113a9d44bc5f450434c5fcd11fd160fb5218f6f7121326def"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ReminderObservationsTest.java",
+      "sha256": "a7e8f47d5bb606b09d6f54752deb8d7deeeb3682eebf91c41b75e5a1502ac9f3"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/RentalAllocationReviewsTest.java",
+      "sha256": "2fdce3834677c35e614339f12a9ffaccabe2f33c35abc98d01d546162d11621a"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/RentalEconomicsTest.java",
+      "sha256": "9efa042017c02cbd573eb2416c52274f948d2396421b9f0d317ba939b9bcdef5"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/RentalRecordsTest.java",
+      "sha256": "285484f96fd453dca61aa80adf14f845562d6848e77353d2ee530ce49adcac6b"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ReportRecoveryTest.java",
+      "sha256": "5338a0398725caa5331d049e4916cd1694b9bb36aac461e78ed97c4a045491be"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/TaxPlanningRecordsTest.java",
+      "sha256": "1d4819c792dafa13721e600d5878ba9bd8c2e7a6003fb460b61901b8da9a9b2e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/TaxPreparationTest.java",
+      "sha256": "61c7387c8190e9cf373acdd9be22526eacd53baee43d3b2c9661dba56870a1f5"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/VendorRecordsTest.java",
+      "sha256": "bfb1d30402ecd74626d8bd5784c5eab0c61505983d11c1ee5f4f9d03dd461a9f"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/report/FinancialReportFiguresTest.java",
+      "sha256": "a917e0d611e8d2e2e1e18492ed8ded753bc191d51e58eef6c1d8c244eb27589c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/report/PlanPdfRendererTest.java",
+      "sha256": "223a5a8b3c1770f6198378944cc6cbb71caadc6a3af7c6ca926ed5d92cc1a196"
+    },
+    {
+      "path": "config/agent.properties",
+      "sha256": "4fc0fd1ca2c1b25b4314a7302bac90468ea3d44fc32d3028cb81297a49ba977c"
+    },
+    {
+      "path": "config/checkstyle/checkstyle.xml",
+      "sha256": "40eac34fee5041075d72b006bd2e285fed7f9b54747f72ea90f2ffec10c2fb80"
+    },
+    {
+      "path": "config/formatter/qqq-eclipse.xml",
+      "sha256": "c86276168fa114ea80c8cced82978700b2e8c71d6864a929e9aa4b977658e798"
+    },
+    {
+      "path": "config/license/copyright.txt",
+      "sha256": "da62565ac0faa2cd9a57ecbc8aa438fcb432b75e1b6b503c95b09dd4368b03c4"
+    },
+    {
+      "path": "config/maven/settings.xml.example",
+      "sha256": "ca5f350ce59e6a4af89634b72752336329716182678c1411eb25381cd6b724cf"
+    },
+    {
+      "path": "config/release/foundation.json",
+      "sha256": "7d7fc6b4e7dea730438638ab9e697f2c59e3666657f1258eea13799e8bb28005"
+    },
+    {
+      "path": "config/release/trusted-signers.asc",
+      "sha256": "7180b81f240925785e4147e4f4c563ab4bfb02ead710740855fe754e85492bfb"
+    },
+    {
+      "path": "pom.xml",
+      "sha256": "41b80a033f52562f0e6cf2b11cf294d2f69c2da8a5e2331e8784e454f81eb2bf"
+    }
+  ],
+  "tests": {
+    "tests": 311,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "BRANCH": {
+      "covered": 5149,
+      "missed": 2481
+    },
+    "LINE": {
+      "covered": 8926,
+      "missed": 1289
+    }
+  },
+  "appJarSha256": "876e95929f181e7667e9fd60832882583d40815746e2963098938533fc994fa6",
+  "logSha256": "44031523ace3194ef51a94e6f1006ba6134ba41a1e5b43b15198927af226dc37",
+  "limitations": [
+    "Remaining mandatory conversational rental/tax/investment/balance/expense and interactive plan updates are staged work; this is not whole-product acceptance.",
+    "Final current-source packaged/browser/visual and fresh source/dependency/image scans pending.",
+    "Hosted release, live model/Synology/family identity/data-policy qualification blocked; deployment not requested."
+  ],
+  "evidenceFormatting": "Path/digest entries separated to avoid filename-triggered generic-key false positives; original digest facts unchanged."
+}

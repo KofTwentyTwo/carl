@@ -33,8 +33,13 @@ async function main() {
     await expect(page.getByText('Carl AI', { exact: true }).first()).toBeVisible();
     checks.push('packaged-relocated-TLS-OIDC-login');
     await page.screenshot({ path: path.join(report, '01-carl-home.png'), fullPage: true });
-    await page.locator('[data-qqq-id="sidebar-collapse-carlAI"]').click();
-    await page.locator('[data-qqq-id="sidebar-item-carlAccounts"]').click();
+    const accounts = page.locator('[data-qqq-id="sidebar-item-carlAccounts"]');
+    if(!await accounts.isVisible()) {
+      const money = page.locator('[data-qqq-id="sidebar-collapse-carlMoney"]');
+      if(!await money.isVisible()) await page.locator('[data-qqq-id="sidebar-collapse-carlAI"]').click();
+      if(!await accounts.isVisible()) await money.click();
+    }
+    await accounts.click();
     await expect(page.getByText('Synthetic Checking', { exact: true }).first()).toBeVisible();
     checks.push('native-authoritative-financial-account');
     await page.screenshot({ path: path.join(report, '02-accounts.png'), fullPage: true });
@@ -66,7 +71,7 @@ async function main() {
     await page.goto(origin + '/app/carlTransactions');
     await expect(page.getByText('Synthetic grocery', { exact: true }).first()).toBeVisible();
     checks.push('imported-record-visible-in-QQQ');
-    await page.getByRole('button', {name: 'Configure columns', exact: true}).click();
+    await page.getByRole('button', {name: /^Configure columns(?: \(\d+\))?$/}).click();
     await page.locator('[data-qqq-id="column-config-hide-all"]').click();
     for (const field of ['title','amount','currency','effective_date']) await page.locator('[data-qqq-id="column-toggle-' + field + '"]').click();
     const titleHandle=page.getByRole('button', {name: 'Drag to reorder Title', exact: true});
@@ -89,7 +94,10 @@ async function main() {
     await page.screenshot({ path: path.join(report, '06-plan-records.png'), fullPage: true });
     checks.push('persisted-versioned-plan-visible');
     await page.goto(origin + '/app/carlExportPlan');
-    await page.getByLabel('Plan', { exact: false }).click();
+    const planChoice = page.locator('[data-qqq-id="planId"]');
+    await expect(planChoice).toBeVisible();
+    await planChoice.click();
+    await expect(planChoice).toHaveAttribute('aria-expanded', 'true');
     await page.getByRole('option', { name: /Synthetic debt plan/ }).click();
     await page.getByRole('button', { name: /next|continue|submit/i }).last().click();
     const downloadLink = page.locator('[data-qqq-id="link-process-download"]');
@@ -100,8 +108,8 @@ async function main() {
       await download.saveAs(path.join(report, 'synthetic-plan.pdf'));
     } catch (error) {
       const href = await downloadLink.getAttribute('href');
-      const direct = await context.request.get(new URL(href, origin).toString());
-      await writeFile(path.join(report, 'download-diagnostic.json'), JSON.stringify({ href, status: direct.status(), headers: direct.headers(), error: await download.failure() }, null, 2));
+      const direct = await context.request.get(new URL(href, origin).toString(), { headers: { Origin: origin, Referer: page.url() } });
+      await writeFile(path.join(report, 'download-diagnostic.json'), JSON.stringify({ path: new URL(href, origin).pathname, status: direct.status(), contentType: direct.headers()['content-type'], contentDisposition: direct.headers()['content-disposition'], bytes: (await direct.body()).length, pdfSignature: (await direct.body()).subarray(0,5).toString() === '%PDF-', error: await download.failure() }, null, 2));
       throw error;
     }
     checks.push('native-permission-checked-plan-pdf-download');
@@ -138,7 +146,7 @@ async function main() {
     checks.push('native-bounded-calendar-refresh-over-controlled-HTTPS');
     await page.goto(origin + '/app/carlCalendar');
     await expect(page.getByText('Synthetic household review', {exact:true}).first()).toBeVisible();
-    await page.getByRole('button', {name: 'Configure columns', exact: true}).click();
+    await page.getByRole('button', {name: /^Configure columns(?: \(\d+\))?$/}).click();
     await page.locator('[data-qqq-id="column-config-hide-all"]').click();
     for (const field of ['title','start_at','end_at','sync_state']) await page.locator('[data-qqq-id="column-toggle-' + field + '"]').click();
     const agendaTitle = page.getByRole('button', {name:'Drag to reorder Title', exact:true});

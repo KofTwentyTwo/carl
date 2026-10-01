@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "qualification": "Independent signed foundation delivery verification; not consumer business or live-provider acceptance",
+  "verified_at": "2026-09-30T11:11:38.050050+00:00",
+  "source_commit": "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+  "version": "0.4.1",
+  "channel": "stable",
+  "run": 36703216841,
+  "workflow_url": "https://github.com/KofTwentyTwo/kof22-agent-foundation/actions/runs/36703216841",
+  "independent_checks": {
+    "workflow_success": "PASS",
+    "frozen_main_identity": "PASS",
+    "current_main_at_readback": "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+    "publication_signature": "PASS",
+    "delivery_manifest_signature": "PASS",
+    "all_manifest_evidence_hashes": "PASS",
+    "candidate_provenance_identity": "PASS",
+    "source_file_count_matched_to_commit": 435,
+    "release_evidence_zip_sha256": "c7179d13c0ce1e1820ca1708bebda89184776eeac73f4f468ca852546d1faa92",
+    "exact_resolved_maven_artifacts": 9,
+    "fresh_remote_consumer_xml": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "patched_image_packages": {
+      "libssl3t64": "3.5.5-1ubuntu3.6",
+      "openssl": "3.5.5-1ubuntu3.6",
+      "openssl-provider-legacy": "3.5.5-1ubuntu3.6"
+    },
+    "image_high_critical_findings": 0,
+    "image_scan_sha256": "b8dd43986756d8291e7fda0b64b8a64b80644d09e5c421bfc08d66447556484a",
+    "image_labels_match_source_version": true
+  },
+  "signed_reference_image": "ghcr.io/koftwentytwo/kof22-agent-foundation@sha256:27f054a8b3e02ce5bf3652e6baee4d560aeac5cbc2cb863261562b4000d36d2e",
+  "evidence_directory": "/private/tmp/kof22-041-stable-publication",
+  "limitations": [
+    "OCI signature verified by hosted publisher; independent local registry verification not claimed.",
+    "Remote Maven resolution and fresh consumer execution were hosted; signed identities and actual XML were independently inspected.",
+    "Cosign uses repository public-key trust; transparency-log verification is disabled by repository policy.",
+    "This channel qualification does not qualify a later promotion; no live integrations or deployment qualified."
+  ],
+  "adapter_correction": {
+    "reviewed_feature_head": "bfcbf62221f7fb174b13543d3c38db0f4d5e1a76",
+    "merged_tree": "bf615ecbbce2d65a21954949810b89fb062f5c7f",
+    "controlled_http_regression_xml": {
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_names": [
+      "incompleteOrUnsupportedStopsFailWithoutToolDispatchOrRetry(String)[1]",
+      "incompleteOrUnsupportedStopsFailWithoutToolDispatchOrRetry(String)[2]",
+      "incompleteOrUnsupportedStopsFailWithoutToolDispatchOrRetry(String)[3]",
+      "incompleteOrUnsupportedStopsFailWithoutToolDispatchOrRetry(String)[4]",
+      "incompleteOrUnsupportedStopsFailWithoutToolDispatchOrRetry(String)[5]",
+      "incompleteOrUnsupportedStopsFailWithoutToolDispatchOrRetry(String)[6]",
+      "preservesAssistantBlocksInWireContinuationButNeverInPublicReply",
+      "truncationAfterToolsKeepsUsageWithoutReplayingTools",
+      "terminalResponsesNeedMeaningfulPublicText(String)[1]",
+      "terminalResponsesNeedMeaningfulPublicText(String)[2]",
+      "refusalIsReturnedAsPublicTextWithoutRetry"
+    ],
+    "xml_sha256": "ae27845d61c2107f15eb401c3e941a9c8656f656d5ce1db9b10acec5012e4a61",
+    "live_model_account_acceptance": "NOT_QUALIFIED"
+  },
+  "historical_b5_snapshot": "Preserved separately; not used to qualify this corrected source.",
+  "tag_checks": {
+    "tag": "v0.4.1",
+    "tag_object": "9b35c7affd6c63812404812af20beb2ed6733802",
+    "signature": "PASS",
+    "trusted_signer_fingerprint": "62859E8ABE1FC2B7FCCB89080021767055740E6D",
+    "trusted_public_key_file_sha256": "7180b81f240925785e4147e4f4c563ab4bfb02ead710740855fe754e85492bfb",
+    "remote_tag_matches_local": true
+  },
+  "release_checks": {
+    "url": "https://github.com/KofTwentyTwo/kof22-agent-foundation/releases/tag/v0.4.1",
+    "published_not_draft": true,
+    "prerelease": false,
+    "all_five_assets_match_verified_actions_bytes": true,
+    "asset_sha256": {
+      "delivery-manifest.json": "22e8b425d6561216d22bb208510a48da5287f845fab0d071c83b9abbd9577e02",
+      "delivery-manifest.sigstore.json": "7cc506620955e603371bd0e1ff5e5e5f0d5d332288c2ffc03bd4b60efaf3e65d",
+      "publication.json": "9ae9a61e359a0a822181b135388ca5380d39c32b4e427c1232201f14f14d8255",
+      "publication.sigstore.json": "af211384f60f766da0350a4d9311e143838c6939ffbe0d64d0de2c03513be4a2",
+      "release-evidence.zip": "c7179d13c0ce1e1820ca1708bebda89184776eeac73f4f468ca852546d1faa92"
+    },
+    "source_matches_previously_qualified_channel": true
+  }
+}

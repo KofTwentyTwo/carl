@@ -14,3 +14,5 @@ target/
 __pycache__/
 
 *.py[cod]
+
+scripts/e2e/node_modules/

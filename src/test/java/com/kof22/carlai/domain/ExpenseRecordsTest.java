@@ -85,7 +85,7 @@ class ExpenseRecordsTest
 
 
    @Test
-   void seasonalObligationAndActualSettlementConstrainForecastWithoutDoubleCounting()
+   void seasonalObligationAndActualSettlementConstrainForecastWithoutDoubleCounting() throws Exception
    {
       UUID request = UUID.randomUUID();
       long expense = expenses.create("alice", request, "Power", "FAMILY", "Synthetic seasonal invoice", schedule("350.00"));
@@ -94,6 +94,7 @@ class ExpenseRecordsTest
       expenses.settle("alice", UUID.randomUUID(), expense, LocalDate.of(2026, 9, 15), actual, n("100.00"), "Explicit September allocation");
       long report = expenses.report(new CarlService.Scope("alice", Set.of("alice", "bob")), UUID.randomUUID(), Set.of(expense), Set.of(actual), FROM, THROUGH, ASOF);
       String facts = service.artifact("bob", report).get("facts").toString();
+      assertEquals("USD", new com.fasterxml.jackson.databind.ObjectMapper().readTree(facts).path("currency").asText(), "Saved forecast retains explicit currency at its root");
       assertTrue(facts.contains("\"knownScheduledExpenses\":400.00"));
       assertTrue(facts.contains("\"actualExpenses\":100.00"));
       assertTrue(facts.contains("\"remainingExpenses\":300.00"));

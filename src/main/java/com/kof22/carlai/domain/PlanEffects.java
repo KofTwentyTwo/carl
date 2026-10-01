@@ -76,59 +76,63 @@ public final class PlanEffects
    /** Records only explicit expectations for the current agreed plan/task. */
    public long expect(CarlService.Scope scope, UUID request, long plan, int version, UUID step, Kind kind, long account, BigDecimal amount, LocalDate from, LocalDate through, String reason)
    {
+      return service.transaction(c -> expect(c, scope, request, plan, version, step, kind, account, amount, from, through, reason));
+   }
+
+
+
+   long expect(Connection c, CarlService.Scope scope, UUID request, long plan, int version, UUID step, Kind kind, long account, BigDecimal amount, LocalDate from, LocalDate through, String reason) throws SQLException
+   {
       if(amount == null || step == null || kind == null || from == null || through == null || from.getYear() < 1900 || through.getYear() > 2200 || through.isBefore(from) || java.time.temporal.ChronoUnit.DAYS.between(from, through) > 3660)
       {
          throw new IllegalArgumentException("Bounded explicit expectation required");
       }
       CarlService.bounded(reason, 2000, "Expectation rationale");
       String digest = BillCsv.hash(CarlService.json(Map.of("plan", plan, "version", version, "step", step, "kind", kind, "account", account, "amount", amount, "from", from, "through", through, "reason", reason, "audience", scope.audience().stream().sorted().toList())));
-      return service.transaction(c ->
+      lock(c, scope, true);
+      var actor = CarlService.manager(c, scope.principal(), "FINANCE");
+      var sources = new LinkedHashMap<Long, Long>();
+      var current = authorizePlan(c, scope, plan, sources);
+      Long prior = CarlService.request(c, actor, request, "PLAN_EFFECT", digest);
+      if(prior != null)
       {
-         lock(c, scope, true);
-         var actor = CarlService.manager(c, scope.principal(), "FINANCE");
-         var sources = new LinkedHashMap<Long, Long>();
-         var current = authorizePlan(c, scope, plan, sources);
-         Long prior = CarlService.request(c, actor, request, "PLAN_EFFECT", digest);
-         if(prior != null)
+         source(c, scope, "carl_plan_effect_view", prior, sources);
+         return prior;
+      }
+      if(CarlService.number(current, "version") != version || !"AGREED".equals(current.get("state")) || Boolean.TRUE.equals(current.get("source_stale")))
+      {
+         throw new IllegalArgumentException("Use a current agreed plan with current sources");
+      }
+      var tasks = CarlService.rows(c, "SELECT title FROM carl_plan_step WHERE id=? AND plan_id=?", step, plan);
+      if(tasks.size() != 1)
+      {
+         throw new IllegalArgumentException("Task does not belong to plan");
+      }
+      var a = source(c, scope, "carl_account_view", account, sources);
+      String currency = a.get("currency").toString();
+      int scale = Currency.getInstance(currency).getDefaultFractionDigits();
+      if(amount == null || amount.signum() <= 0 || amount.precision() > 18 || Math.abs((long) amount.scale()) > 10 || scale < 0 || scale > 4)
+      {
+         throw new IllegalArgumentException("Positive exact currency amount required");
+      }
+      BigDecimal exactAmount = amount.setScale(scale, RoundingMode.UNNECESSARY);
+      Map<String, Object> opening = null;
+      if(kind == Kind.PRINCIPAL_REDUCTION)
+      {
+         opening = source(c, scope, "carl_debt_view", account, sources);
+         if(opening.get("principal_balance") == null || opening.get("balance_as_of") == null || !LocalDate.parse(opening.get("balance_as_of").toString()).equals(from) || opening.get("terms_evidence").toString().isBlank() || LocalDate.parse(opening.get("balance_as_of").toString()).isAfter(LocalDate.now(clock.withZone(actor.zone()))))
          {
-            source(c, scope, "carl_plan_effect_view", prior, sources);
-            return prior;
+            throw new IllegalArgumentException("Opening principal statement dated exactly at window start and evidence required");
          }
-         if(CarlService.number(current, "version") != version || !"AGREED".equals(current.get("state")) || Boolean.TRUE.equals(current.get("source_stale")))
-         {
-            throw new IllegalArgumentException("Use a current agreed plan with current sources");
-         }
-         var tasks = CarlService.rows(c, "SELECT title FROM carl_plan_step WHERE id=? AND plan_id=?", step, plan);
-         if(tasks.size() != 1)
-         {
-            throw new IllegalArgumentException("Task does not belong to plan");
-         }
-         var a = source(c, scope, "carl_account_view", account, sources);
-         String currency = a.get("currency").toString();
-         int scale = Currency.getInstance(currency).getDefaultFractionDigits();
-         if(amount == null || amount.signum() <= 0 || amount.precision() > 18 || Math.abs((long) amount.scale()) > 10 || scale < 0 || scale > 4)
-         {
-            throw new IllegalArgumentException("Positive exact currency amount required");
-         }
-         BigDecimal exactAmount = amount.setScale(scale, RoundingMode.UNNECESSARY);
-         Map<String, Object> opening = null;
-         if(kind == Kind.PRINCIPAL_REDUCTION)
-         {
-            opening = source(c, scope, "carl_debt_view", account, sources);
-            if(opening.get("principal_balance") == null || opening.get("balance_as_of") == null || !LocalDate.parse(opening.get("balance_as_of").toString()).equals(from) || opening.get("terms_evidence").toString().isBlank() || LocalDate.parse(opening.get("balance_as_of").toString()).isAfter(LocalDate.now(clock.withZone(actor.zone()))))
-            {
-               throw new IllegalArgumentException("Opening principal statement dated exactly at window start and evidence required");
-            }
-         }
-         long id = CarlService.record(c, actor, "FINANCE", "PRIVATE", "Plan expectation: " + kind, reason);
-         CarlService.execute(c, "INSERT INTO carl_plan_effect(record_id,plan_id,plan_version,step_id,step_title,effect_kind,account_id,currency,expected_amount,period_start,period_end,opening_principal,opening_date,opening_evidence,actor_id,rationale) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", id, plan, version, step, tasks.getFirst().get("title"), kind.name(), account, currency, exactAmount, from, through, opening == null ? null : opening.get("principal_balance"), opening == null ? null : LocalDate.parse(opening.get("balance_as_of").toString()), opening == null ? null : opening.get("terms_evidence"), actor.id(), reason);
-         for(String principal : scope.audience())
-         {
-            CarlService.execute(c, "INSERT INTO carl_grant(record_id,member_id,details) VALUES(?,?,true)", id, CarlService.member(c, principal).id());
-         }
-         CarlService.complete(c, request, id, "COMPLETE", "Human expectation saved; no task state or external action changed");
-         return id;
-      });
+      }
+      long id = CarlService.record(c, actor, "FINANCE", "PRIVATE", "Plan expectation: " + kind, reason);
+      CarlService.execute(c, "INSERT INTO carl_plan_effect(record_id,plan_id,plan_version,step_id,step_title,effect_kind,account_id,currency,expected_amount,period_start,period_end,opening_principal,opening_date,opening_evidence,actor_id,rationale) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", id, plan, version, step, tasks.getFirst().get("title"), kind.name(), account, currency, exactAmount, from, through, opening == null ? null : opening.get("principal_balance"), opening == null ? null : LocalDate.parse(opening.get("balance_as_of").toString()), opening == null ? null : opening.get("terms_evidence"), actor.id(), reason);
+      for(String principal : scope.audience())
+      {
+         CarlService.execute(c, "INSERT INTO carl_grant(record_id,member_id,details) VALUES(?,?,true)", id, CarlService.member(c, principal).id());
+      }
+      CarlService.complete(c, request, id, "COMPLETE", "Human expectation saved; no task state or external action changed");
+      return id;
    }
 
 

@@ -95,9 +95,25 @@ public final class CashPlans
    /** Persists a conditional cash-purchase assessment; credit availability is never an input. */
    public long assess(CarlService.Scope scope, UUID request, long plan, LocalDate purchaseDate, BigDecimal allInPrice, String purpose, boolean allInCostsKnown)
    {
+      java.util.Objects.requireNonNull(allInPrice, "Explicit purchase price required");
+      return assess(scope, request, plan, purchaseDate, allInPrice, purpose, allInCostsKnown, false);
+   }
+
+
+
+   /** Saves a cash ceiling without fabricating a price or choosing unprovided payment terms. */
+   public long availableBudget(CarlService.Scope scope, UUID request, long plan, LocalDate purchaseDate, String purpose)
+   {
+      return assess(scope, request, plan, purchaseDate, null, purpose, false, true);
+   }
+
+
+
+   private long assess(CarlService.Scope scope, UUID request, long plan, LocalDate purchaseDate, BigDecimal allInPrice, String purpose, boolean allInCostsKnown, boolean budgetOnly)
+   {
       CarlService.bounded(purpose, 500, "purchase purpose");
       long epoch = service.member(scope.principal()).permissionRevision();
-      String digest = BillCsv.hash(CarlService.json(Map.of("plan", plan, "date", purchaseDate, "price", allInPrice, "purpose", purpose, "allInCostsKnown", allInCostsKnown)));
+      String digest = BillCsv.hash(CarlService.json(budgetOnly ? Map.of("operation", "AVAILABLE_CASH_BUDGET", "plan", plan, "date", purchaseDate, "purpose", purpose) : Map.of("plan", plan, "date", purchaseDate, "price", allInPrice, "purpose", purpose, "allInCostsKnown", allInCostsKnown)));
       Long prior = service.claimArtifact(scope, request, "FINANCIAL_PLAN", digest);
       if(prior != null)
       {
@@ -130,11 +146,12 @@ public final class CashPlans
          throw new IllegalArgumentException("Cash forecast changed; regenerate the assessment");
       }
       var conditions = new PurchaseAffordability.Conditions((Boolean) current.get("balances_resolved"), (Boolean) current.get("obligations_covered") && expenses.completeForSelectedInputs(), (Boolean) current.get("scope_complete"), allInCostsKnown, (Boolean) current.get("reserve_confirmed"), (Boolean) current.get("selected_plans_included"), (Boolean) current.get("income_supported"));
-      var budget = PurchaseAffordability.budget(current.get("currency").toString(), (BigDecimal) current.get("opening_cash"), protectedReserve, LocalDate.parse(current.get("from_date").toString()), LocalDate.parse(current.get("through_date").toString()), purchaseDate, (BigDecimal) current.get("discretionary_cap"), movements, conditions);
-      var classification = PurchaseAffordability.classify(budget, allInPrice);
+      var budget = budgetOnly ? PurchaseAffordability.availableCashBudget(current.get("currency").toString(), (BigDecimal) current.get("opening_cash"), protectedReserve, LocalDate.parse(current.get("from_date").toString()), LocalDate.parse(current.get("through_date").toString()), purchaseDate, (BigDecimal) current.get("discretionary_cap"), movements, conditions) : PurchaseAffordability.budget(current.get("currency").toString(), (BigDecimal) current.get("opening_cash"), protectedReserve, LocalDate.parse(current.get("from_date").toString()), LocalDate.parse(current.get("through_date").toString()), purchaseDate, (BigDecimal) current.get("discretionary_cap"), movements, conditions);
+      var classification = budgetOnly ? null : PurchaseAffordability.classify(budget, allInPrice);
       var facts = new LinkedHashMap<String, Object>();
       facts.put("purpose", purpose);
       facts.put("allInPrice", allInPrice);
+      facts.put("budgetOnly", budgetOnly);
       facts.put("classification", classification);
       facts.put("budget", budget);
       facts.put("sourcePlan", current);
@@ -146,7 +163,7 @@ public final class CashPlans
       facts.put("protectedReserve", protectedReserve);
       facts.put("reservePolicy", "Selected reserve earmarks are additional to the base reserve floor and protected throughout the interval; they are not expenses. Select only earmarks excluded from the base floor. Manual cash events must not duplicate selected expense sources; this remains a reviewed scope assumption.");
       facts.put("evidenceStatus", "Human-supplied assumptions, not independent verification. Daily closing forecast only; intraday timing and later obligations remain uncertain.");
-      String label = classification == PurchaseAffordability.Classification.UNDETERMINED ? "Incomplete purchase assessment — missing evidence" : "Conditional cash purchase assessment — review assumptions";
+      String label = budgetOnly ? "Incomplete payment comparison — conditional cash budget only; price and terms missing" : classification == PurchaseAffordability.Classification.UNDETERMINED ? "Incomplete purchase assessment — missing evidence" : "Conditional cash purchase assessment — review assumptions";
       return service.saveArtifact(scope, request, "FINANCIAL_PLAN", purchaseDate, LocalDate.parse(current.get("through_date").toString()), CarlService.json(facts), "", "NOT_REQUESTED", "No purchase, financing application or payment occurs. Supported cash budget is conditional on the recorded scope and human evidence; available credit is not budget.", sources, null, label, digest, epoch);
    }
 }

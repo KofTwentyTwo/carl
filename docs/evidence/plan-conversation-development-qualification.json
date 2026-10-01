@@ -1,0 +1,115 @@
+{
+  "status": "INTEGRATED_REVIEWED; original-source clean gate PASS",
+  "foundationParent": "0.4.1",
+  "files": [
+    {
+      "path": "src/main/java/com/kof22/carlai/AgentApplication.java",
+      "sha256": "08ece788afc10b248507f992a287e941f16d3dc3115f97525ce1821cdf7e2b30",
+      "baselineSha256": "7336767a37615fde85afbd5fb2d1a5f4db8f41c9e0096cda5488e5e2332629a7",
+      "originalCurrentSha256": "7336767a37615fde85afbd5fb2d1a5f4db8f41c9e0096cda5488e5e2332629a7",
+      "baselineUnchanged": true,
+      "bytes": 5007
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlService.java",
+      "sha256": "62316ba712da211542fca7e0978b830293b54936d7a9c531a42a8bf34c9d70d4",
+      "baselineSha256": "0e131aaa1f69ace7c6a003a610d5b894fa8f05ee0ac8a06e04de0654881b8d6e",
+      "originalCurrentSha256": "0e131aaa1f69ace7c6a003a610d5b894fa8f05ee0ac8a06e04de0654881b8d6e",
+      "baselineUnchanged": true,
+      "bytes": 42975
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlConversation.java",
+      "sha256": "21564d17884705307461f4b3875e41d3d6f9d3e631f379fa8bfcbcc57c2cde8c",
+      "baselineSha256": "e7cf4bf37bc1dac3c8a2c075ae6cedfac315b764d380ddad5a07e2e43381c7b5",
+      "originalCurrentSha256": "e7cf4bf37bc1dac3c8a2c075ae6cedfac315b764d380ddad5a07e2e43381c7b5",
+      "baselineUnchanged": true,
+      "bytes": 41243
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlClientWorkflows.java",
+      "sha256": "233ef138c8a8724e78fd2831846327fe2e6ed26bb23abf11d1bf01a0844c7930",
+      "baselineSha256": "754c69fecbbc0ce45f6ff96e150b6ecbe3961b5263e24b3c0e09e88f67d1d855",
+      "originalCurrentSha256": "754c69fecbbc0ce45f6ff96e150b6ecbe3961b5263e24b3c0e09e88f67d1d855",
+      "baselineUnchanged": true,
+      "bytes": 57883
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlPlanConversation.java",
+      "sha256": "5b3b55d7a568fdada29de6286ed5d4d65981380ede1f30c9471638be3f6d4304",
+      "baselineSha256": null,
+      "originalCurrentSha256": null,
+      "baselineUnchanged": true,
+      "bytes": 26309
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlGoalConversation.java",
+      "sha256": "a79b56e54e1c2a7a2680b210c8402e63f87390489bc280bf21eb2853be4ff012",
+      "baselineSha256": null,
+      "originalCurrentSha256": null,
+      "baselineUnchanged": true,
+      "bytes": 9431
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanEffects.java",
+      "sha256": "37e6c85b95e7e163f92c5d102c229e2e96961ded4a99b88ffc3a43f5cbb448ea",
+      "baselineSha256": "5769f455d1cb5bc04b38abef78c9a697e40120250cedbb7b46b000811562bef9",
+      "originalCurrentSha256": "5769f455d1cb5bc04b38abef78c9a697e40120250cedbb7b46b000811562bef9",
+      "baselineUnchanged": true,
+      "bytes": 19634
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ReminderObservations.java",
+      "sha256": "53b116f82ea4628455d95230fac088ae02f620c857e2e32d7f836cf850e9fa54",
+      "baselineSha256": "59cac304430383c0915a44bc8df697009998b4446064a530ef4c67149056200b",
+      "originalCurrentSha256": "59cac304430383c0915a44bc8df697009998b4446064a530ef4c67149056200b",
+      "baselineUnchanged": true,
+      "bytes": 7295
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java",
+      "sha256": "ae9066e3580c5a82ae7af0e1d568eb97d9092956d33199c69d7849dbfbd5c248",
+      "baselineSha256": "bfedba2d555340311650530c7b95cf10c881adc18faf6f1a565ea173414632cd",
+      "originalCurrentSha256": "bfedba2d555340311650530c7b95cf10c881adc18faf6f1a565ea173414632cd",
+      "baselineUnchanged": true,
+      "bytes": 102020
+    }
+  ],
+  "stagedGate": {
+    "status": "PASS",
+    "tests": 347,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "log": "/private/tmp/carl-plan-final-verify.log",
+    "terminalExitCode": 0,
+    "command": "mvn -o -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+    "foundationParent": "0.4.1 unchanged"
+  },
+  "stagedCoverage": {
+    "lineCovered": 9632,
+    "lineTotal": 10990,
+    "branchCovered": 5680,
+    "branchTotal": 8356,
+    "report": "/private/tmp/carl-plan-conversation/target/site/jacoco/jacoco.xml"
+  },
+  "stagedJar": {
+    "path": "/private/tmp/carl-plan-conversation/target/agent/app.jar",
+    "sha256": "bc2f1e4a9182b5c05ec763020219dfe57399a4f5843098d0b603cb89122042c1",
+    "bytes": 905650
+  },
+  "review": "Current human intent, quoted arguments, cancellation, scope/version rechecks, atomic workflow completion and bounded protected PDF reviewed. Actual SDK/HTTP/PostgreSQL/QQQ tests independently counted.",
+  "liveProviders": "NOT_CALLED; synthetic loopback fixtures only",
+  "wholeProduct": "NOT_QUALIFIED; current package/browser/security and foundation/UI expansion pending",
+  "originalSourceGate": {
+    "command": "mvn -o -B -ntp -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+    "log": "/private/tmp/carl-integrated-plan-verify.log",
+    "logSha256": "035ab184e04643868dd691ea57ebca6de6d0eca7d47f43d106e5dfe4299dd424",
+    "terminalExitCode": 0,
+    "tests": 347,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "jarSha256": "86c675edfd13a2199a9076961b48f0e1ba389dd74a710b3190d1e4418fe3c01a"
+  }
+}

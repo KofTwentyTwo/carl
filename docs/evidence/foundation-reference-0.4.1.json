@@ -1,0 +1,60 @@
+{
+  "source": "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+  "version": "0.4.1",
+  "method": "Supported copy-consumer-docs.py from exact tracked independently qualified source, rewriting links to pinned source and bundled guides",
+  "files": [
+    {
+      "path": "API.md",
+      "sha256": "9dcff655628724dfac9e2ac0628ff426306b296ed238dbce09995399bc0c2e09"
+    },
+    {
+      "path": "ARTIFACTS.md",
+      "sha256": "612803fbad00be22648aa62871a51f4c3441ea5060144d9f99019882ccb5a5ec"
+    },
+    {
+      "path": "BUILD-STANDALONE-AGENT.md",
+      "sha256": "a7106cc78cbb057db0696b1996b74aacf7f5a5f969823eef571db5a0bbf5006a"
+    },
+    {
+      "path": "CLIENT-API.md",
+      "sha256": "5da417813c987ad7bac20f0a3f144da26c1b831863f6dc268afc693c07df6430"
+    },
+    {
+      "path": "CONFIGURATION.md",
+      "sha256": "90343d87f781abec15df72ad7b47b0527b96eb1b9ac663994e0b711780ad5a69"
+    },
+    {
+      "path": "DATABASE-ROLES.md",
+      "sha256": "d32f23cb713c298b867f3355babe982afbb9e70e5c2f960a23a360ba41bf10c7"
+    },
+    {
+      "path": "FOUNDATION-ADMIN.md",
+      "sha256": "9b29e82474a17173b1f9e09fb88b85596c8c88cb5cdbf7dc1c59e181d439c9b1"
+    },
+    {
+      "path": "MIGRATIONS.md",
+      "sha256": "ad04b662d6b5a7e7e5baecf5e1912bdec1d5ec41aa382f7abb9064077fd6ed4e"
+    },
+    {
+      "path": "OPERATIONS.md",
+      "sha256": "b483a30e945d4bdc6c222d0abdbe4fd557e7a2b95add0f9693a1f0d56b91a200"
+    },
+    {
+      "path": "PERSONAL-SERVER.md",
+      "sha256": "4ad882c86dc6ad57689264ccd09a93e9312bef854fd7d496273c6af44f2c87e0"
+    },
+    {
+      "path": "QQQ-APPLICATION-CONTRACT.md",
+      "sha256": "6ac598c13adac9080ff0db875ddde28bb240418eb3a698cc58ea42e1c3baace2"
+    },
+    {
+      "path": "TESTING.md",
+      "sha256": "8f694b5bce6029931cd27c34ac74baca69bf562abcde67ba5c26a387de951f1c"
+    },
+    {
+      "path": "client-api.openapi.json",
+      "sha256": "621191ceadf4bed46eb540e75ac043dd350c58f6927cfa2fd2cd5e2275b70ae9"
+    }
+  ],
+  "evidenceFormatting": "Path/digest entries separated to avoid filename-triggered generic-key false positives; original digest facts unchanged."
+}

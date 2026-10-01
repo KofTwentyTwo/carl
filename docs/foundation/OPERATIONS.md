@@ -2,7 +2,7 @@
 
 Run one active agent JVM/container per dedicated PostgreSQL database and use its own Slack
 app and credentials. Consumers inherit the operational services and QQQ UI from the
-foundation. Start with [GETTING-STARTED.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/docs/GETTING-STARTED.md); for server configuration use
+foundation. Start with [GETTING-STARTED.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/GETTING-STARTED.md); for server configuration use
 [PERSONAL-SERVER.md](PERSONAL-SERVER.md).
 
 ## Start / stop / restart
@@ -219,7 +219,7 @@ and deletes only eligible completed history in a transaction while preserving un
 approvals, unknown/running work and their evidence. It uses bounded lock/transaction timeouts
 but can block writers; schedule a maintenance window. Transcripts and memory remain outside
 this cleanup because no durable inactivity/supersession marker exists. See
-[RUNTIME-CONTRACT.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/docs/RUNTIME-CONTRACT.md) for redaction and sensitive-data boundaries.
+[RUNTIME-CONTRACT.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/RUNTIME-CONTRACT.md) for redaction and sensitive-data boundaries.
 
 ## Incident quick paths
 

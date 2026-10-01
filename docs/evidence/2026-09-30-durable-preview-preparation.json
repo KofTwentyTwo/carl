@@ -1,0 +1,33 @@
+{
+  "status": "FIXTURE_TLS_BOUNDARY_AND_CI_SYNTAX_PASS",
+  "syntheticOnly": true,
+  "liveModelQualified": false,
+  "tls": {
+    "red": "Original synthetic-only trust store fails public provider certificate validation with PKIX path building failure",
+    "green": "Merged standard Java CA trust plus local synthetic issuer: local JWKS HTTP200 and unauthenticated Anthropic models HTTP401",
+    "certificateAndHostnameValidation": "enabled",
+    "credentialUsed": false,
+    "commandsLogs": {
+      "tls-red.log": "ec03b0aec938c63a56d9945ae54217d7ec6be73909611da25984b1fc85c267ae",
+      "tls-green.log": "ff80684f9e32d2bedec4031d67b7f94f5ae80481bce6d70094ad1d707b901ed6"
+    }
+  },
+  "checks": {
+    "allFixtureJavaCompile": "PASS",
+    "actionlint": "PASS",
+    "zizmor": {
+      "findings": 0,
+      "existingIgnored": 3
+    },
+    "releasePolicyTests": 7,
+    "browserExecution": "PENDING matching qualified package"
+  },
+  "sourceSha256": {
+    "scripts/e2e/NativeVisualIdentity.java": "38246ab5bb84bb440d0b73c4795211ee585ab8907f0f8bc93f5a78c81828a4bb",
+    "scripts/e2e/CarlPackagedVisualFixture.java": "c4ba6bcd6a168d0afd15beab61ed29b172515b1d9a554498b12131376242d87b",
+    "scripts/e2e/talk-browser.cjs": "4219bed65bef9ac615254bd6b2962fdfbd97cf9a7fd12d203bb862a22d64440d",
+    "scripts/verify-talk-browser.sh": "de638cc59e6005cf9bfa4e21309484e6f1d02e82dc4cf61606e989780886146b",
+    ".github/workflows/ci.yml": "f2a328749f71c63ff5e4dc6f98336554d43f67c9e8de9734077daf650639e716",
+    ".github/workflows/release.yml": "dfa9bac1113118501f5223cda3a74c49d5caf736822d35bb79941f57ab0a2cfc"
+  }
+}

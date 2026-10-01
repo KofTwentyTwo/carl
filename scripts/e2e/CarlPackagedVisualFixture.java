@@ -34,13 +34,16 @@ public final class CarlPackagedVisualFixture
    private NativeVisualIdentity identity;
    private HttpsServer proxy;
    private Process child;
+   private CarlQBitsVisualFixture qbits;
    private int nativePort;
    private String origin;
    private boolean closed;
+   private final boolean dashboards;
 
-   private CarlPackagedVisualFixture(Path distribution) throws Exception
+   private CarlPackagedVisualFixture(Path distribution, boolean dashboards) throws Exception
    {
       this.distribution = distribution.toAbsolutePath();
+      this.dashboards = dashboards;
       temporary = Files.createTempDirectory("kof22-packaged-browser-");
    }
 
@@ -112,6 +115,11 @@ public final class CarlPackagedVisualFixture
       }
       new com.kof22.carlai.domain.RentalRecords(carl).createProperty("alice",java.util.UUID.randomUUID(),"Synthetic second rental house","PRIVATE","Synthetic second title",new com.kof22.carlai.domain.RentalRecords.PropertyValues("USD","Chester, Illinois",java.math.BigDecimal.ONE,null,null,null,null,null,null,null,null,null,null));
       carl.generateDraft(com.kof22.carlai.domain.CarlService.Scope.privateFor("alice"),java.util.UUID.randomUUID(),vendorWork,"FOLLOW_UP");
+      if(dashboards)
+      {
+         var seed = CarlDashboardVisualSeed.seed(carl);
+         System.out.println("PACKAGED_DASHBOARDS=" + new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(seed));
+      }
       var properties = new Properties();
       properties.setProperty("kof22.agent.name", "Carl AI");
       properties.setProperty("kof22.agent.persona-path", distribution.resolve("prompts/PERSONA.md").toString());
@@ -135,14 +143,27 @@ public final class CarlPackagedVisualFixture
       properties.setProperty("kof22.agent.rbac.users.bob", "OPERATOR");
       properties.setProperty("kof22.agent.slack.enabled", "false");
       properties.setProperty("kof22.agent.mcp.enabled", "false");
-      properties.setProperty("kof22.agent.anthropic-api-key", "synthetic-unused");
-      properties.setProperty("kof22.agent.anthropic-base-url", "http://127.0.0.1:9");
+      properties.setProperty("kof22.agent.client-api.enabled", "true");
+      properties.setProperty("kof22.agent.client-api.issuer", identity.issuer);
+      properties.setProperty("kof22.agent.client-api.audience", "carl-family");
+      boolean liveModel = "true".equals(System.getenv("CARL_PREVIEW_LIVE_MODEL"));
+      if(liveModel && (System.getenv("ANTHROPIC_API_KEY") == null || System.getenv("ANTHROPIC_API_KEY").isBlank()))
+      {
+         throw new IllegalStateException("Live synthetic preview requires ANTHROPIC_API_KEY");
+      }
+      properties.setProperty("kof22.agent.anthropic-api-key", liveModel ? "${ANTHROPIC_API_KEY}" : "synthetic-unused");
+      properties.setProperty("kof22.agent.anthropic-base-url", liveModel ? "https://api.anthropic.com" : "http://127.0.0.1:9");
+      properties.setProperty("kof22.agent.model.id", "claude-sonnet-5");
       Path configuration = temporary.resolve("agent.properties");
       Files.createFile(configuration, java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
          java.nio.file.attribute.PosixFilePermissions.fromString("rw-------")));
       try(var output = Files.newOutputStream(configuration))
       {
          properties.store(output, "Disposable local browser acceptance");
+      }
+      if("true".equals(System.getenv("CARL_PREVIEW_QBITS")))
+      {
+         qbits = CarlQBitsVisualFixture.start(temporary.resolve("qbits"));
       }
       startChild();
       var http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
@@ -239,7 +260,7 @@ public final class CarlPackagedVisualFixture
    private void startChild() throws Exception
    {
       var builder = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
-         "-Djavax.net.ssl.trustStore=" + temporary.resolve("synthetic-issuer.p12"),
+         "-Djavax.net.ssl.trustStore=" + temporary.resolve("synthetic-trust.p12"),
          "-Djavax.net.ssl.trustStorePassword=synthetic-only",
          "-Dqqq.logger.logSessionId.disabled=true", "-Dqqq.rdbms.logSQL=false",
          "-jar", distribution.resolve("app.jar").toString(), temporary.resolve("agent.properties").toString());
@@ -252,6 +273,10 @@ public final class CarlPackagedVisualFixture
       builder.environment().put("CARL_CALDAV_STANDING_PRINCIPAL", "alice");
       builder.environment().put("CARL_CALDAV_USERNAME", "synthetic");
       builder.environment().put("CARL_CALDAV_PASSWORD", "synthetic-only");
+      if(qbits != null)
+      {
+         builder.environment().putAll(qbits.environment());
+      }
       child = builder.redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.appendTo(temporary.resolve("application.log").toFile())).start();
       var http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(1)).build();
       long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(35);
@@ -303,13 +328,14 @@ public final class CarlPackagedVisualFixture
          return;
       }
       closed = true;
+      RuntimeException cleanupFailure = null;
       try
       {
          stopChild();
       }
       catch(Exception failure)
       {
-         System.err.println("Packaged child cleanup failed");
+         cleanupFailure = new IllegalStateException("Packaged child cleanup failed", failure);
       }
       if(proxy != null)
       {
@@ -319,7 +345,39 @@ public final class CarlPackagedVisualFixture
       {
          identity.close();
       }
-      database.stop();
+      if(qbits != null)
+      {
+         try
+         {
+            qbits.close();
+         }
+         catch(Exception failure)
+         {
+            if(cleanupFailure == null)
+            {
+               cleanupFailure = new IllegalStateException("Packaged QBits cleanup failed", failure);
+            }
+            else
+            {
+               cleanupFailure.addSuppressed(failure);
+            }
+         }
+      }
+      try
+      {
+         database.stop();
+      }
+      catch(RuntimeException failure)
+      {
+         if(cleanupFailure == null)
+         {
+            cleanupFailure = failure;
+         }
+         else
+         {
+            cleanupFailure.addSuppressed(failure);
+         }
+      }
       try(var paths = Files.walk(temporary))
       {
          for(var path : paths.sorted(java.util.Comparator.reverseOrder()).toList())
@@ -329,7 +387,18 @@ public final class CarlPackagedVisualFixture
       }
       catch(java.io.IOException failure)
       {
-         throw new IllegalStateException("Private fixture cleanup failed", failure);
+         if(cleanupFailure == null)
+         {
+            cleanupFailure = new IllegalStateException("Private fixture cleanup failed", failure);
+         }
+         else
+         {
+            cleanupFailure.addSuppressed(failure);
+         }
+      }
+      if(cleanupFailure != null)
+      {
+         throw cleanupFailure;
       }
    }
 
@@ -342,7 +411,7 @@ public final class CarlPackagedVisualFixture
    {
       System.setProperty("qqq.logger.logSessionId.disabled", "true");
       System.setProperty("qqq.rdbms.logSQL", "false");
-      var fixture = new CarlPackagedVisualFixture(Path.of(arguments[0]));
+      var fixture = new CarlPackagedVisualFixture(Path.of(arguments[0]), arguments.length > 1 && arguments[1].equals("--dashboards"));
       Runtime.getRuntime().addShutdownHook(new Thread(fixture::close));
       try
       {
@@ -363,6 +432,22 @@ public final class CarlPackagedVisualFixture
                fixture.stopChild();
                fixture.startChild();
                System.out.println("PACKAGED_RESTARTED");
+            }
+            else if(command.equals("revoke-dashboard-access") && fixture.dashboards)
+            {
+               try(var c = NativeDatabases.source(fixture.database.getJdbcUrl(), fixture.database.getUsername(), fixture.database.getPassword()).getConnection(); var sql = c.createStatement())
+               {
+                  c.setAutoCommit(false);
+                  sql.execute("UPDATE carl_permission SET details=false WHERE member_id=1 AND domain='FINANCE'");
+                  c.commit();
+               }
+               System.out.println("PACKAGED_DASHBOARDS_REVOKED");
+            }
+            else if(command.equals("qualify-qbits-event") && fixture.qbits != null)
+            {
+               var source = NativeDatabases.source(fixture.database.getJdbcUrl(), fixture.database.getUsername(), fixture.database.getPassword());
+               var evidence = fixture.qbits.qualifyIndexRefresh(source, fixture.temporary.resolve("application.log"));
+               System.out.println("PACKAGED_QBITS_EVENT=" + new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(evidence));
             }
             else if(command.equals("close"))
             {

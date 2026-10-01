@@ -139,3 +139,49 @@ alone does not provide row isolation.
 Core operational tables remain read-only in generic CRUD. Approval denial uses the shared
 governed process in operator mode; executing an approved action uses the core coordinator.
 Neither editing a status column nor hiding an edit button is an authorization design.
+
+
+## Bounded native file uploads
+
+A consumer that needs uploads larger than the default host settings can override
+`Components.uploadPolicy()` and return an explicit `Optional<NativeUploadPolicy>`. Leaving it
+empty preserves the native host defaults. For two files up to 20 MiB each plus bounded scalar
+form fields, a policy can be:
+
+```java
+@Override
+public java.util.Optional<com.kof22.agentadmin.bootstrap.NativeUploadPolicy> uploadPolicy()
+{
+   return java.util.Optional.of(new com.kof22.agentadmin.bootstrap.NativeUploadPolicy(
+      20L * 1024 * 1024, 40L * 1024 * 1024, 34, 2, 64 * 1024));
+}
+```
+
+Arguments are maximum file bytes, total request bytes (including framing), total multipart
+parts, file parts, and per-part memory threshold. Jetty enforces size and total part limits
+while parsing; the host rejects excess file parts before QQQ storage. Scalar fields count
+against total parts. The memory threshold spills larger parts to the servlet's temporary
+storage; operators must protect and clean that storage as sensitive data. This policy does
+not authorize uploads or select a storage backend. The consumer must provide a principal-bound
+QQQ storage backend, reject unapproved fields/types, enforce its own bounded streams and
+retention, and prove denied direct requests do not persist files. Test the actual QQQ process
+upload path as well as domain import validation.
+
+## Protected native downloads
+
+Downloads remain denied by default, and filesystem `filePath` downloads are always denied.
+An OIDC consumer can opt in through `Components.downloadPolicy()` returning
+`new NativeDownloadPolicy(Map.of("protectedExportStorage", "exportProcess"))`.
+Only the exact configured process's successful native response may issue an opaque UUID
+`storageReference` paired with that table. The trusted process must call
+`ProcessFileDownload.registerStorage` for the same reference and return `storageTableName`
+and `storageReference` in its output values. Never register caller-supplied storage targets.
+
+The host requires GET, same-origin browser context, exactly those two query parameters,
+current process permission, and QQQ's application/session-bound storage capability. Output
+capabilities expire after 30 minutes and are bounded; restart or a new authenticated session
+requires generating the export again. Arbitrary tables, raw paths, unregistered references,
+other process outputs and cross-session links cannot grant access. The storage backend must
+recheck current domain record/source/field permissions and permission epoch on every read.
+Protected download responses use `Cache-Control: no-store`; client code must not persist
+protected bytes in an offline cache. Basic local administration cannot enable this policy.

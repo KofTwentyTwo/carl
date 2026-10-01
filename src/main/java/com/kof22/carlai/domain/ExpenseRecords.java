@@ -415,13 +415,15 @@ public final class ExpenseRecords
       {
          return CarlService.number(service.artifact(scope.principal(), prior), "id");
       }
-      var input = service.transaction(c ->
+      var reportInput = service.transaction(c ->
       {
          lockScope(c, scope);
          String currency = !expenses.isEmpty() ? require(c, scope.principal(), "carl_expense_view", expenses.stream().sorted().findFirst().orElseThrow()).get("currency").toString() : require(c, scope.principal(), "carl_expense_actual_view", actuals.stream().sorted().findFirst().orElseThrow()).get("currency").toString();
-         return snapshot(c, scope, expenses, actuals, currency, from, through, asOf);
+         return new ReportInput(currency, snapshot(c, scope, expenses, actuals, currency, from, through, asOf));
       });
+      var input = reportInput.input();
       var facts = new LinkedHashMap<String, Object>();
+      facts.put("currency", reportInput.currency());
       facts.put("formulaVersion", "expense-schedule-v1");
       facts.put("from", from);
       facts.put("through", through);
@@ -434,7 +436,9 @@ public final class ExpenseRecords
       return service.saveArtifact(scope, request, "FINANCIAL_PLAN", from, through, CarlService.json(facts), "", "NOT_REQUESTED", "Reserve earmarks are separate from net cash expenses. Coverage is limited to selected evidence; no payment or external action occurs.", input.sources(), null, input.completeForSelectedInputs() ? "Conditional expense forecast — selected scope only" : "Incomplete expense forecast — missing or stale evidence", digest, input.epoch());
    }
 
-
+   private record ReportInput(String currency, CashInputs input)
+   {
+   }
 
    private CashInputs snapshot(Connection c, CarlService.Scope scope, Set<Long> selectedExpenses, Set<Long> selectedActuals, String currency, LocalDate from, LocalDate through, LocalDate asOf) throws SQLException
    {

@@ -7,7 +7,7 @@ domain calculations, permissions, integrations and policy controls are tested.
 
 ## Local preparation
 
-1. Follow [GETTING-STARTED.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/docs/GETTING-STARTED.md) to verify/install the foundation and
+1. Follow [GETTING-STARTED.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/GETTING-STARTED.md) to verify/install the foundation and
    generate a separate application. For published versions, use the Maven settings and
    explicit version pin described in [ARTIFACTS.md](ARTIFACTS.md).
 2. Configure PERSONAL governance and its explicit owner, then use the packaged
@@ -62,13 +62,13 @@ must use HTTPS or literal-loopback HTTP. Local Basic mode does not qualify serve
 
 ## Reviewable deployment files
 
-[The Dockerfile](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/deploy/Dockerfile) copies the complete verified `target/agent/` distribution, runs as UID 10001,
+[The Dockerfile](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/deploy/Dockerfile) copies the complete verified `target/agent/` distribution, runs as UID 10001,
 and sets finite JVM memory behavior. Supply a reviewed image digest through `RUNTIME_IMAGE`
 when qualifying a candidate. The integration check runs the image read-only, drops Linux
 capabilities and supplies a bounded temporary filesystem. Run with equivalent restrictions
 on the server. Do not bind local Basic authentication to the network.
 
-[The systemd example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/deploy/agent.service.example) shows a single non-root systemd process, root-owned private
+[The systemd example](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/deploy/agent.service.example) shows a single non-root systemd process, root-owned private
 environment file, restricted filesystem access and graceful shutdown. Adapt its paths and
 resource limits to the actual server. Never store secrets in a release directory or image.
 No host changes or deployment have been performed by these files.
@@ -97,7 +97,7 @@ login, unauthorized access, subject isolation, expiry and local logout/revocatio
 
 ## Gates before real family data
 
-- Scan the actual consumer JAR/image before deployment. Foundation [verification evidence](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/docs/SESSION-STATE.md)
+- Scan the actual consumer JAR/image before deployment. Foundation [verification evidence](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/SESSION-STATE.md)
   is specific to its tested dependency graph and scan date. It does not cover your new
   business dependencies or vulnerabilities disclosed after that scan.
 - Establish encrypted disks/backups, off-host age recipients, private secret storage/rotation,
@@ -111,7 +111,7 @@ login, unauthorized access, subject isolation, expiry and local logout/revocatio
   authorized by creating the application.
 - Pin the shared artifacts to the intended published semantic version and verify the
   consumer can resolve them in its build environment. [ARTIFACTS.md](ARTIFACTS.md) and
-  [CI-CD.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/docs/CI-CD.md) describe foundation releases; an agent deployment is a separate
+  [CI-CD.md](https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/docs/CI-CD.md) describe foundation releases; an agent deployment is a separate
   application release.
 
 These are concrete remaining deployment/business qualifications. The foundation must own

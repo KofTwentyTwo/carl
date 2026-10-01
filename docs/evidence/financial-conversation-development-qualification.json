@@ -1,0 +1,62 @@
+{
+  "status": "INTEGRATED_EXACT_REVIEWED_SOURCE_FINAL_STABLE_GATE_PENDING",
+  "manifestSha256": "7e565bc4849a9ca8adf5638563ce9cfc5dc0c952e88606233b02aa463d4518e1",
+  "sourceBase": "df6b373698552b1611e3683745bb46ae8113f68b",
+  "files": {
+    "src/main/java/com/kof22/carlai/domain/CarlConversation.java": "967be49652933c289c8304bfe2b7678832be0403b75de2eb1ec99fc075764b2e",
+    "src/main/java/com/kof22/carlai/domain/CarlClientWorkflows.java": "754c69fecbbc0ce45f6ff96e150b6ecbe3961b5263e24b3c0e09e88f67d1d855",
+    "src/main/java/com/kof22/carlai/domain/CashPlans.java": "0aa618992738437138553b448a59fb58d86df92f914835218ec490d2b019b862",
+    "src/main/java/com/kof22/carlai/domain/PurchaseAffordability.java": "cefe99188ed124a7ca0407924ed69f6c507a72597e945172661471dd92b08a83",
+    "src/main/java/com/kof22/carlai/domain/PortfolioPlans.java": "655c39791e94f72274650c32ab4e081975d5b125adc30c9559ae07032f8da622",
+    "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java": "f37d2380b48d4ee478a004c0816743b31a63b472aa2742ed612016c009be8b36",
+    "src/test/java/com/kof22/agentadmin/CarlNativeHttpTest.java": "99382fb6ab7d66e1945f4468eccabe5bad244f5694ca49e97c728de4dc39f625"
+  },
+  "developmentEvidence": {
+    "status": "CONTROLLED_DEVELOPMENT_PASS",
+    "sourceBase": "df6b373698552b1611e3683745bb46ae8113f68b",
+    "sourceManifestSha256": "7e565bc4849a9ca8adf5638563ce9cfc5dc0c952e88606233b02aa463d4518e1",
+    "command": "mvn -o -Dmaven.repo.local=/private/tmp/kof22-client-api-m2 clean verify",
+    "dependencyQualification": "Explicit unpublished0.4.1-SNAPSHOT; final qualified-stable pin and qualification owned by coordinator",
+    "stagingPomRestored": "0.4.0",
+    "tests": {
+      "tests": 311,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "coverage": {
+      "BRANCH": {
+        "covered": 5149,
+        "missed": 2481
+      },
+      "LINE": {
+        "covered": 8926,
+        "missed": 1289
+      }
+    },
+    "independentReview": "CLEAR exact seven hashes; grouped/signed amount and horizon RED\u2192GREEN verified",
+    "secretScan": [],
+    "sha256": {
+      "/private/tmp/carl-financial-conversation-reviewed-full.log": "c1eccc322d30ae8261413c1e829f092d5acdfa86ad22a81d80bad79ff97bdd7e",
+      "/private/tmp/carl-numeric-evidence-review-red.log": "7a6f21f575fe8be1a9591677530379b084b5b6fc2de67c589b1a63304f871473",
+      "/private/tmp/carl-horizon-evidence-review-red.log": "cddcafe181a38f35c228383ce551c77949729eaca9fa03e5130fd65612088471",
+      "/private/tmp/carl-numeric-evidence-review-green.log": "3bfd9cf60a96a58fd72a15d618c179c7527b99fed284ea040aee1faaf635c02c",
+      "/private/tmp/carl-financial-conversation-gitleaks.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "target/agent/app.jar": "7d35cd2147feb78110da6903fbe58855a1e49275b47336c098aea45272a72bab",
+      "/private/tmp/kof22-client-api-m2/com/kof22/kof22-agent-core/0.4.1-SNAPSHOT/kof22-agent-core-0.4.1-SNAPSHOT.jar": "1019b8881b141c7675ce1e3fae64fb60f05a90b797e5f9f6b72ed8fc818ff4ee"
+    },
+    "workflowCases": [
+      "failure",
+      "history",
+      "shared",
+      "deadline",
+      "purchase",
+      "purchase-negative",
+      "purchase-budget",
+      "financial",
+      "financial-negative"
+    ],
+    "liveProviders": "NOT_QUALIFIED",
+    "deployment": "NOT_REQUESTED"
+  }
+}

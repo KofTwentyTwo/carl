@@ -1,0 +1,2526 @@
+{
+  "schema": 1,
+  "date": "2026-09-30",
+  "milestone": "Current RC7 synthetic development package qualified and running",
+  "application": "Carl AI",
+  "sourceBaseline": "df6b373698552b1611e3683745bb46ae8113f68b",
+  "sourceUncommitted": true,
+  "foundation": {
+    "parent": "0.5.0-SNAPSHOT",
+    "publicationQualified": false,
+    "publishedBaseline": "0.4.1",
+    "backend": "4.1.0-20260930.034648-28",
+    "backendPublishedRc": false,
+    "frontend": "1.0.0-RC.7",
+    "frontendRevision": "f65cf6bfbd1583538afe1b66f8764812980880c3",
+    "upstreamFinalFoundationGate": "PENDING independent guarded full verifier"
+  },
+  "maven": {
+    "command": "JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home mvn -o -B -ntp -Dmaven.repo.local=/Users/james.maes/.codex/work/carl-development-m2 clean verify",
+    "finished": "2026-09-30T21:30:58-05:00",
+    "result": "PASS",
+    "counts": {
+      "tests": 377,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xmlReports": 64,
+    "coverage": {
+      "INSTRUCTION": {
+        "covered": 82517,
+        "missed": 9922
+      },
+      "BRANCH": {
+        "covered": 6167,
+        "missed": 2876
+      },
+      "LINE": {
+        "covered": 10480,
+        "missed": 1503
+      },
+      "COMPLEXITY": {
+        "covered": 3443,
+        "missed": 2803
+      },
+      "METHOD": {
+        "covered": 1525,
+        "missed": 128
+      },
+      "CLASS": {
+        "covered": 273,
+        "missed": 2
+      }
+    },
+    "lineFloor": 0.8,
+    "branchFloor": 0.6,
+    "log": {
+      "path": "/Users/james.maes/.codex/work/carl-ui-recovery/download-compatible-clean-verify.log",
+      "sha256": "910b8f2de2962266aef72b458b2ca84d905f317d6995dddeea5ce5644b34b095"
+    },
+    "reports": [
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlBalanceSheetNativeTest.xml",
+        "sha256": "11ea04756235139b3188c780f56bfb283a5f06aeffa67e532eb4ef3ce3c3ce0d"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlDashboardNativeTest.xml",
+        "sha256": "bfabbcff66270cca9eef49db32cc20650f207ecb7ac593c47f76e8297747eef7"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlNativeHttpTest.xml",
+        "sha256": "902a6adad365930a0523401f79c7cf47efd5a494db386a030516072a2ca5de47"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlPlanEffectNativeTest.xml",
+        "sha256": "b9f22f8594c85391569c8c6528ffb531fe87b2d02006c0d7ad2bbeb255e59158"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlQBitsNativeTest.xml",
+        "sha256": "4a8ce97e0c363e7d65db2a3f936d2e27dd7cbcf751508c13a2a1905175038acd"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlRentalReviewNativeTest.xml",
+        "sha256": "6bd12984a98f59724096f98a2fe6d1d10c4b7a87e6aabf611d7825b3d76088f8"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlReportExportNativeTest.xml",
+        "sha256": "b5d9be2c9cd5011252c7a1427561dceb52a27656146726bc1895669e42a72c65"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlReportNativeTest.xml",
+        "sha256": "e3ff78b2378cb20c125a0a6a78136270819dba53c9bc359f10cd081eaad9c8c4"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlSavedBalanceSheetNativeTest.xml",
+        "sha256": "9f8aa0ff1f01611429d4b674a26dc37b17128b323597cf516d108696ed20b346"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlTaxPlanningNativeTest.xml",
+        "sha256": "243cb543d1a11ecc1e5aeb64c50b7854e48444c454f394589a37c8b189234610"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.CarlVendorNativeTest.xml",
+        "sha256": "f09396c111bd737f7bb5ea9accda26866b6587b58ed022c0cbf0683078042ea6"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.client.CarlConversationHttpTest.xml",
+        "sha256": "f7c5e8cc97d5543f0d6ea1ab805ca4b9fd4241d77ffe5f1938c32bc720d0769e"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.agentadmin.client.CarlFamilyHttpTest.xml",
+        "sha256": "b3eeb5d71509c5a7fa55dc2406b7725ee4c8b532239359cce55f6af9ef86e337"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.AgentApplicationTest.xml",
+        "sha256": "c0157b192dac36c4ecff9020350890c9dad7ded0ca913920621fce2e0b134a93"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.BudgetPreferenceMetadataTest.xml",
+        "sha256": "57d3dfbfba811d5f69b32f4dce4e4530ccb54e0ca5e680ac9b9d6a5036f76dce"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.CarlDashboardHtmlTest.xml",
+        "sha256": "83cefaf1497c5534dceb9fe8f49001da77f659198faa3e9f06125c852bfea847"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.CarlNavigationTest.xml",
+        "sha256": "0ecd55d410d7427c893376b43ddd73adb44ee752aad4d086ca0245f44da7b152"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.CarlReadToolsTest.xml",
+        "sha256": "8ac4e39c15511a67336c11980ceefb057356e951960912242124ba6ee297af09"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.CarlRuntimeAdmissionTest.xml",
+        "sha256": "62f69d709343bb3b530afcff4cf72d88976d57b86631c2d2e26660ae15c02631"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.CarlSavedBalanceSheetsTest.xml",
+        "sha256": "0a3cc7f61d34379c0c1592dda83fead42a15aa41b90486a39445b94c02060f20"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.CarlTalkHtmlTest.xml",
+        "sha256": "9d9be3ba0e3fe432241803b252cc2181694d320d0b38e9a0e169fabbf2d9dd9e"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.CarlTalkServiceTest.xml",
+        "sha256": "5df4d68cf50a3a4c1284377b80bac976d4bf60e57dd9c693993329524759a16c"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.ConformanceTest.xml",
+        "sha256": "ffe41850fa95c95980ee9c58d0fefcd0eac05f0b5f233cf48ec4f069b7ef4b3c"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.calendar.AgendaDecoderTest.xml",
+        "sha256": "22c84bda0fe9278be1c879866bf88e6f4f66e5c68ac6fa929a4518251df2a0d0"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.calendar.CalDavClientTest.xml",
+        "sha256": "7e853b25d5986e1acba37cdb1a16e14bacfb9dac6c16705837e4aea9b0451b0c"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.calendar.CalendarPublicationServiceTest.xml",
+        "sha256": "952e16468e5a1d77d630df1b2b247b59940da830e4aaf61e172e7f7b64876f0f"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.calendar.PlanCalendarCodecTest.xml",
+        "sha256": "7489f00f9b69b34ea82c8485162c11ec6c1bea930205040bbfb80e53f63b81e4"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.calendar.ReminderStatusTest.xml",
+        "sha256": "2763b14d21b83d2d9f22735fbd884046d35c3e90a1622fbffd33f972e7066b31"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.ArtifactExportsTest.xml",
+        "sha256": "25b0d643d1e230f41c5935eb2b989da2b5026febb3a28fc6809aa96ea0fbad87"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.BalanceSheetsTest.xml",
+        "sha256": "02b2f63378ce76240eed98a9c11671d3012d7d121be8f5e6dba89395413cc8c7"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.BillCsvTest.xml",
+        "sha256": "4ba62ed7356ab4eaccf1151bb2d3a6e6e29c40967429f948502c9011afd2fa04"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.BudgetPreferencesTest.xml",
+        "sha256": "0200a9ab270d67755103315e62ef0264ba17e16998fa6bfa84cb5c13afc39ec6"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.CalendarAgendaServiceTest.xml",
+        "sha256": "76ab6f41476af29d8e3244a898cfb5410ab3913f83b747d7b886256526b1cd4a"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.CalendarAvailabilityTest.xml",
+        "sha256": "6b404cac55726dbdbc502be347a28af6e0c9ca93abc24334945ac152ac2b2350"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.CanonicalRequestsTest.xml",
+        "sha256": "0d8e3d495d986a9c94e95935eb35393b2cd8fd45851ca22f81534728f653c364"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.CarlConversationAuthorizationTest.xml",
+        "sha256": "6c449599b1d4865d78e3709f8eb4a2da1059e8ec77b48996f5d991214b369aa7"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.CarlServiceTest.xml",
+        "sha256": "88080163e83ddf8ef30a44c537b8bfced43484996cdb74c348291cc2cef6bcba"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.CashFlowTest.xml",
+        "sha256": "3fc397e421345272a90f5886f8461713c19da698fde95c4d61ef48fa5271d4a0"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.DashboardFactsTest.xml",
+        "sha256": "d4ca67eb501b7fb6f47d484beb7aee6b06daecabedb9ce5869b225ea09ae06ad"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.DebtPortfolioTest.xml",
+        "sha256": "43d7931b664e1298b1980a8fa94494a8519049021f7ce420e3391488733def17"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.ExpenseForecastTest.xml",
+        "sha256": "d31142881538cbdb0acaf98cd1b77e967c4678109344c6d68675a7ad32ec3fb6"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.ExpenseRecordsTest.xml",
+        "sha256": "f43304ea885a32a91593a2cbe7a87c4bedbbae5df3eb64f3770689c4df029e29"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.FinancialPlanningTest.xml",
+        "sha256": "8bf05be28c51cda00cdb763cc6b158e011b49e1090d854aac6c223177132791f"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.FinancingScenariosTest.xml",
+        "sha256": "e626de2a665d8f6894ba175c8a84bddb4ec6005ed6fdf87d9881ffcddb2007a6"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.FocusedReportsTest.xml",
+        "sha256": "eb8eff232121117f40e6fec17711d4f71bc858131a7650d23dedf2de728dc93e"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.GoalTradeoffsTest.xml",
+        "sha256": "d316b2d38a4f0b7932eddb5a3c06a7e8da06fd08525bea19da55388a8dcbed8a"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.InvestmentPlanningTest.xml",
+        "sha256": "309e0d56886ad3482595e48c6060fac767a1b6f994ade336e4cf8192c704d522"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.MonarchCsvTest.xml",
+        "sha256": "2cd31e1d0edc20fd1759082593d89b804cf439388b00ded001178151877b3a48"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.PlanEffectsTest.xml",
+        "sha256": "3358c3e5c5abe2a7ecffef0bc64eb2354871696ea6c57915f884439c953d660b"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.PortfolioPlansTest.xml",
+        "sha256": "3db0aaa822194fd92560c4cd4b361f10c439e473dd55cfe3c07d53f08d8ea357"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.PortfolioRestructuringTest.xml",
+        "sha256": "7cba6aeb7fd3de515813559687c48b08d557e97d6d956d5e87913a3833cdc48a"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.PurchaseAffordabilityTest.xml",
+        "sha256": "963bf68d46d16ad337e2fa5af0440464029ed658a359b22f5b1e8b2e011df70f"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.PurchaseAssessmentsTest.xml",
+        "sha256": "b1d6db790f9fedaf06e25851a431658d4bfdf35e130ebd68a0456e0887fa51e0"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.PurchaseChoicesTest.xml",
+        "sha256": "153ca4ce1f64b1d7e46ce44eb2a68cef8019dc5bbf5da0d47c14b10bc6c2af38"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.ReminderObservationsTest.xml",
+        "sha256": "6c54eb450926b583e898b5088ba2f5c365adfc2894b730b5252b73173d8d82d6"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.RentalAllocationReviewsTest.xml",
+        "sha256": "5438bc22fb7f97a321379d3bb4d8c6d13dfd812fe8cc3ca9ec54721b2c4e5591"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.RentalEconomicsTest.xml",
+        "sha256": "5242d9be8d92ce4d6b8c275267b89774fdc27a87d7ff583c3c73b6b664fd1d1b"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.RentalRecordsTest.xml",
+        "sha256": "3beff57e3907cc12be71d640f861c460c6aa467d9343955bc06e02b0edde4637"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.ReportRecoveryTest.xml",
+        "sha256": "3f93fc443fd5b754cc79bfd308a14f64f450ec252f0a539871b2a5bdf84da2bb"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.TaxPlanningRecordsTest.xml",
+        "sha256": "1e91892fdb6734c8a43c2f0d951ccad8e0438ca62be18dffb62953e8852763b1"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.TaxPreparationTest.xml",
+        "sha256": "4678e441f2c71b3e768b1904ac5f8a2699fb6f9396d478a7643fa04c29e4e8bd"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.domain.VendorRecordsTest.xml",
+        "sha256": "84f59be788821bd59b9a5389fa36679b5f2b79b9fb160ae43d379c438b1e501c"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.report.FinancialReportFiguresTest.xml",
+        "sha256": "1502c60bbfb33be333b7e972580901b338e8922ecccd708d858fb0e02a9a33e3"
+      },
+      {
+        "path": "target/surefire-reports/TEST-com.kof22.carlai.report.PlanPdfRendererTest.xml",
+        "sha256": "c5b597f3f0a90cea431aca524630fd86006fbaef8bb70be5057303251db6f65d"
+      },
+      {
+        "path": "target/site/jacoco/jacoco.xml",
+        "sha256": "d1eae17ef91045e230d63b3850923919ba051a2622c0d148d812cb9b2c4a005a"
+      }
+    ]
+  },
+  "browser": {
+    "result": "PASS",
+    "checks": 59,
+    "freezeDirectory": "/Users/james.maes/.codex/work/carl-final-package",
+    "reports": [
+      {
+        "path": "browser-evidence/report.json",
+        "sha256": "a57317ad35ab6e806f6e319a867177373551107dc4f7a5f92995d69827a2ab05",
+        "checks": 31,
+        "result": {
+          "status": "PASS",
+          "checks": [
+            "packaged-relocated-TLS-OIDC-login",
+            "native-authoritative-financial-account",
+            "native-two-file-upload-preview-confirm-apply",
+            "native-narrow-two-file-repeat-import",
+            "imported-record-visible-in-QQQ",
+            "native-user-column-preference",
+            "native-narrow-record-detail",
+            "persisted-versioned-plan-visible",
+            "native-permission-checked-plan-pdf-download",
+            "native-scoped-carlCashPlans",
+            "native-scoped-carlFinancialGoals",
+            "native-scoped-carlFinancingOffers",
+            "native-scoped-carlProperties",
+            "native-scoped-carlRentalUnits",
+            "native-scoped-carlExpenses",
+            "native-tax-evidence-checklist",
+            "native-bounded-calendar-refresh-over-controlled-HTTPS",
+            "native-authoritative-calendar-agenda",
+            "native-scoped-appointment-window-suggestions",
+            "native-selected-portfolio-comparison",
+            "native-cash-versus-store-finance-purchase-guidance",
+            "native-human-transaction-with-source-evidence",
+            "native-category-budget-actuals",
+            "native-protected-vendor-draft-download",
+            "native-shared-reminder-sync-and-human-reported-completion",
+            "native-explicit-private-presentation-preference",
+            "native-saved-multi-property-allocation-preview-apply",
+            "native-focused-report-with-source-coverage",
+            "native-protected-report-pdf-and-text-downloads",
+            "native-selected-account-property-balance-review",
+            "native-logout-and-revoked-session-replay"
+          ],
+          "syntheticOnly": true
+        }
+      },
+      {
+        "path": "dashboard-browser-evidence/report.json",
+        "sha256": "627b79371a1661dd502402de74801cceba6797096a9d050e2c484ee9bab67db7",
+        "checks": 18,
+        "result": {
+          "status": "PASS",
+          "checks": [
+            "en-US-native-nested-groups-and-stable-account-route",
+            "en-US-actual-default-home-title-favicon",
+            "en-US-native-ISO-controls-cash-and-card-spending-accessible-SVG-table",
+            "en-US-distinct-saved-balance-choice-and-explicit-currency-gaps",
+            "en-US-goal-priority-current-plan-and-saved-observation-distinctions",
+            "en-US-narrow-native-controls-SVG-and-table-scroll",
+            "en-US-actual-v1-POST-exact-saved-choice",
+            "en-US-public-native-login-branding",
+            "en-GB-native-nested-groups-and-stable-account-route",
+            "en-GB-actual-default-home-title-favicon",
+            "en-GB-native-ISO-controls-cash-and-card-spending-accessible-SVG-table",
+            "en-GB-distinct-saved-balance-choice-and-explicit-currency-gaps",
+            "en-GB-goal-priority-current-plan-and-saved-observation-distinctions",
+            "en-GB-narrow-native-controls-SVG-and-table-scroll",
+            "en-GB-actual-v1-POST-exact-saved-choice",
+            "en-GB-public-native-login-branding",
+            "verified-Bob-private-report-guess-and-cash-privacy",
+            "current-revocation-removes-rendered-facts-and-choices"
+          ],
+          "syntheticOnly": true,
+          "dateRequests": [
+            {
+              "locale": "en-US",
+              "from": "2026-08-01",
+              "through": "2026-08-31"
+            },
+            {
+              "locale": "en-US",
+              "from": "2026-08-01",
+              "through": "2026-08-31"
+            },
+            {
+              "locale": "en-US",
+              "from": "2026-08-01",
+              "through": "2026-08-31"
+            },
+            {
+              "locale": "en-GB",
+              "from": "2026-08-01",
+              "through": "2026-08-31"
+            },
+            {
+              "locale": "en-GB",
+              "from": "2026-08-01",
+              "through": "2026-08-31"
+            },
+            {
+              "locale": "en-GB",
+              "from": "2026-08-01",
+              "through": "2026-08-31"
+            }
+          ]
+        }
+      },
+      {
+        "path": "talk-browser-evidence/report.json",
+        "sha256": "a2a1905089639ae53e70a5c8cdd865dc593dd714d1da42d508a5c68e4fd55114",
+        "checks": 5,
+        "result": {
+          "status": "PASS",
+          "checks": [
+            "native-private-default-conversation-form",
+            "disconnected-model-truthful-failure-no-fabricated-answer",
+            "narrow-conversation-no-document-overflow",
+            "saved-response-selector-mounted-and-authorized",
+            "verified-other-member-cannot-select-private-response"
+          ],
+          "liveModel": false,
+          "syntheticOnly": true,
+          "terminal": "Response outcome unknown"
+        }
+      },
+      {
+        "path": "qbits-browser-evidence/qbits-report.json",
+        "sha256": "3910ad1d442326277137d80dc36ffce13f414fe7a34f123665f4c50186c7b2a3",
+        "checks": 5,
+        "result": {
+          "status": "PASS",
+          "checks": [
+            "actual-native-global-search-through-QBit-current-private-account",
+            "actual-native-ESB-connected-provider-destination-hidden-service-trigger-and-denied-payload-route",
+            "actual-Artemis-CloudEvent-fixed-native-trigger-consumed-acknowledged-no-dead-letter-and-index-updated-before-periodic-refresh",
+            "other-verified-member-cannot-search-private-account",
+            "existing-cookie-search-rechecks-current-finance-access-after-revocation"
+          ]
+        }
+      }
+    ],
+    "actualEsbEvent": {
+      "consumedEvents": 2,
+      "destination": "carlIndexChanges",
+      "acknowledgedEvents": 2,
+      "titleRestored": true,
+      "status": "PASS",
+      "process": "carlRefreshSearchIndex",
+      "nativeTelemetry": {
+        "expectedAdded": 2,
+        "added": 2,
+        "acknowledged": 2,
+        "stepLogged": false,
+        "expectedAcknowledged": 2,
+        "deadLetters": 0,
+        "consumerCount": 1,
+        "remaining": 0,
+        "labelMatches": true
+      },
+      "firstEventMillis": 593,
+      "payloadAuthorityIgnored": true
+    },
+    "visualReview": "Native Talk/private form and readable saved output, grouped/branded overview, dashboard desktop and narrow views inspected. A tall widget uses its internal scroll; a single viewport screenshot does not show every inner section."
+  },
+  "runningPreview": {
+    "url": "https://localhost:64503",
+    "syntheticOnly": true,
+    "modelConnected": false,
+    "report": {
+      "status": "PASS",
+      "checks": [
+        "native-private-default-conversation-form",
+        "disconnected-model-truthful-failure-no-fabricated-answer",
+        "narrow-conversation-no-document-overflow",
+        "saved-response-selector-mounted-and-authorized",
+        "verified-other-member-cannot-select-private-response"
+      ],
+      "liveModel": false,
+      "syntheticOnly": true,
+      "terminal": "Response outcome unknown"
+    },
+    "reportIdentity": {
+      "path": "running-preview-evidence/report.json",
+      "sha256": "a2a1905089639ae53e70a5c8cdd865dc593dd714d1da42d508a5c68e4fd55114"
+    },
+    "persistence": "Disposable synthetic database; not household storage or production service"
+  },
+  "security": {
+    "secretScan": {
+      "path": "final-gitleaks.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "findings": 0,
+      "scanner": "Gitleaks 8.30.1"
+    },
+    "artifactScans": [
+      {
+        "path": "final-dependencies.json",
+        "sha256": "e581fe8eb827500fa7d9e1d97d2e758b51cdd76cf9689350f294d93220d9c7f0",
+        "javaPackages": 269,
+        "highCritical": 0
+      },
+      {
+        "path": "final-image.json",
+        "sha256": "663a916aec7ef0d3a478d25a5e9eef5418a201119bd3332ea4261a7a443d6301",
+        "javaPackages": 269,
+        "highCritical": 0
+      }
+    ],
+    "scanner": "Trivy 0.74.0",
+    "image": "carl-candidate:rc7-recovery-20260930",
+    "imageId": "sha256:7ff179107a303a426310c10149c49d71dd768ce164c24104d8c22ea53641633c",
+    "imageArchive": {
+      "path": "candidate-image.tar",
+      "sha256": "acf5af8673478e794989146e5bfc2f188ea3f1018ac457b84b4f6393da22cbcc"
+    }
+  },
+  "releaseSyntax": {
+    "releasePolicyTests": 7,
+    "actionlint": "PASS 1.7.12",
+    "zizmor": "PASS 1.30.1 --offline --persona auditor --min-severity medium; three existing ignored",
+    "nodeAndBashSyntax": "PASS"
+  },
+  "sources": [
+    {
+      "path": "src/main/java/com/kof22/carlai/AgentApplication.java",
+      "sha256": "6b6ebca1844579197cff8e9722087a7aee19a99f334ccb1f2375483ccf35bf5d"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ArtifactExportBackend.java",
+      "sha256": "d4ec494b02849ed021964bc3558f281a2fea7562f05837722e20a6f14ddc0719"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ArtifactExportProcesses.java",
+      "sha256": "eed541a3f4db53675dfd5e954e3cfad496a6cc4fbe4216ec412db285a2a9e6b5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/AvailabilityProcesses.java",
+      "sha256": "1c3fa2236657a492e3b29ee39f37eb4632b59deef2849ac26a532890ae694e46"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/BalanceSelectionProcesses.java",
+      "sha256": "bc6a3792502c22a0f91706e95b12828e920e6c8edc74a42de5db37e112fb0135"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/BalanceSheetProcesses.java",
+      "sha256": "19a7f9d273347f77d38425274150054e298a3d697e7f60897eec58a59fe1544c"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/BudgetProcesses.java",
+      "sha256": "1f906cb95a75d18d1b8bccafb59b0d1e6369b6f73ddf1e49fb8e67753eaabb56"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CalendarProcesses.java",
+      "sha256": "87163cfce532ed525de3033e0614969fb2b53b9fa64769d251f73a29d8b74753"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlDashboardHtml.java",
+      "sha256": "fdbf205d07cba8af4dac744d73442af4a4b5250885da4b157c97f07b05d3f7f9"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlDashboards.java",
+      "sha256": "35230154c8a358e86cbf5007690c85bf653a3281291621fe91ffd5219e861972"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlExportBackend.java",
+      "sha256": "a75cda16f1699abc19ed78da00204fd9ba7e0775a342628fc16e60e69b9eed9b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlIndexRefresh.java",
+      "sha256": "9162f3eccbcb27cee0f393c233c684487e9c7bbdc01f0305beed5b69efa313f2"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlMetadata.java",
+      "sha256": "e56dd30852bdd159a97a7d20a79bc27c22fb9214d190e055d3957676b64642f7"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlNativeReadScope.java",
+      "sha256": "fe414d001a32f1e30fb8871f9b7c711cb0ddb2b373272ca9f830a1becfe5ce7a"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlNavigation.java",
+      "sha256": "15fe301a342d4c534c3b16f538e86334d720758c5d1665434b914ef39c51f435"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlProcessScope.java",
+      "sha256": "39052970c5596835ffd71071cc742ae2af1c430fbda30d0d0319bbfb29bcfc77"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlQBits.java",
+      "sha256": "132e66ea27a1b5d62e85bd6295d45db6c86df6840e926b255660e9e974c5d85f"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlSavedBalanceSheets.java",
+      "sha256": "10b005b155bb8d53b715cce8986197b1a7e1da1316402e5afad65228c1e772e8"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTalkChoices.java",
+      "sha256": "885106c322d95bfe181eac0568dd0e54f023b77689df9fb1c598518690d5e104"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTalkHtml.java",
+      "sha256": "9df60a3390f20594ed01dd3404ac0cfc5af078788ef662e3104e041542ddc7ec"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTalkProcesses.java",
+      "sha256": "7477f0c8861d7db684b047960927c5ca16a7430f6a4873c61008e535e1aa68db"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlTools.java",
+      "sha256": "815d414b86a338f4dcdc27f7b8844928b17c899d59ea663fbfa21c5b006abd90"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlUploadBackend.java",
+      "sha256": "afc5307857aa960f31ceb7439a04d0e8d1b9f1bde930cb830499b69a70fe9350"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/CashProcesses.java",
+      "sha256": "8046626c4ebd1f2f23b149baaf9bef741022c59295e09799a1a3d6818401fb21"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ExpenseProcesses.java",
+      "sha256": "7dcc151fb6930d99e99321cf6ee3175e001eaf911b95da5b81786b8c0bfbaf75"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/GoalProcesses.java",
+      "sha256": "f6f165be121eb554ca9b8ad5721cc6045cb8f05af0380146ca4db87735ae02ad"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/MonarchUploadProcess.java",
+      "sha256": "2b3dbba0a512cd5b83b50425d98e695b9f3ae86f89412a189804304210bdca85"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/OfferProcesses.java",
+      "sha256": "285f6f50fae5116f4201bf94d2b91e8bd13d5ae86da67b05860fa846c63e8a91"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PlanEffectProcesses.java",
+      "sha256": "97f147cc1f25e4653c287c6f078511a41c8125753313d9bdb42b65f58c2ccb3c"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PlanProcesses.java",
+      "sha256": "b0ce35c0d91297de435233c5d15434f39adc86a35ed3d997eaf531d22f693c11"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PortfolioProcesses.java",
+      "sha256": "8aeb87a5bdc04e18ac4ce1914735d125a08af399f32f99a25ffc326fc5b6beb1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PreferenceProcesses.java",
+      "sha256": "1d9dc1911348f08145100b4bab207274fbc8bd5c9f08e4c4b27664c6544fd618"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/PurchaseProcesses.java",
+      "sha256": "3cf1a706529dd4154ccc296f337b0dad15a2b8f1ab2c075e56d8e654ccc55f95"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/RentalProcesses.java",
+      "sha256": "e83ea35f0d406042d00da71fae52dcb31d8196349bc91375d50d26ccc7920075"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/RentalReviewProcesses.java",
+      "sha256": "20cb9098a7363eff16db29e8a6ea2e51430f5e109bacc6c1860e1bc288795057"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/ReportProcesses.java",
+      "sha256": "d21181aedbac34a65f3e04dd3c47afdb731c7d3a15e37d61d734e1468d9a56f4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/TaxPlanningProcesses.java",
+      "sha256": "97f709b0a7d3a66d2a164eaaedb1de22318b13030f4bfdcf739a03abc213aaec"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/TaxProcesses.java",
+      "sha256": "df5a3b5b9fe1886e16c89be295227fd73665d426b1d90b3e3ea6638fc05dc03b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/VendorProcesses.java",
+      "sha256": "28afa6d9092252bb87aba592f0231369ec3413e52396beedb7cf57726706ab80"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/AgendaDecoder.java",
+      "sha256": "36a10db662338177c2467d9c99cdf17e42547c27f58361b97f19f1ad2f53cf14"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/CalDavClient.java",
+      "sha256": "f68eb11518f7731d4da1e08b9a6eb61b675b0080b0982bf7e92db7321c8c0161"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/CalendarPublicationService.java",
+      "sha256": "6a83af3fabbbe98544184882c05b60c26291c4ae4fef239e594dfedcd46cc0e5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/PlanCalendarCodec.java",
+      "sha256": "9b891a8e5bff66f332988bc652b8b034b7471686bb5f07588294aac4c9d30ba4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/calendar/ReminderStatus.java",
+      "sha256": "5a26b796507647bde1899cdbc8f61a6315aeb3f223ecf59b31c849a1695960b0"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ArtifactExports.java",
+      "sha256": "7bd85e191f8caa12696ffd37e7a5f2495c5e3552a0f8a5dc8144d8118dc80a75"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ArtifactPresentation.java",
+      "sha256": "02874aadf3b704f9071c936040b5bbe0e8f9fc60547a670eb1f1ca0b2c3d99fe"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/BalanceSheets.java",
+      "sha256": "bfbd8b7b3b99426c75624c99d37d174e6e9200a12c51d1e2c092bdcc0c2670a6"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/BillCsv.java",
+      "sha256": "ca0d5dcb665e7eb68eea0bcf6f3607201554aba8c0e16a67411946faf063f3e2"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/BudgetRecords.java",
+      "sha256": "84c7ddc3284b4d50eabd228b0c94c0c774cb388595442a498f897c4057c422ad"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarAgendaService.java",
+      "sha256": "795feaa17afde0027cde625538d1a4532b334df4fd506a6fe7dd2427d1167fd0"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarAvailability.java",
+      "sha256": "c34324787629f5f893f7b6b1b6d61b065dce35d41d3513ad08d0b499e3b9fe02"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarClientInput.java",
+      "sha256": "495a4069a85e9ca92b9a8b898369107fccab71ad775a588db046918f2cba8670"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CalendarWorkflows.java",
+      "sha256": "fc49c496f69374690f305634f84218971319c4ba7a5b55653a9fdea87ca94dd0"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlClientWorkflows.java",
+      "sha256": "233ef138c8a8724e78fd2831846327fe2e6ed26bb23abf11d1bf01a0844c7930"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlConversation.java",
+      "sha256": "72496d1544735a493630c6f877265cfdd073ddfbc08f219e07984c118f297ef5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlFamilyAccess.java",
+      "sha256": "36147d70b6b796850114c937cc602efe346885cdc2525835de9e46549d6930a8"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlFinancialConversation.java",
+      "sha256": "9e3c0acb8f740977275781341510b7c4f19628a693326b5e7882b41bfd1727e8"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlGoalConversation.java",
+      "sha256": "a79b56e54e1c2a7a2680b210c8402e63f87390489bc280bf21eb2853be4ff012"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlPlanConversation.java",
+      "sha256": "5b3b55d7a568fdada29de6286ed5d4d65981380ede1f30c9471638be3f6d4304"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlSearchAccess.java",
+      "sha256": "a8d7c4d6226843662935eb6aaf5b7fb3254108c61f3d3a11ba56bebe5860d22d"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlService.java",
+      "sha256": "62316ba712da211542fca7e0978b830293b54936d7a9c531a42a8bf34c9d70d4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CarlTalkService.java",
+      "sha256": "e4860921b9a707e976f77b711eb561fe440fb877b9ccb25c21c8de83506f42b1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CashFlow.java",
+      "sha256": "9c2cc849f2c26eaac7adffdaf924483db5392fa527106a9fd4832fd3e8b264a3"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/CashPlans.java",
+      "sha256": "0aa618992738437138553b448a59fb58d86df92f914835218ec490d2b019b862"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DashboardFacts.java",
+      "sha256": "1b831d228478448385d463f44026cde7acae88c1dd71816953824773abe3ee56"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DebtPlans.java",
+      "sha256": "13a311f6e5b8de2be021c5ad89f718b8ce441c485f21af391913bcd61d962d36"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DebtPortfolio.java",
+      "sha256": "ae28c2ffda07d04f96193bd255e3d96ad6d35ec7af509548556cddd3dfe812df"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/DomainPreferences.java",
+      "sha256": "a33c149c2eb9713f8023fcdc3a73f1af37ddad3c993dc0622a38a5ff11fd1bc1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ExpenseForecast.java",
+      "sha256": "4fc5db81aed71b1745f94b0f4923dda4c2b5bf2afece3e2fd78f36a8587f5cab"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ExpenseRecords.java",
+      "sha256": "134b7113ced597f31d0823b200220beeb0d2ea1d39bd61e25c605d04bdc26d52"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancialGoals.java",
+      "sha256": "5ee21763d21251d0fbdaa4f19580ac90a5cdf460891ec23cfe3c2dda97d8a7ae"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancialPlanning.java",
+      "sha256": "887b54a7f5c6286a93b4245c8a1481b8116b212d1745088839232bd8aac0b223"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancialRecords.java",
+      "sha256": "b7d0fc59aac14f04213bcb5d2010dd9ed60f92f3c4666ba8c6ea46ab4ec272e2"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancingOffers.java",
+      "sha256": "c46f47d0c685819efc6bd456907842131ac1fb2669344e242f82f2c7ad7e8d1f"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancingScenarios.java",
+      "sha256": "d6da53c78791b6715ac861c7e1246a8267889a11e838fb7c3c32c418bb0169e5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FocusedReports.java",
+      "sha256": "1ca62d414294a1bbf7d65d348aea001af936ca2dc1d9dbb0dcf20c99b8023521"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/GoalTradeoffs.java",
+      "sha256": "d9a110e272425ca05d008d1e0e1c57d238518f4230e6635c286016be98b4a6c7"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/InvestmentPlanning.java",
+      "sha256": "a3442142000a787ef1834100162694e4c373aa50930f0b18723f0d7f3e468476"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/MonarchCsv.java",
+      "sha256": "abdf6d36f2b03274a65d81a500219174b0fa92410574ce6f304f823c3e94d4fd"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/MonarchImportWorkflow.java",
+      "sha256": "7003b166ffd1cfcbd0a868223eca1178f2942802348acb663fd7228075ca674e"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/NativeReadScope.java",
+      "sha256": "056b0bcf76c80a18da537f9d5b56695511b2753274f976c3d05e039fccbefd05"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanCalendarAuthority.java",
+      "sha256": "8ef3a5dccfcadbac719e7aec286f0eba2a94b1d31f090ecf530d095ce8bd178b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanClientOperations.java",
+      "sha256": "32d97a7c18e1de20df840b0c771516caeb23f04ed39cefb879e207f7eaa6888a"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanEffects.java",
+      "sha256": "37e6c85b95e7e163f92c5d102c229e2e96961ded4a99b88ffc3a43f5cbb448ea"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanExports.java",
+      "sha256": "f423a0c6c0cd57179b813d35ad39581bc3d08bb6d96581aa0e40e552972f07ad"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PlanLifecycle.java",
+      "sha256": "51551d94dbce8c743f711fd6ffd8428b8629fa7b584171acc8de36b3a01feff4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PortfolioPlans.java",
+      "sha256": "655c39791e94f72274650c32ab4e081975d5b125adc30c9559ae07032f8da622"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PortfolioPresentation.java",
+      "sha256": "03bfd18bcf502a35dc854c69f0634028b5a1760fe3ccfc100ca35c932c3f1417"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PortfolioRestructuring.java",
+      "sha256": "7912da2d916993b28df68e651dc3d3975b5e4130b6c7816f547889528ff172bf"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchaseAffordability.java",
+      "sha256": "cefe99188ed124a7ca0407924ed69f6c507a72597e945172661471dd92b08a83"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchaseAssessments.java",
+      "sha256": "75de2bd1bf9e69a9f9dbf1e1d763e5e7e2ec0d3b14e7758581f0df2b663b3bab"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchaseChoices.java",
+      "sha256": "f8511ebc52cac1608e22ad49cd23ab326aaefb21e8884c0e6b9b9901c91d3fb6"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/PurchasePresentation.java",
+      "sha256": "8157fc9892b6528d8ddabf636ce931c04565e8f7ebd952a39c43118898a8623b"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ReminderObservations.java",
+      "sha256": "53b116f82ea4628455d95230fac088ae02f620c857e2e32d7f836cf850e9fa54"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalAllocationReviews.java",
+      "sha256": "5e3ce0d7fd4f9e44f92140408e7000a1161942b6829ce286c2769c779861eb52"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalEconomics.java",
+      "sha256": "bb6ae6676aa6ce0e24814dd9c68aa1e7eb154f8cac16d4d7d1ada1260c4188ec"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalRecords.java",
+      "sha256": "3fe79ecbaef35d308537fc0e9b658912e2c674bc0464102dd179c5afac6623e4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/RentalStress.java",
+      "sha256": "7870b9ee7dc3e845e5abaaa9cbd0e0d0974c70601177af39795db37f2701a5f7"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/ReportRecovery.java",
+      "sha256": "ff34ad38e861434d2edf6556ace53103e248069d6577089e1b436af15ace3734"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/TaxPlanningRecords.java",
+      "sha256": "70c07f6aac9fd23c4508ec0b68255edd842de83ecdb9bc4db6ae5f2ca5dd8ab6"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/TaxPreparation.java",
+      "sha256": "8525f30ff63267058c5ad14a5a719aa0c7ad01d1f4292415bb946e6d4da78c51"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/TaxRecords.java",
+      "sha256": "a012c089e1f12aa628daeeb3cf856e3f58330d45dde6d8f7c50fa90a95f1cff5"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/VendorRecords.java",
+      "sha256": "c89bc4641bebb7f11d22a81296b15ee1d30ea2ce65eae210067a9869cf22c615"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/report/FinancialReportFigures.java",
+      "sha256": "eb0e4d675d1b4fa52257b928265c2697168fb306b3b2515c95856edcd4649bb4"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/report/PlanPdfRenderer.java",
+      "sha256": "e87d2935de25fae8c76637e80aa3ced1199c35d03fe61a0853ccae4c145e2f54"
+    },
+    {
+      "path": "src/main/resources/db/migration/V10__permitted_member_labels.sql",
+      "sha256": "8175b2b1a962693f751b325dda4f48c664634c79debf498e8dfa967cc9cd5b5d"
+    },
+    {
+      "path": "src/main/resources/db/migration/V11__calendar_connection_coverage.sql",
+      "sha256": "d786f841e3d58bbeee44a582f52d894caca4d69130f498a024dcf1d038153912"
+    },
+    {
+      "path": "src/main/resources/db/migration/V12__protected_plan_exports.sql",
+      "sha256": "75f136cc5265d7ace6adf7cc167b93c223f292b8e8611ddf9b40684f8e52c39e"
+    },
+    {
+      "path": "src/main/resources/db/migration/V1__carl_domain.sql",
+      "sha256": "f7ab202cb79350d09dd760806fcf26828978464654f3f666af5d63728f473382"
+    },
+    {
+      "path": "src/main/resources/db/migration/V20__calendar_publication_outbox.sql",
+      "sha256": "a151a7c828403cf5737d79647e3bd51b19f9128e86be423b3f31166c8bf51c20"
+    },
+    {
+      "path": "src/main/resources/db/migration/V21__calendar_domain_relationships.sql",
+      "sha256": "8ce6141f6a804f6867c9505de920d47474a5b9bc6f99469d3ad13a7a90087fa9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V22__financial_client_workflows.sql",
+      "sha256": "c96c07f057f25911cda025273818bd9e2967a0b9fbee0dc04b298411b82bfc86"
+    },
+    {
+      "path": "src/main/resources/db/migration/V23__permitted_busy_calendar_reports.sql",
+      "sha256": "53e8d0c18ff78fad5757f296a475b79d0ea074fed4026f538d3c7c9dbe38296f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V24__debt_payment_assumptions.sql",
+      "sha256": "6246d4993690d80d341e4638745c7894f683c74fe21d9a6134072822d0bec37e"
+    },
+    {
+      "path": "src/main/resources/db/migration/V25__dated_cash_plans.sql",
+      "sha256": "c38602bb8069032a650c20f8b5d068f47b2dd4698d9dc3d031e43c33aac1be45"
+    },
+    {
+      "path": "src/main/resources/db/migration/V26__purchase_client_workflow.sql",
+      "sha256": "20e60717d2db465f0d6bcc53ac9473ee5e623d25b78beecc74fb61c08ebebe1d"
+    },
+    {
+      "path": "src/main/resources/db/migration/V27__calendar_operation_status_view.sql",
+      "sha256": "d27e0691a46ede09baa841d7046493af432a2a0665f1664ee21d3e1a8b217cac"
+    },
+    {
+      "path": "src/main/resources/db/migration/V28__owner_financial_goals.sql",
+      "sha256": "3e52591a6db389de83cfa9ee04d61ded05532af858c3f45e7118fdb0c72dbdbb"
+    },
+    {
+      "path": "src/main/resources/db/migration/V29__financing_offer_terms.sql",
+      "sha256": "d9d70a44460602cf589324e22a548be50b5233266f9025b11359a07f14ba8364"
+    },
+    {
+      "path": "src/main/resources/db/migration/V2__monarch_upload_reviews.sql",
+      "sha256": "c65dc3f9268d7a00a62266fca017d40c5d8333124533891f21a5a999ed637980"
+    },
+    {
+      "path": "src/main/resources/db/migration/V30__rental_workflows.sql",
+      "sha256": "3885a41d605efdf2f2cb2b870e04d23703cb14bd6170d279c31aa383adf659a3"
+    },
+    {
+      "path": "src/main/resources/db/migration/V31__offer_client_workflow.sql",
+      "sha256": "0ac16f6df90fee8883325a03dd7db3bd2893913c9cf6c99b7e72c46d898356be"
+    },
+    {
+      "path": "src/main/resources/db/migration/V32__tax_preparation_context.sql",
+      "sha256": "c80a0c083367482b07bf75756ad8efd10190b2637b914b2fbe3c657e997ec2b9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V33__expense_forecasts.sql",
+      "sha256": "69534c59407cac25a9e045372aba665e32ab9c4d9d3b05b609242503ea9e80a9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V34__tax_dependencies_and_family_reports.sql",
+      "sha256": "4550141db13aaa3ea57d096e94289f5b7effba5ac6b4b03e4f3f69c386081f0e"
+    },
+    {
+      "path": "src/main/resources/db/migration/V35__portfolio_restructuring.sql",
+      "sha256": "4a8d6299735aa630608c22c8cb0fb4a438b524d56373e846f47b54d21340ae76"
+    },
+    {
+      "path": "src/main/resources/db/migration/V36__family_plan_workflows.sql",
+      "sha256": "657391948a794a13ada9e1a10ad70322be54aa34261b298edd63f1647c62bb6c"
+    },
+    {
+      "path": "src/main/resources/db/migration/V37__family_plan_replanning.sql",
+      "sha256": "6817b275c0b85a8583e865de7a5ff12555934af3e7c1ed5adb73f37c56b8b928"
+    },
+    {
+      "path": "src/main/resources/db/migration/V38__calendar_agenda_projection.sql",
+      "sha256": "2149e0bbf34fbecd7b0d7fb334ad869d655dc3dbd72dac630e53832dcc21bfcc"
+    },
+    {
+      "path": "src/main/resources/db/migration/V39__rental_allocation_reviews.sql",
+      "sha256": "0e23369009708e46737e32c7e411516110211a33284142c5fea9b21af2bb985f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V3__permission_epochs.sql",
+      "sha256": "2ba72d017d2b25b6561489302b4f055a91b64b7e16d53bf450fb5a64abb96700"
+    },
+    {
+      "path": "src/main/resources/db/migration/V40__portfolio_family_workflows.sql",
+      "sha256": "ed7470643d88d91c20a0b9d15122fce042ad78f8a9272910cf9fcf8bfde932c1"
+    },
+    {
+      "path": "src/main/resources/db/migration/V41__vendor_draft_versions.sql",
+      "sha256": "8fe0bcce4c1aa14727c3abe4845e4c46825e199cb03d87e064943377ae94b25a"
+    },
+    {
+      "path": "src/main/resources/db/migration/V42__manual_transactions_and_budgets.sql",
+      "sha256": "54809933a17c3c7facd2c9737f8694eeb3acd43347c7044e4b866d69111fa260"
+    },
+    {
+      "path": "src/main/resources/db/migration/V43__domain_preferences.sql",
+      "sha256": "9fdb35d270030088432066dc0716c80c75b6d18d049a9f99bbdb93e73b2a463c"
+    },
+    {
+      "path": "src/main/resources/db/migration/V44__purchase_options_workflows.sql",
+      "sha256": "f7242ec43b3ab4cd51016e330c7c3d21ba77a56e4f43aecbdc8cb4ae0a56520f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V45__reminder_observation_review.sql",
+      "sha256": "8f4d563e60e85e3a268eeaacf456a72734360ce2e212c968a0bd583e414042e1"
+    },
+    {
+      "path": "src/main/resources/db/migration/V46__tax_planning_sources.sql",
+      "sha256": "8dad8f3d4d8ca5e8d9b602ef2fda0e200bddde86a4280456836e424bfc361f51"
+    },
+    {
+      "path": "src/main/resources/db/migration/V47__report_recovery_and_focused_reports.sql",
+      "sha256": "ec770435ea4108866814b68ca5addcbc51cb229f5ae764b6f919e7a9eb712de7"
+    },
+    {
+      "path": "src/main/resources/db/migration/V48__protected_report_exports.sql",
+      "sha256": "7c7c90fd044f86df655ebeff3fd57335eddf187fda1b4bd767794ae6b476caa0"
+    },
+    {
+      "path": "src/main/resources/db/migration/V49__rental_stress_assumptions.sql",
+      "sha256": "1b87b762cb26cef334651a4f9b3a4b87574043a2ad97a1d1535309476e358050"
+    },
+    {
+      "path": "src/main/resources/db/migration/V4__artifact_source_versions.sql",
+      "sha256": "564ae29602df6e24443e590f98259e87d6155d46db8d30d420bd29944bbfcb7c"
+    },
+    {
+      "path": "src/main/resources/db/migration/V50__plan_effect_expectations.sql",
+      "sha256": "21f1ad0b84e0bd850e3b7af0cdf111df886f929a2191183eb762c506fedd9683"
+    },
+    {
+      "path": "src/main/resources/db/migration/V51__report_and_tax_client_workflows.sql",
+      "sha256": "1a96dbf8da0403028f51acc6a48081ea8d50e3e14b1ac98c93e882d7b0dee730"
+    },
+    {
+      "path": "src/main/resources/db/migration/V52__native_uuid_choices.sql",
+      "sha256": "b027810f9369af29757172d90d03a3d8de15dde31239a61854e61f474de76d0a"
+    },
+    {
+      "path": "src/main/resources/db/migration/V53__family_balance_workflows.sql",
+      "sha256": "01175e196f648da26674af1a27e9705ff0bb780f9aae7e2e06eb0bbbc93eb310"
+    },
+    {
+      "path": "src/main/resources/db/migration/V54__native_balance_selection.sql",
+      "sha256": "ef975a9a748d3f06d4a58f67be097cc5de65118c9563acbd8f379431d99e173f"
+    },
+    {
+      "path": "src/main/resources/db/migration/V55__family_report_export_workflows.sql",
+      "sha256": "fddd6936a9697a91d746231d2eaa044e80bdabdfa104f56c441b70d71574efa8"
+    },
+    {
+      "path": "src/main/resources/db/migration/V56__family_plan_effect_workflows.sql",
+      "sha256": "46cdedaae5ba0dee688b878b27d0b65bc0f49023f875dd4605ea0008bac092d9"
+    },
+    {
+      "path": "src/main/resources/db/migration/V57__conversational_workflow.sql",
+      "sha256": "29dd4a4bf5713de3fb048812a6d5156a877a6a00e4798cbabff65c87b7b82f71"
+    },
+    {
+      "path": "src/main/resources/db/migration/V5__client_workflows.sql",
+      "sha256": "423e3002caf1d91046f87f89d415c60cf75f9965eebb469dd3d1620782215cbb"
+    },
+    {
+      "path": "src/main/resources/db/migration/V6__debt_projection_inputs.sql",
+      "sha256": "f002463d459bff050ed0244e2079b7757e48065863a498dc20ed696f52472b45"
+    },
+    {
+      "path": "src/main/resources/db/migration/V7__artifact_permission_snapshots.sql",
+      "sha256": "42d2f9561c3fe2b8cb0710a8e104afb538203cbc951b136201222c35836f0925"
+    },
+    {
+      "path": "src/main/resources/db/migration/V8__artifact_audience_expansion.sql",
+      "sha256": "ac8f165865f8adaf13ac8586fac46f2f2efcdf07e5052b87fc194237a4f81421"
+    },
+    {
+      "path": "src/main/resources/db/migration/V9__versioned_household_plans.sql",
+      "sha256": "ce58582c3b391ef783abece3fde9c96ad270b176ae2a68ae229c03023be59011"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlBalanceSheetNativeTest.java",
+      "sha256": "d6d38bdf94ad3ee217da813218babc8e80c5304c739d3e2771a245f266dff0b2"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlDashboardNativeTest.java",
+      "sha256": "7a6ca65703d744ab52f75ebae90d7480dc9ac36691865ce330aaa78280e8dae9"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlNativeHttpTest.java",
+      "sha256": "5aa7365d1a391d198fe9aa859cf6e230fcebdc8165f57349232b299fd7c45a9e"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlPlanEffectNativeTest.java",
+      "sha256": "859f26f01a530f710dba9545d482ad7f2f4a0e757af882905b3ddca2787264d3"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlQBitsNativeTest.java",
+      "sha256": "3391e8ba4c571e74113e78e3bf0f440ca41fe67646ff7abdac6952611159ae9a"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlRentalReviewNativeTest.java",
+      "sha256": "e0121e47930278265dbd294bf04e400f7a390804fe4f03d86fa68a27fc9b8584"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlReportExportNativeTest.java",
+      "sha256": "328fe111d56f2e3ba7bfa80140d597df28f17ee3f86a6045966681f1fbe40a91"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlReportNativeTest.java",
+      "sha256": "d90af5894ea042e3f6e0adb6eddbd81eac8fbd7ef5828295e65db38053616b9e"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlSavedBalanceSheetNativeTest.java",
+      "sha256": "907aa6ec637acf70df8bd69afccc0a95cda8dd56235f5e7a175bb32842ebe54e"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlTaxPlanningNativeTest.java",
+      "sha256": "32498615a3ecd8d36c0cb88da1c02f02da7fd235576aa7c2b419fdb64cff085f"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/CarlVendorNativeTest.java",
+      "sha256": "dfe491207b685ebb06959e4a0a03afb4f8d548a79075cfd8c4d85a3f3f034250"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java",
+      "sha256": "ae9066e3580c5a82ae7af0e1d568eb97d9092956d33199c69d7849dbfbd5c248"
+    },
+    {
+      "path": "src/test/java/com/kof22/agentadmin/client/CarlFamilyHttpTest.java",
+      "sha256": "5b58230a06101a49a5ad40de7609027b034d2cb617d8b301c9df4264324646ef"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/AgentApplicationTest.java",
+      "sha256": "25095e283c52ff9cc1c0c44f490b6c669eea7d74d5898c05539d8514d3c29656"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/ArtifactExportMetadataFixture.java",
+      "sha256": "ff5c4bb562dd5a627381930e024b3a1df04038ff717e3071247d781ff2e221bb"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/BalanceSheetMetadataFixture.java",
+      "sha256": "b5b3cc1dbcd28b496fbb653901588330af096fb9bca31d84cd2fe199cec78c93"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/BudgetPreferenceMetadataTest.java",
+      "sha256": "0633a7cc2143c0d5d2dd4dcb8203a7f2d862a114becb24f1131b7f4a4f347bf3"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlDashboardHtmlTest.java",
+      "sha256": "9731b06494e900ba29fa6817b4cc8c3bd17ffc324432b941561e7f229cc7aae1"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlNavigationTest.java",
+      "sha256": "e3e7d4553b40a58d7caa2cfe48ee48cb68dd9c5947ad5311cf238bd6808dc272"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlReadToolsTest.java",
+      "sha256": "1251e5dc661eae343aebbe95adf1cf0ccf7601ae5d604c460957d666432e3e73"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlRuntimeAdmissionTest.java",
+      "sha256": "a7617aafa1714dd15bc6f9f875686e29a4fc9c8eab7223214d5024a643fd1115"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlSavedBalanceSheetsTest.java",
+      "sha256": "0424ec597467fa286ea24c8d80ad32b65dd39f1a1d1c48ee1ac566484782fe05"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlTalkHtmlTest.java",
+      "sha256": "d4ea8a2f6c54f79ae37dfada5e6723d25b4bae542f848658b5785085dd67d7c1"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlTalkServiceTest.java",
+      "sha256": "71df2c517c02f0bd98e6d1567f3c47da3fb924f1cf64c214486a17cd378895c2"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/ConformanceTest.java",
+      "sha256": "8e4502b32d30f2c7244cb327e05c09edc34157b12d85f0777324e68ed61e421e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/PlanEffectMetadataFixture.java",
+      "sha256": "68084c6960d85e81a76d018c7c7bea3322e53d1a7eb65aa8d95ea23d91c65971"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/RentalReviewMetadataFixture.java",
+      "sha256": "374877bf2bd7e41e69aaaef3897de117d42e9b57c9922fced8502e043a3bd092"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/ReportMetadataFixture.java",
+      "sha256": "f8b93405a6c99fd75ebaf31e18371fcfd9b1400f722c086c2f408a26d18ecb05"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/TaxPlanningMetadataFixture.java",
+      "sha256": "c52bcce986b619ceceec075b2c375ea61b2892a7634d3fb1a61034d779f7460c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/VendorMetadataFixture.java",
+      "sha256": "71c50e81b0405cc67c4433f34055a3a91f20090126bc3c87cd3584f439ce393c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/AgendaDecoderTest.java",
+      "sha256": "410515fc142f233e14ed13201192e2b4d93261a4e5e60645096a215d253c29e4"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/CalDavClientTest.java",
+      "sha256": "abea41bebdc497bb7f0385a95a0c8baedb39c1d517ebf4aafa7ae942b78abf73"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/CalendarPublicationServiceTest.java",
+      "sha256": "696ad8286a64cc8123df63fe12b15b5b06f1164480eeb93621d21ce2f0d91b4e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/PlanCalendarCodecTest.java",
+      "sha256": "7725b193add254314165366b39522851f17de0d0aa777e1005fbdf41b9126334"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/calendar/ReminderStatusTest.java",
+      "sha256": "621b9d35db00dcaa73451104b69cf4e3d22419702714867a5e39d523b73e1803"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ArtifactExportsTest.java",
+      "sha256": "42f9649cea190c560ece1cf1ed3d615727913d72758677bf25107224551f4526"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/BalanceSheetsTest.java",
+      "sha256": "a292006778809d156f1807982e8e5c79d519bfa553c4736ae269180d388a1f48"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/BillCsvTest.java",
+      "sha256": "8f4e3456d6ea21748c12f76c024a6f1adf37d67cafa747cec7cbf6b2e90c10c9"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/BudgetPreferencesTest.java",
+      "sha256": "ed7d03eed67d35f8a981009b8f2e80c843875c0f3ca1dcff6ee1f123bf81b302"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CalendarAgendaServiceTest.java",
+      "sha256": "da3fcf37a616165cf5acd47c8f87dc40be826026f98d8328b470a055bcb9632a"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CalendarAvailabilityTest.java",
+      "sha256": "44ddef2312b8a7d87aa48901536b1eb14324118f13aab6ed583db70dfe70eb1e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CanonicalRequestsTest.java",
+      "sha256": "9b0f08c8c1e1bf595af849b316965b5dd4cf9bfcc5721ef5c3915330b6f53d52"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CarlConversationAuthorizationTest.java",
+      "sha256": "b783c9e975eacdf42a64313f8abbdfcbc41822488d4eb6d3c87f9081e381eb97"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CarlServiceTest.java",
+      "sha256": "d7c74999f17ead08a9c62b1294febb9da8785cef68f5c886705936c1a904c9e5"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/CashFlowTest.java",
+      "sha256": "7dabd76da625fdf8acce94756815227fb517a0d10253db3d0bc681369124cbf3"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/DashboardFactsTest.java",
+      "sha256": "633e71585ae7cb2d37641df890b1e440205456f6cbbc6918a411bbf38b5ca98b"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/DebtPortfolioTest.java",
+      "sha256": "803fad728f6378dd183b65badfd1c0329f77fc3a562191146f7bddf83b6794e9"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ExpenseForecastTest.java",
+      "sha256": "97dc4e022ad589f4c5fb292e86be3fa39f762565a6ce2bf345bdce3ab40d0770"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ExpenseRecordsTest.java",
+      "sha256": "a80bda1178deb876e1103d33bcab4ce84b470e564e44a9f0c5278613c8c19abc"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/FinancialPlanningTest.java",
+      "sha256": "98b80256f0afbab1e49d077f885c7ed15c9873a14d95f6a73326fbcd2a774d34"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/FinancingScenariosTest.java",
+      "sha256": "b85c0253ff2d51b18f766bf20f01d57ecf0dfe2ff2df73fdf287de2d9f844343"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/FocusedReportsTest.java",
+      "sha256": "467c9541cbef00b9dd5479fdc8b13a7ea00a4dbb9a3c536f3a83be95fc1251a7"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/GoalTradeoffsTest.java",
+      "sha256": "6a2a44ffd0ea8c416f0ec11707e1f2fd072312105d1ee613a52d6f26c6c07b6e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/InvestmentPlanningTest.java",
+      "sha256": "845ff6093bcd91204e813accc5f6c0cfe0acfa4ed952e3fa80f09de11f770d37"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/MonarchCsvTest.java",
+      "sha256": "47932a993d0e9731a12cf124c474878b506681a035f78207801f93f295c94218"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PlanEffectsTest.java",
+      "sha256": "f5a2dc0e49747990b8d8949e1af8487480cec54f3f1ce72b8c5f5981e545b5b2"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PortfolioPlansTest.java",
+      "sha256": "5f9add19c93a2d7727199070ca969f243515b9bd0617a54cc61358cd68944343"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PortfolioRestructuringTest.java",
+      "sha256": "18a6d56acfdaafb38dbfede157f1d01929e5334229e9a6926556e59a3c54fcd9"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PurchaseAffordabilityTest.java",
+      "sha256": "428c5b37fb8b95cf6f9bbef8d730c2498c236d12e32ee68e192777bc83a2f00c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PurchaseAssessmentsTest.java",
+      "sha256": "a6b5dbeaa38c6e61971ce301bfc34605dc7e150a206a6a5ca41e5a7af4ee0195"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/PurchaseChoicesTest.java",
+      "sha256": "8bec1e659b2fa00113a9d44bc5f450434c5fcd11fd160fb5218f6f7121326def"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ReminderObservationsTest.java",
+      "sha256": "a7e8f47d5bb606b09d6f54752deb8d7deeeb3682eebf91c41b75e5a1502ac9f3"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/RentalAllocationReviewsTest.java",
+      "sha256": "2fdce3834677c35e614339f12a9ffaccabe2f33c35abc98d01d546162d11621a"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/RentalEconomicsTest.java",
+      "sha256": "9efa042017c02cbd573eb2416c52274f948d2396421b9f0d317ba939b9bcdef5"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/RentalRecordsTest.java",
+      "sha256": "285484f96fd453dca61aa80adf14f845562d6848e77353d2ee530ce49adcac6b"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/ReportRecoveryTest.java",
+      "sha256": "5338a0398725caa5331d049e4916cd1694b9bb36aac461e78ed97c4a045491be"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/TaxPlanningRecordsTest.java",
+      "sha256": "1d4819c792dafa13721e600d5878ba9bd8c2e7a6003fb460b61901b8da9a9b2e"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/TaxPreparationTest.java",
+      "sha256": "61c7387c8190e9cf373acdd9be22526eacd53baee43d3b2c9661dba56870a1f5"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/VendorRecordsTest.java",
+      "sha256": "bfb1d30402ecd74626d8bd5784c5eab0c61505983d11c1ee5f4f9d03dd461a9f"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/report/FinancialReportFiguresTest.java",
+      "sha256": "a917e0d611e8d2e2e1e18492ed8ded753bc191d51e58eef6c1d8c244eb27589c"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/report/PlanPdfRendererTest.java",
+      "sha256": "223a5a8b3c1770f6198378944cc6cbb71caadc6a3af7c6ca926ed5d92cc1a196"
+    },
+    {
+      "path": "scripts/e2e/CarlDashboardSeedCheck.java",
+      "sha256": "2c5f56a6e618cd13cdc8cfce06e52da0b288b46c3dbe0e02790e3458bbbcb946"
+    },
+    {
+      "path": "scripts/e2e/CarlDashboardVisualSeed.java",
+      "sha256": "d03d06ed01d6c3f0ec79f2d0ef3758ceb22cccac9e1ba823c47896facbdc7607"
+    },
+    {
+      "path": "scripts/e2e/CarlPackagedVisualFixture.java",
+      "sha256": "aa8fef113d32b221b3bc5306db97414a62496917e520fafdb8c6126896ced7ed"
+    },
+    {
+      "path": "scripts/e2e/CarlQBitsVisualFixture.java",
+      "sha256": "0c2cdddb574660a41ab3e9d3d38e5569d7f85bc20094150ee3fcd1fb2c82567f"
+    },
+    {
+      "path": "scripts/e2e/NativeVisualIdentity.java",
+      "sha256": "38246ab5bb84bb440d0b73c4795211ee585ab8907f0f8bc93f5a78c81828a4bb"
+    },
+    {
+      "path": "scripts/e2e/browser.cjs",
+      "sha256": "75675f92a4445c39d4122700917936dbb7b4878017e5f677a435d0e2717f2cae"
+    },
+    {
+      "path": "scripts/e2e/dashboard-browser.cjs",
+      "sha256": "d5fc589e79ee2e5ff6fe5ca2cf43c8041d5b2ef159ebfb7730c0e41a64a9677f"
+    },
+    {
+      "path": "scripts/e2e/package-lock.json",
+      "sha256": "32ab68cc3e42cb07f9c427400bab592373c405f78c35496ee01fe9e5a827fcfd"
+    },
+    {
+      "path": "scripts/e2e/package.json",
+      "sha256": "5c85682348e7acf43adbc444c281e60bd2cb143f6cc79ebc3045127eaf8f8eee"
+    },
+    {
+      "path": "scripts/e2e/qbits-browser.cjs",
+      "sha256": "26b2589ed856e9c2d373e70dc02282204f93af204a6be0e062d3b39f8dd508d6"
+    },
+    {
+      "path": "scripts/e2e/talk-browser.cjs",
+      "sha256": "d861f70c0661281fe47b60845895ed29df6f14928f2967f5f2f69c7c8d5095b5"
+    },
+    {
+      "path": "pom.xml",
+      "sha256": "d3f176b6785adc59646976a3812e25e6608258370fabceca94f760608403cfda"
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "93d11fd4f3e677cf86bb3884ac96fc573bdb995f5e5370308a9342f56a39f4ce"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "f2a328749f71c63ff5e4dc6f98336554d43f67c9e8de9734077daf650639e716"
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "sha256": "dfa9bac1113118501f5223cda3a74c49d5caf736822d35bb79941f57ab0a2cfc"
+    }
+  ],
+  "distribution": [
+    {
+      "path": "app.jar",
+      "sha256": "30e8c857d008155f97d08ac0a950494059240812e655e239424ee2e981e4c3de"
+    },
+    {
+      "path": "bin/agent",
+      "sha256": "2d61bfcdd6392dfdaccd3da557345dd597d044365cd2b8a58591d5a0ff9081b7"
+    },
+    {
+      "path": "config/agent.properties",
+      "sha256": "4fc0fd1ca2c1b25b4314a7302bac90468ea3d44fc32d3028cb81297a49ba977c"
+    },
+    {
+      "path": "lib/SparseBitSet-1.3.jar",
+      "sha256": "f76b85adb0c00721ae267b7cfde4da7f71d3121cc2160c9fc00c0c89f8c53c8a"
+    },
+    {
+      "path": "lib/aalto-xml-1.3.3.jar",
+      "sha256": "28829eebb36863b058108fa1b9b8b5cfb94c1871346e4a4f73e69e1fe0a5f0f6"
+    },
+    {
+      "path": "lib/accessors-smart-2.5.2.jar",
+      "sha256": "9b8a7bc43861d6156c021166d941fb7dddbe4463e2fa5ee88077e4b01452a836"
+    },
+    {
+      "path": "lib/angus-activation-2.0.3.jar",
+      "sha256": "a6bd35c538cf90fff941ad6258c40c08fca0b5c9c3f536c657114f27ce0527a7"
+    },
+    {
+      "path": "lib/annotations-2.41.10.jar",
+      "sha256": "9c05ad9a9bb7107ea55c2949092015cca23bd281cfb09ab88542c547a335a197"
+    },
+    {
+      "path": "lib/annotations-20.1.0.jar",
+      "sha256": "edc8e3ec9796a5f41c1ae44b2d318507ee6ac1212f121d93d33699b3d0aff638"
+    },
+    {
+      "path": "lib/anthropic-java-2.48.0.jar",
+      "sha256": "b1b99219490f4b5db050492aefad066b75d26b258a9746a3d393160d0fa2d293"
+    },
+    {
+      "path": "lib/anthropic-java-client-okhttp-2.48.0.jar",
+      "sha256": "8849134372898d8f6a3636ed80d977431d5731f66f374deb5479287294f15128"
+    },
+    {
+      "path": "lib/anthropic-java-core-2.48.0.jar",
+      "sha256": "b32c9a16e57bc0a79c58214468fa2702b02256e2fb2e60b9f433916e79dbb5cb"
+    },
+    {
+      "path": "lib/apache-client-2.41.10.jar",
+      "sha256": "f854982b2079a1909ec2722c9eaea48431b1e503436134fbda31f800bc1a7618"
+    },
+    {
+      "path": "lib/api-common-2.53.0.jar",
+      "sha256": "f7073fb389c2aa329981ee65241db7947e8744c988e6c4d975f18bf2748b935a"
+    },
+    {
+      "path": "lib/apigateway-2.41.10.jar",
+      "sha256": "13f12255a17e89dbef63da12672a1e991e884df3200e1e063865c1b5d3f76973"
+    },
+    {
+      "path": "lib/artemis-commons-2.57.0.jar",
+      "sha256": "40e575b36b9912d24095bf7e1cf866fcaa472021a4a60df3e8dd43c0e8e95d71"
+    },
+    {
+      "path": "lib/artemis-core-client-2.57.0.jar",
+      "sha256": "2d8609d772c2b93680e5a70998a6b1e765fa1a46dee4afa30481d188f8a12c9b"
+    },
+    {
+      "path": "lib/artemis-jakarta-client-2.57.0.jar",
+      "sha256": "8d23875dc38c2a5e685eca84b16ef49fd242b04d8e76c88cfdf8e82a44e576da"
+    },
+    {
+      "path": "lib/artemis-selector-2.57.0.jar",
+      "sha256": "59a16f7c2ba54bb1fb036ab81c9d49f52b7da7eefd0962e54487515f6b1a1e39"
+    },
+    {
+      "path": "lib/asm-9.10.1.jar",
+      "sha256": "ed825d10ab1399c8c0cb669e688cf0c8c82629b4c8399b58352b68e92ca10fcb"
+    },
+    {
+      "path": "lib/asm-commons-9.10.1.jar",
+      "sha256": "6d0abefb7cbf972ea16edb37ec14835372505063a45f976ab7ea889ed9497895"
+    },
+    {
+      "path": "lib/asm-tree-9.10.1.jar",
+      "sha256": "3dfb0d5b6a106cd40b5b250e39935fbf2f927f4477546a5369a3ac609cf0506b"
+    },
+    {
+      "path": "lib/asn-one-0.6.0.jar",
+      "sha256": "e4f70fd92849b52240048b8ebace0c9a17d3bb7b9c882b3c7778cec3458495f5"
+    },
+    {
+      "path": "lib/auth-2.41.10.jar",
+      "sha256": "56a429c8f191b14b81b88fb848fd09416be8acb8cfe1c86f2a67a352cbac6968"
+    },
+    {
+      "path": "lib/auth0-3.0.0.jar",
+      "sha256": "145defc90d013fbf518a69e9de90423da8053dbba39261ab1548a924c5d160af"
+    },
+    {
+      "path": "lib/auto-value-annotations-1.11.0.jar",
+      "sha256": "5a055ce4255333b3346e1a8703da5bf8ff049532286fdcd31712d624abe111dd"
+    },
+    {
+      "path": "lib/aws-core-2.41.10.jar",
+      "sha256": "f790329d989d42f75c9bc72d1b25d3b13153415983140ed3f7f75da6261ed10a"
+    },
+    {
+      "path": "lib/aws-java-sdk-core-1.12.797.jar",
+      "sha256": "75c70d4a7a5b6f3ee3f1fc86b1c7f91106acba4769744791fa4159c4c35bfebc"
+    },
+    {
+      "path": "lib/aws-java-sdk-secretsmanager-1.12.797.jar",
+      "sha256": "a7f9f597610144ecf57693abda47a451c9c25088e9e4496a3605a4d283560e4f"
+    },
+    {
+      "path": "lib/aws-java-sdk-ses-1.12.797.jar",
+      "sha256": "7c64e825bb95b3cb304e158c02383265a51374667dcf7ec9405e97f2b9e47db4"
+    },
+    {
+      "path": "lib/aws-java-sdk-sqs-1.12.797.jar",
+      "sha256": "4403fe5b4c45f92276b7ec4bdf681cdb4afb068951f5d1ba06f70b0ad8223f3e"
+    },
+    {
+      "path": "lib/aws-json-protocol-2.41.10.jar",
+      "sha256": "6708f94226081f8d47e327faaae6221d51a74ab8a0b51fa9795349160129eaac"
+    },
+    {
+      "path": "lib/bolt-1.49.0.jar",
+      "sha256": "9c298264096ba9343e55260361fcc54035a673ecc03ce5dfcee32899a6e9eca0"
+    },
+    {
+      "path": "lib/bolt-socket-mode-1.49.0.jar",
+      "sha256": "804f20a1b84afc6db15b27c6800ce4d720a2614a802d34e8b7ab6457fc4448ce"
+    },
+    {
+      "path": "lib/c3p0-0.14.2.jar",
+      "sha256": "a2be2b2dec9214481b0101fbe2a1555be97f4ab2d79e35dbfb42a17a70884aa7"
+    },
+    {
+      "path": "lib/checker-qual-3.55.1.jar",
+      "sha256": "857658c8bdcbff794949a8d9922f88d63ee3751c203c7cd7d21ea97f9e745288"
+    },
+    {
+      "path": "lib/checksums-2.41.10.jar",
+      "sha256": "98fcb1f850894757f7706bb05b241b8fb42eb17b51dc6c74fd5087bbcad50986"
+    },
+    {
+      "path": "lib/checksums-spi-2.41.10.jar",
+      "sha256": "d848c307f290bfb4e685e2246c01257e9f1a77b5acf116deee999ea9cd8c5d56"
+    },
+    {
+      "path": "lib/classmate-1.7.0.jar",
+      "sha256": "cb868f231c5cceb89d795ea00e6e1b7a93b8f4ac1ce1d8be76dde322dff4a046"
+    },
+    {
+      "path": "lib/commonmark-0.27.1.jar",
+      "sha256": "22aec6eec3b8e2d078dd1ac205291bf0ec58168c68fcf95fdf39fe2d48650a8f"
+    },
+    {
+      "path": "lib/commons-beanutils-1.11.0.jar",
+      "sha256": "9e44ba68ec9a3f21286fa2a8bbb003b735c0f69101bb43144b79f4f8aaa74709"
+    },
+    {
+      "path": "lib/commons-codec-1.20.0.jar",
+      "sha256": "6af66595f9f6a7bb58ce66518d6888d40b547c366d2262f06676eee19528ff66"
+    },
+    {
+      "path": "lib/commons-collections-3.2.2.jar",
+      "sha256": "eeeae917917144a68a741d4c0dff66aa5c5c5fd85593ff217bced3fc8ca783b8"
+    },
+    {
+      "path": "lib/commons-collections4-4.5.0.jar",
+      "sha256": "00f93263c267be201b8ae521b44a7137271b16688435340bf629db1bac0a5845"
+    },
+    {
+      "path": "lib/commons-compress-1.28.0.jar",
+      "sha256": "e1522945218456f3649a39bc4afd70ce4bd466221519dba7d378f2141a4642ca"
+    },
+    {
+      "path": "lib/commons-csv-1.14.1.jar",
+      "sha256": "32be0e1e76673092f5d12cb790bd2acb6c2ab04c4ea6efc69ea5ee17911c24fe"
+    },
+    {
+      "path": "lib/commons-digester-2.1.jar",
+      "sha256": "e0b2b980a84fc6533c5ce291f1917b32c507f62bcad64198fff44368c2196a3d"
+    },
+    {
+      "path": "lib/commons-io-2.21.0.jar",
+      "sha256": "7d643a2afea8b058b762aa6fb90e5b256f6c729739f8b3784c3370ddc609e88d"
+    },
+    {
+      "path": "lib/commons-lang3-3.20.0.jar",
+      "sha256": "69e5c9fa35da7a51a5fd2099dfe56a2d8d32cf233e2f6d770e796146440263f4"
+    },
+    {
+      "path": "lib/commons-logging-1.3.5.jar",
+      "sha256": "6d7a744e4027649fbb50895df9497d109f98c766a637062fe8d2eabbb3140ba4"
+    },
+    {
+      "path": "lib/commons-math3-3.6.1.jar",
+      "sha256": "1e56d7b058d28b65abd256b8458e3885b674c1d588fa43cd7d1cbb9c7ef2b308"
+    },
+    {
+      "path": "lib/commons-text-1.14.0.jar",
+      "sha256": "121fce2282910c8f0c3ba793a5436b31beb710423cbe2d574a3fb7a73c508e92"
+    },
+    {
+      "path": "lib/commons-validator-1.10.1.jar",
+      "sha256": "ed74711a78d793ca37f6075e4a1e93d107233dfd20d0bb17e32bad88d38e56aa"
+    },
+    {
+      "path": "lib/content-type-2.3.jar",
+      "sha256": "60349793e006fba96b532cb0c21e10e969fe0db8d87f91c3b9eaf82ba2998895"
+    },
+    {
+      "path": "lib/curvesapi-1.08.jar",
+      "sha256": "ad95b08b8bbf9d7d17e5e00814898fa23324f32bc5b62f1a37801e6a56ce0079"
+    },
+    {
+      "path": "lib/dotenv-java-3.2.0.jar",
+      "sha256": "47f5d208b29497f286a454817c955750cc92b99b4680392dd40e5db592259d22"
+    },
+    {
+      "path": "lib/endpoints-spi-2.41.10.jar",
+      "sha256": "d201f1dc994b4947f6aa457373a1e624fe1f6e4d3383220db4ce93dbd6d67748"
+    },
+    {
+      "path": "lib/error_prone_annotations-2.50.0.jar",
+      "sha256": "4667724877f1d37a689202da191e23efa7657c62eef93ccdac406eccfe5cdd0a"
+    },
+    {
+      "path": "lib/eventstream-1.0.1.jar",
+      "sha256": "0c37d8e696117f02c302191b8110b0d0eb20fa412fce34c3a269ec73c16ce822"
+    },
+    {
+      "path": "lib/failsafe-2.4.4.jar",
+      "sha256": "ac3f916e536db9a69f93706f778e90e2be476bdebea0c45cca6d9675ee99ec30"
+    },
+    {
+      "path": "lib/failureaccess-1.0.3.jar",
+      "sha256": "cbfc3906b19b8f55dd7cfd6dfe0aa4532e834250d7f080bd8d211a3e246b59cb"
+    },
+    {
+      "path": "lib/fastexcel-0.19.0.jar",
+      "sha256": "2aab9961e107a96c58ef806d6c09ec3dc054e30c5db5164deabaf611be067722"
+    },
+    {
+      "path": "lib/fastexcel-reader-0.19.0.jar",
+      "sha256": "ec9ee7b2413f9ae9db1525c334140798725a4d54b58e2bc73bd447a1c282f9e8"
+    },
+    {
+      "path": "lib/flyway-core-11.7.2.jar",
+      "sha256": "ff01fab3bcfd79e9345df191ecf82cbe1f9f65a757266158bd691564b1c1282c"
+    },
+    {
+      "path": "lib/flyway-database-postgresql-11.7.2.jar",
+      "sha256": "1d586e14ea772c75613df2c27ddc20f5c065e8a32283815338611af82e48f9a2"
+    },
+    {
+      "path": "lib/fontbox-2.0.37.jar",
+      "sha256": "992e14d5e903f69517903a1a817040ed7bf1288e768870e0a27bf9090bb34ec3"
+    },
+    {
+      "path": "lib/google-api-client-2.7.2.jar",
+      "sha256": "63b754b7c4a92347c4992c42d295812f8d2ed6b9e8743edba4a8c98b92e9ca9b"
+    },
+    {
+      "path": "lib/google-api-services-drive-v3-rev20251114-2.0.0.jar",
+      "sha256": "9345ab816ecf13f06820976bc6262aca4274c2acb012ffccf38c5336717b0cdb"
+    },
+    {
+      "path": "lib/google-auth-library-credentials-1.41.0.jar",
+      "sha256": "26162b1b9c448b119cfc6edf43346274a15a28ed8ff7a9b4c908f44071e33dad"
+    },
+    {
+      "path": "lib/google-auth-library-oauth2-http-1.41.0.jar",
+      "sha256": "a8f534242b5a54ff3c6a5d1f53678df9d2de71468bed0d74323b7ba05e672113"
+    },
+    {
+      "path": "lib/google-http-client-2.0.2.jar",
+      "sha256": "97a0666340956dbc96893bc8cf843a5b57367543f218feddad3ff433fbfdaa68"
+    },
+    {
+      "path": "lib/google-http-client-apache-v2-1.45.2.jar",
+      "sha256": "b2b1b242e162c8f9e41b3ab89ddfb72d14299f96e831fcbd68ba42212a0930cd"
+    },
+    {
+      "path": "lib/google-http-client-gson-2.0.2.jar",
+      "sha256": "37c8fd5c7869bc4abf3b3219c7e79cb566afa745559772e969c21595199600cd"
+    },
+    {
+      "path": "lib/google-oauth-client-1.36.0.jar",
+      "sha256": "8fee7bbe7aaee214ce461f0cd983e3c438fd43941697394391aaa01edb7d703b"
+    },
+    {
+      "path": "lib/graphics2d-0.32.jar",
+      "sha256": "37f8f387395f96c214ac44f7475c7a2e1f832dfc1de289a3610e0ffbf728f679"
+    },
+    {
+      "path": "lib/grpc-api-1.70.0.jar",
+      "sha256": "45faf2ac1bf2791e8fdabce53684a86b62c99b84cba26fb13a5ba3f4abf80d6c"
+    },
+    {
+      "path": "lib/grpc-context-1.70.0.jar",
+      "sha256": "eb2824831c0ac03e741efda86b141aa863a481ebc4aaf5a5c1f13a481dbb40ff"
+    },
+    {
+      "path": "lib/gson-2.13.2.jar",
+      "sha256": "dd0ce1b55a3ed2080cb70f9c655850cda86c206862310009dcb5e5c95265a5e0"
+    },
+    {
+      "path": "lib/guava-33.5.0-android.jar",
+      "sha256": "e380b435404653753e894be80ee6fdd5252d55b07f663d8a004b4e5898ecfaa0"
+    },
+    {
+      "path": "lib/http-auth-2.41.10.jar",
+      "sha256": "97f53fb7266058b5a154f7ae95b03ff71f3b6d440d02c20da4ce32961e26190c"
+    },
+    {
+      "path": "lib/http-auth-aws-2.41.10.jar",
+      "sha256": "ffe1c16d5096bafca087419c5706d6b72a97f53cb23370c2ed2839bd0b127796"
+    },
+    {
+      "path": "lib/http-auth-aws-eventstream-2.41.10.jar",
+      "sha256": "1629ed794b43ba81c8fae845f1502ffec8d5b4601ad6796d3b8fd5fff2f53485"
+    },
+    {
+      "path": "lib/http-auth-spi-2.41.10.jar",
+      "sha256": "974dbd758f140edf209f13b30a2eee72605b4d5852133b99ca61f94dacff2b40"
+    },
+    {
+      "path": "lib/http-client-spi-2.41.10.jar",
+      "sha256": "a626e831aa0f2a408dcc563684c8612139883ac5deaa474f4fbd6248dd4d9736"
+    },
+    {
+      "path": "lib/httpasyncclient-4.1.5.jar",
+      "sha256": "0c1877489a9d1ba4fa50f6cfcab11d1123618858cb31d56afaab5afdd5064d99"
+    },
+    {
+      "path": "lib/httpclient-4.5.14.jar",
+      "sha256": "c8bc7e1c51a6d4ce72f40d2ebbabf1c4b68bfe76e732104b04381b493478e9d6"
+    },
+    {
+      "path": "lib/httpclient5-5.6.3.jar",
+      "sha256": "80712ff129210d7c73d9fcc1195cbee5c3c34744965c7a05ea107b3648922f18"
+    },
+    {
+      "path": "lib/httpcore-4.4.16.jar",
+      "sha256": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f"
+    },
+    {
+      "path": "lib/httpcore-nio-4.4.16.jar",
+      "sha256": "4018736ede2d321034e8517ea90baefb31831a8608afccc446d8a699fb1d00d4"
+    },
+    {
+      "path": "lib/httpcore5-5.4.3.jar",
+      "sha256": "18bfbbabb478dfb67f31aeaf428c387f3c3df654582e1309f708ee1f3086830a"
+    },
+    {
+      "path": "lib/httpcore5-h2-5.4.3.jar",
+      "sha256": "c7db7026b8e2dea39132b04a6069f6671e2858309b20a146ec5c7dd6ed73a0b6"
+    },
+    {
+      "path": "lib/ical4j-4.3.0.jar",
+      "sha256": "05a5401b404a4983b7dd712174f2d619aff003200a7ecf78cddaca0ad99fc93e"
+    },
+    {
+      "path": "lib/icu4j-78.2.jar",
+      "sha256": "70627c3ff4b9077f6c3dc2156fb480821f9c1a041b645373f2a0391aae3552a1"
+    },
+    {
+      "path": "lib/identity-spi-2.41.10.jar",
+      "sha256": "c880fe296412c1ae5d5ad9475718cf286d3ccbacbc1af6ccc942f1ce6dff17b9"
+    },
+    {
+      "path": "lib/itu-1.14.0.jar",
+      "sha256": "5cf40ab0cc77828ab2b875b1f3ecd71c8295d7721933476abc2e08fddcea164a"
+    },
+    {
+      "path": "lib/j2objc-annotations-3.0.0.jar",
+      "sha256": "88241573467ddca44ffd4d74aa04c2bbfd11bf7c17e0c342c94c9de7a70a7c64"
+    },
+    {
+      "path": "lib/jackson-annotations-2.21.jar",
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+    },
+    {
+      "path": "lib/jackson-core-2.21.7.jar",
+      "sha256": "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+    },
+    {
+      "path": "lib/jackson-databind-2.21.7.jar",
+      "sha256": "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+    },
+    {
+      "path": "lib/jackson-dataformat-cbor-2.21.7.jar",
+      "sha256": "8f223039151b495787e5c706ead12feeb9a5cdfe3b8df50464a4fb985047236c"
+    },
+    {
+      "path": "lib/jackson-dataformat-toml-2.21.7.jar",
+      "sha256": "0485ebff27d1145b228de378259f3060a7ba794e6d75f66ae2cd2db8ab9a395f"
+    },
+    {
+      "path": "lib/jackson-dataformat-yaml-2.21.7.jar",
+      "sha256": "df2b3e6a194181dc067b7211d750926b4ae9e4f3c892a0005b8219a9b59be681"
+    },
+    {
+      "path": "lib/jackson-datatype-jdk8-2.21.7.jar",
+      "sha256": "b8f62f98363ed9aa259b3a479a64fcbe7e081158a8bec6733972e900d12f4e47"
+    },
+    {
+      "path": "lib/jackson-datatype-jsr310-2.21.7.jar",
+      "sha256": "5989b937f0aa5b6407e7a061077c9bfcac0590dc0a32e54b2fac6a3e2d49e812"
+    },
+    {
+      "path": "lib/jackson-module-kotlin-2.21.7.jar",
+      "sha256": "25b4ec1fcc4724a5a456260c340aab6a88c2c8450ec92eca34efaa01ef3e7e5b"
+    },
+    {
+      "path": "lib/jakarta.activation-2.0.1.jar",
+      "sha256": "b9e24b7dd6e07495562ea96531be3130c96dba4d78e1dfd88adbbdebf4332871"
+    },
+    {
+      "path": "lib/jakarta.activation-api-2.1.4.jar",
+      "sha256": "c9db52100ce6c8aac95cc39075f95720d2e561b11f8051b81c121ad4effd7004"
+    },
+    {
+      "path": "lib/jakarta.annotation-api-2.1.1.jar",
+      "sha256": "5f65fdaf424eee2b55e1d882ba9bb376be93fb09b37b808be6e22e8851c909fe"
+    },
+    {
+      "path": "lib/jakarta.enterprise.cdi-api-4.0.1.jar",
+      "sha256": "beaf74c4f2618189309e3f4a09c43effab633dd96aa1f6dc58a6ba7ee0042717"
+    },
+    {
+      "path": "lib/jakarta.enterprise.lang-model-4.0.1.jar",
+      "sha256": "53acafe65b6ef0195fa1b8a0ef2650e5aa024c32cb4059c4df372d6b32089cd3"
+    },
+    {
+      "path": "lib/jakarta.inject-api-2.0.1.jar",
+      "sha256": "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c"
+    },
+    {
+      "path": "lib/jakarta.interceptor-api-2.1.0.jar",
+      "sha256": "ef787d3f713fc6ff4f02cd4b0dbed08f93d8af3400c90cbb43fb4b5c0583710b"
+    },
+    {
+      "path": "lib/jakarta.jms-api-3.1.0.jar",
+      "sha256": "6605e08075ab389c359451c7854808cf4b1575e1ea6317e534e9d4df088096df"
+    },
+    {
+      "path": "lib/jakarta.json-2.0.0-module.jar",
+      "sha256": "e1c0398301f574ccdb7c9bb1b468d3fe1d46ac2088ac9a5f4dd2230bf707afc8"
+    },
+    {
+      "path": "lib/jakarta.json-api-2.1.3.jar",
+      "sha256": "bc934142805ea1d794f1440563965a3861a2a9fb7414ecd3fe44f26500734414"
+    },
+    {
+      "path": "lib/jakarta.json.bind-api-2.0.0.jar",
+      "sha256": "a5e606b5888b412b48907ad688b34dfe4e30ae8189c6f27cc0491b8f3c036287"
+    },
+    {
+      "path": "lib/jakarta.mail-2.0.2.jar",
+      "sha256": "536f0ae5dd774e257f3064f19a2b982aa56072c07c675c70f98cdc262047b4b5"
+    },
+    {
+      "path": "lib/jakarta.servlet-api-6.0.0.jar",
+      "sha256": "c034eb1afb158987dbb53a5fea0cadf611c8dae8daadd59c44d9d5ab70129cef"
+    },
+    {
+      "path": "lib/jakarta.transaction-api-2.0.1.jar",
+      "sha256": "50c0a7c760c13ae6c042acf182b28f0047413db95b4636fb8879bcffab5ba875"
+    },
+    {
+      "path": "lib/jakarta.xml.bind-api-4.0.4.jar",
+      "sha256": "c507ca69a8c6dd11bf4afeec9e0d412c4fa3933fffb0a84680ea5727e8472124"
+    },
+    {
+      "path": "lib/java-jwt-4.5.0.jar",
+      "sha256": "defc50d5066630d46737ba3077e1e13df7201baf5817394c9a4d3d23e2ad3019"
+    },
+    {
+      "path": "lib/javalin-7.2.3.jar",
+      "sha256": "c27b5052e8fb259acd8fd1d9f598c8543e43fe4df9271c7697a9c832c9a66e17"
+    },
+    {
+      "path": "lib/javax.annotation-api-1.3.2.jar",
+      "sha256": "e04ba5195bcd555dc95650f7cc614d151e4bcd52d29a10b8aa2197f3ab89ab9b"
+    },
+    {
+      "path": "lib/jcip-annotations-1.0-1.jar",
+      "sha256": "4fccff8382aafc589962c4edb262f6aa595e34f1e11e61057d1c6a96e8fc7323"
+    },
+    {
+      "path": "lib/jetty-annotations-12.1.13.jar",
+      "sha256": "386524d7a5211ce454e5043a9afc55c1f6f23decd743a0d9764ee3e56e86a1b9"
+    },
+    {
+      "path": "lib/jetty-ee-webapp-12.1.13.jar",
+      "sha256": "15c82c0ecd1be08ef776a06bf138f5351c2554d84fd02bd72aa1d0dc88c10a0e"
+    },
+    {
+      "path": "lib/jetty-ee10-annotations-12.1.13.jar",
+      "sha256": "3fc3a045c2f2fcde877ca2ff5312c86a85c60324485cc63b78456c809ff69e8f"
+    },
+    {
+      "path": "lib/jetty-ee10-plus-12.1.13.jar",
+      "sha256": "d91ed1a5a120c5721a63ceb7e9697fb5f1f6521461a57d1c2afde8c44471f169"
+    },
+    {
+      "path": "lib/jetty-ee10-servlet-12.1.13.jar",
+      "sha256": "361374c3bf4cc93d45275ca2e9f74a928e65e537e5f50da645113306a27dbe53"
+    },
+    {
+      "path": "lib/jetty-ee10-webapp-12.1.13.jar",
+      "sha256": "18d128ccc41559f7ae1c41fa5a8f19ee5829bf8670fa63e9ce8a2abdbf5a4f9a"
+    },
+    {
+      "path": "lib/jetty-ee10-websocket-jetty-server-12.1.13.jar",
+      "sha256": "b28d85d41d7e362eeb51ddb1f6e14656d7b81151097a812d1826199fe76d308d"
+    },
+    {
+      "path": "lib/jetty-ee10-websocket-servlet-12.1.13.jar",
+      "sha256": "8d903a6f8f9a560cae16c125457e94b87a661243697673bb7da73f0c560eaac6"
+    },
+    {
+      "path": "lib/jetty-http-12.1.13.jar",
+      "sha256": "3bb84bfdd0992453986a8f7422dbf55cf779a0a780ff8a68041bb6119fb997fd"
+    },
+    {
+      "path": "lib/jetty-io-12.1.13.jar",
+      "sha256": "946338a5db4e906ba0698dcdae350394736062cf915b5f16ebf787bcee7fffae"
+    },
+    {
+      "path": "lib/jetty-jndi-12.1.13.jar",
+      "sha256": "3cd388f18cf7da3551f164b2a44506229cd3f04e0e7e9379f4bef178f1f3003c"
+    },
+    {
+      "path": "lib/jetty-plus-12.1.13.jar",
+      "sha256": "2b8e399ba811951c44aca506de1c35df7700210673b542dfc059b7a393785cbf"
+    },
+    {
+      "path": "lib/jetty-security-12.1.13.jar",
+      "sha256": "64b15214158097af40db345a31bb71cfe0d4a6c7c19cb59cd4c0a97245999ee8"
+    },
+    {
+      "path": "lib/jetty-server-12.1.13.jar",
+      "sha256": "978265f1ac637c504b537f5d56e07d4a47e7c4bb0752d9dd66b79f5be754abfa"
+    },
+    {
+      "path": "lib/jetty-session-12.1.13.jar",
+      "sha256": "30ebd5d63895f97aad0d626a567b40552d4c2bd9978adedc46e7a23b4652f595"
+    },
+    {
+      "path": "lib/jetty-util-12.1.13.jar",
+      "sha256": "3e408e60fe71a337979004fc4e47bfd3c08a931cf33b46b6a5dc4dbdd088c2fd"
+    },
+    {
+      "path": "lib/jetty-websocket-core-common-12.1.13.jar",
+      "sha256": "fcd3abf1e4749751fc85a7b39c614f85feb07eee0bcbe7b8cb10b9bbb15904d0"
+    },
+    {
+      "path": "lib/jetty-websocket-core-server-12.1.13.jar",
+      "sha256": "dbe21adebf357f27033b2b76bb6b40ae5ecaa40fe3ba4b9d10bf7f4795fa93dc"
+    },
+    {
+      "path": "lib/jetty-websocket-jetty-api-12.1.13.jar",
+      "sha256": "2b71c6fd53619289188c169adaedf617ed01213d2c8f7063e4c2d0a88bbf7ece"
+    },
+    {
+      "path": "lib/jetty-websocket-jetty-common-12.1.13.jar",
+      "sha256": "3d1eced18d1aee79aa832fa90eb021e1eee9f717c437aa0ab81b8d85affe35c3"
+    },
+    {
+      "path": "lib/jetty-websocket-jetty-server-12.1.13.jar",
+      "sha256": "643fb282a75b1a8503990020db5cbef480be12dc997d37d8ab26dd2d5c191eef"
+    },
+    {
+      "path": "lib/jetty-xml-12.1.13.jar",
+      "sha256": "ccf30ddde0326b9691818a3f797a1fc443a0633bf1b04989ed2387b7574f1e01"
+    },
+    {
+      "path": "lib/jgroups-5.3.13.Final.jar",
+      "sha256": "55d86426ed741523dffc08f4c1a5ab1f2d693176ca399479b3f2e4e3fd3b0d4e"
+    },
+    {
+      "path": "lib/jmespath-java-1.12.797.jar",
+      "sha256": "4c4a5f0dcf19f4f6d3a966d19ad73638e325d35db26183e5ca4c27eeb97e5d0f"
+    },
+    {
+      "path": "lib/joda-time-2.12.7.jar",
+      "sha256": "385282b005818cfaccdbe8bd2429811e7e641782f2b88932a6b8ff51d668f616"
+    },
+    {
+      "path": "lib/json-20251224.jar",
+      "sha256": "2a3438fbf9293174ea82bdfa35e83d8b965cfe6bddc034a1ac5d60107174c209"
+    },
+    {
+      "path": "lib/json-schema-validator-2.0.0.jar",
+      "sha256": "ee940241043ae01801df5954bc3744bf723c449ff0da719f97e1b9a6889739d7"
+    },
+    {
+      "path": "lib/json-smart-2.5.2.jar",
+      "sha256": "4fbdedb0105cedc7f766b95c297d2e88fb6a560da48f3bbaa0cc538ea8b7bf71"
+    },
+    {
+      "path": "lib/json-utils-2.41.10.jar",
+      "sha256": "258b586fbbbeed74dc7e7ca005f38be20bb2942f0d92f2c8f813b25fb479b1a9"
+    },
+    {
+      "path": "lib/jsonschema-generator-4.38.0.jar",
+      "sha256": "ade4aeb301db4028ac6bcba016c31405677e37aae6eebaf13c99de3fdb3531b4"
+    },
+    {
+      "path": "lib/jsonschema-module-jackson-4.38.0.jar",
+      "sha256": "36fbd3f1c27379c3ba8420ac2cb0b42411f7bc3b3df8bdd11d8d7e024a1c28ca"
+    },
+    {
+      "path": "lib/jsonschema-module-swagger-2-4.38.0.jar",
+      "sha256": "b76c0df657bcf88cca46d7ad540938552e10127a7c28d2136f62b631666997c1"
+    },
+    {
+      "path": "lib/jsoup-1.23.1.jar",
+      "sha256": "8b15e2b28eeb1e0a88a9b7dab4dc0c23524491c56959785dea22f7846897b668"
+    },
+    {
+      "path": "lib/jspecify-1.0.0.jar",
+      "sha256": "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+    },
+    {
+      "path": "lib/jsr305-3.0.2.jar",
+      "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+    },
+    {
+      "path": "lib/jwks-rsa-0.23.0.jar",
+      "sha256": "d20c5222c0eab0b801b20f4e390568af7771412aef2224e2c32d8cbb58a360bc"
+    },
+    {
+      "path": "lib/kof22-agent-core-0.5.0-SNAPSHOT.jar",
+      "sha256": "d33d0fb4cc352a79b552136b0173c80eb394240924bc9eac2c3e2631179daf6c"
+    },
+    {
+      "path": "lib/kof22-agent-qqq-0.5.0-SNAPSHOT.jar",
+      "sha256": "f76d73991c4bbb58465c4edecc393cb90beb7938a378d14fc8b7dfe63b29dbfb"
+    },
+    {
+      "path": "lib/kof22-agent-ui-0.5.0-SNAPSHOT.jar",
+      "sha256": "a85d38a9b6241bc343cd7d25ede25c33c8c3171e8d49247931e9f780bd7559eb"
+    },
+    {
+      "path": "lib/kotlin-reflect-2.3.0.jar",
+      "sha256": "714df4be819545ff4de1f36aa2183e0dea94b4c8cdf7ca29e9c89919baf36362"
+    },
+    {
+      "path": "lib/kotlin-stdlib-2.3.0.jar",
+      "sha256": "887587c91713250ad52fe14ad9166d042c33835049890e9437f355ffc5a195b1"
+    },
+    {
+      "path": "lib/kotlin-stdlib-common-1.9.10.jar",
+      "sha256": "cde3341ba18a2ba262b0b7cf6c55b20c90e8d434e42c9a13e6a3f770db965a88"
+    },
+    {
+      "path": "lib/kotlin-stdlib-jdk7-2.3.0.jar",
+      "sha256": "5886a23865e68668a235c25645f4e367e8b4b19b9b12098633fb0f74f1a554b1"
+    },
+    {
+      "path": "lib/kotlin-stdlib-jdk8-2.3.0.jar",
+      "sha256": "9c12ce489a51dd49df1a11f439122631a4ec86da8cd089dadc6a9a187cb7d88c"
+    },
+    {
+      "path": "lib/lang-tag-1.7.jar",
+      "sha256": "e8c1c594e2425bdbea2d860de55c69b69fc5d59454452449a0f0913c2a5b8a31"
+    },
+    {
+      "path": "lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
+    },
+    {
+      "path": "lib/log4j-api-2.25.3.jar",
+      "sha256": "e886682920fa0fb9d6eb6395dcb4de088443f8646c89c5e5846e168e327f406f"
+    },
+    {
+      "path": "lib/log4j-core-2.25.3.jar",
+      "sha256": "362b7fcb65b73aa46cc4bc53abf4eb216f444a83b5d1a037cb6fdfff0ae9f0f9"
+    },
+    {
+      "path": "lib/logging-interceptor-4.12.0.jar",
+      "sha256": "f3e8d5f0903c250c2b55d2f47fcfe008e80634385da8385161c7a63aaed0c74c"
+    },
+    {
+      "path": "lib/mchange-commons-java-0.6.1.jar",
+      "sha256": "b9d7cfce7f84c26788bb6f145116bd452d6598f91881dcc05470312de532f668"
+    },
+    {
+      "path": "lib/mcp-core-2.0.0.jar",
+      "sha256": "56c1f99cc5e9932fcebb57d4d82f89d0b641f90275fc19d0b132f6ce7d1eab2c"
+    },
+    {
+      "path": "lib/mcp-json-jackson2-2.0.0.jar",
+      "sha256": "a7bdf467fb59b1675a3e4191b49eb0700869c82ccf2ad85ef70d962ae59e8c9c"
+    },
+    {
+      "path": "lib/metrics-spi-2.41.10.jar",
+      "sha256": "f7ab5df3db8f9c9404548be3542f64b258057fee57db7024a087c64ea2029a2d"
+    },
+    {
+      "path": "lib/mysql-connector-j-9.5.0.jar",
+      "sha256": "f2ca3dfaf00d4aa311470db7ea3051962944ba0cb60005a2f75467549c39f425"
+    },
+    {
+      "path": "lib/netty-buffer-4.1.138.Final.jar",
+      "sha256": "5bef3ea2b9e80c5e8d03151ca1609bd75fd1e264863bf3e2f8d538392c0f2c38"
+    },
+    {
+      "path": "lib/netty-codec-4.1.138.Final.jar",
+      "sha256": "21b9b7717da9ed7034c7a9ef4fcea4a08825e8f52d775da4d898364edf99327f"
+    },
+    {
+      "path": "lib/netty-codec-http-4.1.138.Final.jar",
+      "sha256": "7d9000e53c8e37504be42b8dd7b646a7d1c73ad2cf801527fe3c6301880fe06f"
+    },
+    {
+      "path": "lib/netty-codec-http2-4.1.138.Final.jar",
+      "sha256": "c7521231535c252903d9e424e162f789b5b55b0b0799628ea466a9b3daf49dae"
+    },
+    {
+      "path": "lib/netty-codec-socks-4.1.138.Final.jar",
+      "sha256": "bc15ad96188a6eee2d0c5f7f8e443fa916fa30e74a65e220b1ac0a04574dda87"
+    },
+    {
+      "path": "lib/netty-common-4.1.138.Final.jar",
+      "sha256": "b4ebb8fa44cd5790731928a83fd0f25a530e41c407c093bef4a0196db30b693f"
+    },
+    {
+      "path": "lib/netty-handler-4.1.138.Final.jar",
+      "sha256": "a79fb814e029db17da82baea25a0340172af2c59f107fd20b394c1fa28680f21"
+    },
+    {
+      "path": "lib/netty-handler-proxy-4.1.138.Final.jar",
+      "sha256": "fd26635e06af15b2dd3f7502a195dc19fcd451264948a8707fb26f60e4d510b9"
+    },
+    {
+      "path": "lib/netty-nio-client-2.41.10.jar",
+      "sha256": "88f20731ac4067fb0bf2c923fd33b873faef908c21e86bab1c24602824294fb9"
+    },
+    {
+      "path": "lib/netty-resolver-4.1.138.Final.jar",
+      "sha256": "50c338a0e5c9997513e738f0fcb47d579a9e8852d317ba367f5d141e210187c0"
+    },
+    {
+      "path": "lib/netty-transport-4.1.138.Final.jar",
+      "sha256": "6c064c1cae4d410b920abfc07959a49db1b4778a9547614373e97d31cab0cad6"
+    },
+    {
+      "path": "lib/netty-transport-classes-epoll-4.1.138.Final.jar",
+      "sha256": "a3caf181f3af1665a7cd8b5d409ffe425308da49bf9297482df3942411a7707c"
+    },
+    {
+      "path": "lib/netty-transport-classes-kqueue-4.1.138.Final.jar",
+      "sha256": "7ce582c50ea47249ceb67bf36f21e403733c6c27b589dcc7e2da479f490c1b07"
+    },
+    {
+      "path": "lib/netty-transport-native-epoll-4.1.138.Final-linux-x86_64.jar",
+      "sha256": "64550d1a5cbbb2e90f7c4aee91b53346862382ab6e579d081fbbf45e9038acfa"
+    },
+    {
+      "path": "lib/netty-transport-native-kqueue-4.1.138.Final-osx-x86_64.jar",
+      "sha256": "b23a7f138f865a8190da3c7f39942047f591d82ba0d39984e0b3a7c577f7fb2e"
+    },
+    {
+      "path": "lib/netty-transport-native-unix-common-4.1.138.Final.jar",
+      "sha256": "8d1ada8f185d6f6da4cd79f9daeef39f1db49908cfec8bc2a1fb602458aa2341"
+    },
+    {
+      "path": "lib/nimbus-jose-jwt-10.9.1.jar",
+      "sha256": "33152ea83ec50d22706fdaf3b07acbcd716f9a68edcabdd7c4d02843cbdcdcf6"
+    },
+    {
+      "path": "lib/oauth2-oidc-sdk-11.31.1.jar",
+      "sha256": "8af45d9f00d3d30070f5ac1b0a21db15dd0986e3ea5fa1c72c6bf50ddfd20c7a"
+    },
+    {
+      "path": "lib/okhttp-4.12.0.jar",
+      "sha256": "b1050081b14bb7a3a7e55a4d3ef01b5dcfabc453b4573a4fc019767191d5f4e0"
+    },
+    {
+      "path": "lib/okio-3.6.0.jar",
+      "sha256": "8e63292e5c53bb93c4a6b0c213e79f15990fed250c1340f1c343880e1c9c39b5"
+    },
+    {
+      "path": "lib/okio-jvm-3.6.0.jar",
+      "sha256": "67543f0736fc422ae927ed0e504b98bc5e269fda0d3500579337cb713da28412"
+    },
+    {
+      "path": "lib/opczip-1.2.0.jar",
+      "sha256": "253a4e1bca79cbf242cc52efb7c931121bc28c3393e2aef24f1efe03cd6d9c28"
+    },
+    {
+      "path": "lib/opencensus-api-0.31.1.jar",
+      "sha256": "f1474d47f4b6b001558ad27b952e35eda5cc7146788877fc52938c6eba24b382"
+    },
+    {
+      "path": "lib/opencensus-contrib-http-util-0.31.1.jar",
+      "sha256": "3ea995b55a4068be22989b70cc29a4d788c2d328d1d50613a7a9afd13fdd2d0a"
+    },
+    {
+      "path": "lib/openhtmltopdf-core-1.0.10.jar",
+      "sha256": "3e6fd2250d833d500b7cd48b7a896700d0c33bd9f77a219e820493b01566eda3"
+    },
+    {
+      "path": "lib/openhtmltopdf-pdfbox-1.0.10.jar",
+      "sha256": "7de90df1b3ecf84e6f0daf808d724c11142007a2f22bff1936479bf17251d31a"
+    },
+    {
+      "path": "lib/opensearch-java-2.10.0.jar",
+      "sha256": "909d50c1d2cdf62f303c5d64228dd94279dbcd076119d09fe152f02286ae9088"
+    },
+    {
+      "path": "lib/opensearch-rest-client-2.12.0.jar",
+      "sha256": "de79d8ebc5322aaff5cfda6bb55357a305eba58613c12c787ab5f109ec3d05cb"
+    },
+    {
+      "path": "lib/parsson-1.1.6.jar",
+      "sha256": "7f880074d09efaf1b7443bfd9f99b529981392e845ad972dbb6917344bb13815"
+    },
+    {
+      "path": "lib/pdfbox-2.0.37.jar",
+      "sha256": "fcb04e6dac53f8681108bb66d5ac2ca72987b6c6795b14a8071636fc49a5d703"
+    },
+    {
+      "path": "lib/pem-keystore-3.0.0.jar",
+      "sha256": "173f806f725c721eed0a04a618a704dfe374ad225208a1e3b4a7edd383cdcc66"
+    },
+    {
+      "path": "lib/picocli-4.7.7.jar",
+      "sha256": "f86e30fffd10d2b13b8caa8d4b237a7ee61f2ffccf5b1941de718b765d235bf8"
+    },
+    {
+      "path": "lib/poi-5.5.1.jar",
+      "sha256": "6c52e876ca75775a11b56e4b36a7541f682827f56406725fcd87560b792ee3d8"
+    },
+    {
+      "path": "lib/poi-ooxml-5.5.1.jar",
+      "sha256": "bd7be2fdfe3fd2c1684fa813351c2798fd636b44f6236e0674500d4f8ff1c2f9"
+    },
+    {
+      "path": "lib/poi-ooxml-lite-5.5.1.jar",
+      "sha256": "e6e37adeb6d6ee8b40ec491ad955d934d8f99827ab050f105b18286e59b1d9e7"
+    },
+    {
+      "path": "lib/postgresql-42.7.13.jar",
+      "sha256": "6e0e4cc2d8cae902084f8a2b18728b073a6fd9d1f87c9d8bff8f298c18185b93"
+    },
+    {
+      "path": "lib/profiles-2.41.10.jar",
+      "sha256": "79419cb6a7fa8c5d53ab00d35a9afa7b37260d044a74bb7b011564551dd18383"
+    },
+    {
+      "path": "lib/protobuf-java-4.33.3.jar",
+      "sha256": "e7d1199d4f0211be8a72bbc2c0449bf6c4a66823f2fa5a9143454ac84231b8aa"
+    },
+    {
+      "path": "lib/protocol-core-2.41.10.jar",
+      "sha256": "cec41447843ae209a9c99595a8b04c7a10ff435a98db6a2b5a80c5b94176dea9"
+    },
+    {
+      "path": "lib/qbit-quick-search-0.2.1-SNAPSHOT.jar",
+      "sha256": "8a1f5b16c4efcbc65ee29abbe3ee4549b1d6c2d3dbdc86caeed9b30707b17fb9"
+    },
+    {
+      "path": "lib/qqq-backend-core-4.1.0-SNAPSHOT.jar",
+      "sha256": "314d76317c0926f785c345fabda5a8003e6521f9f7d1c553d2e3aca96026f131"
+    },
+    {
+      "path": "lib/qqq-backend-module-postgres-4.1.0-SNAPSHOT.jar",
+      "sha256": "e4e90339f4d999a58db39c8dc9f8b0c949b3233cd6e888b542d46b55101df1de"
+    },
+    {
+      "path": "lib/qqq-backend-module-rdbms-4.1.0-SNAPSHOT.jar",
+      "sha256": "eb63a587c2fa157e74228e3248fe93a9065acb35463939035d6c986339950a64"
+    },
+    {
+      "path": "lib/qqq-esb-4.1.0-SNAPSHOT.jar",
+      "sha256": "a52c59f9f1e72bcfc3efe3c9556d18b7e065a55d7a6eb75558eb1cef3c682e6d"
+    },
+    {
+      "path": "lib/qqq-middleware-javalin-4.1.0-SNAPSHOT.jar",
+      "sha256": "c8682a5cc56a6f8bcfa7e7571ab66d2eaf83132863c15314f7b3845f20d0e537"
+    },
+    {
+      "path": "lib/qqq-openapi-4.1.0-SNAPSHOT.jar",
+      "sha256": "289978a223a61be2db68f2a4b2514f48a98f538faeeae82b16c782372addf605"
+    },
+    {
+      "path": "lib/quartz-2.5.2.jar",
+      "sha256": "452e418739c0da1bff255f7c1343dd3a92e1fdd3ceb126b185939edae9922091"
+    },
+    {
+      "path": "lib/quicksight-2.41.10.jar",
+      "sha256": "1a517a32c9ab6ef6b0e8d8ac3c76fff440e1bffd7fca38805a3e6363eeb775aa"
+    },
+    {
+      "path": "lib/reactive-streams-1.0.4.jar",
+      "sha256": "f75ca597789b3dac58f61857b9ac2e1034a68fa672db35055a8fb4509e325f28"
+    },
+    {
+      "path": "lib/reactor-core-3.7.19.jar",
+      "sha256": "50390c15320c578784f60ea9d4d3f7a3eff9ba90c6567f38c6cce5c9f1f69faa"
+    },
+    {
+      "path": "lib/regions-2.41.10.jar",
+      "sha256": "4e149ce6e8a0b69cad14e301009a009ef0f0416c7cfa5f6e2e45f48fd98648ed"
+    },
+    {
+      "path": "lib/retries-2.41.10.jar",
+      "sha256": "105b2d03a4f0ec2f650dcaa5e762bb8605c958f02099821587a368ed0ca4dfa1"
+    },
+    {
+      "path": "lib/retries-spi-2.41.10.jar",
+      "sha256": "0d686efa47f3be5b8f7a9ea120f3894b6becb2e82efd430c34d579264e74f9b5"
+    },
+    {
+      "path": "lib/safety-mirror-4.0.1.jar",
+      "sha256": "6b2caaef2637a24905c0e53d6c7cb046df8e1ed7053827617044900facd461c4"
+    },
+    {
+      "path": "lib/sdk-core-2.41.10.jar",
+      "sha256": "af431c018f6c7e10f323f492fd3a918743ee55ee2f7e3a523fa8cb8a35d19f49"
+    },
+    {
+      "path": "lib/slack-api-client-1.49.0.jar",
+      "sha256": "eb671acc28b9618486f46f256b87235e8d358c6536cf56e6503abaec3881701f"
+    },
+    {
+      "path": "lib/slack-api-model-1.49.0.jar",
+      "sha256": "9f07712afecc14fc09a59ee7eea210720dd55d217684b1ce3bf6e01ab216d8d4"
+    },
+    {
+      "path": "lib/slack-app-backend-1.49.0.jar",
+      "sha256": "79c9ca94723d484c384f23d22dfe664d10ae9928cc4771a2ebde26ecbc454a7c"
+    },
+    {
+      "path": "lib/slf4j-api-2.0.18.jar",
+      "sha256": "44508fd1576500688c790b190acdd16fec4f8c79a3e0b900afd70503cf055f55"
+    },
+    {
+      "path": "lib/snakeyaml-2.5.jar",
+      "sha256": "e6682acf1ace77508ef13649cbf4f8d09d2cf5457bdb61d25ffb6ac0233d78dd"
+    },
+    {
+      "path": "lib/standardwebhooks-1.1.1.jar",
+      "sha256": "2e01953310c752c816c4b96aafc05baeb5d0c9bdefda56c7060cba8976251f30"
+    },
+    {
+      "path": "lib/stax2-api-4.2.2.jar",
+      "sha256": "a61c48d553efad78bc01fffc4ac528bebbae64cbaec170b2a5e39cf61eb51abe"
+    },
+    {
+      "path": "lib/swagger-annotations-2.2.50.jar",
+      "sha256": "66e571d19a2ac61842007194f7dad221f6a130671c0d99bf854279ef6458a16b"
+    },
+    {
+      "path": "lib/third-party-jackson-core-2.41.10.jar",
+      "sha256": "ddb4bf13df3b4a0d9720a9a4c099f78e1b4712739c1903a24d25292dd4b88ca3"
+    },
+    {
+      "path": "lib/threeten-extra-1.8.0.jar",
+      "sha256": "51e4d21edc4e9447f7760c050e0baee75d7d973f387ba605a17abdc4d24fd6d8"
+    },
+    {
+      "path": "lib/tyrus-standalone-client-1.20.jar",
+      "sha256": "ccbab76d0cb6ff7cf32878bc5a95c641ffd50400c9e0871d61ff36a00f07af4b"
+    },
+    {
+      "path": "lib/utils-2.41.10.jar",
+      "sha256": "c5c9f2b855ccc739db5703fdce6c0ebab32eae67a8cd0477baea665f5e0861f0"
+    },
+    {
+      "path": "lib/utils-lite-2.41.10.jar",
+      "sha256": "14b6dbe56b3cfccc93e5481e5ede898cf7302e254384dc20f7695168b3c73882"
+    },
+    {
+      "path": "lib/velocity-engine-core-2.4.1.jar",
+      "sha256": "1c19157d1171d560088e485be97c93a7a2f7e9f56e517f0a30273c5c39df6231"
+    },
+    {
+      "path": "lib/xmlbeans-5.3.0.jar",
+      "sha256": "6cc69da3b4d35b83c5e477cd4daba204e44109833e34af2b9a8a2c8788289917"
+    },
+    {
+      "path": "lib/xmpbox-2.0.37.jar",
+      "sha256": "febff7baf35587a42fe2661a4f87eef4eb7d99c702dfe4dad945889734aa8c91"
+    },
+    {
+      "path": "lib/yasson-2.0.2.jar",
+      "sha256": "0ed8c0ef6677ee15719fefd6b8ec087b1da71e0abd3dbfe80dd21f19e53424ee"
+    },
+    {
+      "path": "prompts/PERSONA.md",
+      "sha256": "c1e0265eb484f31ce622eceeecf975625943bb12c37084117e74932238ebe91c"
+    }
+  ],
+  "qualification": {
+    "controlledBuildAndPackage": "PASS",
+    "liveModel": "BLOCKED: authorized personal token currently unavailable because 1Password CLI authorization was dismissed",
+    "liveHouseholdIntegrations": "BLOCKED: verified real identities, selected Synology endpoints/collections, permitted data handling and operating policies unresolved",
+    "hostedRelease": "BLOCKED: FOUNDATION_PACKAGES_TOKEN absent, matching foundation0.5 publication and hosted checks unqualified; retain0.4.1 release baseline",
+    "productionDeployment": "NOT APPLICABLE: not requested"
+  }
+}

@@ -2,7 +2,7 @@
 
 | Decision | Current outcome |
 | --- | --- |
-| D-01 | Confirmed public KofTwentyTwo/carl; display Carl AI. Implementation identifiers carl-ai and com.kof22.carlai. Foundation 0.4.0 is remotely qualified at bb25a2a1f3ca562b054400a321773852ae839f39. Exact consumer cache/pin and hosted private-package credentials remain separately pending; local artifacts are not hosted-access proof. |
+| D-01 | Confirmed public KofTwentyTwo/carl; display Carl AI. Identifiers carl-ai and com.kof22.carlai. Selected foundation0.4.1 is independently remotely qualified at b23f89a44647ddc8fd0f3f0894b159ae823638b7/run36703216841. Exact-byte local recovery and current-source gates remain pending; hosted private-package credentials remain separately blocked. |
 | D-02 | Private conversations by default, explicitly shared family chats. Actual family membership, verified principal mapping, record/field grants and report audiences unresolved; synthetic fixtures only. |
 | D-03 | Implement manual entry and documented CSV import with synthetic records. Real bill sources/documents unresolved. |
 | D-04 | Superseded: owner now selects shared Synology CalDAV calendar/reminders with standing read/write plan-maintenance authority. Actual endpoint/version/collections/credentials and live qualification pending; see D-22 and CALENDAR-REMINDERS.md. |
@@ -37,3 +37,8 @@ D-18: Owner clarified interactive planning and human execution: Carl documents p
 D-22: Owner confirms shared calendar and reminders hosted on Synology, with read/write access and authority for Carl to update them as needed. This supersedes Apple iCloud and calendar-read-only requirements only for the designated planning workspace. No repeated per-entry approval is required; finance/vendor actions remain outside scope. Actual provider/client compatibility and secret configuration need live qualification.
 
 D-23: Owner's primary mission order is debt reduction, improved rental/tax structure, then investment planning. Use explicit agreed goals and stage milestones, without inventing a debt-free prerequisite or investment risk profile. FIN-20 / FAT-23 capture the investment-planning boundary; no trades or money movement.
+
+
+## September30 — running preview and native conversation
+
+Owner confirms the currently served preview is insufficient: it lacks the requested grouped navigation/current frontend and has no visible way to interact with Carl. Add native “Talk to Carl” using Carl's existing conversational workflow and authoritative state, with private-by-default conversations and explicit authorized family sharing. Use the latest qualified Next UI RC and the separately approved exact QQQ4.1 development snapshot while no4.1RC is published. Current live metadata identifies Next UI1.0.0-RC.5. A model connection/credential remains unresolved; do not represent canned fixture answers as live Carl conversations. Preserve financial/vendor authority boundaries and the separate standing Synology workspace authority.

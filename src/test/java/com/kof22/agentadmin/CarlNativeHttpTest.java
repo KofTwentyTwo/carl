@@ -48,9 +48,25 @@ public class CarlNativeHttpTest
    /** Reads the exact family-workflow outputs through authenticated native QQQ with a restricted reader. */
    public static void assertFamilyArtifacts(NativeAgentConfiguration configuration, com.kof22.agentadmin.bootstrap.NativeAgentRuntime.Components components, javax.sql.DataSource data, Jwk jwk, RSAPublicKey publicKey, RSAPrivateKey privateKey, long report, long draft) throws Exception
    {
+      assertFamilyArtifacts(configuration, components, data, jwk, publicKey, privateKey, report, draft, "HOUSEHOLD_REPORT");
+   }
+
+
+
+   /** Reads a persisted family report kind through actual native QQQ HTTP. */
+   public static void assertFamilyArtifacts(NativeAgentConfiguration configuration, com.kof22.agentadmin.bootstrap.NativeAgentRuntime.Components components, javax.sql.DataSource data, Jwk jwk, RSAPublicKey publicKey, RSAPrivateKey privateKey, long report, long draft, String expectedKind) throws Exception
+   {
+      assertFamilyArtifacts(configuration, components, data, jwk, publicKey, privateKey, report, draft, expectedKind, null);
+   }
+
+
+
+   /** Also verifies the exact draft plan created by a natural-language financial request. */
+   public static void assertFamilyArtifacts(NativeAgentConfiguration configuration, com.kof22.agentadmin.bootstrap.NativeAgentRuntime.Components components, javax.sql.DataSource data, Jwk jwk, RSAPublicKey publicKey, RSAPrivateKey privateKey, long report, long draft, String expectedKind, Long plan) throws Exception
+   {
       try(var c = data.getConnection(); var sql = c.createStatement())
       {
-         sql.execute("CREATE ROLE carl_family_reader LOGIN PASSWORD 'synthetic-family-reader'");
+         sql.execute("DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='carl_family_reader') THEN CREATE ROLE carl_family_reader LOGIN PASSWORD 'synthetic-family-reader'; END IF; END $$");
          sql.execute("GRANT USAGE ON SCHEMA public TO carl_family_reader");
          for(var table : AdminApplication.READER_COLUMNS.entrySet())
          {
@@ -59,7 +75,7 @@ public class CarlNativeHttpTest
                sql.execute("GRANT SELECT(" + String.join(",", table.getValue()) + ") ON " + table.getKey() + " TO carl_family_reader");
             }
          }
-         sql.execute("GRANT SELECT ON carl_artifact_view TO carl_family_reader");
+         sql.execute("GRANT SELECT ON carl_artifact_view,carl_plan_view TO carl_family_reader");
       }
       var keyServer = com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress("127.0.0.1", 0), 0);
       String issuer = "http://127.0.0.1:" + keyServer.getAddress().getPort() + "/";
@@ -88,7 +104,14 @@ public class CarlNativeHttpTest
          assertEquals(200, metadata.statusCode(), metadata.body());
          var savedReport = request(http, base, "/data/carlArtifacts/" + report, alice, "GET", null, null);
          assertEquals(200, savedReport.statusCode(), savedReport.body());
-         assertTrue(savedReport.body().contains("HOUSEHOLD_REPORT"), savedReport.body());
+         assertTrue(savedReport.body().contains(expectedKind), savedReport.body());
+         if(plan != null)
+         {
+            var savedPlan = request(http, base, "/data/carlPlans/" + plan, alice, "GET", null, null);
+            assertEquals(200, savedPlan.statusCode(), savedPlan.body());
+            assertTrue(savedPlan.body().contains("DRAFT"), savedPlan.body());
+            assertTrue(savedPlan.body().contains(Long.toString(report)), savedPlan.body());
+         }
          var savedDraft = request(http, base, "/data/carlArtifacts/" + draft, alice, "GET", null, null);
          assertEquals(200, savedDraft.statusCode(), savedDraft.body());
          assertTrue(savedDraft.body().contains("not sent"), savedDraft.body());
@@ -173,6 +196,10 @@ public class CarlNativeHttpTest
                var metadata = request(http, base, "/metaData", alice, "GET", null, null);
                assertEquals(200, metadata.statusCode(), metadata.body());
                assertTrue(metadata.body().contains("Import from Monarch"));
+               var currentProcessMetadata = request(http, base, "/qqq/v1/metaData/process/carlImportMonarch", alice, "GET", null, null);
+               assertEquals(200, currentProcessMetadata.statusCode(), currentProcessMetadata.body());
+               assertTrue(currentProcessMetadata.body().contains("Import from Monarch"), currentProcessMetadata.body());
+               assertTrue(request(http, base, "/qqq/v1/metaData/process/carlTalkStart", alice, "GET", null, null).body().contains("Message to Carl"));
                var accounts = request(http, base, "/data/carlAccounts", alice, "GET", null, null);
                assertEquals(200, accounts.statusCode(), accounts.body());
                assertTrue(accounts.body().contains("Private synthetic account"));

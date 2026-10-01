@@ -57,6 +57,23 @@ public final class PurchaseAffordability
    public static Budget budget(String currency, BigDecimal openingCash, BigDecimal reserve, LocalDate from, LocalDate through,
       LocalDate purchaseDate, BigDecimal agreedDiscretionaryCap, List<CashFlow.Event> commitments, Conditions conditions)
    {
+      return calculateBudget(currency, openingCash, reserve, from, through, purchaseDate, agreedDiscretionaryCap, commitments, conditions, true);
+   }
+
+
+
+   /** Computes a cash ceiling before a price is known; this does not qualify any purchase costs. */
+   public static Budget availableCashBudget(String currency, BigDecimal openingCash, BigDecimal reserve, LocalDate from, LocalDate through,
+      LocalDate purchaseDate, BigDecimal agreedDiscretionaryCap, List<CashFlow.Event> commitments, Conditions conditions)
+   {
+      return calculateBudget(currency, openingCash, reserve, from, through, purchaseDate, agreedDiscretionaryCap, commitments, conditions, false);
+   }
+
+
+
+   private static Budget calculateBudget(String currency, BigDecimal openingCash, BigDecimal reserve, LocalDate from, LocalDate through,
+      LocalDate purchaseDate, BigDecimal agreedDiscretionaryCap, List<CashFlow.Event> commitments, Conditions conditions, boolean requireCosts)
+   {
       if(currency == null || from == null || through == null || purchaseDate == null || conditions == null
          || purchaseDate.isBefore(from) || purchaseDate.isAfter(through))
       {
@@ -75,7 +92,7 @@ public final class PurchaseAffordability
       {
          limitations.add("Accessible scope does not establish the requested household budget.");
       }
-      if(!conditions.allInCostsKnown())
+      if(requireCosts && !conditions.allInCostsKnown())
       {
          limitations.add("All-in purchase costs, including applicable fees, are incomplete.");
       }

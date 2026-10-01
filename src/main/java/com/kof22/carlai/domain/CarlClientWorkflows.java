@@ -25,7 +25,8 @@ public final class CarlClientWorkflows implements AutoCloseable
    private static final ObjectMapper JSON = new ObjectMapper();
    private final CarlService service;
    private final CalendarWorkflows calendars;
-   private final ThreadPoolExecutor workers = new ThreadPoolExecutor(2, 2, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(16));
+   private final CarlConversation conversation;
+   private final ThreadPoolExecutor workers = new ThreadPoolExecutor(2, 2, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(16), Thread.ofVirtual().name("carl-workflow-", 0).factory());
 
    /** Reconciles interrupted requests without replaying model or provider work. */
    public CarlClientWorkflows(CarlService service)
@@ -38,6 +39,15 @@ public final class CarlClientWorkflows implements AutoCloseable
    /** Uses only trusted configured calendar collections, never client-supplied endpoints. */
    public CarlClientWorkflows(CarlService service, CalendarWorkflows calendars)
    {
+      this(service, calendars, null);
+   }
+
+
+
+   /** Adds the explicitly requested conversational capability using the host-owned model runtime. */
+   public CarlClientWorkflows(CarlService service, CalendarWorkflows calendars, CarlConversation conversation)
+   {
+      this.conversation = conversation;
       this.calendars = calendars;
       this.service = service;
       service.transaction(c ->
@@ -56,6 +66,10 @@ public final class CarlClientWorkflows implements AutoCloseable
       for(String kind : java.util.List.of("report", "draft", "debt-comparison", "purchase-assessment", "offer-comparison", "rental-report", "tax-packet", "plan-create", "plan-step", "plan-agree", "plan-check-in", "plan-export", "plan-rebase", "portfolio-comparison", "portfolio-detail", "purchase-options", "purchase-detail", "calendar-plan", "reminder-review", "tax-planning-packet", "artifact-section", "focused-report", "bill-period-comparison", "report-status", "report-reconciliation", "balance-sheet", "rental-stress-report", "report-export", "report-download", "plan-expectation", "plan-effect-comparison"))
       {
          handlers.put(kind, new Handler(kind));
+      }
+      if(conversation != null)
+      {
+         handlers.put("conversation", new Handler("conversation"));
       }
       return Map.copyOf(handlers);
    }
@@ -80,6 +94,15 @@ public final class CarlClientWorkflows implements AutoCloseable
          boolean created = service.transaction(c ->
          {
             scope(c, context);
+            if(kind.equals("conversation"))
+            {
+               // Serialize admission across application instances; same-ID replay remains allowed.
+               CarlService.rows(c, "SELECT id FROM carl_household WHERE id=? FOR UPDATE", Long.parseLong(context.member().household()));
+               if(!CarlService.rows(c, "SELECT request_id FROM carl_client_workflow WHERE conversation_id=? AND kind='conversation' AND status='PENDING' AND request_id<>?", context.conversationId(), requestId).isEmpty())
+               {
+                  throw new ClientFailure(409, "conversation_busy");
+               }
+            }
             var inserted = CarlService.rows(c, "INSERT INTO carl_client_workflow(request_id,conversation_id,requester_id,kind,audience,permission_revision,input_digest,status) VALUES(?,?,?,?,?,?,?,'PENDING') ON CONFLICT(request_id) DO NOTHING RETURNING request_id", requestId, context.conversationId(), Long.parseLong(context.member().id()), kind, audience(context), Long.parseLong(context.member().permissionRevision()), digest);
             if(inserted.isEmpty())
             {
@@ -91,6 +114,10 @@ public final class CarlClientWorkflows implements AutoCloseable
                   throw new ClientFailure(409, "idempotency_conflict");
                }
                return false;
+            }
+            if(kind.equals("conversation"))
+            {
+               CarlService.execute(c, "UPDATE carl_client_workflow SET conversation_message=?,reply_to=? WHERE request_id=?", conversation.message(input), input.has("replyTo") ? UUID.fromString(input.get("replyTo").asText()) : null, requestId);
             }
             return true;
          });
@@ -113,10 +140,64 @@ public final class CarlClientWorkflows implements AutoCloseable
 
       private void run(Context context, UUID id, JsonNode input)
       {
-         CarlService.deadline(java.time.Duration.ofSeconds(30));
          try
          {
+            CarlService.deadline(kind.equals("conversation") ? conversation.completionTimeout() : java.time.Duration.ofSeconds(30));
             CarlService.Scope authorized = scope(context);
+            if(kind.equals("conversation"))
+            {
+               var outcome = conversation.run(context, id, input, () -> scope(context));
+               service.transaction(c ->
+               {
+                  scope(c, context);
+                  CarlService.rows(c, "SELECT permission_revision FROM carl_household WHERE id=? FOR SHARE", Long.parseLong(context.member().household()));
+                  var current = scope(c, context);
+                  var pending = CarlService.rows(c, "SELECT status FROM carl_client_workflow WHERE request_id=? FOR UPDATE", id);
+                  if(pending.size() != 1 || !pending.getFirst().get("status").equals("PENDING"))
+                  {
+                     throw new IllegalArgumentException("Workflow no longer pending");
+                  }
+                  Long artifact = outcome.artifact();
+                  Long plan = outcome.output().has("planId") ? outcome.output().get("planId").longValue() : null;
+                  var output = (com.fasterxml.jackson.databind.node.ObjectNode) outcome.output().deepCopy();
+                  if(outcome.planCreation() != null)
+                  {
+                     UUID child = UUID.nameUUIDFromBytes(("carl-conversation-plan:" + id).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                     if(CarlGoalConversation.supports(outcome.planCreation().path("kind").asText()))
+                     {
+                        var committed = new CarlGoalConversation(service).complete(c, current, id, outcome.planCreation());
+                        artifact = committed.artifact();
+                        output.setAll((com.fasterxml.jackson.databind.node.ObjectNode) committed.output());
+                     }
+                     else if(outcome.planCreation().has("kind"))
+                     {
+                        var mutation = new CarlPlanConversation(service, calendars).mutate(c, context, current, id, outcome.planCreation());
+                        plan = mutation.plan();
+                        if(mutation.expectation() != null)
+                        {
+                           output.put("expectationId", mutation.expectation());
+                        }
+                        if(outcome.planCreation().path("kind").asText().equals("plan-create"))
+                        {
+                           output.put("createdPlanId", plan).put("createdPlanVersion", 1);
+                        }
+                     }
+                     else
+                     {
+                        plan = PlanClientOperations.mutate(c, service, context, current, child, "plan-create", outcome.planCreation());
+                        output.put("createdPlanId", plan).put("createdPlanVersion", 1);
+                     }
+                  }
+                  if(plan != null)
+                  {
+                     var snapshot = PlanClientOperations.snapshot(c, context, current, plan);
+                     output.set("plan", JSON.valueToTree(snapshot));
+                  }
+                  CarlService.execute(c, "UPDATE carl_client_workflow SET artifact_id=?,plan_id=?,plan_result=?,status=? WHERE request_id=? AND status='PENDING'", artifact, plan, output.toString(), output.path("kind").asText().equals("GOAL_TRADEOFF") ? "PARTIAL" : outcome.status(), id);
+                  return null;
+               });
+               return;
+            }
             if(kind.equals("calendar-plan") || kind.equals("reminder-review"))
             {
                runCalendar(context, id, input);
@@ -336,6 +417,20 @@ public final class CarlClientWorkflows implements AutoCloseable
             return rows.getFirst();
          });
          Status status = Status.valueOf(row.get("status").toString());
+         if(kind.equals("conversation") && row.get("plan_result") != null)
+         {
+            try
+            {
+               var authorized = scope(context);
+               JsonNode output = conversation.result(context, authorized, row);
+               scope(context);
+               return new Result(status, row.get("artifact_id") == null ? null : row.get("artifact_id").toString(), output.path("message").asText(), output);
+            }
+            catch(SecurityException denied)
+            {
+               throw new ClientFailure(404, "workflow_unavailable");
+            }
+         }
          if(kind.equals("plan-expectation") && row.get("plan_result") != null)
          {
             try
@@ -632,7 +727,11 @@ public final class CarlClientWorkflows implements AutoCloseable
          }
          var keys = new LinkedHashSet<String>();
          input.fieldNames().forEachRemaining(keys::add);
-         if(kind.equals("calendar-plan") || kind.equals("reminder-review"))
+         if(kind.equals("conversation"))
+         {
+            CarlConversation.validate(input);
+         }
+         else if(kind.equals("calendar-plan") || kind.equals("reminder-review"))
          {
             CalendarClientInput.validate(kind, input);
          }
@@ -960,9 +1059,19 @@ public final class CarlClientWorkflows implements AutoCloseable
    public void close() throws InterruptedException
    {
       workers.shutdownNow();
-      if(!workers.awaitTermination(10, TimeUnit.SECONDS))
+      try
       {
-         throw new IllegalStateException("Carl workflow workers are still stopping");
+         if(!workers.awaitTermination(10, TimeUnit.SECONDS))
+         {
+            throw new IllegalStateException("Carl workflow workers are still stopping");
+         }
+      }
+      finally
+      {
+         if(conversation != null)
+         {
+            conversation.close();
+         }
       }
    }
 }

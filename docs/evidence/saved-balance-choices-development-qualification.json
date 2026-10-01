@@ -1,0 +1,117 @@
+{
+  "status": "REVIEWED_SOURCE_INTEGRATED_ORIGINAL_CLEAN_GATE_PASS",
+  "handoff": {
+    "source": "/private/tmp/carl-ui-browser",
+    "originalEdited": false,
+    "files": [
+      {
+        "path": "src/main/java/com/kof22/carlai/CarlDashboards.java",
+        "baselineSha256": "57c95ba7215d85aaad6498dc5fbcddc1569bbc22d2be991d7be04d1a0e76aecd",
+        "sha256": "35230154c8a358e86cbf5007690c85bf653a3281291621fe91ffd5219e861972",
+        "bytes": 6046
+      },
+      {
+        "path": "src/main/java/com/kof22/carlai/domain/DashboardFacts.java",
+        "baselineSha256": "f32bbd5bd1e6b4a7a36d66a862976a0465cbed5a193c20841f51135e6d9ce6c4",
+        "sha256": "1b831d228478448385d463f44026cde7acae88c1dd71816953824773abe3ee56",
+        "bytes": 20914
+      },
+      {
+        "path": "src/main/java/com/kof22/carlai/CarlSavedBalanceSheets.java",
+        "baselineSha256": null,
+        "sha256": "10b005b155bb8d53b715cce8986197b1a7e1da1316402e5afad65228c1e772e8",
+        "bytes": 5611
+      },
+      {
+        "path": "src/test/java/com/kof22/carlai/CarlSavedBalanceSheetsTest.java",
+        "baselineSha256": null,
+        "sha256": "0424ec597467fa286ea24c8d80ad32b65dd39f1a1d1c48ee1ac566484782fe05",
+        "bytes": 10227
+      },
+      {
+        "path": "src/test/java/com/kof22/agentadmin/CarlSavedBalanceSheetNativeTest.java",
+        "baselineSha256": null,
+        "sha256": "907aa6ec637acf70df8bd69afccc0a95cda8dd56235f5e7a175bb32842ebe54e",
+        "bytes": 13165
+      }
+    ],
+    "qualification": {
+      "command": "mvn -o -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+      "terminal": 40865,
+      "exit": 0,
+      "log": "/private/tmp/carl-balance-choices-verify.log",
+      "counts": {
+        "tests": 367,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "coverage": [
+        {
+          "type": "BRANCH",
+          "missed": "2751",
+          "covered": "6027"
+        },
+        {
+          "type": "LINE",
+          "missed": "1393",
+          "covered": "10146"
+        }
+      ]
+    },
+    "red": {
+      "log": "/private/tmp/carl-balance-choices-red.log",
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skips": 0
+    },
+    "focused": {
+      "log": "/private/tmp/carl-balance-choices-http-green.log",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "limitations": [
+      "Stable current backend GET PVS and widget HTTP qualified. Matching development v1 JSON backend and final RC4 packaged browser qualification pending.",
+      "Stale saved balance sheets remain historical choices with explicit labels, while revoked source access and permission epoch remove choices.",
+      "Eligible search bounded at 1000, response at 250, exact-ID lookup supported."
+    ]
+  },
+  "review": {
+    "currentPermissionChecks": true,
+    "exactIdsAndAudienceIntersection": true,
+    "boundedNativeSearch": true,
+    "sameTitleRecordsDistinctWithoutTitleMutation": true,
+    "nativeSupportedGetHttpProof": true,
+    "matchingRc4V1BrowserAcceptance": "PENDING"
+  },
+  "originalGate": {
+    "status": "PASS",
+    "exitCode": 0,
+    "terminal": 75779,
+    "command": "JAVA_HOME=Java21 mvn -B -ntp -o -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+    "log": "/private/tmp/carl-integrated-balance-choices-verify.log",
+    "logSha256": "5d0bbf1c568d942525c347e3e429afb0e1d8ff755dbf158152a217ec34dec483",
+    "counts": {
+      "tests": 367,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "coverage": {
+      "BRANCH": {
+        "type": "BRANCH",
+        "missed": "2751",
+        "covered": "6027"
+      },
+      "LINE": {
+        "type": "LINE",
+        "missed": "1393",
+        "covered": "10146"
+      }
+    },
+    "jarSha256": "562278c109b7033f1d880ad7b8b78383d4a280077fed0efad5705757c87bba1c"
+  }
+}

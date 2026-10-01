@@ -44,6 +44,7 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
 {
    private final CarlService service;
    private final com.kof22.carlai.domain.CalendarWorkflows calendars;
+   private final com.kof22.carlai.domain.CarlTalkService talk;
    CarlMetadata(CarlService service)
    {
       this(service, new com.kof22.carlai.domain.CalendarWorkflows(java.util.Map.of()));
@@ -53,8 +54,16 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
 
    CarlMetadata(CarlService service, com.kof22.carlai.domain.CalendarWorkflows calendars)
    {
+      this(service, calendars, new com.kof22.carlai.domain.CarlTalkService(service));
+   }
+
+
+
+   CarlMetadata(CarlService service, com.kof22.carlai.domain.CalendarWorkflows calendars, com.kof22.carlai.domain.CarlTalkService talk)
+   {
       this.service = service;
       this.calendars = calendars;
+      this.talk = talk;
    }
 
 
@@ -71,6 +80,7 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
    public QAppMetaData produce(QInstance instance)
    {
       CarlProcessScope.register(instance, service);
+      CarlNativeReadScope.register(instance, service);
       instance.addSecurityKeyType(new QSecurityKeyType().withName("userId"));
       var app = new QAppMetaData().withName("carlAI").withLabel("Carl AI");
       for(var table : List.of(
@@ -202,6 +212,9 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
       ExpenseProcesses.register(instance, app, service);
       CalendarProcesses.register(instance, app, service, calendars);
       AvailabilityProcesses.register(instance, app, service);
+      CarlTalkProcesses.register(instance, app, talk);
+      CarlDashboards.register(instance, service);
+      CarlNavigation.apply(instance, app);
       return app;
    }
 

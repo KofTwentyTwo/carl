@@ -1,0 +1,87 @@
+{
+  "base": "df6b373",
+  "files": {
+    "src/main/java/com/kof22/carlai/AgentApplication.java": "7336767a37615fde85afbd5fb2d1a5f4db8f41c9e0096cda5488e5e2332629a7",
+    "src/main/java/com/kof22/carlai/domain/CarlClientWorkflows.java": "c113336f6358c4bb3b74f22e2ea7d220a1c2c45c8f5c8f967e401b5e121ea8b3",
+    "src/main/java/com/kof22/carlai/domain/CarlConversation.java": "deec5bb21d70b5c3d516ab667763f2dba29743b9efb066900ea0e9af07d9f25b",
+    "src/main/resources/db/migration/V57__conversational_workflow.sql": "29dd4a4bf5713de3fb048812a6d5156a877a6a00e4798cbabff65c87b7b82f71",
+    "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java": "c0b3f209033813dde9d6f636af13d42c309ef37a04be449aed6402bd57c00765",
+    "src/test/java/com/kof22/carlai/CarlRuntimeAdmissionTest.java": "a7617aafa1714dd15bc6f9f875686e29a4fc9c8eab7223214d5024a643fd1115"
+  },
+  "validationDependency": "com.kof22:kof22-agent-parent:0.4.1-SNAPSHOT (unpublished development only)",
+  "coreJarSha256": "1019b8881b141c7675ce1e3fae64fb60f05a90b797e5f9f6b72ed8fc818ff4ee",
+  "developmentPomSha256": "af5b7cbd1c974cd5b2bafe1346112e7cc26777a627c39793c74872c3ad57f909",
+  "authoritativePin": "0.4.0 restored unchanged in isolated POM; validation alone used unpublished0.4.1-SNAPSHOT",
+  "status": "PASS full clean consumer verify with unpublished corrected development dependency; remote stable consumer qualification pending",
+  "rootOwnedDocs": "No docs changed or included",
+  "tests": {
+    "tests": 306,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "INSTRUCTION": {
+      "covered": 69219,
+      "missed": 8469
+    },
+    "BRANCH": {
+      "covered": 4999,
+      "missed": 2429
+    },
+    "LINE": {
+      "covered": 8727,
+      "missed": 1271
+    },
+    "COMPLEXITY": {
+      "covered": 2719,
+      "missed": 2373
+    },
+    "METHOD": {
+      "covered": 1234,
+      "missed": 103
+    },
+    "CLASS": {
+      "covered": 241,
+      "missed": 2
+    }
+  },
+  "command": "mvn -o -Dmaven.repo.local=/private/tmp/kof22-client-api-m2 clean verify",
+  "artifacts": {
+    "appJarSha256": "061ad94a4e3cc2c70d95d3bb6306cd9338bc332e169bdc2451715ffaea4e4136"
+  },
+  "logs": {
+    "/private/tmp/carl-conversation-final-full.log": "f99f9fa3d173a189a92f7658fa9af1d698854d5aaf2589074f56e0f0bb515786",
+    "/private/tmp/carl-conversation-final-focused.log": "5c68a9ea9f6de3c8afc57ce1e533dcf18f3d4bf7bb8840abd22ac01e54d53e5b",
+    "/private/tmp/carl-conversation-gitleaks.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "review": "PASS independent read review by family_api_completion; six hashes verified, no blocking finding",
+  "limitations": [
+    "Synthetic loopback inference only; no live model or family data qualification",
+    "Original consumer parent pin unchanged; development POM restored before handoff",
+    "Client retains workflow request IDs; ordinary /turns history is distinct",
+    "No conversational mutation tools or external actions; only reports/local drafts/clarification/boundary responses",
+    "Conversation timeout maximum270seconds explicitly validated; active-inference capacity shared across ordinary/conversation runtime calls"
+  ],
+  "restoredPomSha256": "f096033b1afbaba06fe3fb26d0a991ee1cff179632e707378da414390ef0e9a9",
+  "testsNamed": [
+    "CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq (4 parameterized actual SDK HTTP/PostgreSQL scenarios; authenticated QQQ assertion in failure scenario)",
+    "CarlRuntimeAdmissionTest.oneConfiguredInferenceSlotCannotBeDoubledByAnotherEntryPoint",
+    "CarlRuntimeAdmissionTest.unsupportedConversationalDeadlineFailsBeforeAnyRequestCanBecomePending",
+    "CarlRuntimeAdmissionTest.interruptionDoesNotReleaseCapacityBeforeDelegateExitAndHostClosesOnce"
+  ],
+  "errors": {
+    "400": "Malformed client input or authority fields",
+    "409": "Same request UUID with changed payload/actor/context or another pending conversational request",
+    "429": "Existing transport rate limit or full shared workflow queue",
+    "404": "Unavailable conversation, participant, permission epoch or protected artifact",
+    "PENDING": "Accepted and running",
+    "UNKNOWN": "Provider/planning/validation/permission/uncertain-outcome failure; no automatic replay",
+    "PARTIAL": "Saved facts with failed narration or existing incomplete-report status",
+    "COMPLETE": "Completed scoped artifact, clarification or boundary response",
+    "FAILED": "Configured conversational capacity unavailable or shared worker queue rejection; no successful artifact is claimed"
+  },
+  "date": "2026-09-30",
+  "qualificationState": "PASS_CONTROLLED_DEVELOPMENT_ONLY_STABLE_DEPENDENCY_PENDING",
+  "integration": "Six source files integrated byte-for-byte into original consumer; authoritative parent remains 0.4.0 until qualified corrected release selection."
+}

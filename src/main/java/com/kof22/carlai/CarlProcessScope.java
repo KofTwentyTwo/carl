@@ -83,7 +83,13 @@ public final class CarlProcessScope implements QJavalinRouteProviderInterface, I
 
    private Scope current(String process) throws com.kingsrook.qqq.backend.core.exceptions.QException
    {
-      String principal = CarlMetadata.principal();
+      return current(process, CarlMetadata.principal());
+   }
+
+
+
+   private Scope current(String process, String principal)
+   {
       var member = service.member(principal);
       return new Scope(process, principal, member.id(), member.householdId(), member.permissionRevision());
    }
@@ -129,7 +135,7 @@ public final class CarlProcessScope implements QJavalinRouteProviderInterface, I
       }
       try
       {
-         if(!initial.equals(current(initial.process())))
+         if(!initial.equals(current(initial.process(), initial.principal())))
          {
             deny(context);
             return;

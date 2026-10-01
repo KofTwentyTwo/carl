@@ -1,13 +1,13 @@
 # Foundation reference
 
 These guides were copied from the generator checkout. Source-only links point to
-https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/main/
+https://github.com/KofTwentyTwo/kof22-agent-foundation/blob/b23f89a44647ddc8fd0f3f0894b159ae823638b7/
 
-This archive has no Git metadata; main links may differ from the bundled guides.
+The links identify the generator base commit; local uncommitted changes may differ.
 Use source matching the consumer parent version when changing integrations.
 Refresh these reference copies on foundation upgrades; keep application requirements
 and evidence in AGENT-BRIEF.md and ACCEPTANCE.md.
 
 ## Immutable consumer pin
 
-Carl now pins foundation `0.4.0`, source `bb25a2a1f3ca562b054400a321773852ae839f39`, published by run36670072139. The nine local Maven artifact hashes match signed remote-publication evidence; see [artifact identities](../evidence/foundation-0.4.0-artifacts.json). The cache was recovered from the retained Actions candidate, not a newly authenticated Maven download. Hosted Carl private-package access remains separately unqualified.
+Carl selects foundation `0.4.1`, source `b23f89a44647ddc8fd0f3f0894b159ae823638b7`, independently qualified stable run36703216841. [Nine artifact identities](../evidence/foundation-0.4.1-artifacts.json) come from the signed publication. Exact-byte retained-candidate recovery passed; final consumer gates are pending. Recovery is not a fresh authenticated Maven fetch. Hosted private-package access remains separately blocked. [Reference-copy identities](../evidence/foundation-reference-0.4.1.json) record the supported generator's current bundled guides/contracts.

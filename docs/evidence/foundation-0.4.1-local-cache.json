@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "recovered_at": "2026-09-30T11:34:28.508204+00:00",
+  "version": "0.4.1",
+  "source_commit": "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+  "workflow_run": 36703216841,
+  "retained_actions_artifact": {
+    "id": 11092650127,
+    "name": "verified-candidate",
+    "metadata_file": "/private/tmp/kof22-041-stable-candidate/artifact-metadata.json",
+    "archive_sha256": "a310ea7e756286a0685a7f938059a1d841754619fcf1798a5fd3964ff1e6f3c5",
+    "archive_bytes": 997371029,
+    "zip_member": "verified-candidate.tgz",
+    "archive_inspection": {
+      "members_inspected": 78438,
+      "declared_bytes": 1966527290
+    }
+  },
+  "qualified_publication": {
+    "path": "/private/tmp/kof22-041-stable-publication/publication.json",
+    "sha256": "9ae9a61e359a0a822181b135388ca5380d39c32b4e427c1232201f14f14d8255",
+    "signature_bundle_sha256": "af211384f60f766da0350a4d9311e143838c6939ffbe0d64d0de2c03513be4a2",
+    "qualification_record": "/private/tmp/2026-09-30-foundation-0.4.1-stable-delivery.json",
+    "qualification_record_sha256": "0d316732c9483db471285f64c88db6d0017b80681a72aec77d4ae7db6b3922f7",
+    "candidate_json_sha256": "4f41458e8f8484f87f46d30377f2ab879684b0bb5e8a8432e08f9f651da00015"
+  },
+  "cache": "/private/tmp/carl-qualified-041-m2",
+  "maven_resolution_method": "Exact nine retained candidate POM/JAR bytes recovered and locally installed with empty repository-origin markers; each SHA256 equals signed hosted remote-resolution identity. No source build, POM regeneration, SNAPSHOT substitution, or fresh local remote Maven fetch.",
+  "artifacts": [
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.pom",
+      "maven_path": "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.pom",
+      "sha256": "8566135b5ce53d51c2694b47b07a91538cea4d68e5d404e7deffe383060dcd04",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.pom"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.jar",
+      "maven_path": "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.jar",
+      "sha256": "21f05cd41f328b3509499d4b0705c2e3196a3d621f856f34eb7058f6074a6a5e",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.jar"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1-tests.jar",
+      "maven_path": "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1-tests.jar",
+      "sha256": "7a9775db00acdae6a8df7a650c1e5aa9a92863dd37b3c9cbb374a3a194aa3fdf",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1-tests.jar"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.pom",
+      "maven_path": "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.pom",
+      "sha256": "42860a4e97435c2d8aa87a9afdbf37053e6ec0b9851c680de1e77170848711d2",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.pom"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.jar",
+      "maven_path": "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.jar",
+      "sha256": "d03c1c146061299ae92a3477fab90644c4e763b6215a61f153d44f977ed727fc",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.jar"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.pom",
+      "maven_path": "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.pom",
+      "sha256": "5723faffdb3342711051a0f6813889518edacb9a32003152617f9781e64f9cd6",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.pom"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.jar",
+      "maven_path": "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.jar",
+      "sha256": "051e1e7f08a4f419b7bd41b1b5fb34d6bb453dedb07949d7e99ad24b8df06edc",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.jar"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1-tests.jar",
+      "maven_path": "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1-tests.jar",
+      "sha256": "ed0265f7ee64fb902458bad28106597bf1d8b50f74912c5df54122c708f62fba",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1-tests.jar"
+    },
+    {
+      "archive_member": "foundation-release/repository/com/kof22/kof22-agent-parent/0.4.1/kof22-agent-parent-0.4.1.pom",
+      "maven_path": "com/kof22/kof22-agent-parent/0.4.1/kof22-agent-parent-0.4.1.pom",
+      "sha256": "36beb2ce963b7d899f288d781c70d19e6eeeaaf7179e88550338981a875d271c",
+      "cache_file": "/private/tmp/carl-qualified-041-m2/com/kof22/kof22-agent-parent/0.4.1/kof22-agent-parent-0.4.1.pom"
+    }
+  ],
+  "previous_040_cache_nine_artifacts_unchanged": true,
+  "limitations": [
+    "Remote publication and clean-consumer execution are established by the separately verified stable delivery record.",
+    "This recovery is retained-artifact byte recovery, not proof of Carl cross-repository hosted package access.",
+    "Carl dependency resolution and consumer build remain the parent task."
+  ],
+  "commands": [
+    "gh api repos/KofTwentyTwo/kof22-agent-foundation/actions/artifacts/11092650127",
+    "gh api repos/KofTwentyTwo/kof22-agent-foundation/actions/artifacts/11092650127/zip > /private/tmp/kof22-041-stable-candidate/verified-candidate.zip",
+    "python3 /private/tmp/recover-foundation-041-cache.py"
+  ],
+  "recovery_script_sha256": "0e838f6810377450507dbac23ca602f3908153b8578b53b283252628252951e2"
+}
