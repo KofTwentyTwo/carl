@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "date": "2026-10-01",
+  "source": "008af67d3cd1ec24905b92b87eafed1bde54ceaf",
+  "origin": "https://localhost:51051",
+  "status": "PASS",
+  "syntheticOnly": true,
+  "model": "DISCONNECTED",
+  "healthReadyStatus": 200,
+  "previewLifecycle": "Retained running in owned PTY91861; previous64503 preview remains running",
+  "package": {
+    "appSha256": "e9cb7ce287a5a1c4c22031de3c5a5d6d76dbf1c72ec24a0f74a671dc8417639b",
+    "frozenFiles": 251,
+    "frozenInventorySha256": "201aade9922600785cc67a545fc1858bea9da0ad1e4a88c117318e721abf0145",
+    "unchangedPriorAppZipPayloads": 334,
+    "changedPriorAppZipPayloads": [
+      "com/kof22/carlai/domain/CarlPlanConversation$Mutation.class",
+      "com/kof22/carlai/domain/CarlPlanConversation.class"
+    ],
+    "priorRuntimeLibrariesUnchanged": true
+  },
+  "checks": {
+    "talk": [
+      "native-private-default-conversation-form",
+      "disconnected-model-truthful-failure-no-fabricated-answer",
+      "narrow-conversation-no-document-overflow",
+      "saved-response-selector-mounted-and-authorized",
+      "verified-other-member-cannot-select-private-response"
+    ],
+    "navigationAndRecords": [
+      "verified-OIDC-Carl-branded-default-overview",
+      "two-overview-native-widgets",
+      "all-seven-native-navigation-groups",
+      "three-native-money-widgets-with-explicit-input-empty-states",
+      "exact-current-authorized-seeded-plan-and-task",
+      "native-persisted-task-visible"
+    ],
+    "selectedDashboardFigures": [
+      "explicit-input-cash-flow-facts",
+      "selected-plan-progress-evidence",
+      "selected-balance-facts",
+      "selected-income-expense-flow"
+    ]
+  },
+  "talkTerminal": "Response outcome unknown",
+  "reports": {
+    "talk-evidence/report.json": "a2a1905089639ae53e70a5c8cdd865dc593dd714d1da42d508a5c68e4fd55114",
+    "running-preview-check-v2.json": "a405cdd71f0d56b9fd6ff4a8dd9a0bca72743708d7dbe5d9ce20d3a408f5ea87",
+    "loaded-dashboards-check.json": "e3e5d45c978f26265205b9ac0a59ece736036a77c8dd6b4f773af71e8f9eacf4"
+  },
+  "quickSearchEsb": {
+    "destination": "carlIndexChanges",
+    "consumedEvents": 2,
+    "payloadAuthorityIgnored": true,
+    "firstEventMillis": 399,
+    "nativeTelemetry": {
+      "expectedAdded": 2,
+      "labelMatches": true,
+      "remaining": 0,
+      "consumerCount": 1,
+      "deadLetters": 0,
+      "expectedAcknowledged": 2,
+      "stepLogged": false,
+      "acknowledged": 2,
+      "added": 2
+    },
+    "process": "carlRefreshSearchIndex",
+    "status": "PASS",
+    "titleRestored": true,
+    "acknowledgedEvents": 2
+  },
+  "limits": [
+    "All people/accounts/data/providers are synthetic.",
+    "Offline Talk outcome does not qualify inference or complete a model answer.",
+    "Running-preview screenshots and explicit dashboard selections do not establish live household or production deployment.",
+    "Original failed preview check assumed four Overview widgets; current metadata correctly has two Overview and three Money widgets. Corrected check is recorded separately.",
+    "Fixture-owned SIGTERM behavior is not a supported native shutdown API fix."
+  ]
+}

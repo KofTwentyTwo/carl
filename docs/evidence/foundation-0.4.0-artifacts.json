@@ -1,0 +1,27 @@
+{
+  "qualification": "Local immutable artifact recovery; not a new remote Maven resolution or Carl build result",
+  "version": "0.4.0",
+  "source": "bb25a2a1f3ca562b054400a321773852ae839f39",
+  "qualifiedPublicationRun": 36670072139,
+  "downloadedActionsArtifact": 11078134792,
+  "candidateManifestMatchesSignedDeliveryEvidence": true,
+  "artifactHashes": {
+    "com/kof22/kof22-agent-parent/0.4.0/kof22-agent-parent-0.4.0.pom": "df259beedb879b0de97aaab890776b803685e209c4cf52bc9a5cd709100722df",
+    "com/kof22/kof22-agent-core/0.4.0/kof22-agent-core-0.4.0.jar": "c41074d3476c374b1e1c8387cdb723372120b6e305cc4df407f70402ff8c1356",
+    "com/kof22/kof22-agent-core/0.4.0/kof22-agent-core-0.4.0-tests.jar": "a4849adb3218d46823957665c6b4eef2a26be1a8a7fe0f82827cf2481312be59",
+    "com/kof22/kof22-agent-core/0.4.0/kof22-agent-core-0.4.0.pom": "08bb02bfca3243acebd8b90aa9411a46a6beff4a413712c54561a88b4ffc1184",
+    "com/kof22/kof22-agent-qqq/0.4.0/kof22-agent-qqq-0.4.0.jar": "ecb297e885d1af43d0903d22a98c4e257869b9d81a11a3915be84f4d5998acae",
+    "com/kof22/kof22-agent-qqq/0.4.0/kof22-agent-qqq-0.4.0-tests.jar": "aa5b1ed82a95819831eca2417da20e3af2e650f3204b7a651d44335ecfc66faa",
+    "com/kof22/kof22-agent-qqq/0.4.0/kof22-agent-qqq-0.4.0.pom": "0ac71a3c2c69dec4f67217841e223498e67197356e9f4c8532f94c5ac1569420",
+    "com/kof22/kof22-agent-ui/0.4.0/kof22-agent-ui-0.4.0.pom": "29f803f6f9ef8c24d1186f4fa58b9aa5decfaf871e59077d926cebfdc972992f",
+    "com/kof22/kof22-agent-ui/0.4.0/kof22-agent-ui-0.4.0.jar": "a118976a7cb17c1edfa6f3ed283d9d547068317d86bce8943f1cf260e726ee52"
+  },
+  "limitations": [
+    "Nine local dependency bytes match the previously signed remotely-resolved publication record.",
+    "Recovered through authorized retained Actions candidate, not newly downloaded from Maven.",
+    "Other cached third-party dependencies cloned from existing development cache.",
+    "Hosted Carl cross-repository package authentication remains separately blocked.",
+    "No source build, package publication, credentials, visibility or release tags changed."
+  ],
+  "consumerBuild": "Pending exact integrated source gate"
+}

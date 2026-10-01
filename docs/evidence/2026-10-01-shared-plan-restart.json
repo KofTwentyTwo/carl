@@ -1,0 +1,145 @@
+{
+  "schema": 1,
+  "date": "2026-10-01",
+  "application": "Carl AI",
+  "baseline": "86018daae2c9cec81215f8a78c375f958efc7940",
+  "mode": "controlled-synthetic",
+  "status": "PASS",
+  "liveQualification": "BLOCKED",
+  "sourceFiles": {
+    "src/main/java/com/kof22/carlai/domain/CarlPlanConversation.java": "2e1bc1df3819cf6b65548115203437e755bc28874e56856c08036430c72c5d6e",
+    "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java": "c630fb2a9a3e199b1931a8f58ee4a1a2a3a3fca8c749677d2ace3ce4d58ebbf3",
+    "src/test/java/com/kof22/agentadmin/CarlFamilyPlanQqqAssertions.java": "3fe4b2e249ea8828c57a0773554d31f007b824d8bfb3fa21a436066ea2a96851",
+    "src/test/java/com/kof22/carlai/domain/CarlPlanConversationIntentTest.java": "ce71e3847e8a1a57177e9135cb10a514993c390ab7d21ce87af031045d65fd0d",
+    "scripts/e2e/CarlPackagedVisualFixture.java": "f5d8ab153a137b40bbb8d6608bde79a3334187bfb46d0962aeeb991bc3a9fefb",
+    "scripts/e2e/browser.cjs": "6677a59d9a884385ba72a89115617f7043972178d7b373b3d9d98863ef793c33",
+    "scripts/e2e/live-evaluation-assertions.cjs": "1a4d084d16c51aa2f0c51c1cf90aec12aba4912adf61271e12f892f853d3088a",
+    "scripts/tests/test_live_evaluation.cjs": "23d8c6ec28f86c9f3478933a5177e7d699c53363aec63221aabca75c4545dc71"
+  },
+  "maven": {
+    "command": "Java21 mvn -o -B -ntp -Dmaven.repo.local=<qualified-development-cache> clean verify",
+    "terminalExitCode": 0,
+    "tests": {
+      "tests": 386,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "coverage": [
+      {
+        "type": "BRANCH",
+        "missed": "2865",
+        "covered": "6185"
+      },
+      {
+        "type": "LINE",
+        "missed": "1502",
+        "covered": "10482"
+      }
+    ],
+    "logSha256": "9513bb35fa21582a6085ddb11737104fe53c37b5aa7d66de554432a5c13d1abc"
+  },
+  "regressions": {
+    "grammarRed": "Original shared draft request returns CLARIFICATION; three positive intent variants fail before correction",
+    "grammarGreen": "Nine focused checks pass; shared wording cannot grant sharing in a private transport scope",
+    "closedInputRed": "Actual owned child closes stdin; original cleanup throws uncaught EPIPE",
+    "closedInputGreen": "22 assertion tests pass; bounded terminal cleanup records EPIPE as an error"
+  },
+  "familyScenario": [
+    "Verified Alice creates explicitly shared plan from actual complete comparison",
+    "Alice assigns dated/location-bearing task to non-manager Bob",
+    "Verified Bob records BLOCKED obstacle then REPORTED_COMPLETE with null independent evidence",
+    "Alice explicitly agrees current revision",
+    "New host components, runtime, workers, store and HTTP listener retain same PostgreSQL plan, task, history and saved workflow",
+    "Two overlapping authenticated workflows select revision 5; exactly one creates revision 6",
+    "Human statement refresh and explicit rebase create revision 7; prior five history snapshots remain immutable",
+    "Native QQQ V1 exact parsed plan/task fields match authoritative same IDs and current revisions for Alice and Bob",
+    "Revocation denies prior workflow, new inference, current task and historical snapshots under all-recipient source policy",
+    "No financial transaction or vendor operation is created"
+  ],
+  "browser": {
+    "terminalExitCode": 0,
+    "checks": [
+      "packaged-relocated-TLS-OIDC-login",
+      "native-authoritative-financial-account",
+      "native-two-file-upload-preview-confirm-apply",
+      "native-narrow-two-file-repeat-import",
+      "imported-record-visible-in-QQQ",
+      "native-user-column-preference",
+      "native-narrow-record-detail",
+      "persisted-versioned-plan-visible",
+      "packaged-process-restart-retains-exact-plan-and-task-records",
+      "native-permission-checked-plan-pdf-download",
+      "native-scoped-carlCashPlans",
+      "native-scoped-carlFinancialGoals",
+      "native-scoped-carlFinancingOffers",
+      "native-scoped-carlProperties",
+      "native-scoped-carlRentalUnits",
+      "native-scoped-carlExpenses",
+      "native-tax-evidence-checklist",
+      "native-bounded-calendar-refresh-over-controlled-HTTPS",
+      "native-authoritative-calendar-agenda",
+      "native-scoped-appointment-window-suggestions",
+      "native-selected-portfolio-comparison",
+      "native-cash-versus-store-finance-purchase-guidance",
+      "native-human-transaction-with-source-evidence",
+      "native-category-budget-actuals",
+      "native-protected-vendor-draft-download",
+      "native-shared-reminder-sync-and-human-reported-completion",
+      "native-explicit-private-presentation-preference",
+      "native-saved-multi-property-allocation-preview-apply",
+      "native-focused-report-with-source-coverage",
+      "native-protected-report-pdf-and-text-downloads",
+      "native-selected-account-property-balance-review",
+      "native-logout-and-revoked-session-replay"
+    ],
+    "cleanup": {
+      "pid": 54641,
+      "disposition": "GRACEFUL",
+      "terminal": true,
+      "exitCode": 0,
+      "signal": null,
+      "signals": [],
+      "errors": []
+    },
+    "reportSha256": "59cdacd081e53ddfbb83b1941e7113b7e0c52d2c8c5c03760222792584534544",
+    "processRestart": {
+      "currentPid": 55040,
+      "ready": true,
+      "previousExitCode": 143,
+      "previousTerminal": true,
+      "previousPid": 54749,
+      "shutdownRequest": "SIGTERM"
+    },
+    "sameExactPlanAndTaskFields": true,
+    "restartEvidenceSha256": "dd6614e3350ec246f48255b85e6801f7a36821b46157f87840aa3dae815aae96",
+    "visuallyInspectedScreenshot": "25-plan-task-after-process-restart.png",
+    "screenshotSha256": "33fd57b72a3bf7d89cdeb24c22b7c1a984bbc3b31eca38bcebb44c5621b6cb5b"
+  },
+  "package": {
+    "rootAppSha256": "e9cb7ce287a5a1c4c22031de3c5a5d6d76dbf1c72ec24a0f74a671dc8417639b",
+    "browserAppSha256": "c13e106fd20e0fb213c5acf2d0bcaa84b29a39cdc92c5f9b49f4d9e27dffde03",
+    "allAppZipPayloadsEqual": true,
+    "other250DistributionFilesEqual": true,
+    "containerId": "sha256:b19fd7e2c40bf3692860fb647f13779db577e7042835b47ab23ee48ac0ef820b"
+  },
+  "security": {
+    "distributionJavaPackages": 269,
+    "imageJavaPackages": 269,
+    "highCriticalFindings": 0,
+    "distributionReportSha256": "4c4bd3b010ca22d9e4840d5fea459b94917813da710963267b91a5f50c1641a0",
+    "imageReportSha256": "88d2ab9915654a4bf6dbd230d0163f78c38e56d1bc16e205edbac3ec39516878",
+    "workflowMediumOrHigher": "PASS; one pre-existing low self-repository finding is below severity threshold",
+    "releasePolicyTests": 7,
+    "copyrightValidate": "PASS"
+  },
+  "independentReview": "PASS: exact eight frozen files and actual 32-check browser evidence reviewed",
+  "limits": [
+    "Shared conversational sequence uses controlled SDK replies; live interpretation remains unqualified.",
+    "Shared scenario restart reconstructs application components in one JVM; separate packaged private seed proves actual two-JVM PostgreSQL durability.",
+    "SIGTERM exit143 and replacement readiness do not implement the missing native state-provider shutdown API.",
+    "Later financial correction legitimately invalidates the seed source; restart occurs before that correction and no source/access check is weakened.",
+    "Original 377-test/59-browser package evidence and owner preview retain original artifact provenance.",
+    "No live provider, household data, consumer push/publication, RC/stable release or production deployment is claimed."
+  ]
+}

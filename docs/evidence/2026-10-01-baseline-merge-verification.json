@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-01",
+  "status": "PASS",
+  "scope": "Fresh full controlled baseline verification before owner-authorized normal source merge; CI/CD architecture and cluster rollout separate",
+  "source": "a21f105c7a8b8682040bc21a4cdba6a5842f7bf9",
+  "command": "JAVA_HOME=<Java21> mvn -o -B -ntp -Dmaven.repo.local=<qualified-isolated-cache> clean verify",
+  "elapsed": "07:29",
+  "tests": {
+    "tests": 419,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "BRANCH": {
+      "covered": 6471,
+      "missed": 2905
+    },
+    "LINE": {
+      "covered": 11018,
+      "missed": 1497
+    }
+  },
+  "qualityFloorsUnchanged": true,
+  "log": {
+    "path": "/Users/james.maes/.codex/work/carl-merge-testing-verify.log",
+    "sha256": "093e7f78b90aae81446d146640bce119087b11139c45a0c24e3359c8f0865a3d"
+  },
+  "runningPreview": {
+    "url": "https://localhost:57132",
+    "status": "PASS",
+    "freshChecks": 5,
+    "report": {
+      "path": "/Users/james.maes/.codex/work/carl-merge-testing-running/report.json",
+      "sha256": "5ba5457c83e20cdaf09649d86e6635d2cb9ff15d1b83ff16e99da7d9e9d3b24b"
+    },
+    "model": "DISCONNECTED",
+    "syntheticOnly": true,
+    "applicationArchivePayloadsEqualFreshVerifiedBuild": true,
+    "payloadFiles": 357,
+    "librariesExactMatch": 247,
+    "frozenAppJar": {
+      "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/agent/app.jar",
+      "sha256": "372f094e6ad2797d6b6917ce6f4701f57670207e19b40bf0b763edd903abb946"
+    },
+    "freshAppJar": {
+      "path": "/Users/james.maes/.codex/work/carl-merge-testing/target/agent/app.jar",
+      "sha256": "73c445890b6176d9a0e836e319db06c0fd1da1f09dd2f87bfe9be5967cf7e9d1"
+    }
+  },
+  "limits": [
+    "Hosted verification awaits private package credentials and environment review",
+    "No RC/stable publication or Kubernetes rollout implied",
+    "New CircleCI/Munitor/Liquibase/ArgoCD work follows owner decisions in CICD-GITOPS-REQUIREMENTS.md"
+  ]
+}

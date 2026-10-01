@@ -1,0 +1,27 @@
+{
+  "status": "REMOTE_PUBLICATION_AND_EXACT_LOCAL_BYTES_QUALIFIED",
+  "foundation": {
+    "version": "0.4.1",
+    "source": "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+    "release": "https://github.com/KofTwentyTwo/kof22-agent-foundation/releases/tag/v0.4.1",
+    "qualificationRun": 36703216841,
+    "evidenceZipSha256": "c7179d13c0ce1e1820ca1708bebda89184776eeac73f4f468ca852546d1faa92",
+    "artifacts": {
+      "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.pom": "8566135b5ce53d51c2694b47b07a91538cea4d68e5d404e7deffe383060dcd04",
+      "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.jar": "21f05cd41f328b3509499d4b0705c2e3196a3d621f856f34eb7058f6074a6a5e",
+      "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1-tests.jar": "7a9775db00acdae6a8df7a650c1e5aa9a92863dd37b3c9cbb374a3a194aa3fdf",
+      "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.pom": "42860a4e97435c2d8aa87a9afdbf37053e6ec0b9851c680de1e77170848711d2",
+      "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.jar": "d03c1c146061299ae92a3477fab90644c4e763b6215a61f153d44f977ed727fc",
+      "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.pom": "5723faffdb3342711051a0f6813889518edacb9a32003152617f9781e64f9cd6",
+      "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.jar": "051e1e7f08a4f419b7bd41b1b5fb34d6bb453dedb07949d7e99ad24b8df06edc",
+      "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1-tests.jar": "ed0265f7ee64fb902458bad28106597bf1d8b50f74912c5df54122c708f62fba",
+      "com/kof22/kof22-agent-parent/0.4.1/kof22-agent-parent-0.4.1.pom": "36beb2ce963b7d899f288d781c70d19e6eeeaaf7179e88550338981a875d271c"
+    }
+  },
+  "publicationSha256": "9ae9a61e359a0a822181b135388ca5380d39c32b4e427c1232201f14f14d8255",
+  "deliveryEvidence": "foundation-0.4.1-delivery.json",
+  "resolutionMethod": "Exact retained Actions candidate bytes recovered and locally installed; all nine hashes independently rechecked by coordinator against signed hosted remote-resolution identities. Not a fresh consumer Maven fetch.",
+  "consumerQualification": "RUNNING first stable0.4.1 gate on reviewed311-test source; additional mission slices remain in staged implementation",
+  "hostedPackageAccess": "BLOCKED pending authorized private package-read credential",
+  "localRecoveryEvidence": "foundation-0.4.1-local-cache.json"
+}

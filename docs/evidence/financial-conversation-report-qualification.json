@@ -1,0 +1,90 @@
+{
+  "integration": "Exact six reviewed source bytes copied with prior-source guards; root docs/config/POM preserved",
+  "sourceManifestSha256": "94406f11d4aa7198e4fa5a56c07113b37e0869731fbf78e01f28414cb6a14d09",
+  "files": {
+    "src/main/java/com/kof22/carlai/domain/CarlConversation.java": "e7cf4bf37bc1dac3c8a2c075ae6cedfac315b764d380ddad5a07e2e43381c7b5",
+    "src/main/java/com/kof22/carlai/domain/CarlFinancialConversation.java": "9e3c0acb8f740977275781341510b7c4f19628a693326b5e7882b41bfd1727e8",
+    "src/main/java/com/kof22/carlai/domain/CarlService.java": "0e131aaa1f69ace7c6a003a610d5b894fa8f05ee0ac8a06e04de0654881b8d6e",
+    "src/main/java/com/kof22/carlai/domain/ExpenseRecords.java": "134b7113ced597f31d0823b200220beeb0d2ea1d39bd61e25c605d04bdc26d52",
+    "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java": "bfedba2d555340311650530c7b95cf10c881adc18faf6f1a565ea173414632cd",
+    "src/test/java/com/kof22/carlai/domain/ExpenseRecordsTest.java": "a80bda1178deb876e1103d33bcab4ce84b470e564e44a9f0c5278613c8c19abc"
+  },
+  "stagedStableQualification": {
+    "status": "CONTROLLED_STABLE_PARENT_PASS",
+    "sourceBase": "df6b373698552b1611e3683745bb46ae8113f68b",
+    "sourceManifestSha256": "94406f11d4aa7198e4fa5a56c07113b37e0869731fbf78e01f28414cb6a14d09",
+    "sourceFiles": {
+      "src/main/java/com/kof22/carlai/domain/CarlConversation.java": "e7cf4bf37bc1dac3c8a2c075ae6cedfac315b764d380ddad5a07e2e43381c7b5",
+      "src/main/java/com/kof22/carlai/domain/CarlFinancialConversation.java": "9e3c0acb8f740977275781341510b7c4f19628a693326b5e7882b41bfd1727e8",
+      "src/main/java/com/kof22/carlai/domain/CarlService.java": "0e131aaa1f69ace7c6a003a610d5b894fa8f05ee0ac8a06e04de0654881b8d6e",
+      "src/main/java/com/kof22/carlai/domain/ExpenseRecords.java": "134b7113ced597f31d0823b200220beeb0d2ea1d39bd61e25c605d04bdc26d52",
+      "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java": "bfedba2d555340311650530c7b95cf10c881adc18faf6f1a565ea173414632cd",
+      "src/test/java/com/kof22/carlai/domain/ExpenseRecordsTest.java": "a80bda1178deb876e1103d33bcab4ce84b470e564e44a9f0c5278613c8c19abc"
+    },
+    "expectedConsumerSourcesBeforeIntegration": {
+      "src/main/java/com/kof22/carlai/domain/CarlConversation.java": "967be49652933c289c8304bfe2b7678832be0403b75de2eb1ec99fc075764b2e",
+      "src/main/java/com/kof22/carlai/domain/CarlFinancialConversation.java": null,
+      "src/main/java/com/kof22/carlai/domain/CarlService.java": "b7a6bc1a34d833f43c4de1a45a01004659abe7e24be6f75f5f8ac2eea9882761",
+      "src/main/java/com/kof22/carlai/domain/ExpenseRecords.java": "4297860acddf9293895ea9548d84b68427413f45221c618ca65b2ead4dbecedc",
+      "src/test/java/com/kof22/agentadmin/client/CarlConversationHttpTest.java": "f37d2380b48d4ee478a004c0816743b31a63b472aa2742ed612016c009be8b36",
+      "src/test/java/com/kof22/carlai/domain/ExpenseRecordsTest.java": "04ec35d36d966fb2e0e425bbd0a04c102883a95ca8e892c18d48c5ad620c5f50"
+    },
+    "command": "mvn -o -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+    "tests": {
+      "tests": 319,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "coverage": {
+      "BRANCH": {
+        "covered": 5269,
+        "missed": 2508
+      },
+      "LINE": {
+        "covered": 9124,
+        "missed": 1305
+      }
+    },
+    "foundation": {
+      "version": "0.4.1",
+      "source": "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+      "release": "https://github.com/KofTwentyTwo/kof22-agent-foundation/releases/tag/v0.4.1",
+      "qualificationRun": 36703216841,
+      "evidenceZipSha256": "c7179d13c0ce1e1820ca1708bebda89184776eeac73f4f468ca852546d1faa92",
+      "artifacts": {
+        "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.pom": "8566135b5ce53d51c2694b47b07a91538cea4d68e5d404e7deffe383060dcd04",
+        "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1.jar": "21f05cd41f328b3509499d4b0705c2e3196a3d621f856f34eb7058f6074a6a5e",
+        "com/kof22/kof22-agent-core/0.4.1/kof22-agent-core-0.4.1-tests.jar": "7a9775db00acdae6a8df7a650c1e5aa9a92863dd37b3c9cbb374a3a194aa3fdf",
+        "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.pom": "42860a4e97435c2d8aa87a9afdbf37053e6ec0b9851c680de1e77170848711d2",
+        "com/kof22/kof22-agent-ui/0.4.1/kof22-agent-ui-0.4.1.jar": "d03c1c146061299ae92a3477fab90644c4e763b6215a61f153d44f977ed727fc",
+        "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.pom": "5723faffdb3342711051a0f6813889518edacb9a32003152617f9781e64f9cd6",
+        "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1.jar": "051e1e7f08a4f419b7bd41b1b5fb34d6bb453dedb07949d7e99ad24b8df06edc",
+        "com/kof22/kof22-agent-qqq/0.4.1/kof22-agent-qqq-0.4.1-tests.jar": "ed0265f7ee64fb902458bad28106597bf1d8b50f74912c5df54122c708f62fba",
+        "com/kof22/kof22-agent-parent/0.4.1/kof22-agent-parent-0.4.1.pom": "36beb2ce963b7d899f288d781c70d19e6eeeaaf7179e88550338981a875d271c"
+      }
+    },
+    "dependencyQualification": "Nine local published0.4.1 identities independently verified and rehashed; no fresh consumer remote Maven or hostedCI claim",
+    "testedPomVersion": "0.4.1",
+    "stagingPomRestored": "0.4.0",
+    "independentReview": "CLEAR after rate-unit evidence fix",
+    "secretScan": [],
+    "sha256": {
+      "/private/tmp/carl-fin12-wave1-stable-full.log": "f0484762451390575c1063c85663458bf6c7698266ea52d4d6f3ade0cbf624dd",
+      "/private/tmp/carl-fin12-wave1-red.log": "e7f100d3615417d0224264b5dfa886a5481a5bcceb5f9baf97a826b1f56dbbbd",
+      "/private/tmp/carl-expense-currency-red.log": "33b01e4a103fd824ba820fbb788a97f3fcf3e9352ad799068925fb3a005d9be7",
+      "/private/tmp/carl-fin12-rate-red.log": "1c9d515a8bec16c9a4ad8a04333c7013535b3429b78f3c396e7f7d60d7291f80",
+      "/private/tmp/carl-fin12-rate-green.log": "fa00df2659d2ef6ae58b7d9c2414525a96fd588e85850e0a82e9d251e72dc56a",
+      "/private/tmp/carl-conversation-workflow/target/agent/app.jar": "8718179e25c5af2f06a7936f4cf379b7cabf86d9afaaf647e5bdb0080d2aff95",
+      "/private/tmp/carl-fin12-wave1-gitleaks.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "remainingMandatoryWork": [
+      "Conversational plan lifecycle and observed effects/calendar reminder wave",
+      "Explicit goal-priority revision and grounded debt-versus-investment tradeoff"
+    ],
+    "liveProviders": "NOT_QUALIFIED",
+    "deployment": "NOT_REQUESTED"
+  },
+  "originalConsumerQualification": "PENDING current source clean gate/package/browser/security; first stable311 evidence historical",
+  "remaining": "Conversational interactive plan/effects/calendar and explicit goal-priority/tradeoff integration; live qualification separate"
+}

@@ -1,0 +1,263 @@
+{
+  "schema": "carl-controlled-evaluation-tooling-v1",
+  "date": "2026-10-01",
+  "status": "PASS \u2014 controlled tooling only",
+  "liveQualification": "BLOCKED",
+  "manualNarrativeReview": "PENDING",
+  "application": {
+    "path": "agent/app.jar",
+    "sha256": "30e8c857d008155f97d08ac0a950494059240812e655e239424ee2e981e4c3de",
+    "modified": false
+  },
+  "source": {
+    "baseline": "ece3fb5",
+    "files": {
+      "scripts/e2e/CarlPackagedVisualFixture.java": "ed90ab52ac758cdfd5d32fd87bfd6d131456c3322443d0d290d8af37540bb4e0",
+      "scripts/e2e/live-evaluation-assertions.cjs": "a53d18800828832bce61021411696db8199c7a4a7211181d63e2437dbc034916",
+      "scripts/e2e/live-evaluation-cases.json": "e280158d8f3de3eb8b11d8800864bb6c256cb876040e69341c07a9d5b4c3bac6",
+      "scripts/e2e/live-evaluation.cjs": "e46086577c9bd14b58592a0c85d2dbae9463c816a8d7493aa7485bdef5fc2b66",
+      "scripts/tests/test_live_evaluation.cjs": "c07b244463a93e5025128cadc4a97edb6a5eece699d45fe7db88dcfb0cdfa6ca",
+      "scripts/verify-live-evaluation.sh": "695c52da9ac22e898b482f83dcff827d136dbec30e328c8c9c5192280039e150",
+      "docs/EVALUATION.md": "4057287d689524537a825c1e86b83d91cd18e40529a1046f42143f59c3f80f77"
+    },
+    "priorQualification": "2026-09-30-current-rc7-preview-qualification.json",
+    "priorSourceFiles": 241,
+    "unchangedPriorSourceFiles": 239,
+    "productionSourcePomConfigurationUnchanged": true,
+    "coordinatorCiFile": {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "1795db7e08790fd6bd84b4273bf4d497ce4ffacb2e3ca24bc900f4613025d6fc"
+    },
+    "changedPriorSourceFiles": [
+      "scripts/e2e/CarlPackagedVisualFixture.java",
+      ".github/workflows/ci.yml"
+    ],
+    "coordinatorFormat": {
+      "path": "scripts/verify-live-evaluation.sh",
+      "beforeSha256": "0d0e3101ec38dba3f271c1418edf4043ffa69ede5e825f6c0033aef7f3b73a23",
+      "afterSha256": "695c52da9ac22e898b482f83dcff827d136dbec30e328c8c9c5192280039e150",
+      "operation": "shfmt -w -i 2; shell whitespace only; bash -n and shfmt -d pass"
+    }
+  },
+  "review": {
+    "status": "PASS",
+    "resolved": [
+      "failed cases now exit1",
+      "initial conditional budget or clarification is checked",
+      "owned child termination is awaited and checked",
+      "whitespace live prerequisites are blocked",
+      "clarification initial response is actually reread"
+    ],
+    "limitations": "Final reread correction is live-only and statically reviewed; live branch was not executed."
+  },
+  "verification": {
+    "rootAssertionTests": {
+      "tests": 21,
+      "failures": 0,
+      "skipped": 0,
+      "command": "node --test scripts/tests/test_live_evaluation.cjs"
+    },
+    "rootReleasePolicyTests": {
+      "tests": 7,
+      "failures": 0,
+      "command": "python3 -m unittest discover -s scripts/tests -p 'test_release.py'"
+    },
+    "rootMavenValidate": {
+      "status": "PASS",
+      "command": "mvn -o -B -ntp -Dmaven.repo.local=/Users/james.maes/.codex/work/carl-development-m2 validate",
+      "copyrightFiles": 247
+    },
+    "rootControlled": {
+      "status": "BLOCKED",
+      "mode": "controlled",
+      "liveQualification": "BLOCKED",
+      "syntheticOnly": true,
+      "reason": "Controlled fixture qualification only; no live inference attempted.",
+      "cases": [
+        {
+          "caseId": "LE-01",
+          "requirements": [
+            "AT-01",
+            "AT-19",
+            "BILL-04"
+          ],
+          "status": "BLOCKED"
+        },
+        {
+          "caseId": "LE-02",
+          "requirements": [
+            "AT-07",
+            "AT-19",
+            "VEN-03"
+          ],
+          "status": "BLOCKED"
+        },
+        {
+          "caseId": "LE-03",
+          "requirements": [
+            "AT-03",
+            "AT-06",
+            "AT-10",
+            "RPT-03"
+          ],
+          "status": "BLOCKED"
+        },
+        {
+          "caseId": "LE-04",
+          "requirements": [
+            "AT-04",
+            "AT-09",
+            "SEC-02",
+            "FAT-08"
+          ],
+          "status": "BLOCKED"
+        },
+        {
+          "caseId": "LE-05",
+          "requirements": [
+            "AT-08",
+            "CHAT-03",
+            "AUTO-01",
+            "FAT-10",
+            "FIN-15"
+          ],
+          "status": "BLOCKED"
+        },
+        {
+          "caseId": "LE-06",
+          "requirements": [
+            "FIN-16",
+            "FAT-15",
+            "FAT-16"
+          ],
+          "status": "BLOCKED"
+        }
+      ],
+      "fixtureStatus": "PASS",
+      "identities": {
+        "applicationSha256": "30e8c857d008155f97d08ac0a950494059240812e655e239424ee2e981e4c3de",
+        "personaSha256": "c1e0265eb484f31ce622eceeecf975625943bb12c37084117e74932238ebe91c",
+        "syntheticConfigurationSha256": "d5657acb031d0f126ef84e81537646ab3e81d68578599ec7ebf19735c9cb045f",
+        "caseManifestSha256": "e280158d8f3de3eb8b11d8800864bb6c256cb876040e69341c07a9d5b4c3bac6",
+        "model": "claude-sonnet-5",
+        "modelQualification": "DISCONNECTED",
+        "runtimeBounds": {
+          "maxConcurrentTurns": 1,
+          "turnTimeoutSeconds": 60,
+          "maxToolCalls": 8,
+          "maxOutputTokens": 8000
+        },
+        "foundation": "See exact lib-identities.json; no inferred release qualification"
+      },
+      "bounds": {
+        "maxHumanMessages": 7,
+        "maxModelRequestsUpperBound": 126,
+        "maxRunSeconds": 720,
+        "maxEvidenceBytesPerCase": 2097152
+      },
+      "limitations": [
+        "Synthetic data only",
+        "Human prose review remains required; no self-grading model safety pass",
+        "Usage unavailable through native surface",
+        "No live calendar/identity/production qualification"
+      ],
+      "nativeReadProof": {
+        "artifactId": 22,
+        "supportedPath": "/qqq/v1/table/carlArtifacts/22",
+        "supportedStatus": 200,
+        "earlierGuidancePath": "/qqq/v1/data/carlArtifacts/22",
+        "earlierGuidanceStatus": 404,
+        "nativeExactFields": true,
+        "narration": "NOT_REQUESTED",
+        "kind": "VENDOR_DRAFT"
+      },
+      "cleanup": {
+        "pid": 89434,
+        "disposition": "GRACEFUL",
+        "terminal": true,
+        "exitCode": 0,
+        "signal": null,
+        "signals": [],
+        "errors": [],
+        "ownedApplicationPid": 89494,
+        "ownedDatabaseContainer": "d1de056bbcc921d12bf34a249676f5b40af587c1055bb879d8aa9b3f8d971bde",
+        "ownedApplicationTerminal": true
+      }
+    },
+    "rootControlledCommand": "verify-live-evaluation.sh controlled --ordinary-talk against frozen distribution and test-classpath",
+    "rootControlledRunnerSha256": "9abb5ce1cb03a6a668aef01384c643bbfbaca7093d84cda24d5eb915783b49b1",
+    "rootControlledRunnerDifference": "Final runner moves initial purchase reread outside copy-link branch; controlled path unchanged. Final integrated21 tests/syntax pass; no final live branch run claimed.",
+    "rootOrdinaryTalk": {
+      "status": "PASS",
+      "checks": [
+        "native-private-default-conversation-form",
+        "disconnected-model-truthful-failure-no-fabricated-answer",
+        "narrow-conversation-no-document-overflow",
+        "saved-response-selector-mounted-and-authorized",
+        "verified-other-member-cannot-select-private-response"
+      ],
+      "liveModel": false,
+      "syntheticOnly": true,
+      "terminal": "Response outcome unknown"
+    },
+    "rootOwnedCleanup": {
+      "ownedFixturePid": 89434,
+      "ownedApplicationPid": 89494,
+      "container": "d1de056bbcc921d12bf34a249676f5b40af587c1055bb879d8aa9b3f8d971bde",
+      "fixtureTerminal": true,
+      "applicationTerminal": true,
+      "containerRemoved": true,
+      "dockerInspectExit": 1
+    },
+    "rootLivePrerequisiteNegatives": [
+      {
+        "case": "absent",
+        "exit": 2,
+        "status": "BLOCKED",
+        "cases": 6,
+        "fixtureStarted": false
+      },
+      {
+        "case": "key-whitespace",
+        "exit": 2,
+        "status": "BLOCKED",
+        "cases": 6,
+        "fixtureStarted": false
+      },
+      {
+        "case": "model-whitespace",
+        "exit": 2,
+        "status": "BLOCKED",
+        "cases": 6,
+        "fixtureStarted": false
+      }
+    ],
+    "redEvidence": {
+      "reviewRegressions": {
+        "pass": 16,
+        "fail": 4
+      },
+      "cleanupExitError": {
+        "pass": 20,
+        "fail": 1
+      },
+      "finalGreen": {
+        "pass": 21,
+        "fail": 0
+      }
+    },
+    "ciAssertionGate": "Required application job runs all21 deterministic assertions after setup-node; hosted execution remains blocked by delivery credentials.",
+    "workflowChecks": {
+      "actionlint": "PASS",
+      "zizmorOffline": "PASS \u2014 no findings"
+    }
+  },
+  "limitations": [
+    "Six live cases remain BLOCKED; no provider requests or credential-manager reads occurred.",
+    "Exact assertions do not qualify model prose or universal safety.",
+    "Original377-test and59-browser evidence belongs to original fixture provenance; production bytes remain unchanged.",
+    "Successful owned synthetic fixture cleanup does not repair the native production state-provider shutdown API gap.",
+    "Owner preview remains synthetic with disconnected model; no production or real family-data qualification.",
+    "Carl push/package access and immutable release remain blocked."
+  ]
+}

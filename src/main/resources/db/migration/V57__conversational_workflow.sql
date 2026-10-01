@@ -1,0 +1,13 @@
+-- Copyright (C) 2026 KofTwentyTwo
+DO $$
+DECLARE prior_definition text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT prior_definition FROM pg_constraint
+ WHERE conrelid='carl_client_workflow'::regclass AND conname='carl_client_workflow_kind_check';
+ ALTER TABLE carl_client_workflow DROP CONSTRAINT carl_client_workflow_kind_check;
+ EXECUTE 'ALTER TABLE carl_client_workflow ADD CONSTRAINT carl_client_workflow_kind_check CHECK (' ||
+ substring(prior_definition FROM 7) || ' OR kind IN (''conversation''))';
+END $$;
+ALTER TABLE carl_client_workflow ADD COLUMN conversation_message text CHECK(length(conversation_message)<=16000);
+ALTER TABLE carl_client_workflow ADD COLUMN reply_to uuid REFERENCES carl_client_workflow(request_id);
+CREATE UNIQUE INDEX carl_conversation_active ON carl_client_workflow(conversation_id) WHERE kind='conversation' AND status='PENDING';

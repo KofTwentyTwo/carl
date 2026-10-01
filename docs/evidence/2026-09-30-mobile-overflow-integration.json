@@ -1,0 +1,25 @@
+{
+  "status": "REVIEWED_SOURCE_INTEGRATED; final combined package pending",
+  "files": [
+    {
+      "path": "src/main/java/com/kof22/carlai/CarlDashboardHtml.java",
+      "baselineSha256": "871cf7e8c00e1e1c1c045375b5024a08c01a4eac931631bbcf61defcf5b28f32",
+      "sourceSha256": "fdbf205d07cba8af4dac744d73442af4a4b5250885da4b157c97f07b05d3f7f9"
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/CarlDashboardHtmlTest.java",
+      "baselineSha256": "d4c6b106c96edb0fce118ac4d5c63b1caa2451ad17a64754eb1a7d682cb6d219",
+      "sourceSha256": "9731b06494e900ba29fa6817b4cc8c3bd17ffc324432b941561e7f229cc7aae1"
+    }
+  ],
+  "patchSha256": "93556aa2480c5db744895fc231bad3fe7c6cd54ffeb5dd74cedf9db841b5e919",
+  "destinations": [
+    "/Users/james.maes/Git.Local/KofTwentyTwo/carl",
+    "/private/tmp/carl-development-preview-050"
+  ],
+  "qualification": {
+    "focused": "5 tests PASS; meaningful preceding RED",
+    "component": "Exact RC5 en-US/en-GB390px document width,16 tables/12 SVG paths, keyboard focus retained",
+    "packaged": "PENDING"
+  }
+}

@@ -1,0 +1,950 @@
+{
+  "schema": 1,
+  "workflow_run": 36811134831,
+  "source_commit": "0b6f43756aed4a27e7e45d8333d55a906c9e42c6",
+  "version": "0.5.0-SNAPSHOT",
+  "status": "PASS",
+  "pr": 15,
+  "source_identity": {
+    "main_verified": true,
+    "merged_pr_source_verified": true,
+    "merge_parents": [
+      "b23f89a44647ddc8fd0f3f0894b159ae823638b7",
+      "ebc45a08b9ea920d207f8dc3858e7ac1938c3aea"
+    ]
+  },
+  "source_security": {
+    "semgrep_targets": 153,
+    "semgrep_findings": 0,
+    "semgrep_errors": 0
+  },
+  "limits": [
+    "Development snapshot only; RC/stable blocked by unchanged requireReleaseDeps and timestamped upstream snapshot dependencies.",
+    "Known native state-provider shutdown gap unchanged.",
+    "No independent local Maven registry or OCI resolution/signature check performed: local credential lacks read:packages and consumer package token absent.",
+    "No consumer business/live-provider or production deployment qualification."
+  ],
+  "hosted_initial_verification": {
+    "core_unit": {
+      "files": 45,
+      "tests": 244,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core_integration": {
+      "files": 2,
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "adapter_unit": {
+      "files": 71,
+      "tests": 352,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "adapter_integration": {
+      "files": 5,
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native_example_unit": {
+      "files": 1,
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native_example_integration": {
+      "files": 0,
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "generated_consumer_unit": {
+      "files": 2,
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "generated_consumer_integration": {
+      "files": 0,
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core_coverage": {
+      "BRANCH": {
+        "covered": 643,
+        "missed": 0
+      },
+      "LINE": {
+        "covered": 2177,
+        "missed": 0
+      }
+    },
+    "adapter_coverage": {
+      "BRANCH": {
+        "covered": 1915,
+        "missed": 0
+      },
+      "LINE": {
+        "covered": 4120,
+        "missed": 0
+      }
+    },
+    "dependencies_scan": {
+      "java_package_records": 267,
+      "high_critical": 0,
+      "nonempty": true
+    },
+    "image_scan": {
+      "java_package_records": 267,
+      "high_critical": 0,
+      "nonempty": true
+    },
+    "browser": {
+      "passed": true,
+      "checks": [
+        "oidc-pkce-login",
+        "owner-scoped-accounts",
+        "record-detail",
+        "deep-link-refresh",
+        "domain-process",
+        "denied-generic-mutation",
+        "failed-logout-retains-session",
+        "logout-replay-denied",
+        "replay-denied-after-jvm-restart",
+        "fresh-login-after-restart"
+      ],
+      "version": "0.5.0-SNAPSHOT",
+      "source_commit": "0b6f43756aed4a27e7e45d8333d55a906c9e42c6",
+      "screenshots": 4,
+      "visual_review": "Four retained screenshots viewed: dashboard, owner-scoped account list, detail and process result render."
+    },
+    "api": {
+      "passed": true,
+      "previous": "0.4.1",
+      "target": "0.5.0",
+      "semantic_change": "0.1.0",
+      "source_commit": "0b6f43756aed4a27e7e45d8333d55a906c9e42c6"
+    },
+    "frontend_audit": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0
+      },
+      "dependencies": 1038,
+      "devDependencies": 0,
+      "optionalDependencies": 0,
+      "totalDependencies": 1038
+    },
+    "frontend_unit_summary": [
+      "Test Files  185 passed (185)",
+      "Tests  1929 passed (1929)"
+    ]
+  },
+  "actions_artifacts": [
+    {
+      "id": 11141075630,
+      "name": "verified-candidate",
+      "size_in_bytes": 1099544956,
+      "expired": false,
+      "digest": "sha256:a57b76e86673427e04bb93b2785599b65c045b8071a99d737d6d0496f5aeedea"
+    },
+    {
+      "id": 11141021770,
+      "name": "publication-evidence",
+      "size_in_bytes": 226924,
+      "expired": false,
+      "digest": "sha256:8c0cbfb9e0475f3a5ee77226fc108630a913c68b9c6a1bfda45c2993b5655570"
+    },
+    {
+      "id": 11140541586,
+      "name": "verification",
+      "size_in_bytes": 1255427,
+      "expired": false,
+      "digest": "sha256:c9683d298c267a4140f939bdb66b0b2ee753cb72b0f2ff482fab4bce7d5dab86"
+    },
+    {
+      "id": 11139688260,
+      "name": "source-security",
+      "size_in_bytes": 2073,
+      "expired": false,
+      "digest": "sha256:bbe057293f7f81628b8ae7f5f6c824e1b5957487180ce697ff1983045101f04c"
+    }
+  ],
+  "downloaded_evidence_sha256": [
+    {
+      "path": "verification/examples/native-domain/target/surefire-reports/TEST-com.kof22.example.ExampleApplicationTest.xml",
+      "sha256": "2b2c5acc5edf89fc70e93923c51b9963dd6560ab530ccbc25d46573d99e1c2ed"
+    },
+    {
+      "path": "verification/frontend/target/export/assets.json",
+      "sha256": "8cc977e2fccda7cd1fa75c351706b9ee749ca29cafae8eece4e669f320439420"
+    },
+    {
+      "path": "verification/frontend/target/verification/audit.json",
+      "sha256": "5c1778aa438162ab549ed5b166a3a74ee136a5f4be9bb8ed6f37bd5238f5ba16"
+    },
+    {
+      "path": "verification/qqq-admin/target/failsafe-reports/TEST-com.kof22.agentadmin.AdminOperatorPostgresIntegrationTest.xml",
+      "sha256": "ef151cec96fa090eca7d97cb64237446140f77513d104be407343b4fbdbf162f"
+    },
+    {
+      "path": "verification/qqq-admin/target/failsafe-reports/TEST-com.kof22.agentadmin.AdminPostgresIntegrationTest.xml",
+      "sha256": "c8a3e7d34a70ddb876b344d4dd2c4db92e2ea2c0c5b8d675919764013b4035be"
+    },
+    {
+      "path": "verification/qqq-admin/target/failsafe-reports/TEST-com.kof22.agentadmin.bootstrap.DatabaseBootstrapIntegrationTest.xml",
+      "sha256": "5ab0919c2a29c40ba76e6627647209ff796f59f8ee3bb48f9fa7d95a130b280b"
+    },
+    {
+      "path": "verification/qqq-admin/target/failsafe-reports/TEST-com.kof22.agentadmin.bootstrap.DatabaseProvisioningIntegrationTest.xml",
+      "sha256": "89c09ddab019af2e8261225f5ca063daeb008bf63db0b12a0fe6e6d3c674050e"
+    },
+    {
+      "path": "verification/qqq-admin/target/failsafe-reports/TEST-com.kof22.agentadmin.qbits.NativeQBitsIntegrationTest.xml",
+      "sha256": "88e904c8e2f57b07ad04fab0137c2d8ae36a527d578c0ae7b57d9d84c2068deb"
+    },
+    {
+      "path": "verification/qqq-admin/target/site/jacoco/jacoco.xml",
+      "sha256": "53a43bc265a43edf623e7c3057ac25fd7195b8840d3b2d33dc25283c39e835e8"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.AdminApplicationTest.xml",
+      "sha256": "5e4bc5b743f785e37d6748c419573c6065665a783f2366dfded1218b4ac7b725"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.AdminServerTest.xml",
+      "sha256": "379ce969487e0c9754d6eb5e179a6aeedc78d3156eb21c91c254438d03166b76"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.ApprovalDenialProcessTest.xml",
+      "sha256": "4de2218827ac602a95beb289086bfe5564a258b5d291dbf85c6eb971d8c4e923"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.BearerAdminServerTest.xml",
+      "sha256": "e0922b7653b9e1c8e469d839d4a8730ac0efbe09ddc9b10833d09520bfa65017"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.BearerIdentityTest.xml",
+      "sha256": "4a977f44d235e5a17e0dbd941a747896db4a2c92d3ad50750c5a987499ea8f67"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.MetadataExtensionTest.xml",
+      "sha256": "1aa0b0a5e9d25794f04bf42c9a6086b43ab0c66d2ba1831e4dc87e2bb2cc0015"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeDependencyTest.xml",
+      "sha256": "4a8e97328dc624d1fdca302360505910684f99abf43adfa59b99be2638426d6e"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeDownloadTest.xml",
+      "sha256": "12ceb82368affd5543319a18caebc9a959ebf646d0a03c860e21a96bbac1ab36"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeLandingTest.xml",
+      "sha256": "a4f7e990a1cbbdffd33730e607167fcaeb7de72a63f33b8cc57e0150f9d0bb02"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeNextLogoutTest.xml",
+      "sha256": "48cee078755daa9b77e4434298dc72099041aff69767aa0b685bce04215d97fb"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeOperatorSessionsTest.xml",
+      "sha256": "340ccd79d945192b1a8cfe3fff123277c0e8e989b07ceb235c4741e45d1c7809"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeQBitsHttpTest.xml",
+      "sha256": "37b68730cfb74435e9dbbd7aa50f801484920e8831217145683bcab9b0f9a910"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeQBitsOutageTest.xml",
+      "sha256": "920109db8bef1cb377f517f51d28d1c30019d11632816a7f680036e80c7fec6b"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeRuntimeListenerTest.xml",
+      "sha256": "62302d1d46674ecbc01b538f1faa72006a501e810112971fb9d3576fca827a92"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NativeRuntimeServicesTest.xml",
+      "sha256": "14ac13fb5186e5d1a49806b1a54c0035fcf19e42ba0f1550f88f27d93094c20c"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.NextDashboardAssetsTest.xml",
+      "sha256": "56f3a3e8df9768a6e68bddafe6f03c0347325c04cb50b4da34c8b0dea1ffe9fb"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.OperatorAuthenticationTest.xml",
+      "sha256": "1ee196c036d38032622815fcc188d20f515657bfb6578d740ff7bed7cdc35f7b"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.OperatorSessionBoundaryTest.xml",
+      "sha256": "a77524e0e9b49fcec5848f8a5886c6e628de43970a3aa98f01579a297b00bf6c"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.PayloadDiagnosticsTest.xml",
+      "sha256": "50b8a010107e04f1c5510ea59eb349455f1c5bb0c05611ecae768f55b2ac63bd"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.ProcessAccessTest.xml",
+      "sha256": "bac605052a756eb66efa8726c28e45215d5b86d05ad05564fb8e02a2455da5dd"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.ProcessBoundaryTest.xml",
+      "sha256": "d497b9c9b4432f5019696fd39257c1e6e9fc05c808500a14e876ee00cfb68bb0"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.ReadOnlyOperationsPermissionTest.xml",
+      "sha256": "49a783e25a9d49c80067010541ba1a92a4ed6b8bfe7f46e48b634434c1495e7d"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.DatabaseBootstrapTest.xml",
+      "sha256": "76b47b7cb906c785362f9236d4bf67b1dbe55553d1757358a78326d9d9215876"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeAgentApplicationTest.xml",
+      "sha256": "9e9823817794cb939a17a0fb8b0c0ac481a8bc28e1da131ec5f7978f334bcc1a"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeAgentProcessTest.xml",
+      "sha256": "0fd41598ab687ec4b1d19f726baa35f222e023a1d8923248f058e8291d4a5092"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeAgentRuntimeTest.xml",
+      "sha256": "e7af7124fc8d54edf317c8e01a1f2a1cfd36dce313eae7482232639a2cce8871"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeApplicationConformanceTest.xml",
+      "sha256": "2b2f1d0b9c4a7ac85431eef9a173a6ffb1b9e3b0a6c45467684cf38751411a67"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeClientHostTest.xml",
+      "sha256": "bd0ca88b5d42cbdd246ac089327d3de7fad839e3117cab634143441f1e9690f1"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeDatabaseAdmissionTest.xml",
+      "sha256": "934f6c1840ffa8f3b57397f95c4951fc26b119702835047f42f97e7e56631157"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeDatabaseUrlTest.xml",
+      "sha256": "f8b7e22a0ec4a29309a19b67707771a9b68d44552e50414e5904c85c8f894213"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeDomainHostTest.xml",
+      "sha256": "1f708c803067a6d4febca31a9d2cffcac57ccbbb2b353ec7b98e9b18b710e858"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeMcpAccessTest.xml",
+      "sha256": "6d13fdf6280149f81c3b3cf65ade33ed55eb334192150fd59d40a8661b6cdb6b"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeMcpBoundaryTest.xml",
+      "sha256": "53074c14101ea382bb5cbfd2c53a3cf5d2c83ce9ab639d4280d6ace231dc3e8e"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeOperatorHostTest.xml",
+      "sha256": "990de9bd5779850f2f03f7ec6b7887b78afadbea6a21b04a181e509cca0c9a29"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeScheduleAdmissionTest.xml",
+      "sha256": "9172c8139b946e6eee81a7465eaec1282b680ac26d1363659018713bba5b572c"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeScheduleReconciliationTest.xml",
+      "sha256": "3dfd1749655f3a3757f660b05556bd5d8a58e95193e216e4dee905711925c27b"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeSchedulingBoundaryTest.xml",
+      "sha256": "6524699aa5087f88d1a5ceb7052bd62a8d15a6e745149f8965fb7c6a6dd37d3c"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.NativeUploadPolicyTest.xml",
+      "sha256": "1d0454c5fc96ad683f60a604fbb53ead20199ea871ca8493307783656db06a62"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.bootstrap.ProductionDatabaseTest.xml",
+      "sha256": "61a160bc10da1878023bfc24801cb0fb0d0c82f6dfa5674a2c331cf04eb0d04a"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.client.ClientHttpTest.xml",
+      "sha256": "a9fe391205fc43ac7b3727e4124cc4e051fa4443fada30edcde66cc6c7f5f96f"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.client.ClientIdentityTest.xml",
+      "sha256": "bcb8df97226b2470dbe6af36f0b8179166c0ac69c38ad13db07fb9e69af10152"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.client.ClientServiceTest.xml",
+      "sha256": "fa1fb7d0b9a9bb16e5c71db7af1a4f33aee25eb4afccaafeddb921dae6ce3d2e"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.client.ClientServletBoundaryTest.xml",
+      "sha256": "0ef6d162ecb29c9625bbda581856b005aff3c7adedc0120862dcc660874f8db6"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.client.ClientStoreTest.xml",
+      "sha256": "b0193df825d3d0a7b121245de91daf53702ede68bed9a47a421a60265f0b8c0e"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.conformance.ApplicationMcpFixturesTest.xml",
+      "sha256": "4887b9b2d6fcd30c20e6f37e70d0dbbfacb9b6d3343f6bd684aeec141d9e2443"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.qbits.NativeQBitsTest.xml",
+      "sha256": "8e472e588254d48fab3ae70991ee1d959bd279432eba2b6961e879e14c1c2cb7"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.qbits.NativeQuickSearchTest.xml",
+      "sha256": "9c604da458d311efb7263b65935ab7c7dbabc905ffb4426c9875c7f7aa6d78f1"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.qbits.NativeServiceIdentityTest.xml",
+      "sha256": "35ca10041cdb4e3b45dd294b56f190fa8bdb0aed23a96b3ad261ce7c5e032d6e"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.store.NativeGovernedBoundaryTest.xml",
+      "sha256": "cdcc05f669fea8e9e958ce610cdcd9c72d691021caafcaa8d80ff636d1e3dd10"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.store.NativeRecoveryBoundaryTest.xml",
+      "sha256": "be5afd49b56b4abe5deb36002e77a0194cc717e5b6303713fd3f0cfdd93b9363"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.store.NativeRetentionBoundaryTest.xml",
+      "sha256": "4a6cece2677cd4cacdea7059563e574359568bf775e2318d2e61bf357741fab9"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.store.NativeStatusBoundaryTest.xml",
+      "sha256": "ab84dced2b2260aa187ba03db0f64bdca88a3410cc8af3957293d30e6fc35d69"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.agentadmin.store.NativeStoreRecordContractsTest.xml",
+      "sha256": "f2a2e5e805850231a474824afc4848eae1234ae0c7729d8ca03cf777802429fb"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.ClientWorkflowContractTest.xml",
+      "sha256": "76ae560b81bc85ee7216d56c2a885fb439b2acf3c732923fee608383ef843170"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeAdministrationQualificationTest.xml",
+      "sha256": "95f21f358cb2d14b2083c84ad9966df971d13acc7a4431d69c6ccb5793ff222e"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeAgentServicesTest.xml",
+      "sha256": "dbb4a6d07ca6776e4917a57be5bba48e4b38c3871b13def0850f65325d01eef1"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeCallerToolsTest.xml",
+      "sha256": "aeab2eeede2cd3510afbcb28c391fb6bec5b0d662b03fd9771885ac46425c9a9"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeConfigurationFilesTest.xml",
+      "sha256": "6b7fda51acdd2d7e1fc930ae62fc682e9bf01e17b47fcabf1e8f9e72a92466d3"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeConfigurationTest.xml",
+      "sha256": "885e435eaf40a9931143bef18bf3349d1fd29d8dc2ed0e0eb9b8c7f536b6e6ab"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeMcpQualificationTest.xml",
+      "sha256": "0f192336497aae5890986f6700f4b2b094f6e3aa3b66dd01a4d3bdb8efda96f1"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeOperationalStatusTest.xml",
+      "sha256": "fcb37664027f82fa8dab5e880f8cbe449dc23ad657d5ceeace014d5bf3269d36"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeRetentionTest.xml",
+      "sha256": "8b3c0500cb01d184535239bdb67afb988a710146058d3d8b6e75596134be612c"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeSchedulerSafetyTest.xml",
+      "sha256": "1d4ef7a7bc8b5befb80e454cc3e4634a100fadf4021396e4c3fba729ed18231b"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeSchedulingTest.xml",
+      "sha256": "ccca393007bd901c13f5b23e4c80d8299673d52deb6c33e053ae56befba77046"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeStartupContractTest.xml",
+      "sha256": "3184ac8370f6f53392c9b554f0fef9cd4d597a68757b56b02297ffad4df0994a"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.NativeWorkerShutdownTest.xml",
+      "sha256": "b804892da15fd21d6fd887cce41f924926accea8e710f130858811f6ce808436"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.Qqq4QualificationTest.xml",
+      "sha256": "7c82d5e05e84d1ab4ac10b3d8b06e2f63943f937e05e5b8a7256740330c4a453"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.QqqGovernedStoresTest.xml",
+      "sha256": "444c036b277d8889494c02399bdfb1fe7730dcd4c4ab04a679232a61c183d8ad"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.QqqOperationsStoresTest.xml",
+      "sha256": "dd6b13cb65987920c03fa27d5e9966c98ab1045b1c5f72f5d045602942faf281"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.QqqTransactionsTest.xml",
+      "sha256": "328405cca1ff54b0c2d089740490b574aae092d955f728554d43381afc694f79"
+    },
+    {
+      "path": "verification/qqq-admin/target/surefire-reports/TEST-com.kof22.qualification.QqqTranscriptStoreTest.xml",
+      "sha256": "22e0e795bee9495fbae124b2d3d734d8819d9ad9322a7a4f5fec7c5e803c64f8"
+    },
+    {
+      "path": "verification/target/api-compatibility/api-evidence.json",
+      "sha256": "d431004868a93536b540b20f2a63e141dd7880192770d61d3b644c83f39fd60a"
+    },
+    {
+      "path": "verification/target/api-compatibility/comparison.xml",
+      "sha256": "e86e24c2332f87653978087f3c23d8fc07babc290c3062f76a58e72ae79817d2"
+    },
+    {
+      "path": "verification/target/browser-evidence/account-detail.png",
+      "sha256": "d17709a5e2965358b091dfd251a3c4f571e84724f0335afb5979f563ada95829"
+    },
+    {
+      "path": "verification/target/browser-evidence/accounts.png",
+      "sha256": "e85795c1598fc8e4568efca7bfd2b9b89086542f0a6e3ef3315a57e2534fae21"
+    },
+    {
+      "path": "verification/target/browser-evidence/browser-evidence.json",
+      "sha256": "a71ab72cff145d0e1ec984659f8d0899102e68b637fe1f083f5a856d7558f6e1"
+    },
+    {
+      "path": "verification/target/browser-evidence/dashboard.png",
+      "sha256": "dd917b1f7c2724e16ef3db696281ef7346447c3e2a0bab501cbdb06dc592d8a7"
+    },
+    {
+      "path": "verification/target/browser-evidence/process-result.png",
+      "sha256": "8961f126a21c15d77619012ff7fe5a4ce7eae7f89670796be698a47dbe0a07a2"
+    },
+    {
+      "path": "verification/target/failsafe-reports/TEST-com.kof22.agentcore.live.AnthropicLiveSmokeIntegrationTest.xml",
+      "sha256": "65ea03eeb5e0078ec3d57fd60f81a36eddb40a00ef4b51ac5c7d0d4177e5cbf9"
+    },
+    {
+      "path": "verification/target/failsafe-reports/TEST-com.kof22.agentcore.store.AgentMigrationsPostgresIntegrationTest.xml",
+      "sha256": "3a9946d6a802b20eb22e618ca76e2311465ee283390a7990750286108bdb2a60"
+    },
+    {
+      "path": "verification/target/generated-agent/target/surefire-reports/TEST-com.kof22.generated.AgentApplicationTest.xml",
+      "sha256": "fafda794dc578594bed1955d0e08bc50a295621300938cf76674d203697e3f34"
+    },
+    {
+      "path": "verification/target/generated-agent/target/surefire-reports/TEST-com.kof22.generated.ConformanceTest.xml",
+      "sha256": "af67456e2289c482691bccfcf5f31b0c9b5796baa22fec4dffadc445fbfa5650"
+    },
+    {
+      "path": "verification/target/packaged-evidence/packaged-evidence.json",
+      "sha256": "fb1e44bf832207a1967e48304b0207e3bf69bb3e6f6c2d7cdf9efb0f8343e775"
+    },
+    {
+      "path": "verification/target/security/dependencies.json",
+      "sha256": "3bf42b6c0de27b2a5954e52a6b32235594271233fe36420ef5744a73476b908c"
+    },
+    {
+      "path": "verification/target/security/image.json",
+      "sha256": "1ba8b63b540c7ba588ef0c45459695fc0e0b4029bbe29f8ddf0efd5527c9f0bb"
+    },
+    {
+      "path": "verification/target/site/jacoco/jacoco.xml",
+      "sha256": "de02b4f513b73167adacf6a53ae70401fceb211d3a168b62ed1f22211eb4220f"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.arch.SdkIsolationArchTest.xml",
+      "sha256": "ecfdc483ee25e57f9536511ef2b80c461b5b601e0a19a7ee1ec0c6a9bd897143"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.autoconfigure.NativeCoreSettingsTest.xml",
+      "sha256": "71430691cd348ec26effc5721cf33ac0de9e28494ffc1df9ad7e67f7bcb42af0"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.conformance.ControlledMcpServerTest.xml",
+      "sha256": "cf5b2d9b151e584190f0bec62f50a0afeb754f17e1d641b7d916f41b73a0b718"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.conformance.CoreConformanceTest.xml",
+      "sha256": "534b72a3285dc922b51835fcc27c79771fa2374fe9d695e6915a6c5b919fb267"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.conformance.eval.EvaluationRunnerTest.xml",
+      "sha256": "c9a41dda39b26ad13cf71f414a74c96329daf663e59884325697315543969e5f"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.deployment.RuntimeDatabaseRoleTest.xml",
+      "sha256": "a2ace67b6cb08f64e93285c4811c83e32464286d739e57b541fdfe94045423bb"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.mcp.McpBridgeEdgeTest.xml",
+      "sha256": "4e0dfde52f47ef7a95c3ae4ebbfb51065f314bcdf6eaf5581744d639571a9304"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.mcp.McpCompositionTest.xml",
+      "sha256": "f057e7ddd2cebbd11fd6481ad85d18efc3d2ef3ee890068eb64bb0fde84617d6"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.mcp.McpEndpointOriginTest.xml",
+      "sha256": "f6cf035cfc7d836e4a0ad208a486090b1e2bacb4b722df6508c34cec0ada88ef"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.mcp.McpEndpointTest.xml",
+      "sha256": "0afe71697f2d32a1015e305d3f759fdceef6e43113cf1e9ddb3ecd8534a9ba79"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.mcp.McpTransportsTest.xml",
+      "sha256": "6a3a8f39165ca000f5655acc34546604d901ccaf02b0a6086adb7832c9f8c631"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.ops.OperationalStatusServiceTest.xml",
+      "sha256": "a8df211f7f04db26f32df69b1615144a2a91b536efc471e9bd58248c1de78ae2"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.ops.OperationsTest.xml",
+      "sha256": "98a4f4f56df746a489881f06c8b56d492db6e2faf66a605541532263df608edb"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.ops.ScheduledJobSafetyTest.xml",
+      "sha256": "70f6b9217d6f3aec0a59fb4e31b257422022d488a92fb0f77168cb5aea164d0f"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.ops.SchedulerSafetyTest.xml",
+      "sha256": "054e18316b4006f9fbc984bc5211a98e050d69f93986e3f2eed5937a22930186"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.policy.AuditProtectionTest.xml",
+      "sha256": "a7cf23d815013673b55abb1254b21ff147733c73b8a99b62fd7f4ac3bf002e7e"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.policy.DataProtectionTest.xml",
+      "sha256": "f52119036f22112ea165d714ad22d701a608edd5d54f29e52249fd16f3b22ec8"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.policy.GovernancePolicyTest.xml",
+      "sha256": "0c0739c9abc68c060488deda1f752dedc0e126c61c28d2119abdac9da82832d7"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.policy.OperationalRetentionServiceTest.xml",
+      "sha256": "94a8826f6817b4999974a8ffaa0a8baf9d115d6ff1f62706481414091dd580aa"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.policy.PolicyConfigurationTest.xml",
+      "sha256": "783b520d3a6c885f2ad7c84ce87c46d3c14d018d395636a1566f15a70d16e5be"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.prompt.PersonaLinterTest.xml",
+      "sha256": "b127b3fa621b8f2d1f2da99c091237ea4a8f5d00a85789ce3ca1bb5cc8eef8fe"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.prompt.PolicyRegressionTest.xml",
+      "sha256": "92fd752521811779ac6f45e04d74132db5c5fd7a4eda9c7e3426e06d3b53fc34"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.prompt.PromptStackTest.xml",
+      "sha256": "91eef0a591fb4598e4542565ebc5ea601ecfd777c78375e63bd708c5474b335f"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.runtime.RuntimeContractsTest.xml",
+      "sha256": "6e04b33ddc84c06fb08f12a66bd4bdca20152b2ea51376783db81fbb5df9ed86"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.runtime.RuntimeLimitsTest.xml",
+      "sha256": "3eec008836061f6bd826a49d58add78962a6c416050ac34c223230b3af0bfc85"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.runtime.anthropic.AnthropicContinuationTest.xml",
+      "sha256": "7546a7d6e266fbcff7ff97da1176dee8be99de14263704bc774b9e56b2e558dc"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.runtime.anthropic.AnthropicMessagesRuntimeTest.xml",
+      "sha256": "b571011e333344d5d164732797bbea8bc3685c6ffa175f58ec1d0852a51d5fd0"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.runtime.anthropic.AnthropicRuntimeFactoryTest.xml",
+      "sha256": "dd483cdc6f850c6b6a7a12ca2e6c6c51b4eca87cd395a58a307343bf804160e8"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.security.ApprovalAdmissionFailureTest.xml",
+      "sha256": "d07cb97d02230c4aa519553dca861a3d668ab0c5bd26d91e02671b6be784cbfc"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.security.ApprovalAdmissionTest.xml",
+      "sha256": "0cc512f9fc4653949ca149c39d1f50723899e29c226cf8ddf4f634330a8f4f38"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.security.ApprovalDenialTest.xml",
+      "sha256": "d7f3c32eb5d73b08bd39e2c18eaac500033b42171b1b281f293d1f835459c89e"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.security.ApprovalExecutionLimiterTest.xml",
+      "sha256": "c65635152635d55a30c3f225e84ee2f2d2be61d8f99b3f76fe4a4f3e3c2ddb3c"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.security.ApprovalPrivacyTest.xml",
+      "sha256": "247ed5e193af6cc388daf0d272424ae6a81405079bb3013c07dd31fc5a874534"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.security.SecuritySpineTest.xml",
+      "sha256": "161bc2828a547ba11fc0990b5e11b0967bd1b9d4e21b50036c3c1f1eb0226b4e"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.security.SecurityUnitsTest.xml",
+      "sha256": "d4f4bfebad490dfa84f88a69feead587e7fe5429955db5142b65acafead8f73c"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.session.ClientSessionTest.xml",
+      "sha256": "94dc32eed57f162a91bdeb31104827e9f88c0c3402019f081eb2973919a31fbd"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.session.SessionLimitsTest.xml",
+      "sha256": "a04908bdf64238752709fbc08898910e65e8e76af98c4aacfb653bded3bc1806"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.session.SessionManagerTest.xml",
+      "sha256": "3a8a2dbe90cc605ae509feac6828b5ed88d4378792f75b3b866f2fe09deb7c2d"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.session.SessionPersistenceTest.xml",
+      "sha256": "5383de0d4e413d22dfd41eb9c4d24c11ca64234b669ea2fe9c535816b623d195"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.slack.SlackGatewayLifecycleTest.xml",
+      "sha256": "0390644e513d51f25b8e1811e04f4d96b04be7e3ccbac7de326b5846ed58fa53"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.slack.SlackGatewayTest.xml",
+      "sha256": "2f93f9e1f2c4cf01e51edd4d9601435c7e282b2e44b18ab215ba6b4416a2de67"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.slack.bolt.ApprovalCardRenderingTest.xml",
+      "sha256": "17094a5625007805e1a4386552ad58c21b6f7019c56e345cd740fb3b9e0c0b72"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.slack.bolt.BoltSlackConnectorTest.xml",
+      "sha256": "5448fe0cc53c1e2d3e4fbf8bab3b774930275604a06c02de90590d48dc92f6b7"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.store.AgentMigrationsTest.xml",
+      "sha256": "ebb3c7fa6efd7311f7c9102b7436ca0723d152499c03176418d4ed8d5b12c4f2"
+    },
+    {
+      "path": "verification/target/surefire-reports/TEST-com.kof22.agentcore.store.OperationalRecordRestorationTest.xml",
+      "sha256": "e8de9a86a1f30490787745f6a6dd5239fb388c84319ed9e1abad71b46c7eeaf3"
+    }
+  ],
+  "publication_qualification": {
+    "publication_signature_verified_offline": true,
+    "delivery_manifest_signature_and_report_hashes_verified_offline": true,
+    "evidence_zip_sha256": "5d3796f595350685303dd4c602d116f7597d973fe2b7afb927b2dde0075811d0",
+    "evidence_zip_digest_matches_signed_publication": true,
+    "image_digest": "ghcr.io/koftwentytwo/kof22-agent-foundation@sha256:f7f835d8c05df65f1ec2801a5e61f0bb769dbd5e32bc746df6b214daa369539e",
+    "hosted_image_signature_report_identity_matches": true,
+    "remote_publication": true,
+    "fresh_remote_consumer_passed": true,
+    "fresh_remote_consumer_xml": {
+      "files": 2,
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "remote_maven_identities": [
+      {
+        "path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.042005-1.pom",
+        "logical_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.035619-1.pom",
+        "sha256": "7f14faf632775e726f2766c9017df80b1eb68f298b3de599d7bf7ba12e4dc569"
+      },
+      {
+        "path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.042005-1.jar",
+        "logical_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.jar",
+        "staged_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.035619-1.jar",
+        "sha256": "af9af9d5f60fae51ce4c38420d07b9e80dd59be42fe9ec5b593bca75f7166a4b"
+      },
+      {
+        "path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.042005-1-tests.jar",
+        "logical_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT-tests.jar",
+        "staged_path": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261001.035619-1-tests.jar",
+        "sha256": "6949caa9ec4011eedca2413acd95707001c020bb201f445792d03c205d08b89f"
+      },
+      {
+        "path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.042019-1.pom",
+        "logical_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.035824-1.pom",
+        "sha256": "b9065abc76a17b0b1efb4f23c7fac3c0406f1c4a17ecdf07990bb4ba15c6f26d"
+      },
+      {
+        "path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.042019-1.jar",
+        "logical_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.jar",
+        "staged_path": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261001.035824-1.jar",
+        "sha256": "0d8eb9b71530a3c09def0136a52f5f2936016a639aa031f2b69689e286907540"
+      },
+      {
+        "path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.042031-1.pom",
+        "logical_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.040509-1.pom",
+        "sha256": "b1724d2d8278b2983dfde6f95df6aa781f246b968d3423b1068ef4c328146eb6"
+      },
+      {
+        "path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.042031-1.jar",
+        "logical_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.jar",
+        "staged_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.040509-1.jar",
+        "sha256": "74b566ebe0e617279aed91522ba04e69399b169799c48051812f0630c3267b40"
+      },
+      {
+        "path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.042031-1-tests.jar",
+        "logical_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT-tests.jar",
+        "staged_path": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261001.040509-1-tests.jar",
+        "sha256": "65b9c494f54b247e407f9ef882c43757fc4036294fba59f8be51a89e1cf5a19b"
+      },
+      {
+        "path": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-20261001.042043-1.pom",
+        "logical_path": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-SNAPSHOT.pom",
+        "staged_path": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-20261001.041224-1.pom",
+        "sha256": "857bca2153213fdfcd23e384481a98a596117bee54a9e59b6e56829f8a1eaf6b"
+      }
+    ],
+    "remote_metadata_identities_verified_offline": 9,
+    "remote_evidence_classifier_metadata_verified_offline": true,
+    "source_inventory_files_match_complete_git_source": 469,
+    "candidate_artifact_inventory": 66,
+    "manifest_report_files": 8,
+    "source_commit": "0b6f43756aed4a27e7e45d8333d55a906c9e42c6",
+    "version": "0.5.0-SNAPSHOT",
+    "signatures": {
+      "publication.json": "1efded890b66d888f6149d4a463edb8f46e7b6ff69ecf2e4376ff7468d862ea8",
+      "publication.sigstore.json": "4c807ba03fd345dcd7308f6f444ab7dd57573739b6c8078eb17c4b3e98fc55b5",
+      "delivery-manifest.json": "7a0a0311b7a3a9195de3be5f246a4f6ef2312799b0edac051094fb0060613c25",
+      "delivery-manifest.sigstore.json": "09f3e79e99f38b671b139a4e7d8a22cf8922bc76c1e45d8ee899608bc0cbbde4",
+      "image-signature.json": "fec04cbc14bfadaed0664314afb117a6bbc5c1103264fdd9672a3c3a96013399"
+    },
+    "dependencies_scan": {
+      "java_package_records": 267,
+      "high_critical": 0
+    },
+    "image_scan": {
+      "java_package_records": 267,
+      "high_critical": 0
+    },
+    "browser": {
+      "passed": true,
+      "checks": 10,
+      "source_commit": "0b6f43756aed4a27e7e45d8333d55a906c9e42c6",
+      "version": "0.5.0-SNAPSHOT"
+    },
+    "sbom_components": 267,
+    "packaged_checks": {
+      "packaged_boot": true,
+      "container_boot": true,
+      "encrypted_restore": true,
+      "nonempty_restore_denied": true,
+      "relocated_distribution": true,
+      "container_nonroot_readonly": true,
+      "native_shared_listener": true
+    },
+    "candidate_archive_identity_matches_signed_evidence": true,
+    "actual_staged_artifacts_sha256_verified": 66
+  },
+  "candidate_transport": {
+    "actions_candidate_zip_bytes": 1099544956,
+    "actions_candidate_zip_sha256": "a57b76e86673427e04bb93b2785599b65c045b8071a99d737d6d0496f5aeedea",
+    "matches_actions_digest": true,
+    "tgz_sha256": "5b72d1f28343fe5f18e39af251c8c801247c85c4408405420588d62d60858956"
+  },
+  "workflow": {
+    "status": "completed",
+    "conclusion": "success",
+    "headSha": "0b6f43756aed4a27e7e45d8333d55a906c9e42c6",
+    "url": "https://github.com/KofTwentyTwo/kof22-agent-foundation/actions/runs/36811134831",
+    "createdAt": "2026-10-01T03:34:31Z",
+    "updatedAt": "2026-10-01T04:23:40Z",
+    "jobs": [
+      {
+        "name": "Version and changelog policy",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T03:34:33Z",
+        "completedAt": "2026-10-01T03:34:39Z"
+      },
+      {
+        "name": "Foundation verification",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T03:34:42Z",
+        "completedAt": "2026-10-01T03:55:33Z"
+      },
+      {
+        "name": "Source and workflow security",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T03:34:42Z",
+        "completedAt": "2026-10-01T03:36:41Z"
+      },
+      {
+        "name": "Exact candidate qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T03:55:36Z",
+        "completedAt": "2026-10-01T04:18:00Z"
+      },
+      {
+        "name": "Foundation gate",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T04:18:03Z",
+        "completedAt": "2026-10-01T04:18:10Z"
+      },
+      {
+        "name": "Publish verified delivery",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-01T04:18:14Z",
+        "completedAt": "2026-10-01T04:23:39Z"
+      }
+    ]
+  },
+  "qualified_at_utc": "2026-10-01T04:31:03.743603+00:00",
+  "verification_commands": [
+    "python3 -B scripts/delivery-evidence.py <downloaded-unpacked-delivery> --verify --key config/release/cosign.pub",
+    "cosign verify-blob --key config/release/cosign.pub --bundle <downloaded-publication.sigstore.json> --insecure-ignore-tlog <downloaded-publication.json>",
+    "Independent Git cat-file --batch comparison of all 469 signed source hashes",
+    "Offline release-artifacts.py artifact_path resolution of retained hosted Maven metadata",
+    "Independent actual XML parsing of fresh remote consumer results",
+    "Independent SHA256 comparison of every 66 staged archive file to signed candidate inventory"
+  ],
+  "independent_root_confirmation": {
+    "source_qualification": {
+      "path": "/Users/james.maes/.codex/work/foundation-main-snapshot-050/qualification.json",
+      "sha256": "1037a324d33a5b0e96b1840136ed322133c202e03ac3629e568102aef29d5ffd"
+    },
+    "pinned_key_signature_checks": "PASS",
+    "delivery_manifest_and_report_hashes": "PASS",
+    "fresh_remote_consumer_xml": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "transparency_log": "Not independently checked; pinned-public-key signature verification was offline.",
+    "local_registry_or_oci_resolution": "Not performed; hosted retained evidence is verified without claiming local package access."
+  },
+  "verification_material": {
+    "path": "foundation/config/release/cosign.pub",
+    "sha256": "29f7c13261ce1b63c984c7692edfd21c77ca12b5a3f3feb8311a79771abe7c27"
+  }
+}

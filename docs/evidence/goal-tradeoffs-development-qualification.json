@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-30",
+  "status": "REVIEWED_SOURCE_INTEGRATED; original clean verify PASS; conversation/package/full-product qualification pending",
+  "foundation": "0.4.1",
+  "review": "Connection helpers retain authorization, current revisions, household locking and request identity; transaction rollback tests inspected.",
+  "files": [
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/FinancialGoals.java",
+      "sha256": "5ee21763d21251d0fbdaa4f19580ac90a5cdf460891ec23cfe3c2dda97d8a7ae",
+      "bytes": 10628,
+      "baselineSha256": "3a1127c10ae2249edfa7d6c64db74eb978eaca757a5770eadafe9765b9d9cdc1"
+    },
+    {
+      "path": "src/main/java/com/kof22/carlai/domain/GoalTradeoffs.java",
+      "sha256": "d9a110e272425ca05d008d1e0e1c57d238518f4230e6635c286016be98b4a6c7",
+      "bytes": 18041,
+      "baselineSha256": null
+    },
+    {
+      "path": "src/test/java/com/kof22/carlai/domain/GoalTradeoffsTest.java",
+      "sha256": "6a2a44ffd0ea8c416f0ec11707e1f2fd072312105d1ee613a52d6f26c6c07b6e",
+      "bytes": 26327,
+      "baselineSha256": null
+    }
+  ],
+  "stagedGate": {
+    "command": "mvn clean verify",
+    "counts": {
+      "tests": 337,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lineCoverage": {
+      "covered": 9333,
+      "total": 10651
+    },
+    "branchCoverage": {
+      "covered": 5418,
+      "total": 7965
+    }
+  },
+  "scope": "Human priority revisions and educational debt/investment tradeoffs. No live integration or whole-product acceptance claimed.",
+  "originalGate": {
+    "command": "mvn -B -ntp -Dmaven.repo.local=/private/tmp/carl-qualified-041-m2 clean verify",
+    "counts": {
+      "tests": 337,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "coverage": {
+      "line": {
+        "covered": 9333,
+        "total": 10651
+      },
+      "branch": {
+        "covered": 5418,
+        "total": 7965
+      }
+    },
+    "applicationSha256": "b8b04ccc36ac999950b746d03dd2200d1deae9e229417007bb123b73c9cd8b06",
+    "logSha256": "6c3bf0941713bfc54cd5e62bf1387eb55e509dc9acd10eacc2e0359867639c4c"
+  }
+}

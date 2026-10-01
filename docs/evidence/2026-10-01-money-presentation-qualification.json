@@ -1,0 +1,296 @@
+{
+  "schema": 1,
+  "date": "2026-10-01",
+  "generatedAt": "2026-10-01T18:39:27.401269+00:00",
+  "status": "PASS",
+  "scope": "Local controlled money presentation; development package only; not live integration, hosted Carl release or deployment",
+  "baseline": "fb4d14b2ef15b7ee4b5f393be1bfc1f7e673972e",
+  "application": "Carl AI",
+  "applicationVersion": "0.1.0-SNAPSHOT",
+  "foundationVersion": "0.5.0-SNAPSHOT",
+  "frontend": {
+    "version": "1.0.0-RC.8",
+    "commit": "cd3d4731d1910e68e994da9c74a8c28a2f1b7c1c",
+    "patchSha256": "81ce630b721b656a68b5a909e0f2324284cc88f1b688384a2be78b46edccce46",
+    "uiJarSha256": "c4113f95dd0bb73ddc9425c86abb695b454e91bb44bb959a20463fc6c65c01c4"
+  },
+  "foundationDelivery": {
+    "pullRequest": "https://github.com/KofTwentyTwo/kof22-agent-foundation/pull/18",
+    "state": "MERGED",
+    "protectedMerge": "0dbc70b27239708fb2f704d0a0e7ee0baa14ce4f",
+    "sourceHead": "a55d63b7a9790e6df23797f7a808051553287ddf",
+    "requiredGate": "PASS",
+    "hostedVerification": "https://github.com/KofTwentyTwo/kof22-agent-foundation/actions/runs/36902169244/attempts/2",
+    "mainPublicationIndependentlyQualifiedByThisEvidence": false
+  },
+  "moneyContract": {
+    "examples": [
+      "$8,100.00 USD",
+      "-$8,100.125 USD",
+      "€8,100.00 EUR",
+      "¥8,100 JPY",
+      "KWD 8,100.125"
+    ],
+    "nativeQQQ": "DisplayFormat.DECIMAL2_COMMAS plus FieldDisplayBehavior; separate money/rate metadata",
+    "alignment": "right-aligned monetary headers/cells/details/inputs, dashboard figures, human comparisons and PDF financial figures; narrative remains naturally aligned",
+    "precision": "Original BigDecimal, stored facts, tool values and machine import/export unchanged; display preserves significant source precision",
+    "missing": "Missing amount or currency remains explicit; no silent zero or currency conversion",
+    "summaryPaths": "Budget, plan effect, bill import preview, report/download and typed human facts use shared exact formatter",
+    "layout": "Both T2 record sections now span6 of12 grid columns; real desktop geometry verifies balance remains inside its card; narrow layout preserved"
+  },
+  "tests": {
+    "tests": 419,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "testExecutionHistory": {
+    "originalClean415": "PASS before final handwritten summary additions",
+    "full419BeforeExpectationUpdate": "FAIL:418 passed; one legacy native budget assertion expected ungrouped9876.54 instead of correct $9,876.54 USD; no errors/skips",
+    "followup": "Corrected assertion and strengthened revoked-session denial for both raw/grouped amounts; actual native verify PASS",
+    "lastChange": "Only two native section gridColumns constants changed1 to6; targeted native/dashboard metadata verify PASS and package rebuilt; no business logic changed after419-test execution",
+    "currentXml": "419 PASS,0 failures/errors/skips; current aggregate reflects full run plus corrected targeted reruns, not a claim of a subsequent default clean419 verify",
+    "commands": [
+      "JAVA_HOME=<Java21> mvn -o -B -ntp -Dmaven.repo.local=<isolated-cache> clean verify",
+      "JAVA_HOME=<Java21> mvn -o -B -ntp -Dmaven.repo.local=<isolated-cache> spotless:apply verify -Dtest=CarlBalanceSheetNativeTest",
+      "JAVA_HOME=<Java21> mvn -o -B -ntp -Dmaven.repo.local=<isolated-cache> spotless:apply verify -Dtest=CarlMoneyDisplayTest,CarlDashboardNativeTest,CarlBalanceSheetNativeTest"
+    ]
+  },
+  "coverage": {
+    "BRANCH": {
+      "covered": 6470,
+      "missed": 2906
+    },
+    "LINE": {
+      "covered": 11016,
+      "missed": 1499
+    }
+  },
+  "qualityFloors": {
+    "line": 0.8,
+    "branch": 0.6,
+    "unchanged": true
+  },
+  "testInventory": {
+    "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/test-inventory.json",
+    "sha256": "8f193e4fbc7d935c8b40eb6f259e246bb9148fe84c62d085e3234fcf26c41e36"
+  },
+  "coverageEvidence": {
+    "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/jacoco.xml",
+    "sha256": "f0d7fc0a905b2f0b32b2f1a138a2aaaae1e31d0e323c13cb989717de7860362c"
+  },
+  "sourceInventory": {
+    "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/source-inventory.json",
+    "sha256": "e0867dad47c0cc11facfe3e8701b42c8c9175e80f77860e61f8a14c63dd2ecdb"
+  },
+  "browser": {
+    "status": "PASS",
+    "totalChecks": 117,
+    "reports": [
+      {
+        "name": "ordinary",
+        "status": "PASS",
+        "checks": 32,
+        "evidence": {
+          "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/ordinary.json",
+          "sha256": "5af497830281d4f3069f08e979f76fd12040f940eb21b65065fc55865d90ce31"
+        }
+      },
+      {
+        "name": "dashboards",
+        "status": "PASS",
+        "checks": 22,
+        "evidence": {
+          "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/dashboards.json",
+          "sha256": "4aafb0ba50abdfa7ebe6e10b2f62b9334c01674e19c059a12d22d49d6d57ebf0"
+        }
+      },
+      {
+        "name": "Talk",
+        "status": "PASS",
+        "checks": 5,
+        "evidence": {
+          "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/Talk.json",
+          "sha256": "a2a1905089639ae53e70a5c8cdd865dc593dd714d1da42d508a5c68e4fd55114"
+        }
+      },
+      {
+        "name": "ownedDock",
+        "status": "PASS",
+        "checks": 24,
+        "evidence": {
+          "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/ownedDock.json",
+          "sha256": "a6f4dc32f654d34b385b564bbee27cef324ae6423adf7fab587dbf613d97ac4d"
+        }
+      },
+      {
+        "name": "QBits",
+        "status": "PASS",
+        "checks": 5,
+        "evidence": {
+          "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/QBits.json",
+          "sha256": "3910ad1d442326277137d80dc36ffce13f414fe7a34f123665f4c50186c7b2a3"
+        }
+      },
+      {
+        "name": "publicHousehold",
+        "status": "PASS",
+        "checks": 5,
+        "evidence": {
+          "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/publicHousehold.json",
+          "sha256": "5ba5457c83e20cdaf09649d86e6635d2cb9ff15d1b83ff16e99da7d9e9d3b24b"
+        }
+      },
+      {
+        "name": "publicDockEsb",
+        "status": "PASS",
+        "checks": 24,
+        "evidence": {
+          "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/evidence/publicDockEsb.json",
+          "sha256": "5ea8fb3462b218365d9fdcd65e21e0eb68906bcd96aad2f23f0bf24ab22a5a76"
+        }
+      }
+    ],
+    "retry": "One final general fixture failed before app/browser startup when Docker Ryuk port49170 was unreachable; unchanged retry passes; cleanup not disabled"
+  },
+  "package": {
+    "files": 251,
+    "appJarSha256": "372f094e6ad2797d6b6917ce6f4701f57670207e19b40bf0b763edd903abb946",
+    "inventory": {
+      "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/distribution-inventory.json",
+      "sha256": "3a4874ac69303fbce67f35b2096a8a2f3baaf2d8b64fda0a838a215d31b3e22e"
+    },
+    "targetFrozenAndImageBytesMatch": true,
+    "imageId": "sha256:93ae7483acf494cb30aada9539232eb19132cf0dfd99b88dcaf3d9bcb533179d",
+    "imageByteEvidence": {
+      "path": "/Users/james.maes/.codex/work/carl-money-qualified-security/image-byte-verification.json",
+      "sha256": "22333590c2b9d31b967392120391f0e028b5539adeccb9f88102701fca0dd68a"
+    }
+  },
+  "security": [
+    {
+      "scope": "distribution",
+      "status": "PASS",
+      "javaPackages": 269,
+      "highCritical": 0,
+      "evidence": {
+        "path": "/Users/james.maes/.codex/work/carl-money-qualified-security/distribution.json",
+        "sha256": "40a490d8ee94f31ba528c49d9f7da3ec16938be46922c169df66554f040c09a3"
+      }
+    },
+    {
+      "scope": "image",
+      "status": "PASS",
+      "javaPackages": 269,
+      "highCritical": 0,
+      "evidence": {
+        "path": "/Users/james.maes/.codex/work/carl-money-qualified-security/image.json",
+        "sha256": "fb23acac9c861b931a9fed9482872fb0ebe5b4c7addb31fd6fce7881d27d0237"
+      }
+    }
+  ],
+  "publicFixture": {
+    "generatorTests": 10,
+    "actualPostgresImportReconciliationDeduplicationCorrectionRevocation": "PASS earlier in money qualification; canonical domain/data unchanged by final handwritten presentation and section-width followups",
+    "accounts": 36,
+    "transactions": 10920,
+    "balances": 22365,
+    "properties": 3,
+    "units": 3,
+    "reconciledAccounts": 35,
+    "liveFamilyData": false
+  },
+  "otherChecks": {
+    "releaseValidators": 9,
+    "controlledEvaluationAssertions": 22,
+    "gitDiffCheck": "PASS",
+    "javascriptSyntax": "PASS",
+    "updatedDocumentationLinks": 64
+  },
+  "visualEvidence": [
+    {
+      "path": "/Users/james.maes/Git.Local/KofTwentyTwo/carl/target/dashboard-browser-evidence/en-US-10-native-money-detail.png",
+      "sha256": "4c071557072eecc60c9750ea1145571e414d5c775f3d6ef888b63db538b5ce44"
+    },
+    {
+      "path": "/Users/james.maes/Git.Local/KofTwentyTwo/carl/target/browser-evidence/19-budget-actuals.png",
+      "sha256": "3e10d7c34a3d79f0ef5929f39447f37ee0fcbbef47822022a8724e83c83982d9"
+    },
+    {
+      "path": "/Users/james.maes/.codex/work/carl-money-qualified-preview/public-ui-evidence/money.png",
+      "sha256": "b7640e2a5aacdda656410ad978afd08e656d906f5ce285aed7f5f0786468f59c"
+    },
+    {
+      "path": "/Users/james.maes/.codex/work/carl-money-final-portfolio.png",
+      "sha256": "96dd9d51dc01966ee9bae071573bfe41d0cc25a7e5d36de8406e9e9aced7a8a1"
+    }
+  ],
+  "logs": {
+    "originalClean415": {
+      "path": "/Users/james.maes/.codex/work/carl-money-final-verify.log",
+      "sha256": "e378f76a4a8b16c6384039f2f695a63fb49192bba5bcc8d997df3743a37c5070"
+    },
+    "full419BeforeExpectationUpdate": {
+      "path": "/Users/james.maes/.codex/work/carl-money-final-summary-verify.log",
+      "sha256": "c54578cf0073f7a29a7e48f5981677cb3206951c80b32c33d2e489e2d231e13d"
+    },
+    "correctedNativeVerification": {
+      "path": "/Users/james.maes/.codex/work/carl-money-final-native-verify.log",
+      "sha256": "f9946df00fe426a8465726175580286e1c1dd8ea97ec26c0e484fede25cf1749"
+    },
+    "sectionLayoutVerification": {
+      "path": "/Users/james.maes/.codex/work/carl-money-section-layout-verify.log",
+      "sha256": "b35a2aefe0fcd57d71e34530a56eccf3d05e7ddf1bd44f6ae3666c5c1bd439d6"
+    },
+    "packagedRetry": {
+      "path": "/Users/james.maes/.codex/work/carl-money-qualified-browser-retry.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "priorDockerStartupFailure": {
+      "path": "/Users/james.maes/.codex/work/carl-money-qualified-browser.log",
+      "sha256": "89b4ec6a49a50157c4f71aefd7395c7311f08809761570e88e996e969f595ce8"
+    },
+    "generator": {
+      "path": "/Users/james.maes/.codex/work/carl-money-public-generator.log",
+      "sha256": "d1e2f5904c99548b0673133eec678da40e337d6bf687378576bbc850f8c4c658"
+    },
+    "postgresPublicImport": {
+      "path": "/Users/james.maes/.codex/work/carl-money-public-postgres.log",
+      "sha256": "c6bb9b0b7173f65ba0c26a00ed35f885b2c400ec1073a8bd21d8550654b5ec2e"
+    },
+    "releaseValidators": {
+      "path": "/Users/james.maes/.codex/work/carl-money-release-validator.log",
+      "sha256": "eb315708209a786d5e676a12bc58a787724fb4b0a87128ff165ecbc9ab75ba8f"
+    },
+    "controlledEvaluation": {
+      "path": "/Users/james.maes/.codex/work/carl-money-evaluation.log",
+      "sha256": "c67d3bcc7b4f9f3a84b1bf1c3ac6c94fcd9e4f4c2cb7d89ed943b21bd09a5515"
+    }
+  },
+  "preview": {
+    "url": "https://localhost:57132",
+    "session": 45828,
+    "frozenDistribution": "/Users/james.maes/.codex/work/carl-money-qualified-preview/agent",
+    "publicSyntheticHousehold": true,
+    "model": "DISCONNECTED",
+    "oldPreviewsPreserved": true
+  },
+  "holds": [
+    "FOUNDATION_PACKAGES_TOKEN missing; Carl-specific remote Maven and hosted package checks remain BLOCKED",
+    "Current0.5.0-SNAPSHOT parent does not satisfy preserved0.4.1 immutable RC/stable baseline; no release enforcement changes",
+    "No published QQQ4.1RC was found at selected-pin verification; exact approved development closure remains",
+    "Approved1Password model credential access unresolved; live model cases BLOCKED and prose review PENDING",
+    "Live household identities, policy and Synology qualification separate; no production deployment",
+    "Native state-provider complete graceful shutdown remains unqualified; fixture cleanup does not claim upstream API correction"
+  ],
+  "sourceSecretScan": {
+    "status": "PASS",
+    "findings": 0,
+    "scope": "Fresh maintained source tree: git tracked and nonignored files with current edits; matches pre-build hosted source scope",
+    "evidence": {
+      "path": "/Users/james.maes/.codex/work/carl-money-qualified-security/source.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "rawWorkingDirectoryNote": "An initial scan of the already-built working directory reported40 entries, all inside ignored target fixture hashes/generated synthetic session logs. No source findings. The maintained source scan does not include generated build/runtime data; no scanner allowlist or rule was changed."
+  }
+}

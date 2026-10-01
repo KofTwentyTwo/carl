@@ -1,0 +1,27 @@
+{
+  "syntheticOnly": true,
+  "foundation": "0.4.1",
+  "appJarSha256": "6923910d059e308053f2318393283bd90cfc4a897fdea708392a8a2973883eb8",
+  "distribution": "/private/tmp/carl-local-demo-20260930/agent",
+  "status": "RUNNING_SYNTHETIC_DEMO",
+  "url": "https://localhost:54618",
+  "health": {
+    "httpStatus": 200,
+    "body": {
+      "status": "UP"
+    }
+  },
+  "uiHttpStatus": 200,
+  "loginLabel": "Sign in as Alice",
+  "liveModel": false,
+  "liveFamilyData": false,
+  "liveProviders": false,
+  "currentSessionBrowserInspection": "UNAVAILABLE",
+  "retainedBrowserChecks": 31,
+  "retainedSurefire": {
+    "tests": 319,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

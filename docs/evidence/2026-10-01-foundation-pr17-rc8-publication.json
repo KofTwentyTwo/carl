@@ -1,0 +1,197 @@
+{
+  "status": "PASS",
+  "pr": 17,
+  "source_commit": "1464b10bbb8a8124004bb6501c0b5f4c0c4d5bd3",
+  "source_tree": "b36673232b4b2ca31d6d8747fb0320220cb92f9a",
+  "workflow_run": 36878751071,
+  "version": "0.5.0-SNAPSHOT",
+  "qualified_at_utc": "2026-10-01T15:51:29.600127+00:00",
+  "source_inventory_files_verified": 480,
+  "staged_artifact_hashes_verified": 66,
+  "publication_signature_verified_offline": true,
+  "delivery_signature_and_report_hashes_verified_offline": true,
+  "signed_evidence_zip_sha256": "71d22383ed1d372d7daf6934c2b8dd24fea0b58e4f2ba4314e150e849d026af7",
+  "fresh_hosted_remote_consumer": {
+    "files": 2,
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "hosted_metadata_identities_verified_offline": 9,
+  "hosted_image_signature_report_identity_matches": true,
+  "published_image": "ghcr.io/koftwentytwo/kof22-agent-foundation@sha256:86e09e7b95881c8c8e12f8d325255ad5042b453eaaf6208e9d574b40aa87a8d6",
+  "security": {
+    "dependencies": {
+      "java_package_records": 267,
+      "high_critical": 0
+    },
+    "image": {
+      "java_package_records": 267,
+      "high_critical": 0
+    }
+  },
+  "source_security": {
+    "semgrep_targets": 155,
+    "semgrep_findings": 0,
+    "semgrep_errors": 0
+  },
+  "candidate_browser_checks": 10,
+  "initial_hosted_xml": {
+    "files": 127,
+    "tests": 642,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "signed_record_sha256": [
+    {
+      "path": "delivery-manifest.json",
+      "sha256": "545e94b2a9b41c6952d2c3246cf453b9228118c17dfbc24345fe3d33ac01ebeb"
+    },
+    {
+      "path": "release-evidence.zip",
+      "sha256": "71d22383ed1d372d7daf6934c2b8dd24fea0b58e4f2ba4314e150e849d026af7"
+    },
+    {
+      "path": "delivery-manifest.sigstore.json",
+      "sha256": "8304f6d4e6ae771c02f75321a0e833dc8d48dca57fe49220c40260d668b30149"
+    },
+    {
+      "path": "image-signature.json",
+      "sha256": "96dd608d43018b9b47fd1194df66b316731ceff1dae0b9730e95617a3355a1ed"
+    },
+    {
+      "path": "publication.sigstore.json",
+      "sha256": "373903e294dd4951be2059eeb33ecb2d0f990ce2dd3a05a486c48ab2b42b23e1"
+    },
+    {
+      "path": "publication.json",
+      "sha256": "66c011155b949a8e818791dfa16e6453090476b238aa52759624b6ca8ed6584a"
+    }
+  ],
+  "limits": [
+    "Development snapshot only. RC/stable blocked by unchanged snapshot-dependency guards.",
+    "Known native state-provider shutdown gap unchanged.",
+    "Hosted remote-consumption evidence independently checked offline; no local private Maven/OCI resolution or registry signature check performed.",
+    "Repository-key signatures checked with existing no-transparency-log interface; no independent transparency-log check.",
+    "No live providers, consumer production deployment or preview changes."
+  ],
+  "workflow_url": "https://github.com/KofTwentyTwo/kof22-agent-foundation/actions/runs/36878751071",
+  "all_main_jobs_passed": true,
+  "normal_protected_merge": true,
+  "candidate_browser_all_checks_passed": true,
+  "candidate_actual_tested_distribution_files_verified": 249,
+  "application_phase_hashes": {
+    "generated_consumer_packaged_probe": "02bad83fc70c12c39ae06b7423d4039a3bf7e08dcbaa6521ea635871649232bb",
+    "native_example_browser_and_image_fixture": "958ff891be5747b1d9251a074e26da28ec7386dd01630cf0748e999164c6ad55",
+    "matching_library_files": 245,
+    "separate_application_fixtures": true,
+    "generated_consumer_packaged_files_verified": 249,
+    "native_example_actual_files_verified": 249,
+    "zip_payload_comparison": {
+      "native_only": [
+        "META-INF/maven/com.kof22.example/native-domain-example/pom.properties",
+        "META-INF/maven/com.kof22.example/native-domain-example/pom.xml",
+        "com/kof22/example/ExampleAccountTool.class",
+        "com/kof22/example/ExampleApplication$1.class",
+        "com/kof22/example/ExampleApplication.class",
+        "com/kof22/example/ExampleDomain.class",
+        "com/kof22/example/ExampleDomainService$Balance.class",
+        "com/kof22/example/ExampleDomainService.class",
+        "db/migration/V1__native_domain.sql"
+      ],
+      "generated_consumer_only": [
+        "META-INF/maven/com.example.releasecheck/release-smoke/pom.properties",
+        "META-INF/maven/com.example.releasecheck/release-smoke/pom.xml",
+        "com/example/releasecheck/AgentApplication.class"
+      ],
+      "changed_common_entries": [
+        "META-INF/MANIFEST.MF"
+      ]
+    }
+  },
+  "candidate_packaged_checks": {
+    "packaged_boot": true,
+    "container_boot": true,
+    "encrypted_restore": true,
+    "nonempty_restore_denied": true,
+    "relocated_distribution": true,
+    "container_nonroot_readonly": true,
+    "native_shared_listener": true
+  },
+  "initial_hosted_qualification": {
+    "xml": {
+      "files": 127,
+      "tests": 642,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "coverage": {
+      "qqq-admin/target/site/jacoco/jacoco.xml": {
+        "BRANCH": {
+          "missed": 0,
+          "covered": 2001
+        },
+        "LINE": {
+          "missed": 0,
+          "covered": 4226
+        }
+      },
+      "target/site/jacoco/jacoco.xml": {
+        "BRANCH": {
+          "missed": 0,
+          "covered": 643
+        },
+        "LINE": {
+          "missed": 0,
+          "covered": 2177
+        }
+      }
+    },
+    "frontend_unit_summary": [
+      "Test Files  188 passed (188)",
+      "Tests  1959 passed (1959)"
+    ],
+    "frontend_audit": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0
+      },
+      "dependencies": 1038,
+      "devDependencies": 0,
+      "optionalDependencies": 0,
+      "totalDependencies": 1038
+    },
+    "browser_checks": 10,
+    "visual_review": "Four fresh native example screenshots inspected: dashboard, owner-scoped account list/detail and process result render. Optional consumer chat disabled in this generic example; Carl dock acceptance remains separate."
+  },
+  "trusted_signing_key": {
+    "path": "config/release/cosign.pub",
+    "sha256": "29f7c13261ce1b63c984c7692edfd21c77ca12b5a3f3feb8311a79771abe7c27"
+  },
+  "frontend_upstream": {
+    "repository": "https://github.com/QRun-IO/qqq-frontend-next",
+    "version": "1.0.0-RC.8",
+    "commit": "cd3d4731d1910e68e994da9c74a8c28a2f1b7c1c",
+    "archive_url": "https://codeload.github.com/QRun-IO/qqq-frontend-next/tar.gz/cd3d4731d1910e68e994da9c74a8c28a2f1b7c1c",
+    "archive_sha256": "f933783a7018cbc0930e9d0e588e23feba7b093ef42cba75d5543eaa1f1d42f6",
+    "pnpm_version": "9.15.9",
+    "lockfile_sha256": "fef4d64aa1e0c0044f68653aca49c7f25b2be687de1440b889c4791e2aacf7cf",
+    "patch_sha256": "5c2355b4b2b023b47e1770dcae78a0eb8edf4073ad7c6ba84666c0aaff772883"
+  },
+  "both_exact_head_required_gates_passed": true,
+  "independent_local_qualification": {
+    "path": "/Users/james.maes/.codex/work/foundation-rc8-final-layout-qualification/qualification.json",
+    "sha256": "c100f90f7ac57ecd332f1ab7197b67b1eeb6112dd0a15f27cefc63728d64a30c"
+  },
+  "full_proof": {
+    "path": "/Users/james.maes/.codex/work/foundation-rc8-main-delivery-050/qualification.json",
+    "sha256": "7ea794320875b306ef9d7a25619445ce99b6884ec6a1a9a2a6c8931d06a57c1d"
+  },
+  "fixture_scope": "Packaged acceptance probes the generated consumer; browser/image acceptance probes the distinct native-domain example. Their application/configuration bytes differ; all245 foundation/dependency library identities match. Each retained distribution is verified against its own evidence, without claiming identical sample applications."
+}

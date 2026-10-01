@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "date": "2026-10-01",
+  "criterion": "Complete supported native state-provider graceful shutdown",
+  "status": "BLOCKED",
+  "requirement": "FND-03",
+  "mapping": "FND-03 PASS covers retention of the supported inherited contract only, not complete lifecycle readiness.",
+  "selected_core": {
+    "version": "4.1.0-20260930.034648-28",
+    "sha256": "314d76317c0926f785c345fabda5a8003e6521f9f7d1c553d2e3aca96026f131"
+  },
+  "inspection": {
+    "method": "javap of exact selected cached artifact; foundation lifecycle source review",
+    "classes": [
+      "InMemoryStateProvider",
+      "StateProviderInterface"
+    ],
+    "supported_close_or_shutdown_api": false,
+    "executor_retained_as_field": false,
+    "constructor_line_metadata": [
+      66,
+      67
+    ],
+    "foundation_owned_resources": "NativeAgentRuntime.close/stopResources and AdminServer.close retain their existing bounded cleanup."
+  },
+  "limits": [
+    "No reflection, daemon conversion, System.exit or copied framework runtime.",
+    "Earlier isolated proposal is uninstalled/unpublished; preserved foundation evidence is docs/verification/2026-09-30-core-development-050.json. Its temporary proposal source is no longer present.",
+    "Controlled process replacement proves durable records, not graceful native lifecycle completion."
+  ],
+  "next_step": "Qualify a supported upstream lifecycle API and foundation integration before claiming complete lifecycle readiness."
+}

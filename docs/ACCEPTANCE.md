@@ -1,27 +1,64 @@
 # Acceptance evidence
 
-Application version: not generated. Foundation version/revision: pending remote release qualification. Built and verified: **not achieved**. Integration qualified: **BLOCKED** on real provider/model/identity decisions and authorized testing. Deployed and qualified: **NOT APPLICABLE — deployment not requested**.
+**Current controlled RC8 money presentation: PASS. Whole-product/live qualification and hosted release: BLOCKED.** [Fresh full Java21 clean verify](evidence/2026-10-01-baseline-merge-verification.json) passes419 tests with zero failures/errors/skips and unchanged quality gates. Its application archive payloads and all libraries match the frozen running preview. Seven final synthetic suites pass117 actual browser checks. Both package/image scans inventory269 Java packages with zero HIGH/CRITICAL findings; all251 application files match. [Exact money qualification](evidence/2026-10-01-money-presentation-qualification.json) records commands, source/package hashes and limits. Native currencies, grouped symbols, right-aligned money and PDF figures, exact raw decimals, explicit missing data and separate rates/shares are qualified.
 
-| Scenario | Status | Actual test/evidence |
+Current preview https://localhost:57132 uses frozen app372f094e with the full independently fictional household; sign in as Alice. The model remains disconnected. Apps/tables-only navigation, contextual processes, Carl AI branding, lower-left chat, System Operations/ESB/admin diagnostics, saved dashboard selections and typed homes/mortgages remain qualified. Foundation [numeric alignment PR18](https://github.com/KofTwentyTwo/kof22-agent-foundation/pull/18) merged through its required protected gate; its new main publication is not independently qualified here. Carl’s [implementation PR1](https://github.com/KofTwentyTwo/carl/pull/1) records the development source. Hosted qualification remains blocked by FOUNDATION_PACKAGES_TOKEN and immutable RC/stable prerequisites. Earlier [408-test/113-browser RC8 qualification](evidence/2026-10-01-rc8-docked-public-qualification.json), [386-test shared-plan/restart qualification](evidence/2026-10-01-shared-plan-restart.json) and [377-test/59-browser RC7 qualification](evidence/2026-09-30-current-rc7-preview-qualification.json) retain historical package provenance. Old previews are preserved.
+
+The [representative evaluation suite](EVALUATION.md) now has22 passing deterministic assertions, real PostgreSQL/API/native record agreement, five preserved offline Talk checks and explicit prerequisite/cleanup proof. [Controlled evaluation evidence](evidence/2026-10-01-controlled-model-evaluation.json) retains exact source identities and the live-only final correction limit. Six live cases remain BLOCKED; human narrative review is PENDING. The optional browser fixture is updated; the original377/59 qualification keeps its original fixture provenance, and the newer bounded-cleanup and shared-plan grammar correction have separate evidence above.
+
+**Complete native graceful shutdown: BLOCKED.** The [selected state-provider inspection](evidence/2026-10-01-native-lifecycle-limitation.json) confirms no supported close/shutdown API. FND-03 PASS covers retaining the inherited supported contract only; it does not establish complete lifecycle readiness. The earlier proposal was not installed or published; packaged JVM replacement is durability evidence.
+
+**Live conversations remain BLOCKED:** the existing authorized1Password token is unavailable to the CLI after dismissed desktop prompts. Controlled SDK/HTTP tests prove the conversational capabilities, while the running UI truthfully exposes an unavailable model. Real household/model/Synology identity/data-policy acceptance remains unqualified. [Current RC8 foundation main0.5.0-SNAPSHOT publication](evidence/2026-10-01-foundation-pr17-rc8-publication.json) is independently qualified at1464b10/run36878751071: signatures,480 source hashes,66 staged hashes,nine hosted Maven identities and17 fresh hosted consumer tests pass. The [prior PR16 publication](evidence/2026-10-01-foundation-pr16-publication.json) retains its separate evidence. The [prior0b6f437 publication](evidence/2026-10-01-foundation-main-0.5-snapshot.json) retains its own exact evidence. Carl-specific package access/checks remain blocked. Stable foundation0.4.1 remains the remote release baseline; the current parent0.5.0-SNAPSHOT is only a development closure. Deployment was not requested. The earlier evidence below is retained as historical provenance.
+
+The earlier Carl0.1.0-SNAPSHOT source passed its **299-test** integrated gate with no failures/errors/skips, Java21, copyright/Spotless/Checkstyle/ErrorProne/convergence and unchanged80%line/60%branch floors. Exact foundation0.4.0 is pinned. The packaged browser passed **31 checks**, including narrow repeated two-file upload, protected PDF/text export, supported native source selection and logout/revoked-session replay. PDFs and main review screenshots were visually inspected. The application dependency scan inventoried 240 Java packages with no HIGH/CRITICAL findings. The original clean container scan is now historical: a refreshed database detects three HIGH OpenSSL package findings. The [reviewed container-only repair](evidence/container-security-repair.json) upgrades those packages; repaired ARM64/AMD64 scans each inventory 240 Java packages with zero HIGH/CRITICAL and Java21/non-root smoke passes. The application JAR and 299-test/31-browser evidence are unchanged; no additional application rerun is implied. Source secret scan found none. See [sealed local evidence](evidence/local-qualification.json).
+
+**Historical local application qualification and repaired container checks: PASS. Historical unpatched container: FAIL under refreshed vulnerability data. Hosted release qualification: BLOCKED** until working push credentials, authorized private-package access and successful hosted checks. **Integration qualified: BLOCKED** pending real Synology/model/identity and data-policy acceptance. **Deployed: NOT APPLICABLE — deployment not requested.** This does not label the whole live product complete. Foundation0.4.0/source`bb25a2a1f3ca562b054400a321773852ae839f39` is independently remotely published. Carl tested recovered exact release bytes matching all nine signed publication hashes; it has not proven a fresh credentialed consumer Maven fetch or hosted package access.
+
+## Baseline scenario evidence
+
+PASS below means the stated controlled synthetic application behavior passed. It never means live model/provider acceptance, complete family data, or universal model correctness.
+
+| Scenario | Status | Actual evidence and remaining limits |
 | --- | --- | --- |
-| AT-01 | BLOCKED | Implementation/evidence pending. |
-| AT-02 | BLOCKED | Implementation/evidence pending. |
-| AT-03 | BLOCKED | Implementation/evidence pending. |
-| AT-04 | BLOCKED | Implementation/evidence pending. |
-| AT-05 | BLOCKED | Implementation/evidence pending. |
-| AT-06 | BLOCKED | Implementation/evidence pending. |
-| AT-07 | BLOCKED | Implementation/evidence pending. |
-| AT-08 | BLOCKED | Implementation/evidence pending. |
-| AT-09 | BLOCKED | Implementation/evidence pending. |
-| AT-10 | BLOCKED | Implementation/evidence pending. |
-| AT-11 | BLOCKED | Implementation/evidence pending. |
-| AT-12 | BLOCKED | Implementation/evidence pending. |
-| AT-13 | BLOCKED | Implementation/evidence pending. |
-| AT-14 | BLOCKED | Implementation/evidence pending. |
-| AT-15 | BLOCKED | Implementation/evidence pending. |
-| AT-16 | BLOCKED | Implementation/evidence pending. |
-| AT-17 | BLOCKED | Implementation/evidence pending. |
-| AT-18 | NOT APPLICABLE — deployment not requested | Await explicit deployment scope. |
-| AT-19 | BLOCKED | Implementation/evidence pending. |
+| AT-01 | PASS | `CarlServiceTest.at01at02ImportExactCurrenciesAndDuplicateIdentity` verifies exactUSD200 and separateEUR against PostgreSQL. |
+| AT-02 | PASS | Same test plus `BillCsvTest.invalidRowsAreExplicitAndBatchCannotCommit`, source identity/retry tests. |
+| AT-03 | PASS | `at03at09at17MissingBillsAndUntrustedTextRemainFactsAfterAttributedCorrection`: null amount/date stays missing; paid assertion requires evidence and remains unverified. |
+| AT-04 | PASS | `at04at13SavedReportRechecksSourceAccessAndRevocation`, typed account/calendar restrictions, family/native HTTP and protected export negatives. |
+| AT-05 | PASS | `AgendaDecoderTest` fixed recurrence/exceptions/cancellation/all-day/DST and private occurrence fixtures; PostgreSQL agenda ingestion. |
+| AT-06 | PASS | `CalendarAgendaServiceTest.expiredReadRetainsRecordsLastSuccessAndTruthfulCoverage`, bounded controlledHTTP failures. LiveSynology separately blocked. |
+| AT-07 | PASS | `VendorRecordsTest` immutable grounded drafts/versions/current-source export; `CarlVendorNativeTest` actual authenticated download. |
+| AT-08 | PASS | `CarlReadToolsTest` closed read catalog; `AgentApplicationTest` governed SDK tool loop; provider types expose no financial/vendor writes. Calendar authority is the explicit later exception. |
+| AT-09 | BLOCKED | Imported instructions remain inert source text and typed authorization denies caller spoofing; representative live-model adversarial evaluation is still unqualified. |
+| AT-10 | PASS | `FocusedReportsTest.calendarFailureAndVendorReportsPersistWithoutClaimingCompleteness`, household coverage/freshness and missing-data facts. |
+| AT-11 | PASS | `CarlServiceTest.at11NarrationFailurePreservesFacts` and focused report failure fixtures preserve deterministic facts with failed narration. |
+| AT-12 | PASS | `ReportRecoveryTest.interruptedWorkerIsFencedWithoutRepeatingNarration`, committed-artifact recovery, durable request retries and conservativeUNKNOWN; no blind replay. |
+| AT-13 | PASS | Source/member/field/linked-account denial across stored artifacts, family get and native/PDF/vendor exports. |
+| AT-14 | PASS | `workflowDeadlineCancelsSlowDatabaseReadAndLeavesServiceResponsive`, bounded workflow queue and controlled provider/recurrence/input limits. Provider timeout adds its own bound; not an exact30s wall-clock guarantee. |
+| AT-15 | PASS | Original377-test package launches from a separate directory;59 actual browser checks cover native financial/import/export/logout, branded grouped desktop/narrow dashboards, Talk and search/ESB. Synthetic TLS/OIDC only; live identities and deployment are separate. |
+| AT-16 | PASS | Actual application/read-tool fixtures run withSlack disabled, bounded read catalogs and no prohibited write capability. |
+| AT-17 | PASS | `at03at09at17MissingBillsAndUntrustedTextRemainFactsAfterAttributedCorrection`: original evidence retained, attributed correction and matching generated facts. |
+| AT-18 | NOT APPLICABLE — deployment not requested | Production backup/restore qualification requires approved operating scope. |
+| AT-19 | PASS | `CarlConversationHttpTest.naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq` proves the actual controlled SDK/HTTP-to-domain-to-QQQ report/draft path with protected history/retries/revocation in both the original377-test and fresh386-test gates. Five native Talk browser checks prove shared-service UI, saved outcomes and current privacy. Live model acceptance is separately BLOCKED; offline UI evidence does not prove a live answer. |
 
-No acceptance scenario is satisfied by the documentation scaffold. Individual requirement mappings will identify executable tests, foundation/application identities, outcomes and sanitized evidence as implementation proceeds.
+## Expanded scope and evidence
+
+`PurchaseAssessmentsTest`, `PortfolioPlansTest`, `ExpenseRecordsTest`, `RentalRecordsTest`, `RentalAllocationReviewsTest`, `BudgetPreferencesTest`, `TaxPlanningRecordsTest`, `BalanceSheetsTest`, `ReminderObservationsTest`, `CalendarAvailabilityTest` and `ReportRecoveryTest` contain real PostgreSQL requirement fixtures, including shared/private/revoked boundaries. Their pure calculators additionally assert independently fixed cents, dates and shortfalls. No calculator-only test substitutes for a domain workflow.
+
+The complete individual [numbered requirement map](REQUIREMENT-EVIDENCE.md) records implementation, final-gate and live prerequisites separately. The earlier application source passed its local exact-source gates. The original377-test/59-check handoff and fresh386-test/32-check package gates pass; live and hosted prerequisites remain blocked. Tax rules remain undetermined without tested applicable rules; supplied government metadata is not archival custody or professional approval. All reports label selected/currently accessible scope and missing coverage.
+
+Initial source is signed locally as `e1213fa429166d8016f777c5a89016356dee105f`; the reviewed container/evidence repair is recorded in the signed follow-up history. HTTPS push was rejected for missing OAuth `workflow` scope and the SSH agent refused signing. `FOUNDATION_PACKAGES_TOKEN` is absent; no remote implementation PR or release exists. Source/application scans and the repaired dual-architecture image scans are recorded with their separate hashes; the old container archive must not be released. Release policy tests pass seven cases using an isolated synthetic GPG key. Repository environments/tag immutability are installed; hosted development/RC/main delivery remains blocked until package access and required checks qualify. See [CI/CD](CI-CD.md), [session state](SESSION-STATE.md) and [remaining work](TODO.md).
+
+## Default-model compatibility hold
+
+The preceding local gate counts are retained as controlled evidence. Subsequent real SDK/HTTP regressions contradict broader default-model readiness: the selected foundation adapter loses required thinking/signature content in tool continuations and treats incomplete responses as completed. The correction is now published in independently qualified stable0.4.1. The current development adapter includes the qualified continuation correction, and377 tests plus matching package/browser/security checks pass. Live provider acceptance remains **BLOCKED**. No live provider acceptance is implied. The model's [continuation requirements](https://platform.claude.com/docs/en/build-with-claude/thinking#preserving-thinking-blocks) and [stop-reason contract](https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons) support this correction. See the [current session hold](SESSION-STATE.md#september-30--default-model-qualification-hold).
+
+The missing conversational implementation is integrated. Earlier [development evidence](evidence/conversation-development-qualification.json) used an unpublished corrected dependency; the current [plan/goal evidence](evidence/plan-conversation-development-qualification.json) and [367-test gate](evidence/saved-balance-choices-development-qualification.json) use qualified stable0.4.1. These earlier results are superseded for current local package acceptance by the377-test/59-browser RC7 evidence above; they do not qualify live accounts.
+
+
+## October1 — final RC8 dock/System/public household development qualification
+
+The [current exact package evidence](evidence/2026-10-01-rc8-docked-public-qualification.json) records408 Java tests with zero failures/errors/skips, unchanged80%line/60%branch floors,113 browser checks in seven distinct controlled suites,10 deterministic public-fixture tests and actual PostgreSQL acceptance of10920 transactions/22365 balances with35 reconciliations. Native/table/tool home profile facts and protected attributed history pass. Administrator diagnostics deny ordinary members. Both final distribution and exact container image inventory269 Java packages with zero HIGH/CRITICAL findings; all251 image application files match the frozen package.
+
+The full fictional preview runs https://localhost:63173 (sign in as Alice), with native RC8 app/table navigation, System nesting, saved dashboard selections, Quick Search/ESB and a lower-left chat dock. Its model is disconnected;48 dock checks establish transport/history/privacy and honest UNKNOWN behavior, not live inference. The final native Talk suite adds5 controlled checks. Six real model evaluations, household/Synology policies, complete production shutdown and deployment remain unqualified. Existing source/fixture/package provenance remains separately retained.
+
+Current HTTPS GitHub access includes workflow scope; earlier failed push evidence is historical. Fresh private Maven metadata returns401 and a matching immutable foundation release is unavailable. The unchanged RC preparation guard rejects the development parent while preserving the POM. No complete product or immutable release is claimed.

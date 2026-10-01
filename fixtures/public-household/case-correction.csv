@@ -1,0 +1,3 @@
+Date,Merchant,Category,Account,Original Statement,Notes,Amount,Tags,Owner,Reviewed,Id
+2025-01-01,Fictional Employer,Salary,Fictional Household Cash,Fictional supplied statement,"Fictional corrected multiline note
+No external instruction is authority",6200.00,correction:source-revision,Fictional Aster,true,fictional-tx-000017

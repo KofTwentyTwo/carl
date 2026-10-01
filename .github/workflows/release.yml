@@ -1,0 +1,125 @@
+# Copyright (C) 2026 KofTwentyTwo
+name: Carl release
+on:
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Signed vX.Y.Z-rc.N or vX.Y.Z tag at current protected main
+        required: true
+        type: string
+permissions:
+  contents: read
+  packages: read
+concurrency:
+  group: carl-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  policy:
+    name: Release policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.policy.outputs.version }}
+      channel: ${{ steps.policy.outputs.channel }}
+      tag: ${{ steps.policy.outputs.tag }}
+      source: ${{ steps.policy.outputs.source }}
+      rcTag: ${{ steps.policy.outputs.rcTag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: policy
+        env:
+          REQUESTED_TAG: ${{ inputs.tag }}
+        run: python3 scripts/release-policy.py --tag "$REQUESTED_TAG" --output target/release-policy.json --github-output "$GITHUB_OUTPUT"
+  verification:
+    name: Verify exact candidate
+    needs: policy
+    uses: ./.github/workflows/ci.yml
+    with:
+      candidate_version: ${{ needs.policy.outputs.version }}
+    secrets:
+      FOUNDATION_PACKAGES_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+  publish:
+    name: Publish signed verified delivery
+    needs: [policy, verification]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: ${{ needs.policy.outputs.channel == 'snapshot' && 'snapshots' || 'releases' }}
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_VERSION: ${{ needs.policy.outputs.version }}
+      RELEASE_CHANNEL: ${{ needs.policy.outputs.channel }}
+      RELEASE_TAG: ${{ needs.policy.outputs.tag }}
+      RELEASE_SOURCE: ${{ needs.policy.outputs.source }}
+      RC_TAG: ${{ needs.policy.outputs.rcTag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: verified-carl-candidate
+          path: target/delivery
+      - name: Install checksum-pinned signature verifier
+        run: |
+          mkdir -p "$RUNNER_TEMP/carl-tools"
+          curl --fail --location --max-time 120 --retry 3 https://github.com/sigstore/cosign/releases/download/v3.1.3/cosign-linux-amd64 --output "$RUNNER_TEMP/carl-tools/cosign"
+          printf '%s  %s\n' 4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71 "$RUNNER_TEMP/carl-tools/cosign" | sha256sum --check --strict
+          chmod 755 "$RUNNER_TEMP/carl-tools/cosign"
+          echo "$RUNNER_TEMP/carl-tools" >> "$GITHUB_PATH"
+      - name: Verify candidate and qualify prior RC before stable
+        run: |
+          set -euo pipefail
+          python3 scripts/release-evidence.py verify target/delivery --source "$RELEASE_SOURCE" --version "$RELEASE_VERSION" --channel "$RELEASE_CHANNEL"
+          if [ "$RELEASE_CHANNEL" != snapshot ]; then
+            current=$(git ls-remote origin refs/heads/main | cut -f1)
+            test "$current" = "$RELEASE_SOURCE"
+          fi
+          if [ "$RELEASE_CHANNEL" = stable ]; then
+            gh release view "$RC_TAG" --json isDraft,isPrerelease --jq 'if .isDraft or (.isPrerelease | not) then error("A published RC is required") else . end'
+            gh release download "$RC_TAG" --dir "$RUNNER_TEMP/carl-qualified-rc"
+            cosign verify-blob --bundle "$RUNNER_TEMP/carl-qualified-rc/delivery-manifest.sigstore.json" --certificate-identity "https://github.com/$GITHUB_REPOSITORY/.github/workflows/release.yml@refs/heads/main" --certificate-oidc-issuer https://token.actions.githubusercontent.com "$RUNNER_TEMP/carl-qualified-rc/delivery-manifest.json"
+            python3 scripts/release-evidence.py verify "$RUNNER_TEMP/carl-qualified-rc" --source "$RELEASE_SOURCE" --version "${RC_TAG#v}" --channel rc
+          fi
+      - name: Sign and independently verify immutable release
+        run: |
+          set -euo pipefail
+          identity="https://github.com/$GITHUB_REPOSITORY/.github/workflows/release.yml@$GITHUB_REF"
+          cosign sign-blob --yes --bundle target/delivery/delivery-manifest.sigstore.json target/delivery/delivery-manifest.json
+          cosign verify-blob --bundle target/delivery/delivery-manifest.sigstore.json --certificate-identity "$identity" --certificate-oidc-issuer https://token.actions.githubusercontent.com target/delivery/delivery-manifest.json
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo '::error::An immutable release already exists; inspect it instead of overwriting.'
+            exit 1
+          fi
+          python3 - "$RELEASE_VERSION" <<'PY'
+          import runpy, pathlib, sys
+          policy=runpy.run_path('scripts/release-policy.py')
+          version=pathlib.Path('VERSION').read_text().strip()
+          pathlib.Path('target/release-notes.md').write_text(policy['notes'](pathlib.Path.cwd(),version)+'\n\nPackaged synthetic qualification only. Live provider and deployment acceptance are separate.\n')
+          PY
+          options=(--draft --title "Carl AI $RELEASE_VERSION" --notes-file target/release-notes.md --target "$RELEASE_SOURCE")
+          if [ "$RELEASE_CHANNEL" != stable ]; then options+=(--prerelease); fi
+          if [ "$RELEASE_CHANNEL" != snapshot ]; then options+=(--verify-tag); fi
+          gh release create "$RELEASE_TAG" target/delivery/* "${options[@]}"
+          gh release download "$RELEASE_TAG" --dir "$RUNNER_TEMP/carl-published"
+          cosign verify-blob --bundle "$RUNNER_TEMP/carl-published/delivery-manifest.sigstore.json" --certificate-identity "$identity" --certificate-oidc-issuer https://token.actions.githubusercontent.com "$RUNNER_TEMP/carl-published/delivery-manifest.json"
+          python3 scripts/release-evidence.py verify "$RUNNER_TEMP/carl-published" --source "$RELEASE_SOURCE" --version "$RELEASE_VERSION" --channel "$RELEASE_CHANNEL"
+          cmp target/delivery/delivery-manifest.json "$RUNNER_TEMP/carl-published/delivery-manifest.json"
+          latest=false
+          if [ "$RELEASE_CHANNEL" = stable ]; then latest=true; fi
+          gh release edit "$RELEASE_TAG" --draft=false --latest="$latest"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: always()
+        with:
+          name: carl-publication-evidence
+          if-no-files-found: error
+          retention-days: 90
+          path: target/delivery/*
