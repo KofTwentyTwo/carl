@@ -260,3 +260,24 @@ databases/roles on existing PostgreSQL, existing Authentik, reused website
 credentials and an initial synthetic deployment. Hostnames and initial test
 users are still pending; service/credential identities are being discovered.
 No CI/migration implementation or cluster rollout has begun.
+
+## October1 — baseline merged; delivery design prepared
+
+Carl PR1 merged normally at1b334d1c039d565ea10504ba2386b329929a781d.
+Its Git tree equals the verified feature head. Fresh full clean verify passes419
+tests, zero failures/errors/skips; the preview has357 identical application ZIP
+payloads and247 exact runtime libraries, with five fresh running UI/access
+checks. Preview57132 is ready for synthetic UI testing; its model is disconnected.
+Foundation main run36905334436 completes successfully, including publication;
+independent archive/signature qualification of that new publication is separate.
+
+The owner selects galaxy.direct for home hostnames and named Authentik testers
+(names requested, pending). CircleCI access works with the configured Nix
+credential: ghcr/github/security contexts and their variable names are verified.
+The cluster node API and configured VIP are unreachable from this Mac; no cluster
+mutation occurred. The [delivery design](SPEC-cicd-gitops.md) records the confirmed
+choices, actual access holds and complete acceptance gates. New branch
+feature/cicd-liquibase-gitops owns this phase. No CI/migration implementation or
+cluster rollout has begun. Official NextRC9 was published during baseline merge;
+its qualification is included in the new foundation work, rather than silently
+changing the frozen RC8 preview.
