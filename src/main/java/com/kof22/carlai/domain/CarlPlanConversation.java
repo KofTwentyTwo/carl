@@ -24,6 +24,7 @@ import com.kof22.agentadmin.client.ClientWorkflow;
 public final class CarlPlanConversation
 {
    private static final ObjectMapper JSON = new ObjectMapper();
+   private static final String POLITE_ACTION = "^(?:please )?(?:(?:can|could|would|will) you (?:please )?|i (?:want|would like) (?:you )?to |i['’]d like (?:you )?to |let['’]s )?";
    private static final Set<String> OPERATIONS = Set.of("PLAN_CREATE", "PLAN_AGREE", "PLAN_STEP", "PLAN_CHECK_IN", "PLAN_REBASE", "PLAN_PROGRESS", "PLAN_EXPECTATION", "PLAN_EFFECTS", "PLAN_CALENDAR", "REMINDER_REVIEW");
    /** The model selects only bounded existing records; authority and new request/task identities remain server derived. */
    public static final String CONTRACT = """
@@ -118,7 +119,8 @@ public final class CarlPlanConversation
          case "REMINDER_REVIEW" -> exact(input, Set.of("plan", "expectedVersion", "observation", "decision", "note"));
          default -> throw new IllegalArgumentException("Unsupported plan proposal");
       }
-      if(!currentIntent(operation, human))
+      if(!currentIntent(operation, human) || operation.equals("PLAN_CREATE") && !context.shared()
+         && Pattern.compile(POLITE_ACTION + "(?:create|save|start|make) (?:a |the )?shared (?:draft )?(?:financial )?plan\\b", Pattern.CASE_INSENSITIVE).matcher(human.strip()).find())
       {
          return clarify(operation);
       }
@@ -349,7 +351,8 @@ public final class CarlPlanConversation
       String input = human.strip().toLowerCase(Locale.ROOT);
       String start = switch(operation)
       {
-         case "PLAN_CREATE", "FINANCIAL_PLAN" -> "(?:create|save|start|make) (?:a |the )?(?:draft )?(?:financial )?plan";
+         case "PLAN_CREATE" -> "(?:create|save|start|make) (?:a |the )?(?:shared )?(?:draft )?(?:financial )?plan";
+         case "FINANCIAL_PLAN" -> "(?:create|save|start|make) (?:a |the )?(?:draft )?(?:financial )?plan";
          case "GOAL_PRIORITY" -> "(?:set|change|revise) (?:the )?priority";
          case "GOAL_TRADEOFF" -> "compare (?:debt and investment tradeoffs|debt (?:with|against|versus) invest(?:ment|ing))";
          case "PLAN_STEP" -> "(?:add|create|edit|update|revise|change) (?:a |the )?(?:step|task)";
@@ -363,8 +366,7 @@ public final class CarlPlanConversation
          case "REMINDER_REVIEW" -> "(?:review|accept reported completion|dismiss)";
          default -> "(?!)";
       };
-      String polite = "^(?:please )?(?:(?:can|could|would|will) you (?:please )?|i (?:want|would like) (?:you )?to |i['’]d like (?:you )?to |let['’]s )?";
-      if(!Pattern.compile(polite + start + "\\b").matcher(input).find())
+      if(!Pattern.compile(POLITE_ACTION + start + "\\b").matcher(input).find())
       {
          return false;
       }

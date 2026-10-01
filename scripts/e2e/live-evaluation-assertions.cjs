@@ -1,6 +1,7 @@
 /* Copyright (C) 2026 KofTwentyTwo */
 'use strict';
 const { isDeepStrictEqual } = require('node:util');
+const { finished } = require('node:stream/promises');
 function at(value, path) { return path.split('.').reduce((next, key) => next?.[key], value); }
 function sameScalar(left, right) {
   if (typeof right === 'string' && /^-?\d+\.\d{2}$/.test(right)) {
@@ -82,6 +83,7 @@ function evaluateInitialPurchase(observation, manifest) {
 }
 async function cleanupOwnedFixture(child, bounds = { graceMs: 30000, termMs: 20000, killMs: 5000 }) {
   const errors = []; const signals = [];
+  let inputDone;
   const terminal = () => child.exitCode !== null || child.signalCode !== null;
   const waitTerminal = duration => new Promise(resolve => {
     if (terminal()) return resolve(true);
@@ -91,13 +93,23 @@ async function cleanupOwnedFixture(child, bounds = { graceMs: 30000, termMs: 200
   });
   const send = signal => { try { if (child.kill(signal)) signals.push(signal); else errors.push(signal + ' was not delivered'); } catch (error) { errors.push(String(error)); } };
   if (!terminal()) {
-    try { if (!child.stdin.destroyed && !child.stdin.writableEnded) child.stdin.end('close\n'); } catch (error) { errors.push(String(error)); }
+    try {
+      if (!child.stdin.destroyed && !child.stdin.writableEnded) {
+        inputDone = finished(child.stdin, { cleanup: true }).catch(error => { errors.push('Owned fixture input failed: ' + String(error)); });
+        child.stdin.end('close\n');
+      }
+    } catch (error) { errors.push(String(error)); }
     if (!await waitTerminal(bounds.graceMs)) {
       send('SIGTERM');
       if (!await waitTerminal(bounds.termMs)) { send('SIGKILL'); await waitTerminal(bounds.killMs); }
     }
   }
   const ended = terminal();
+  if (inputDone) {
+    let timer;
+    await Promise.race([inputDone, new Promise(resolve => { timer = setTimeout(() => { errors.push('Owned fixture input did not reach a terminal stream state'); resolve(); }, 1000); })]);
+    clearTimeout(timer);
+  }
   if (!ended) errors.push('Owned fixture remained nonterminal after bounded SIGKILL wait');
   if (ended && !signals.length && child.exitCode !== 0) errors.push('Owned fixture exited unsuccessfully with code ' + child.exitCode + ' and signal ' + child.signalCode);
   return { pid: child.pid ?? null, disposition: !ended ? 'NONTERMINAL' : signals.includes('SIGKILL') ? 'SIGKILL' : signals.includes('SIGTERM') ? 'SIGTERM' : child.exitCode === 0 ? 'GRACEFUL' : 'EXIT_ERROR', terminal: ended, exitCode: child.exitCode, signal: child.signalCode, signals, errors };

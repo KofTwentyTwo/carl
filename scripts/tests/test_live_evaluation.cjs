@@ -66,3 +66,12 @@ test('owned child nonzero exit is recorded as a cleanup error', async () => {
   const outcome = await cleanupOwnedFixture(child, { graceMs: 100, termMs: 100, killMs: 500 });
   assert.equal(outcome.exitCode, 3); assert.equal(outcome.disposition, 'EXIT_ERROR'); assert.ok(outcome.errors.length > 0);
 });
+test('owned child with closed stdin records the pipe error and reaches terminal cleanup', async () => {
+  const { spawn } = require('node:child_process');
+  const { cleanupOwnedFixture } = require('../e2e/live-evaluation-assertions.cjs');
+  const child = spawn(process.execPath, ['-e', "require('node:fs').closeSync(0);console.log('ready');setTimeout(()=>process.exit(0),500);"], { stdio: ['pipe','pipe','pipe'] });
+  await new Promise(resolve => child.stdout.once('data', resolve));
+  const outcome = await cleanupOwnedFixture(child, { graceMs: 30, termMs: 200, killMs: 500 });
+  assert.equal(outcome.terminal, true);
+  assert.ok(outcome.errors.some(error => /EPIPE/.test(error)), 'Closed fixture input must fail the report, not escape as an uncaught stream error');
+});

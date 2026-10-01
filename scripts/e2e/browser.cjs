@@ -7,11 +7,19 @@ const { spawn } = require('node:child_process');
 const { createInterface } = require('node:readline');
 const { mkdir, writeFile, rm } = require('node:fs/promises');
 const path = require('node:path');
+const { cleanupOwnedFixture } = require('./live-evaluation-assertions.cjs');
 async function main() {
   const [distribution, report, classpath] = process.argv.slice(2);
   await mkdir(report, { recursive: true });
   const fixture = spawn('java', ['-cp', classpath, 'com.kof22.agentadmin.bootstrap.CarlPackagedVisualFixture', distribution], { stdio: ['pipe', 'pipe', 'pipe'] });
   const lines = createInterface({ input: fixture.stdout });
+  let planSeed;
+  let restartResolve;
+  lines.on('line', raw => {
+    const line = raw.replace(/\u001b\[[0-9;]*m/g, '');
+    if (line.startsWith('PACKAGED_PLAN_SEED=')) planSeed = JSON.parse(line.slice('PACKAGED_PLAN_SEED='.length));
+    if (line.startsWith('PACKAGED_PROCESS_RESTART=')) restartResolve?.(JSON.parse(line.slice('PACKAGED_PROCESS_RESTART='.length)));
+  });
   let stderr = '';
   fixture.stderr.on('data', bytes => { stderr = (stderr + bytes.toString()).slice(-6000); });
   const ready = new Promise((resolve, reject) => {
@@ -22,10 +30,11 @@ async function main() {
   let browser;
   let page;
   const checks = [];
+  let outcome = { status: 'FAIL', checks, syntheticOnly: true };
   try {
     const origin = await ready;
     browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1440, height: 1000 } });
+    let context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1440, height: 1000 } });
     page = await context.newPage();
     page.setDefaultTimeout(20000);
     await page.goto(origin, { waitUntil: 'domcontentloaded' });
@@ -93,6 +102,41 @@ async function main() {
     await expect(page.getByText('Synthetic debt plan', { exact: true }).first()).toBeVisible();
     await page.screenshot({ path: path.join(report, '06-plan-records.png'), fullPage: true });
     checks.push('persisted-versioned-plan-visible');
+    expect(planSeed && Number.isSafeInteger(planSeed.planId) && /^[0-9a-f-]{36}$/.test(planSeed.taskId)).toBeTruthy();
+    const readPlanRecord = async (table, id) => {
+      const response = await context.request.get(origin + '/qqq/v1/table/' + table + '/' + encodeURIComponent(id));
+      expect(response.status(), await response.text()).toBe(200);
+      const values = (await response.json()).record?.values;
+      expect(values && String(values.id)).toBe(String(id));
+      return values;
+    };
+    const beforePlan = await readPlanRecord('carlPlans', planSeed.planId);
+    const beforeTask = await readPlanRecord('carlPlanSteps', planSeed.taskId);
+    const restarted = await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => { restartResolve = null; reject(new Error('Bounded packaged restart timeout')); }, 60000);
+      restartResolve = value => { clearTimeout(timer); restartResolve = null; resolve(value); };
+      fixture.stdin.write('restart\n');
+    });
+    expect(restarted.previousTerminal && restarted.ready).toBe(true);
+    expect(Number.isSafeInteger(restarted.previousPid) && restarted.previousPid > 0).toBe(true);
+    expect(Number.isSafeInteger(restarted.currentPid) && restarted.currentPid > 0).toBe(true);
+    expect(restarted.currentPid).not.toBe(restarted.previousPid);
+    await context.close();
+    context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1440, height: 1000 } });
+    page = await context.newPage();
+    page.setDefaultTimeout(20000);
+    await page.goto(origin);
+    await page.getByRole('button', { name: 'Sign in as Alice', exact: true }).click();
+    await expect(page.getByText('Carl AI', { exact: true }).first()).toBeVisible();
+    const afterPlan = await readPlanRecord('carlPlans', planSeed.planId);
+    const afterTask = await readPlanRecord('carlPlanSteps', planSeed.taskId);
+    expect(afterPlan).toEqual(beforePlan);
+    expect(afterTask).toEqual(beforeTask);
+    await page.goto(origin + '/app/carlPlanSteps/' + planSeed.taskId);
+    await expect(page.locator('[data-qqq-id="field-value-status"]')).toBeVisible();
+    await page.screenshot({ path: path.join(report, '25-plan-task-after-process-restart.png'), fullPage: true });
+    await writeFile(path.join(report, 'plan-process-restart.json'), JSON.stringify({ syntheticOnly: true, process: restarted, records: { planId: planSeed.planId, taskId: planSeed.taskId, beforePlan, afterPlan, beforeTask, afterTask }, limitation: 'SIGTERM process replacement and durable records are verified; no native state-provider shutdown API or live model qualification is implied.' }, null, 2) + '\n');
+    checks.push('packaged-process-restart-retains-exact-plan-and-task-records');
     await page.goto(origin + '/app/carlExportPlan');
     const planChoice = page.locator('[data-qqq-id="planId"]');
     await expect(planChoice).toBeVisible();
@@ -356,15 +400,22 @@ async function main() {
     } finally { await replay.close(); }
     checks.push('native-logout-and-revoked-session-replay');
     await Promise.all(['failure.png','failure.txt','download-diagnostic.json'].map(file => rm(path.join(report,file), {force:true})));
-    await writeFile(path.join(report, 'report.json'), JSON.stringify({ status: 'PASS' , checks, syntheticOnly: true }, null, 2) + '\n');
+    outcome = { status: 'PASS', checks, syntheticOnly: true };
   } catch (error) {
-    if (page) { await page.screenshot({ path: path.join(report, "failure.png"), fullPage: true }); await writeFile(path.join(report, "failure.txt"), await page.locator("body").innerText()); }
-    await writeFile(path.join(report, 'report.json'), JSON.stringify({ status: 'FAIL', checks, error: error.message }, null, 2) + '\n');
+    outcome = { status: 'FAIL', checks, syntheticOnly: true, error: error.message };
+    try {
+      if (page && !page.isClosed()) { await page.screenshot({ path: path.join(report, "failure.png"), fullPage: true }); await writeFile(path.join(report, "failure.txt"), await page.locator("body").innerText()); }
+    } catch (diagnosticError) { outcome.diagnosticError = diagnosticError.message; }
     throw error;
   } finally {
-    if (browser) await browser.close();
-    fixture.stdin.end('close\n');
-    await new Promise(resolve => { if (fixture.exitCode !== null) resolve(); else fixture.once('exit', resolve); });
+    if (browser) {
+      try { await browser.close(); }
+      catch (error) { outcome.status = 'FAIL'; outcome.browserCleanupError = String(error); }
+    }
+    outcome.cleanup = await cleanupOwnedFixture(fixture);
+    if (!outcome.cleanup.terminal || outcome.cleanup.errors.length || outcome.cleanup.disposition !== 'GRACEFUL') outcome.status = 'FAIL';
+    if (outcome.status !== 'PASS') process.exitCode = 1;
+    await writeFile(path.join(report, 'report.json'), JSON.stringify(outcome, null, 2) + '\n');
   }
 }
 main().catch(error => { process.stderr.write(error.stack + '\n'); process.exitCode = 1; });

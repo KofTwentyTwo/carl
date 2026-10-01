@@ -41,6 +41,8 @@ public final class CarlPackagedVisualFixture
    private final boolean dashboards;
    private final boolean evaluation;
    private java.util.Map<String, Object> evaluationManifest;
+   private long seededPlanId;
+   private java.util.UUID seededTaskId;
 
    private CarlPackagedVisualFixture(Path distribution, boolean dashboards, boolean evaluation) throws Exception
    {
@@ -87,7 +89,9 @@ public final class CarlPackagedVisualFixture
       long comparison=debtPlans.compare(com.kof22.carlai.domain.CarlService.Scope.privateFor("alice"),java.util.UUID.randomUUID(),java.time.LocalDate.of(2026,9,1),"USD",new java.math.BigDecimal("100.00"),12,"Synthetic budget after reserves");
       var lifecycle=new com.kof22.carlai.domain.PlanLifecycle(carl);
       long plan=lifecycle.create("alice",java.util.UUID.randomUUID(),comparison,"Synthetic debt plan","Synthetic human selection");
-      lifecycle.step("alice",plan,1,java.util.UUID.randomUUID(),"Review statement",1,java.time.LocalDate.of(2026,9,30),"At home",null,"Synthetic assigned task");
+      seededPlanId = plan;
+      seededTaskId = java.util.UUID.randomUUID();
+      lifecycle.step("alice",plan,1,seededTaskId,"Review statement",1,java.time.LocalDate.of(2026,9,30),"At home",null,"Synthetic assigned task");
       lifecycle.agree("alice",plan,2,"Synthetic agreement; no financial execution");
       var cash=new com.kof22.carlai.domain.CashPlans(carl);
       cash.create("alice","Synthetic September cash forecast","PRIVATE","Synthetic source attestations",new com.kof22.carlai.domain.CashPlans.Assumptions("USD",java.time.LocalDate.of(2026,9,1),java.time.LocalDate.of(2026,9,30),new java.math.BigDecimal("1000.00"),new java.math.BigDecimal("200.00"),new java.math.BigDecimal("500.00"),true,true,true,true,true,true));
@@ -301,6 +305,7 @@ public final class CarlPackagedVisualFixture
       proxy.start();
       System.out.println("PACKAGED_UI=" + origin);
       System.out.println("PACKAGED_APPLICATION=ordinary-app.jar-with-lib");
+      System.out.println("PACKAGED_PLAN_SEED=" + new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(java.util.Map.of("planId",seededPlanId,"taskId",seededTaskId)));
       if(evaluation)
       {
          evaluationManifest.put("origin", origin);
@@ -527,8 +532,14 @@ public final class CarlPackagedVisualFixture
             }
             else if(command.equals("restart"))
             {
+               var previous = fixture.child;
                fixture.stopChild();
                fixture.startChild();
+               if(previous.isAlive() || previous.pid() == fixture.child.pid())
+               {
+                  throw new IllegalStateException("Packaged restart did not replace the application process");
+               }
+               System.out.println("PACKAGED_PROCESS_RESTART=" + new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(java.util.Map.of("previousPid",previous.pid(),"previousTerminal",!previous.isAlive(),"previousExitCode",previous.exitValue(),"currentPid",fixture.child.pid(),"ready",true,"shutdownRequest","SIGTERM")));
                System.out.println("PACKAGED_RESTARTED");
             }
             else if(command.equals("revoke-dashboard-access") && fixture.dashboards)

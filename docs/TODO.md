@@ -2,7 +2,7 @@
 
 Carl is one standalone agent application with authoritative PostgreSQL state, deterministic domain capabilities, model reasoning, native QQQ administration and the authenticated family API. Governing scope is the preserved [baseline](REQUIREMENTS.md), [financial expansion](FINANCIAL-PLANNING-REQUIREMENTS.md), [Monarch imports](MONARCH-IMPORT.md), [Synology authority](CALENDAR-REMINDERS.md) and [UI requirements](UI-REQUIREMENTS.md).
 
-Current controlled qualification:377 tests, zero failures/errors/skips;59 matching packaged browser checks; five running Talk checks. Source scanning finds zero secrets; matching distribution and local image each inventory269 Java packages with zero HIGH/CRITICAL findings. Evidence and exact artifact/source identities are in [current RC7 qualification](evidence/2026-09-30-current-rc7-preview-qualification.json). Earlier stages/counts remain historical in SESSION-STATE and their evidence files.
+Current controlled qualification:386 tests, zero failures/errors/skips;32 fresh packaged browser checks including exact plan/task persistence across a JVM restart;22 evaluation assertions. Fresh distribution and local image each inventory269 Java packages with zero HIGH/CRITICAL findings. See [shared plan/restart evidence](evidence/2026-10-01-shared-plan-restart.json). The original377-test/59-browser qualification retains its exact older package provenance in [RC7 evidence](evidence/2026-09-30-current-rc7-preview-qualification.json); the owner preview remains that earlier frozen synthetic package.
 
 ## Implemented and controlled-qualified
 
@@ -28,12 +28,14 @@ Current controlled qualification:377 tests, zero failures/errors/skips;59 matchi
 
 ## Remaining delivery and integration gates
 
+- [x] Qualify FAT-18 controlled shared conversational state, assignments, obstacle/completion, concurrent revisions, protected history and exact QQQ fields; separately prove private seeded plan/task durability across packaged JVM replacement. Live model interpretation remains BLOCKED.
+
 - [x] Verify foundation main0.5.0-SNAPSHOT publication at0b6f437/run36811134831: signatures,66 staged hashes,nine remote Maven identities and17 passing fresh hosted consumer tests. Local registry/OCI credential access remains unperformed.
 - [ ] Obtain authorized FOUNDATION_PACKAGES_TOKEN and prove fresh Carl Maven resolution/hosted access. Local recovered artifacts do not prove remote consumption.
 - [ ] Unblock Carl push credentials: SSH agent refuses signing; existing HTTPS OAuth lacksworkflow scope. Then complete protected Carl PR/main/development publication.
 - [ ] Select and qualify a non-snapshot QQQ/Quick Search closure and matching immutable foundation release before Carl RC/stable. Timestamped snapshots remain rejected by unchanged release enforcement.
 - [ ] Qualify a supported upstream native state-provider shutdown correction. The isolated earlier proposal is uninstalled/unpublished; no daemon/thread/process bypass.
-- [x] Integrate reviewed representative synthetic evaluation tooling and CI assertion gate:21 deterministic tests, actual PostgreSQL/API/native record checks and five unchanged offline Talk checks. Six live cases and human prose review remain BLOCKED/PENDING; see [evaluation guide](EVALUATION.md) and [controlled evidence](evidence/2026-10-01-controlled-model-evaluation.json).
+- [x] Integrate reviewed representative synthetic evaluation tooling and CI assertion gate:22 deterministic tests, actual PostgreSQL/API/native record checks and five unchanged offline Talk checks. Six live cases and human prose review remain BLOCKED/PENDING; see [evaluation guide](EVALUATION.md) and [controlled evidence](evidence/2026-10-01-controlled-model-evaluation.json).
 - [ ] Read the already-authorized personal CLAUDE_API token after1Password unlock/CLI approval and qualify bounded synthetic live conversations/evaluations. Current preview model is disconnected.
 - [ ] Qualify real household identities, access/audiences, account/currency mappings, report periods and permitted model data categories.
 - [ ] Qualify designated Synology endpoint/version/collections, narrow credentials and actual calendar/reminder client behavior.

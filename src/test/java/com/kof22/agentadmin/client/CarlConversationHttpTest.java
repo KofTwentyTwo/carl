@@ -466,6 +466,261 @@ class CarlConversationHttpTest
 
 
 
+   /** FAT-18: controlled SDK proposals cross verified Alice/Bob transport, durable restart and native QQQ. */
+   @org.junit.jupiter.api.Test
+   void sharedFamilyConversationRetainsTasksHistoryAndContendedRevisionsAcrossRestart() throws Exception
+   {
+      try(var provider = new Provider(); var http = HttpClient.newHttpClient())
+      {
+         var data = NativeDatabases.source(DATABASE.getJdbcUrl(), DATABASE.getUsername(), DATABASE.getPassword());
+         AgentMigrations.migrate(data);
+         try(var c = data.getConnection(); var sql = c.createStatement())
+         {
+            sql.execute("TRUNCATE carl_household,carl_request,agent_client_conversation,token_usage RESTART IDENTITY CASCADE");
+            sql.execute("INSERT INTO carl_household(id,name,display_zone) VALUES(1,'Synthetic FAT-18 family','America/Chicago')");
+            sql.execute("INSERT INTO carl_member(id,household_id,principal,label,can_manage) VALUES(1,1,'alice','Synthetic A',true),(2,1,'bob','Synthetic B',false)");
+            sql.execute("INSERT INTO carl_permission(member_id,domain,details) SELECT m.id,d,true FROM carl_member m CROSS JOIN unnest(ARRAY['BILLS','VENDORS','CALENDAR','FINANCE','TAX','SETTINGS']) d");
+            sql.execute("INSERT INTO carl_identity(issuer,subject,member_id) VALUES('" + ISSUER + "','alice-subject',1),('" + ISSUER + "','bob-subject',2)");
+         }
+         var configuration = com.kof22.agentadmin.bootstrap.NativeConfigurationFiles.read(Path.of("config/agent.properties"), Map.of(), "--kof22.agent.db.url=" + DATABASE.getJdbcUrl(), "--kof22.agent.db.username=" + DATABASE.getUsername(), "--kof22.agent.db.password=" + DATABASE.getPassword(), "--kof22.agent.qqq.db-password=synthetic-reader", "--kof22.agent.qqq.password=synthetic-unused-bootstrap", "--kof22.agent.anthropic-api-key=synthetic-no-provider", "--kof22.agent.anthropic-base-url=" + provider.url(), "--kof22.agent.model.id=claude-sonnet-5", "--kof22.agent.limits.max-output-tokens=40", "--kof22.agent.limits.turn-timeout=PT2S").configuration();
+         var generator = KeyPairGenerator.getInstance("RSA");
+         generator.initialize(2048);
+         var pair = generator.generateKeyPair();
+         var key = (RSAPublicKey) pair.getPublic();
+         var privateKey = (RSAPrivateKey) pair.getPrivate();
+         var algorithm = Algorithm.RSA256(key, privateKey);
+         var jwk = Jwk.fromValues(Map.of("kty", "RSA", "kid", "fixture", "alg", "RS256", "n", unsigned(key.getModulus().toByteArray()), "e", unsigned(key.getPublicExponent().toByteArray())));
+         String alice = token(algorithm, "alice-subject");
+         String bob = token(algorithm, "bob-subject");
+         var service = new CarlService(data, Clock.systemUTC());
+         var date = LocalDate.now(java.time.ZoneId.of("America/Chicago"));
+         var scope = new CarlService.Scope("alice", java.util.Set.of("alice", "bob"));
+         long debt = new com.kof22.carlai.domain.FinancialRecords(service).createAccount("alice", "Family review debt", "CREDIT_CARD", "USD", false, java.math.BigDecimal.ONE, "FAMILY", "Synthetic statement");
+         var debts = new com.kof22.carlai.domain.DebtPlans(service);
+         debts.terms("alice", debt, date, new java.math.BigDecimal("1000.00"), new java.math.BigDecimal("100.00"), java.math.BigDecimal.ZERO, java.math.BigDecimal.ZERO, java.math.BigDecimal.ZERO, "Dated synthetic statement");
+         long source = debts.compare(scope, UUID.randomUUID(), date, "USD", new java.math.BigDecimal("100.00"), 12, "Human reviewed total monthly budget");
+         assertTrue(!service.artifact("alice", source).get("status_label").toString().startsWith("Incomplete"));
+         var lifecycle = new com.kof22.carlai.domain.PlanLifecycle(service);
+         String conversation = "/conversations/" + UUID.randomUUID();
+         String progressRequest = "/workflows/conversation/" + UUID.randomUUID();
+         long plan;
+         String step;
+         JsonNode beforeRestart;
+         JsonNode progressBeforeRestart;
+         try(var host = new FamilyHost(configuration, jwk, data))
+         {
+            String url = host.base + conversation;
+            assertEquals(200, send(http, url, "PUT", alice, "{\"shared\":true,\"participants\":[\"1\",\"2\"]}").statusCode());
+            assertEquals(200, send(http, url, "GET", bob, null).statusCode());
+            var proposal = JSON.createObjectNode().put("operation", "PLAN_CREATE").put("sourceArtifact", source).put("title", "Family review plan").put("reason", "Human selection");
+            var result = planTurn(provider, http, url, alice, proposal, "Create a shared draft plan titled Family review plan from comparison " + source + ".");
+            assertEquals("PLAN_CREATE", result.path("artifact").path("kind").asText(), result.toString());
+            plan = result.path("artifact").path("plan").path("plan").path("id").asLong();
+            assertTrue(plan > 0);
+            proposal.removeAll();
+            proposal.put("operation", "PLAN_STEP").put("plan", plan).put("expectedVersion", 1).putNull("step").put("title", "Review family checklist").put("assignee", 2).put("due", date.plusDays(2).toString()).put("location", "Home").putNull("dependency").put("reason", "Human task");
+            result = planTurn(provider, http, url, alice, proposal, "Add a step to plan Family review plan version 1: Review family checklist; assign to Synthetic B; due " + date.plusDays(2) + "; location Home.");
+            assertEquals(2, result.path("artifact").path("plan").path("plan").path("version").asInt(), result.toString());
+            step = result.path("artifact").path("plan").path("steps").get(0).path("id").asText();
+            proposal.removeAll();
+            proposal.put("operation", "PLAN_CHECK_IN").put("plan", plan).put("expectedVersion", 2).put("step", step).put("status", "BLOCKED").put("note", "I am blocked waiting for the checklist").putNull("evidence");
+            result = planTurn(provider, http, url, bob, proposal, "Check in on plan Family review plan version 2 step Review family checklist: I am blocked waiting for the checklist.");
+            assertEquals("BLOCKED", result.path("artifact").path("plan").path("steps").get(0).path("status").asText(), result.toString());
+            proposal.put("expectedVersion", 3).put("status", "REPORTED_COMPLETE").put("note", "I completed the checklist review");
+            result = planTurn(provider, http, url, bob, proposal, "Check in on plan Family review plan version 3 step Review family checklist: I completed the checklist review.");
+            assertEquals("REPORTED_COMPLETE", result.path("artifact").path("plan").path("steps").get(0).path("status").asText(), result.toString());
+            proposal.removeAll();
+            proposal.put("operation", "PLAN_AGREE").put("plan", plan).put("expectedVersion", 4).put("reason", "Human agreement");
+            result = planTurn(provider, http, url, alice, proposal, "I agree to plan Family review plan version 4.");
+            assertEquals("AGREED", result.path("artifact").path("plan").path("plan").path("state").asText(), result.toString());
+            proposal.removeAll();
+            proposal.put("operation", "PLAN_PROGRESS").put("plan", plan).put("expectedVersion", 5).put("pdf", false);
+            provider.enqueue("end_turn", proposal.toString());
+            assertEquals(200, send(http, url + progressRequest, "PUT", bob, JSON.writeValueAsString(Map.of("input", Map.of("message", "Show progress for plan Family review plan version 5.")))).statusCode());
+            progressBeforeRestart = await(http, url + progressRequest, bob);
+            assertEquals("PLAN_PROGRESS", progressBeforeRestart.path("artifact").path("kind").asText(), progressBeforeRestart.toString());
+            beforeRestart = JSON.valueToTree(lifecycle.get("bob", plan));
+            assertFamilyHistory(beforeRestart, source, step, date.plusDays(2));
+            com.kof22.agentadmin.CarlFamilyPlanQqqAssertions.assertCurrent(configuration, host.components, data, jwk, key, privateKey, beforeRestart, false);
+         }
+         int restartCalls = provider.requests.size();
+         // New factory, runtime, workers, client store and HTTP listener; the PostgreSQL container is retained.
+         try(var host = new FamilyHost(configuration, jwk, data))
+         {
+            String url = host.base + conversation;
+            assertEquals(200, send(http, url, "GET", bob, null).statusCode());
+            assertEquals(progressBeforeRestart, JSON.readTree(send(http, url + progressRequest, "GET", bob, null).body()));
+            var restartedService = new CarlService(data, Clock.systemUTC());
+            var restartedPlans = new com.kof22.carlai.domain.PlanLifecycle(restartedService);
+            assertEquals(beforeRestart, JSON.valueToTree(restartedPlans.get("bob", plan)));
+            assertEquals(restartCalls, provider.requests.size(), "Durable reads must not replay inference");
+            assertConcurrentFamilyRevision(provider, http, host.base, conversation, alice, plan, step, date);
+            debts.terms("alice", debt, date, new java.math.BigDecimal("900.00"), new java.math.BigDecimal("100.00"), java.math.BigDecimal.ZERO, java.math.BigDecimal.ZERO, java.math.BigDecimal.ZERO, "Updated dated human statement");
+            assertEquals(Boolean.TRUE, service.artifact("alice", source).get("stale"));
+            long refreshed = debts.compare(scope, UUID.randomUUID(), date, "USD", new java.math.BigDecimal("100.00"), 12, "Human reviewed updated budget");
+            var proposal = JSON.createObjectNode().put("operation", "PLAN_REBASE").put("plan", plan).put("expectedVersion", 6).put("sourceArtifact", refreshed).put("reason", "Updated statement");
+            var result = planTurn(provider, http, url, alice, proposal, "Rebase plan Family review plan version 6 using comparison " + refreshed + ".");
+            assertEquals(7, result.path("artifact").path("plan").path("plan").path("version").asInt(), result.toString());
+            assertEquals(refreshed, result.path("artifact").path("plan").path("plan").path("source_artifact_id").asLong());
+            assertEquals("DRAFT", result.path("artifact").path("plan").path("plan").path("state").asText());
+            var current = JSON.valueToTree(restartedPlans.get("bob", plan));
+            assertEquals(7, current.path("history").size());
+            for(int i = 0; i < 5; i++)
+            {
+               assertEquals(beforeRestart.path("history").get(i), current.path("history").get(i), "Old revisions are immutable");
+            }
+            com.kof22.agentadmin.CarlFamilyPlanQqqAssertions.assertCurrent(configuration, host.components, data, jwk, key, privateKey, current, false);
+            try(var c = data.getConnection(); var sql = c.createStatement(); var rows = sql.executeQuery("SELECT version,actor_id FROM carl_plan_version WHERE plan_id=" + plan + " ORDER BY version"))
+            {
+               long[] actors = {1, 1, 2, 2, 1, 1, 1};
+               for(int version = 1; version <= actors.length; version++)
+               {
+                  assertTrue(rows.next());
+                  assertEquals(version, rows.getInt(1));
+                  assertEquals(actors[version - 1], rows.getLong(2), "Verified transport actor owns the durable revision");
+               }
+               assertTrue(!rows.next());
+            }
+            try(var c = data.getConnection(); var sql = c.createStatement(); var rows = sql.executeQuery("SELECT (SELECT count(*) FROM carl_transaction)+(SELECT count(*) FROM carl_work_item)"))
+            {
+               assertTrue(rows.next());
+               assertEquals(0, rows.getLong(1), "Conversation task completion must not create a financial transaction or vendor operation");
+            }
+            try(var c = data.getConnection(); var sql = c.createStatement())
+            {
+               sql.execute("UPDATE carl_permission SET details=false WHERE member_id=2 AND domain='FINANCE'");
+            }
+            int revokedCalls = provider.requests.size();
+            assertEquals(404, send(http, url + progressRequest, "GET", bob, null).statusCode());
+            assertEquals(404, send(http, url + "/workflows/conversation/" + UUID.randomUUID(), "PUT", bob, JSON.writeValueAsString(Map.of("input", Map.of("message", "Show progress for plan Family review plan version 7.")))).statusCode());
+            org.junit.jupiter.api.Assertions.assertThrows(SecurityException.class, () -> restartedPlans.get("bob", plan));
+            org.junit.jupiter.api.Assertions.assertThrows(SecurityException.class, () -> restartedPlans.get("alice", plan));
+            com.kof22.agentadmin.CarlFamilyPlanQqqAssertions.assertCurrent(configuration, host.components, data, jwk, key, privateKey, current, true);
+            assertEquals(revokedCalls, provider.requests.size(), "Revoked member cannot retrieve old versions or invoke inference");
+         }
+         assertEquals(9, provider.requests.size(), "Bounded synthetic SDK requests, not live model acceptance");
+         assertTrue(provider.replies.isEmpty());
+      }
+   }
+
+
+
+   private static void assertFamilyHistory(JsonNode saved, long source, String step, LocalDate due) throws Exception
+   {
+      assertEquals(5, saved.path("plan").path("version").asInt());
+      assertEquals(source, saved.path("plan").path("source_artifact_id").asLong());
+      assertEquals(5, saved.path("history").size());
+      var task = saved.path("steps").get(0);
+      assertEquals(step, task.path("id").asText());
+      assertEquals(2, task.path("assignee_id").asInt());
+      assertEquals(due.toString(), task.path("due_date").asText());
+      assertEquals("Home", task.path("location").asText());
+      assertEquals("REPORTED_COMPLETE", task.path("status").asText());
+      assertTrue(task.path("evidence_record_id").isNull());
+      var blocked = JSON.readTree(saved.path("history").get(2).path("snapshot").asText()).path("steps").get(0);
+      assertEquals("BLOCKED", blocked.path("status").asText());
+      assertEquals("I am blocked waiting for the checklist", blocked.path("checkin").asText());
+      var completed = JSON.readTree(saved.path("history").get(3).path("snapshot").asText()).path("steps").get(0);
+      assertEquals("REPORTED_COMPLETE", completed.path("status").asText());
+      assertEquals("I completed the checklist review", completed.path("checkin").asText());
+   }
+
+
+
+   private static void assertConcurrentFamilyRevision(Provider provider, HttpClient http, String base, String conversation, String alice, long plan, String step, LocalDate date) throws Exception
+   {
+      String secondConversation = base + "/conversations/" + UUID.randomUUID();
+      assertEquals(200, send(http, secondConversation, "PUT", alice, "{\"shared\":true,\"participants\":[\"1\",\"2\"]}").statusCode());
+      var entered = new java.util.concurrent.CountDownLatch(1);
+      var release = new java.util.concurrent.CountDownLatch(1);
+      provider.beforeResponse = () ->
+      {
+         entered.countDown();
+         try
+         {
+            if(!release.await(1, java.util.concurrent.TimeUnit.SECONDS))
+            {
+               throw new AssertionError("Contending request did not start within the SDK bound");
+            }
+         }
+         catch(InterruptedException e)
+         {
+            Thread.currentThread().interrupt();
+            throw new AssertionError(e);
+         }
+      };
+      var proposal = JSON.createObjectNode().put("operation", "PLAN_STEP").put("plan", plan).put("expectedVersion", 5).put("step", step).put("title", "Review family checklist").put("assignee", 2).put("due", date.plusDays(3).toString()).put("location", "Kitchen").putNull("dependency").put("reason", "Human revised task");
+      provider.enqueue("end_turn", proposal.toString());
+      String first = base + conversation + "/workflows/conversation/" + UUID.randomUUID();
+      String firstInput = JSON.writeValueAsString(Map.of("input", Map.of("message", "Revise step Review family checklist in plan Family review plan version 5; assign to Synthetic B; due " + date.plusDays(3) + "; location Kitchen.")));
+      assertEquals(200, send(http, first, "PUT", alice, firstInput).statusCode());
+      assertTrue(entered.await(1, java.util.concurrent.TimeUnit.SECONDS));
+      proposal.put("due", date.plusDays(4).toString()).put("location", "Office");
+      provider.enqueue("end_turn", proposal.toString());
+      String second = secondConversation + "/workflows/conversation/" + UUID.randomUUID();
+      try
+      {
+         assertEquals(200, send(http, second, "PUT", alice, JSON.writeValueAsString(Map.of("input", Map.of("message", "Revise step Review family checklist in plan Family review plan version 5; assign to Synthetic B; due " + date.plusDays(4) + "; location Office.")))).statusCode());
+      }
+      finally
+      {
+         release.countDown();
+      }
+      var firstResult = await(http, first, alice);
+      var secondResult = await(http, second, alice);
+      boolean firstWon = firstResult.path("artifact").path("kind").asText().equals("PLAN_STEP");
+      var winner = firstWon ? firstResult : secondResult;
+      var loser = firstWon ? secondResult : firstResult;
+      assertEquals("PLAN_STEP", winner.path("artifact").path("kind").asText(), winner.toString());
+      assertEquals(6, winner.path("artifact").path("plan").path("plan").path("version").asInt());
+      var task = winner.path("artifact").path("plan").path("steps").get(0);
+      assertEquals(firstWon ? "Kitchen" : "Office", task.path("location").asText());
+      assertEquals(date.plusDays(firstWon ? 3 : 4).toString(), task.path("due_date").asText());
+      assertTrue(loser.path("artifact").path("kind").asText().equals("CLARIFICATION") || loser.path("status").asText().equals("UNKNOWN"), loser.toString());
+      int calls = provider.requests.size();
+      assertEquals(firstResult, JSON.readTree(send(http, first, "PUT", alice, firstInput).body()));
+      assertEquals(calls, provider.requests.size());
+   }
+
+   private static final class FamilyHost implements AutoCloseable
+   {
+      private final com.kof22.agentadmin.bootstrap.NativeAgentRuntime.Components components;
+      private final com.kof22.agentcore.runtime.AgentRuntime inference;
+      private final ClientService clients;
+      private final Javalin server;
+      private final String base;
+
+      private FamilyHost(com.kof22.agentadmin.configuration.NativeAgentConfiguration configuration, Jwk jwk, javax.sql.DataSource data) throws Exception
+      {
+         components = AgentApplication.components();
+         components.validate(configuration);
+         inference = components.runtime(configuration);
+         var access = components.familyAccess();
+         var identity = new ClientIdentity(ISSUER, "carl-family", access, ignored -> jwk);
+         var store = new ClientStore(data);
+         clients = new ClientService(store, org.mockito.Mockito.mock(SessionManager.class), identity, access, DataProtection.defaults(), Duration.ofSeconds(10), components.clientWorkflows(com.kof22.agentadmin.bootstrap.NativeStores.create(configuration.database())));
+         int port;
+         try(var socket = new ServerSocket(0))
+         {
+            port = socket.getLocalPort();
+         }
+         String origin = "http://127.0.0.1:" + port;
+         var servlet = new ClientServlet(identity, store, clients, origin, () -> true);
+         server = Javalin.create(config -> config.jetty.modifyServletContextHandler(handler -> handler.addServlet(new ServletHolder(servlet), "/api/agent/v1/*"))).start("127.0.0.1", port);
+         base = origin + "/api/agent/v1";
+      }
+
+
+
+      @Override
+      public void close() throws Exception
+      {
+         server.stop();
+         clients.close();
+         inference.close();
+      }
+   }
+
    private static long[] assertPlanLifecycle(Provider provider, HttpClient http, String base, String conversation, String alice, CarlService service, boolean negative) throws Exception
    {
       var date = LocalDate.now(java.time.ZoneId.of("America/Chicago"));
