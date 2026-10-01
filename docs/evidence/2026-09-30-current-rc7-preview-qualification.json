@@ -13,7 +13,7 @@
     "backendPublishedRc": false,
     "frontend": "1.0.0-RC.7",
     "frontendRevision": "f65cf6bfbd1583538afe1b66f8764812980880c3",
-    "upstreamFinalFoundationGate": "PENDING independent guarded full verifier"
+    "upstreamFinalFoundationGate": "PASS: independent prescribed guarded full verifier, source/security and ten browser checks; docs/verification/2026-09-30-foundation-rc7-final-full.json in foundation repository. Matching core/adapter ZIP entries; independently rebuilt UI has different generated build ID and separately passed frontend/browser checks."
   },
   "maven": {
     "command": "JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home mvn -o -B -ntp -Dmaven.repo.local=/Users/james.maes/.codex/work/carl-development-m2 clean verify",

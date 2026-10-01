@@ -110,3 +110,7 @@ No live account connection, personal data, external financial action or deployme
 - [x] Sign and independently verify current source commitbd3874d; current source/documentation scan finds zero secrets.
 - [ ] Unblock delivery credentials: SSH agent currently refuses signing and existing HTTPS OAuth lacksworkflow scope. Both push attempts failed without remote branch change.
 - [ ] Qualify a supported upstream native state-provider shutdown correction; do not install the earlier isolated proposal or bypass it with daemon/thread/process tricks.
+
+- [x] Independently qualify final foundation source/frontend/core/adapter/generated/package/browser/security gates and merge reviewedPR15 through successful hosted checks.
+- [ ] Verify main0.5.0-SNAPSHOT candidate/signatures/fresh remote consumer in run36811134831; work is delegated and current publication remains pending.
+- [ ] Wait for and qualify a non-snapshot QQQ/Quick Search dependency closure beforeRC/stable; timestamped snapshots remain rejected by unchangedrelease enforcement.
