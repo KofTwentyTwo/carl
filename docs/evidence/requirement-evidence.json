@@ -7,7 +7,7 @@
   "FND-02": {
     "status": "BLOCKED",
     "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; config/release/foundation.json",
-    "limitation": "Current parent0.5.0-SNAPSHOT is a locally qualified development closure. Immutable0.4.1 remains the independently published baseline. Matching remote0.5 publication and fresh credentialed consumer/hosted access remain blocked; local install is not publication."
+    "limitation": "Current parent0.5.0-SNAPSHOT is a locally qualified development closure. Immutable0.4.1 remains the independently published baseline. Foundation PR15 is merged; main snapshot publication is pending in run36811134831. Fresh credentialed consumer/hosted access and a matching immutable release remain blocked; local install is not publication."
   },
   "FND-03": {
     "status": "PASS",
@@ -636,8 +636,8 @@
   },
   "UX-04": {
     "status": "PASS",
-    "evidence": "DashboardFactsTest; CarlSavedBalanceSheetsTest; CarlSavedBalanceSheetNativeTest",
-    "limitation": "Controlled selected saved balance sheets retain as-of/freshness/currency/gaps/double-count behavior; duplicate labels/current-source revocation pass actual native GET/widget HTTP. Matching RC4 v1/browser is separate."
+    "evidence": "DashboardFactsTest; CarlSavedBalanceSheetsTest; CarlSavedBalanceSheetNativeTest; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Controlled selected saved balance sheets retain as-of/freshness/currency/gaps/double-count behavior. Duplicate labels and current-source revocation pass native HTTP and matching RC7 packaged browser checks. Live household source qualification is separate."
   },
   "UX-05": {
     "status": "PASS",
@@ -646,8 +646,8 @@
   },
   "UX-06": {
     "status": "PASS",
-    "evidence": "CarlDashboardHtmlTest; DashboardFactsTest; native-dashboard-development-qualification.json",
-    "limitation": "Exact source figures reconcile bounded Sankey links and accessible tables, including refunds/surplus/deficit and separate currencies. Final packaged rendering is separate."
+    "evidence": "CarlDashboardHtmlTest; DashboardFactsTest; native-dashboard-development-qualification.json; docs/evidence/2026-09-30-current-rc7-preview-qualification.json",
+    "limitation": "Exact source figures reconcile bounded Sankey links and accessible tables, including refunds/surplus/deficit and separate currencies. Matching RC7 packaged desktop/narrow rendering and visual review pass; live household coverage is separate."
   },
   "UX-07": {
     "status": "PASS",
@@ -667,7 +667,7 @@
   "UX-10": {
     "status": "BLOCKED",
     "evidence": "docs/evidence/2026-09-30-current-rc7-preview-qualification.json; foundation final prescribed verifier",
-    "limitation": "Current consumer377-test,59 matching packaged checks and fresh source/distribution/container scans pass unchanged floors. Independent final foundation full gate and authorized protected remote delivery remain pending; live/deployed states are separate."
+    "limitation": "Current consumer377-test,59 matching packaged checks and fresh source/distribution/container scans pass unchanged floors. Independent full foundation qualification and protected PR15 checks pass; PR15 is merged. Main snapshot publication and Carl credentialed hosted delivery remain pending. Live/deployed states are separate."
   },
   "UX-11": {
     "status": "BLOCKED",
