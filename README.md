@@ -13,6 +13,8 @@ The current parent is `com.kof22:kof22-agent-parent:0.5.0-SNAPSHOT`, now [indepe
 
 Run packaged browser checks with `npm ci --prefix scripts/e2e`, `npx --prefix scripts/e2e playwright install chromium`, then `bash scripts/verify-browser.sh` after the Maven build. The fixture uses synthetic PostgreSQL records and local TLS/OIDC; ordinary checks use a disconnected model. Set `CARL_QUALIFIED_DISTRIBUTION` to the reviewed distribution and run `scripts/verify-dashboard-browser.sh` and `scripts/verify-talk-browser.sh` for the new UI checks; `scripts/verify-qbits-browser.sh` checks actual OpenSearch and Artemis integration. Live synthetic preview inference is separately opt-in and requires the already-authorized credential through `ANTHROPIC_API_KEY`; never paste it into source or configuration. Optional `MAVEN_SETTINGS` and `MAVEN_REPO` select an isolated qualified development cache.
 
+Run the [representative model evaluation](docs/EVALUATION.md) against the frozen reviewed package. Controlled tooling is qualified; real model cases require an explicitly selected model and privately supplied authorized credential.
+
 See [operator instructions](docs/OPERATOR-RUNBOOK.md), [family API integration](docs/CLIENT-INTEGRATION.md), and [acceptance evidence](docs/ACCEPTANCE.md). Do not connect personal sources or expose this development application publicly until the outstanding acceptance and deployment work is qualified.
 
 The [build journal drafts](docs/blog/README.md) document Carl’s creation using synthetic examples and explicit qualification boundaries.
