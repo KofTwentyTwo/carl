@@ -203,14 +203,37 @@ public final class CarlConversation implements AutoCloseable
       {
          return publicOutcome(null, "FAILED", "CAPACITY", "Carl is at its configured model capacity. No artifact was generated.");
       }
+      var writing = new java.util.concurrent.atomic.AtomicBoolean();
       try
       {
-         return execute(context, request, input, authorized);
+         return execute(context, request, input, authorized, writing);
+      }
+      catch(com.kof22.agentcore.runtime.AgentRuntimeException | InvalidModelOutput failure)
+      {
+         var failed = failedBeforeWrite(failure, writing.get());
+         if(failed == null)
+         {
+            throw failure;
+         }
+         return failed;
       }
       finally
       {
          admission.release();
       }
+   }
+
+
+
+   /** A bounded failure before any record could be saved is a definite FAILED outcome; afterwards it stays uncertain. */
+   static Outcome failedBeforeWrite(RuntimeException failure, boolean writing)
+   {
+      if(writing)
+      {
+         return null;
+      }
+      String code = WorkflowFailures.code(failure);
+      return publicOutcome(null, "FAILED", code.toUpperCase(java.util.Locale.ROOT), WorkflowFailures.message(code));
    }
 
 
@@ -223,7 +246,7 @@ public final class CarlConversation implements AutoCloseable
 
 
 
-   private Outcome execute(ClientWorkflow.Context context, UUID request, JsonNode input, Supplier<CarlService.Scope> authorized)
+   private Outcome execute(ClientWorkflow.Context context, UUID request, JsonNode input, Supplier<CarlService.Scope> authorized, java.util.concurrent.atomic.AtomicBoolean writing)
    {
       var budget = new TurnBudget(limits, usage ->
       {
@@ -285,14 +308,17 @@ public final class CarlConversation implements AutoCloseable
       UUID artifactRequest = UUID.nameUUIDFromBytes(("carl-conversation-artifact:" + request).getBytes(java.nio.charset.StandardCharsets.UTF_8));
       if(CarlGoalConversation.supports(operation))
       {
+         writing.set(true);
          return new CarlGoalConversation(service).execute(authorized.get(), proposal, message(input));
       }
       if(CarlPlanConversation.supports(operation))
       {
+         writing.set(true);
          return plans.execute(context, request, proposal, message(input), authorized);
       }
       if(CarlFinancialConversation.supports(operation))
       {
+         writing.set(true);
          return new CarlFinancialConversation(service).execute(proposal, history, artifactRequest, authorized);
       }
       if(operation.equals("REPORT"))
@@ -310,6 +336,7 @@ public final class CarlConversation implements AutoCloseable
             return protection.sanitize(narrative);
          };
          scope = authorized.get();
+         writing.set(true);
          artifact = focus.equals("HOUSEHOLD")
             ? service.generateReport(scope, artifactRequest, from, through, narrator)
             : new FocusedReports(service).generate(scope, artifactRequest, FocusedReports.Focus.valueOf(focus), from, through, narrator);
@@ -319,26 +346,29 @@ public final class CarlConversation implements AutoCloseable
          exact(proposal, Set.of("operation", "workId", "purpose"));
          if(!proposal.path("workId").isIntegralNumber() || !proposal.get("workId").canConvertToLong())
          {
-            throw new IllegalArgumentException("Invalid work reference");
+            throw new InvalidModelOutput("Invalid work reference");
          }
          long workId = proposal.get("workId").longValue();
          if(work.stream().noneMatch(row -> CarlService.number(row, "id") == workId))
          {
             throw new SecurityException("Work unavailable");
          }
+         writing.set(true);
          artifact = service.generateDraft(authorized.get(), artifactRequest, workId, text(proposal, "purpose"));
       }
       else if(operation.equals("FINANCIAL_PLAN") || operation.equals("FINANCIAL_COMPARISON"))
       {
+         writing.set(true);
          return financial(proposal, history, message(input), artifactRequest, authorized, budget);
       }
       else if(operation.equals("PURCHASE"))
       {
+         writing.set(true);
          return purchase(proposal, history, artifactRequest, authorized);
       }
       else
       {
-         throw new IllegalArgumentException("Unsupported conversational proposal");
+         throw new InvalidModelOutput("Unsupported conversational proposal");
       }
       var saved = service.artifact(authorized.get().principal(), artifact);
       boolean partial = saved.get("narration_state").equals("FAILED") || saved.get("status_label").toString().startsWith("Incomplete");
@@ -910,7 +940,7 @@ public final class CarlConversation implements AutoCloseable
       }
       catch(java.io.IOException malformed)
       {
-         throw new IllegalArgumentException("Invalid conversational output");
+         throw new InvalidModelOutput("Invalid conversational output");
       }
    }
 
@@ -920,7 +950,7 @@ public final class CarlConversation implements AutoCloseable
    {
       if(!input.path(key).isTextual() || input.get(key).asText().isBlank())
       {
-         throw new IllegalArgumentException("Invalid proposal field");
+         throw new InvalidModelOutput("Invalid proposal field");
       }
       return input.get(key).asText();
    }
@@ -940,7 +970,7 @@ public final class CarlConversation implements AutoCloseable
    {
       if(!input.isObject() || !keys(input).equals(fields))
       {
-         throw new IllegalArgumentException("Invalid proposal shape");
+         throw new InvalidModelOutput("Invalid proposal shape");
       }
    }
 }
