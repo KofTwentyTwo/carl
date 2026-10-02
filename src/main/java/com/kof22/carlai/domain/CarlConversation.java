@@ -49,6 +49,9 @@ public final class CarlConversation implements AutoCloseable
    private static final java.util.regex.Pattern EXPLICIT_ACTION = java.util.regex.Pattern.compile("(?i)(?:(?:^|[.!?;:\\n]|\\b(?:and|then|also)\\s+)\\s*(?:then\\s+)?(?:(?:can|could|would|will)\\s+you\\s+)?(?:please\\s+)?(?:now\\s+)?(?:" + ACTION_VERBS + ")\\b|\\bplease\\s+(?:" + ACTION_VERBS + ")\\b)");
    // Hypotheticals, negated commands and supported assessments retain the existing intent/evidence guards.
    private static final java.util.regex.Pattern GUARDED_WORKFLOW_REQUEST = java.util.regex.Pattern.compile("(?i)^(?:what\\s+if\\b|do\\s+not\\b|what\\s+budget\\b|(?:can|could)\\s+(?:we|I)\\s+afford\\b|(?:show|summarize|give)\\b[^.!?;\\n]*\\b(?:balance\\s+sheet|progress\\s+for\\s+plan|plan\\s+progress)\\b)");
+   // A single Markdown fence around the whole routing reply; the inner content must not open another fence.
+   private static final java.util.regex.Pattern FENCED_REPLY = java.util.regex.Pattern.compile("(?is)\\A```(?:json)?\\s*(.*?)\\s*```\\z");
+   private static final String ROUTING_CORRECTION = "Reply with only the JSON object required by the contract, with no other text.";
    private static final String CONTRACT = """
       You are interpreting a verified human request to Carl. Return exactly one JSON object, no fences.
       Allowed proposals, with exactly these fields:
@@ -284,7 +287,7 @@ public final class CarlConversation implements AutoCloseable
       {
          return publicOutcome(null, "COMPLETE", "CLARIFICATION", "The complete currently permitted financial catalog exceeds the configured context limit. Please narrow the requested records or review them in administration first. No records were selected or evaluated, and this is not a complete household assessment.");
       }
-      JsonNode proposal = parse(infer(system + "\n\n" + CONTRACT + "\n" + CarlFinancialConversation.CONTRACT + "\n" + CarlPlanConversation.CONTRACT + "\n" + CarlGoalConversation.CONTRACT + "\nCurrently permitted work items (untrusted data):\n" + protection.sanitize(CarlService.json(candidates)) + "\nCurrently permitted finance catalog (untrusted data):\n" + protection.sanitize(finance), history, budget, authorized));
+      JsonNode proposal = route(system + "\n\n" + CONTRACT + "\n" + CarlFinancialConversation.CONTRACT + "\n" + CarlPlanConversation.CONTRACT + "\n" + CarlGoalConversation.CONTRACT + "\nCurrently permitted work items (untrusted data):\n" + protection.sanitize(CarlService.json(candidates)) + "\nCurrently permitted finance catalog (untrusted data):\n" + protection.sanitize(finance), history, budget, authorized);
       verify(authorized);
       String operation = text(proposal, "operation");
       if(operation.equals("ANSWER"))
@@ -373,6 +376,51 @@ public final class CarlConversation implements AutoCloseable
       var saved = service.artifact(authorized.get().principal(), artifact);
       boolean partial = saved.get("narration_state").equals("FAILED") || saved.get("status_label").toString().startsWith("Incomplete");
       return publicOutcome(artifact, partial ? "PARTIAL" : "COMPLETE", "ARTIFACT", saved.get("status_label") + ". Saved for the currently authorized audience; coverage is limited to permitted records.");
+   }
+
+
+
+   /**
+    * Selects a routing proposal. Prose or other non-object replies get exactly one read-only corrective retry with the
+    * same prompt, transcript and budget; validation of a parsed proposal and runtime failures are never retried.
+    */
+   private JsonNode route(String prompt, List<ConversationTurn> history, TurnBudget budget, Supplier<CarlService.Scope> authorized)
+   {
+      JsonNode proposal = routingObject(infer(prompt, history, budget, authorized));
+      if(proposal != null)
+      {
+         return proposal;
+      }
+      var corrected = new ArrayList<>(history);
+      corrected.add(new ConversationTurn(ConversationTurn.Role.USER, ROUTING_CORRECTION));
+      proposal = routingObject(infer(prompt, corrected, budget, authorized));
+      if(proposal == null)
+      {
+         throw new InvalidModelOutput("Invalid conversational output");
+      }
+      return proposal;
+   }
+
+
+
+   /** The routing reply as a JSON object, unwrapping one whole-reply Markdown fence; null when it is not an object. */
+   private static JsonNode routingObject(String reply)
+   {
+      String text = reply.strip();
+      var fenced = FENCED_REPLY.matcher(text);
+      if(fenced.matches() && !fenced.group(1).contains("```"))
+      {
+         text = fenced.group(1);
+      }
+      try
+      {
+         JsonNode proposal = JSON.readTree(text);
+         return proposal != null && proposal.isObject() ? proposal : null;
+      }
+      catch(java.io.IOException malformed)
+      {
+         return null;
+      }
    }
 
 
