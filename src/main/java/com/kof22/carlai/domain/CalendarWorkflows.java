@@ -9,7 +9,9 @@ import javax.sql.DataSource;
 
 import java.net.URI;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -17,11 +19,15 @@ import java.util.concurrent.Semaphore;
 import java.util.function.Function;
 
 import com.kof22.carlai.calendar.CalendarPublicationService;
+import com.kof22.carlai.calendar.ReminderStatus;
 
 
 /** Explicit calendar operations over fixed operator-configured collections and verified plan authority. */
 public final class CalendarWorkflows
 {
+   /** Bounds provider reads for one agenda window; remaining reminders are reported, never silently dropped. */
+   static final int REMINDER_READ_LIMIT = 50;
+
    private final Map<String, Function<String, CalendarPublicationService>> factories;
    private final Map<String, CalendarAgendaService> agendas;
    private final CarlService service;
@@ -155,7 +161,7 @@ public final class CalendarWorkflows
 
 
 
-   /** Human-initiated read-only provider synchronization, with explicit bounded dates. */
+   /** Human-initiated read-only provider synchronization, with explicit bounded dates; Carl-published reminders due in the window are read back alongside events. */
    public Map<String, Object> synchronizeAgenda(String principal, String collection, UUID request, java.time.LocalDate from, java.time.LocalDate through)
    {
       var agenda = agendas.get(collection);
@@ -169,12 +175,81 @@ public final class CalendarWorkflows
       }
       try
       {
-         return agenda.synchronize(principal, request, from, through);
+         var events = agenda.synchronize(principal, request, from, through);
+         var reminders = factories.get("reminders");
+         if(reminders == null || service == null)
+         {
+            return events;
+         }
+         var result = new LinkedHashMap<String, Object>(events);
+         result.put("reminders", readBackReminders(principal, reminders, from, through));
+         return result;
       }
       finally
       {
          capacity.release();
       }
+   }
+
+
+
+   /** Reads back only Carl-published, unretired VTODO mappings in plans the caller can currently see. */
+   private Map<String, Object> readBackReminders(String principal, Function<String, CalendarPublicationService> factory, java.time.LocalDate from, java.time.LocalDate through)
+   {
+      var items = new ArrayList<Map<String, Object>>();
+      boolean truncated;
+      try(var publication = factory.apply(principal))
+      {
+         var due = service.transaction(c ->
+         {
+            CarlService.manager(c, principal, "CALENDAR");
+            return CarlService.rows(c, "SELECT m.plan_id,m.step_id,p.version FROM carl_calendar_mapping m JOIN carl_plan_view p ON p.id=m.plan_id AND p.principal=? JOIN carl_plan_step s ON s.id=m.step_id AND s.plan_id=m.plan_id WHERE m.collection_key=? AND m.component='VTODO' AND NOT m.retired AND m.last_success IS NOT NULL AND s.due_date BETWEEN ? AND ? ORDER BY s.due_date,m.step_id LIMIT ?", principal, publication.collectionKey(), from, through, REMINDER_READ_LIMIT + 1);
+         });
+         truncated = due.size() > REMINDER_READ_LIMIT;
+         for(var row : due.subList(0, Math.min(due.size(), REMINDER_READ_LIMIT)))
+         {
+            items.add(readBack(principal, publication, CarlService.number(row, "plan_id"), UUID.fromString(String.valueOf(row.get("step_id"))), Math.toIntExact(CarlService.number(row, "version"))));
+         }
+      }
+      var result = new LinkedHashMap<String, Object>();
+      result.put("collection", "reminders");
+      result.put("items", List.copyOf(items));
+      result.put("truncated", truncated);
+      result.put("meaning", "Published reminders due in this window were read back from the shared reminders collection. Reported completion is an untrusted provider observation for human review, not verified financial completion.");
+      return result;
+   }
+
+
+
+   private Map<String, Object> readBack(String principal, CalendarPublicationService publication, long plan, UUID step, int version)
+   {
+      var item = new LinkedHashMap<String, Object>();
+      item.put("plan", plan);
+      item.put("step", step.toString());
+      try
+      {
+         var observed = publication.synchronize(plan, step, version);
+         item.put("state", observed.state());
+         if(observed.calendar() != null)
+         {
+            try
+            {
+               String remote = ReminderStatus.decode(step, observed.calendar()).state();
+               item.put("reminderObservation", new ReminderObservations(service).capture(principal, plan, step, version, observed));
+               item.put("remoteState", remote);
+            }
+            catch(IllegalArgumentException invalid)
+            {
+               item.put("reviewState", "UNSUPPORTED_OR_CHANGED_OBSERVATION");
+            }
+         }
+      }
+      catch(SQLException | SecurityException | IllegalArgumentException | IllegalStateException unavailable)
+      {
+         // Authority, plan revision or capacity changed for this item; the remaining reminders are still read.
+         item.put("state", "NOT_READ");
+      }
+      return item;
    }
 
 
