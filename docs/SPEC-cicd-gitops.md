@@ -1,6 +1,6 @@
 # Carl CI/CD, Liquibase and GitOps design
 
-October 1, 2026 — owner decisions incorporated; design review pending.
+October 1, 2026 — owner decisions incorporated; implementation and qualification in progress.
 
 Carl remains one deployable agent application, including its domain model,
 reasoning, native QQQ interface and family API. CircleCI/Munitor will verify its
@@ -8,7 +8,7 @@ source and publish an immutable image set to GHCR. A private
 `KofTwentyTwo/carl-CD` repository will hold Kustomize environments registered in
 the existing `k8s-app-of-apps` configuration. Argo CD will reconcile qualified
 image digests automatically for development, RC/staging and production. The
-first rollout uses only the fictional household and approved Authentik testers.
+first rollout requires an explicitly approved private data scope and approved Authentik users. The owner later superseded the initial synthetic-data rollout direction: fictional bootstrap records or sign-in must not be offered as a functioning deployment. Real household exports remain outside public source/CI artifacts. Local QA is separately authorized; Authentik is deferred locally, not bypassed for internet rollout.
 
 | Environment | Namespace on k8s-prod | Authenticated hostname |
 | --- | --- | --- |

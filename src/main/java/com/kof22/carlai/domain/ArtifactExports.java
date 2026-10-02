@@ -109,11 +109,13 @@ public final class ArtifactExports
    {
       return service.transaction(c ->
       {
+         var actor = CarlService.member(c, principal);
          var row = checked(c, principal, request);
          if(!row.get("format").equals(format.name()))
          {
             throw new SecurityException("Report download unavailable");
          }
+         NativeReadScope.check(actor);
          return (byte[]) row.get("content");
       });
    }

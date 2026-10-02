@@ -19,6 +19,7 @@ import com.kingsrook.qqq.backend.core.model.metadata.processes.QBackendStepMetaD
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QComponentType;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QFrontendComponentMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QFrontendStepMetaData;
+import com.kingsrook.qqq.backend.core.model.metadata.processes.QFunctionInputMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData;
 import com.kof22.agentadmin.OperatorPermissions;
 import com.kof22.agentcore.security.Role;
@@ -110,11 +111,20 @@ final class PlanProcesses
          {
             var loaded = plans.get(CarlMetadata.principal(), Long.parseLong(in.getValueString("planId")));
             var plan = (java.util.Map<?, ?>) loaded.get("plan");
+            // The initial selector remains editable; the reviewed target is protected server state.
+            out.addValue("reviewedPlanId", ((Number) plan.get("id")).longValue());
             out.addValue("expectedVersion", ((Number) plan.get("version")).intValue());
             out.addValue("taskId", UUID.randomUUID().toString());
             out.addValue("summary", plan.get("title") + " — " + plan.get("state") + ". Source assumptions stale: " + plan.get("source_stale") + ". Current tasks: " + loaded.get("steps"));
+         })).withInputData(new QFunctionInputMetaData().withFieldList(List.of(field("reviewedPlanId", QFieldType.LONG, false).withIsEditable(false), field("expectedVersion", QFieldType.INTEGER, false).withIsEditable(false), field("taskId", QFieldType.STRING, false).withIsEditable(false)))))
+         .withStep(details).withStep(new QBackendStepMetaData().withName("save").withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
+         {
+            if(Long.parseLong(in.getValueString("reviewedPlanId")) != Long.parseLong(in.getValueString("planId")))
+            {
+               throw new QException("Selected plan changed; reload the plan before reviewing it");
+            }
+            action.run(in, out);
          })))
-         .withStep(details).withStep(new QBackendStepMetaData().withName("save").withCode(new QCodeReferenceLambda<BackendStep>(action)))
          .withStep(new QFrontendStepMetaData().withName("result").withComponent(new QFrontendComponentMetaData().withType(QComponentType.VIEW_FORM)).withViewField(field("result", QFieldType.TEXT, false)));
       instance.addProcess(process);
       app.withChild(process);

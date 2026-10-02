@@ -36,7 +36,7 @@ final class CarlDashboardHtml
    static String render(String name, Map<String, Object> values)
    {
       JsonNode facts = JSON.valueToTree(values);
-      StringBuilder html = new StringBuilder("<section style='color:#203040;background:#fff;font-family:inherit;padding:8px'>");
+      StringBuilder html = new StringBuilder("<section style='color:#f5f5f5;background:#25282c;font-family:inherit;padding:8px'>");
       switch(name)
       {
          case "carlCashFlow", "carlIncomeExpense" -> flow(html, facts, name.equals("carlIncomeExpense"));
@@ -56,7 +56,7 @@ final class CarlDashboardHtml
 
    private static void flow(StringBuilder html, JsonNode facts, boolean chart)
    {
-      html.append("<p style='color:#526273'>").append(text(facts.path("from"))).append(" through ").append(text(facts.path("through"))).append(" · ").append(text(facts.path("currency"))).append(" · ").append(text(facts.path("displayZone"))).append("</p>");
+      html.append("<p style='color:#b8bdc5'>").append(text(facts.path("from"))).append(" through ").append(text(facts.path("through"))).append(" · ").append(text(facts.path("currency"))).append(" · ").append(text(facts.path("displayZone"))).append("</p>");
       html.append(TABLE).append("<caption>Exact accessible account movement totals</caption><thead><tr><th scope='col' style='text-align:right'>Inflows</th><th scope='col' style='text-align:right'>Outflows</th><th scope='col' style='text-align:right'>Net movement</th></tr></thead><tbody><tr>");
       for(String field : List.of("inflows", "outflows", "netMovement"))
       {
@@ -69,7 +69,11 @@ final class CarlDashboardHtml
          html.append("<td style='text-align:right;font-variant-numeric:tabular-nums'>").append(amount(facts.path(field), facts.path("currency"))).append("</td>");
       }
       html.append("</tr></tbody></table></div><p>Spending uses explicit EXPENSE classification, including credit-card purchases and their refunds; transfers/debt service/capital/unclassified movements are separate. This is partial record coverage and no tax treatment is inferred.</p>");
-      if(chart)
+      if(facts.path("inflows").isNull() || facts.path("outflows").isNull())
+      {
+         html.append("<p><strong>Unknown until account review.</strong> Imported source activity is present, but its account kind, ownership and liquidity are unqualified. Review the accounts before calculating cash totals or drawing the cash-flow chart.</p>");
+      }
+      else if(chart)
       {
          sankey(html, facts);
       }
@@ -85,6 +89,15 @@ final class CarlDashboardHtml
          for(JsonNode row : facts.path("nonCashAccountMovements"))
          {
             row(html, text(row.path("accountKind")), text(row.path("label")), text(row.path("direction")), amount(row.path("amount"), facts.path("currency")));
+         }
+         html.append("</tbody></table></div>");
+      }
+      if(!facts.path("unreviewedAccountMovements").isMissingNode() && !facts.path("unreviewedAccountMovements").isEmpty())
+      {
+         html.append(TABLE).append("<caption>Unreviewed account movements · cash treatment unknown</caption><thead><tr><th scope='col'>Source movement</th><th scope='col'>Direction</th><th scope='col' style='text-align:right'>Observed amount</th><th scope='col'>Records</th></tr></thead><tbody>");
+         for(JsonNode row : facts.path("unreviewedAccountMovements"))
+         {
+            row(html, text(row.path("label")), text(row.path("direction")), amount(row.path("amount"), facts.path("currency")), text(row.path("records")));
          }
          html.append("</tbody></table></div>");
       }
@@ -138,11 +151,11 @@ final class CarlDashboardHtml
       html.append("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 760' role='img' aria-label='Accessible account movements; exact currency amounts and classifications in the following table' style='width:100%;height:auto'><title>Income and expense flow</title><desc>Directional cash movements, not complete household income or available cash. Positive net movement and funding gaps balance the chart; they are not additional transactions. Widths are proportional to exact amounts, with small flows visible at a minimum one pixel.</desc>");
       if(denominator.signum() == 0)
       {
-         html.append("<text x='24' y='64' fill='#526273'>No non-zero accessible movements in this selection.</text>");
+         html.append("<text x='24' y='64' fill='#b8bdc5'>No non-zero accessible movements in this selection.</text>");
       }
       else
       {
-         html.append("<rect x='465' y='100' width='30' height='400' rx='5' fill='#203040'/><text x='480' y='35' text-anchor='middle' fill='#203040'>Account movements</text>");
+         html.append("<rect x='465' y='100' width='30' height='400' rx='3' fill='#0066cc'/><text x='480' y='35' text-anchor='middle' fill='#f5f5f5'>Account movements</text>");
          ribbons(html, incoming, denominator, true, facts.path("currency").asText());
          ribbons(html, outgoing, denominator, false, facts.path("currency").asText());
       }
@@ -162,10 +175,10 @@ final class CarlDashboardHtml
          double center = middle + width / 2;
          double outside = outsideStart + width / 2;
          outsideStart += Math.max(1, width) + 28;
-         String color = incoming ? "#15847b" : "#2563eb";
+         String color = incoming ? "#62c99e" : "#69b0ff";
          html.append("<rect x='").append(incoming ? "280" : "670").append("' y='").append(outside - width / 2).append("' width='10' height='").append(Math.max(1, width)).append("' fill='").append(color).append("'/>");
          html.append("<path d='M ").append(incoming ? "290 " : "495 ").append(incoming ? outside : center).append(incoming ? " C 365 " : " C 540 ").append(incoming ? outside : center).append(incoming ? " 415 " : " 615 ").append(incoming ? center : outside).append(incoming ? " 465 " : " 670 ").append(incoming ? center : outside).append("' fill='none' stroke='").append(color).append("' stroke-opacity='0.35' stroke-width='").append(Math.max(1, width)).append("'><title>").append(escape(row.label())).append(": ").append(escape(com.kof22.carlai.report.MoneyPresentation.format(row.amount(), currency))).append("</title></path>");
-         html.append("<text x='").append(incoming ? "12" : "690").append("' y='").append(outside - 5).append("' font-size='12' fill='#203040'>").append(escape(shortLabel(row.label()))).append("</text><text x='").append(incoming ? "270" : "948").append("' text-anchor='end' y='").append(outside + 12).append("' font-size='12' fill='#526273'>").append(escape(com.kof22.carlai.report.MoneyPresentation.format(row.amount(), currency))).append("</text>");
+         html.append("<text x='").append(incoming ? "12" : "690").append("' y='").append(outside - 5).append("' font-size='12' fill='#f5f5f5'>").append(escape(shortLabel(row.label()))).append("</text><text x='").append(incoming ? "270" : "948").append("' text-anchor='end' y='").append(outside + 12).append("' font-size='12' fill='#b8bdc5'>").append(escape(com.kof22.carlai.report.MoneyPresentation.format(row.amount(), currency))).append("</text>");
          middle += width;
       }
    }
@@ -224,7 +237,7 @@ final class CarlDashboardHtml
       html.append("<h3>").append(text(plan.path("title"))).append("</h3><p>Version ").append(text(plan.path("version"))).append(" · ").append(text(plan.path("state"))).append(" · updated ").append(text(plan.path("updated_at"))).append("</p>");
       if(plan.path("source_stale").asBoolean())
       {
-         html.append("<p style='color:#8c5b10;font-weight:600'>Source facts changed. Regenerate the comparison and explicitly rebase this plan before relying on its projections.</p>");
+         html.append("<p style='color:#ffc857;font-weight:600'>Source facts changed. Regenerate the comparison and explicitly rebase this plan before relying on its projections.</p>");
       }
       html.append(TABLE).append("<caption>Current explicit goal priorities (lower number first)</caption><thead><tr><th scope='col'>Goal</th><th scope='col'>Stage</th><th scope='col'>Priority</th><th scope='col'>Investment stage selected</th></tr></thead><tbody>");
       for(JsonNode goal : selected.path("currentGoals"))
@@ -273,14 +286,14 @@ final class CarlDashboardHtml
 
    private static void saved(StringBuilder html, JsonNode selected)
    {
-      html.append("<p>Saved output ").append(text(selected.path("id"))).append(" · ").append(text(selected.path("created_at"))).append(" · ").append(text(selected.path("status_label"))).append(" · ").append(selected.path("stale").asBoolean() ? "<strong style='color:#8c5b10'>Stale sources; refresh explicitly</strong>" : "Current sources").append("</p><p>").append(text(selected.path("limitations"))).append("</p>");
+      html.append("<p>Saved output ").append(text(selected.path("id"))).append(" · ").append(text(selected.path("created_at"))).append(" · ").append(text(selected.path("status_label"))).append(" · ").append(selected.path("stale").asBoolean() ? "<strong style='color:#ffc857'>Stale sources; refresh explicitly</strong>" : "Current sources").append("</p><p>").append(text(selected.path("limitations"))).append("</p>");
    }
 
 
 
    private static void footer(StringBuilder html, JsonNode facts)
    {
-      html.append("<p style='font-size:12px;color:#526273'>").append(text(facts.path("scope"))).append(" · Generated ").append(text(facts.path("generatedAt"))).append(".</p>");
+      html.append("<p style='font-size:12px;color:#b8bdc5'>").append(text(facts.path("scope"))).append(" · Generated ").append(text(facts.path("generatedAt"))).append(".</p>");
    }
 
 
@@ -289,7 +302,7 @@ final class CarlDashboardHtml
    {
       if(gaps.isArray() && !gaps.isEmpty())
       {
-         html.append("<div style='border-left:3px solid #b7791f;padding:8px 12px;margin:16px 0'><strong>Information gaps</strong><ul>");
+         html.append("<div style='border-left:3px solid #ffc857;padding:8px 12px;margin:16px 0'><strong>Information gaps</strong><ul>");
          gaps.forEach(gap -> html.append("<li>").append(text(gap)).append("</li>"));
          html.append("</ul></div>");
       }
@@ -302,7 +315,7 @@ final class CarlDashboardHtml
       html.append("<tr>");
       for(String column : columns)
       {
-         html.append("<td style='padding:8px 6px;border-bottom:1px solid #e2e8f0").append(column.startsWith("<span data-carl-money") ? ";text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap" : "").append("'>").append(column).append("</td>");
+         html.append("<td style='padding:8px 6px;border-bottom:1px solid #41464d").append(column.startsWith("<span data-carl-money") ? ";text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap" : "").append("'>").append(column).append("</td>");
       }
       html.append("</tr>");
    }

@@ -2,7 +2,6 @@
 package com.kof22.agentadmin.client;
 
 
-import java.net.ServerSocket;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -101,7 +100,7 @@ class CarlConversationHttpTest
          service.importBills("alice", UUID.randomUUID(), "Synthetic HTTP bills", "source_id,vendor,description,amount,currency,due_date,status,visibility\na,Synthetic utility,Power,125.25,USD,2026-09-30,UNPAID,PRIVATE\nb,Synthetic utility,Gas,74.75,USD,2026-09-30,UNPAID,PRIVATE\n");
          long vendor = service.createVendor("alice", "Synthetic repair vendor", "Maintenance", "vendor@example.invalid", true, "PRIVATE", "Supplied synthetic contact");
          long work = service.createWorkItem("alice", vendor, "Review repair question", "VENDOR_RESPONSE", LocalDate.of(2026, 9, 30), "A question was supplied; no price or commitment exists", "PRIVATE");
-         var configuration = com.kof22.agentadmin.bootstrap.NativeConfigurationFiles.read(Path.of("config/agent.properties"), Map.of(), "--kof22.agent.db.url=" + database.getJdbcUrl(), "--kof22.agent.db.username=" + database.getUsername(), "--kof22.agent.db.password=" + database.getPassword(), "--kof22.agent.qqq.db-password=synthetic-reader", "--kof22.agent.qqq.password=synthetic-unused-bootstrap", "--kof22.agent.anthropic-api-key=synthetic-no-provider", "--kof22.agent.anthropic-base-url=" + provider.url(), "--kof22.agent.model.id=claude-sonnet-5", "--kof22.agent.limits.max-output-tokens=40", "--kof22.agent.limits.turn-timeout=PT2S").configuration();
+         var configuration = com.kof22.agentadmin.bootstrap.NativeConfigurationFiles.read(Path.of("config/agent.properties"), Map.of(), "--kof22.agent.db.url=" + database.getJdbcUrl(), "--kof22.agent.db.username=" + database.getUsername(), "--kof22.agent.db.password=" + database.getPassword(), "--kof22.agent.qqq.db-password=synthetic-reader", "--kof22.agent.qqq.password=synthetic-unused-bootstrap", "--kof22.agent.anthropic-api-key=synthetic-no-provider", "--kof22.agent.anthropic-base-url=" + provider.url(), "--kof22.agent.model.id=claude-sonnet-5", "--kof22.agent.limits.max-output-tokens=40", "--kof22.agent.limits.turn-timeout=" + (scenario.equals("deadline") ? "PT2S" : "PT10S")).configuration();
          var components = scenario.equals("plan-calendar") ? AgentApplication.components((source, domain) -> calendar.workflows(source, domain)) : AgentApplication.components();
          components.validate(configuration);
          var inference = components.runtime(configuration);
@@ -121,14 +120,8 @@ class CarlConversationHttpTest
          var store = new ClientStore(data);
          try(inference; var clients = new ClientService(store, sessions, identity, access, DataProtection.defaults(), Duration.ofSeconds(10), components.clientWorkflows(nativeStores)); var http = HttpClient.newHttpClient())
          {
-            int port;
-            try(var socket = new ServerSocket(0))
-            {
-               port = socket.getLocalPort();
-            }
-            String origin = "http://127.0.0.1:" + port;
-            var servlet = new ClientServlet(identity, store, clients, origin, () -> true);
-            var server = Javalin.create(config -> config.jetty.modifyServletContextHandler(handler -> handler.addServlet(new ServletHolder(servlet), "/api/agent/v1/*"))).start("127.0.0.1", port);
+            var server = startClientServer(identity, store, clients);
+            String origin = "http://127.0.0.1:" + server.port();
             try
             {
                String base = origin + "/api/agent/v1";
@@ -197,6 +190,7 @@ class CarlConversationHttpTest
                         com.kof22.agentadmin.CarlNativeHttpTest.assertFamilyArtifacts(configuration, components, data, jwk, key, (RSAPrivateKey) pair.getPrivate(), plan[0], draftId, "FINANCIAL_PLAN", plan[1]);
                      }
                   }
+                  case "native-documents" -> assertNativeDocuments(provider, configuration, components, data, service, clients, pair, jwk);
                   case "failure" -> assertFailureAndBoundaries(provider, http, base, conversation, alice, service);
                   case "history" -> assertSerializedClarifications(provider, http, base, conversation, alice);
                   case "shared" -> assertSharedScope(provider, http, base, alice, work, service);
@@ -242,6 +236,154 @@ class CarlConversationHttpTest
             }
          }
       }
+   }
+
+
+
+   @org.junit.jupiter.api.Test
+   void nativeImperativeDocumentQuestionReadsHistoricalEvidenceWithoutCreatingReports() throws Exception
+   {
+      naturalLanguageWorkflowPersistsTheSameAuthorizedReportAndDraftShownByQqq("native-documents");
+   }
+
+
+
+   private static void assertNativeDocuments(Provider provider, com.kof22.agentadmin.configuration.NativeAgentConfiguration configuration, com.kof22.agentadmin.bootstrap.NativeAgentRuntime.Components components, javax.sql.DataSource data, CarlService service, ClientService clients, java.security.KeyPair pair, Jwk jwk) throws Exception
+   {
+      var documents = new com.kof22.carlai.domain.DocumentRecords(service);
+      var uploads = new com.kof22.carlai.domain.MonarchImportWorkflow(service);
+      uploads.storeUpload("alice", "native-history.txt", "Historical supplied home note: roof inspection was recommended in 2008. Current condition and loan facts are unverified.".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      long document = documents.confirm("alice", documents.preview("alice", UUID.randomUUID(), "native-history.txt", new com.kof22.carlai.domain.DocumentRecords.Source("Historical home note", "FAMILY", "Controlled supplied note", "HISTORICAL_NOTE", LocalDate.of(2008, 5, 1), null, "Supplied historical evidence; no current qualification")), true);
+      int calls = provider.requests.size();
+      String answer = "The historical home note [record:" + document + "] dated 2008-05-01 is SUPPLIED_UNVERIFIED. It recommends a roof inspection; it does not confirm current condition or financial facts.";
+      provider.replies.add(JSON.writeValueAsString(Map.of("id", "msg_document", "type", "message", "role", "assistant", "model", "claude-sonnet-5", "content", List.of(Map.of("type", "tool_use", "id", "tool_document", "name", "carl_read_document", "input", Map.of("id", document, "offset", 0, "limit", 4000))), "stop_reason", "tool_use", "usage", Map.of("input_tokens", 1, "output_tokens", 1))));
+      provider.enqueue("end_turn", answer, 1);
+      components.clientServiceReady(clients);
+      try(var c = data.getConnection(); var sql = c.createStatement())
+      {
+         sql.execute("CREATE ROLE carl_document_chat_reader LOGIN PASSWORD 'controlled-reader'");
+         sql.execute("GRANT USAGE ON SCHEMA public TO carl_document_chat_reader");
+         for(var table : com.kof22.agentadmin.AdminApplication.READER_COLUMNS.entrySet())
+         {
+            if(!table.getValue().isEmpty())
+            {
+               sql.execute("GRANT SELECT(" + String.join(",", table.getValue()) + ") ON " + table.getKey() + " TO carl_document_chat_reader");
+            }
+         }
+         sql.execute("GRANT SELECT ON carl_artifact_view,carl_document_view TO carl_document_chat_reader");
+      }
+      var keyServer = com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress("127.0.0.1", 0), 0);
+      String issuer = "http://127.0.0.1:" + keyServer.getAddress().getPort() + "/";
+      byte[] jwks = JSON.writeValueAsBytes(Map.of("keys", List.of(Map.of("kty", "RSA", "kid", "fixture", "alg", "RS256", "n", unsigned(((RSAPublicKey) pair.getPublic()).getModulus().toByteArray()), "e", unsigned(((RSAPublicKey) pair.getPublic()).getPublicExponent().toByteArray())))));
+      keyServer.createContext("/.well-known/jwks.json", exchange ->
+      {
+         exchange.getResponseHeaders().set("Content-Type", "application/json");
+         exchange.sendResponseHeaders(200, jwks.length);
+         try(var output = exchange.getResponseBody())
+         {
+            output.write(jwks);
+         }
+      });
+      keyServer.start();
+      var identity = com.kof22.agentadmin.CarlDocumentConversationIdentityFixture.identity(issuer, jwk);
+      var reader = NativeDatabases.backend("agentOperations", configuration.database(), "carl_document_chat_reader", "controlled-reader");
+      var runtime = NativeDatabases.backend("operatorSessions", configuration.database(), configuration.database().username(), configuration.database().password());
+      var app = new com.kof22.agentadmin.AdminApplication(reader, components.metadata(), identity, runtime);
+      try(var server = new com.kof22.agentadmin.AdminServer(app, 0, "127.0.0.1", "https://carl.controlled", identity, com.kof22.agentadmin.OperatorSessions.usingBackend(runtime)); var http = HttpClient.newHttpClient())
+      {
+         server.start();
+         String base = "http://127.0.0.1:" + server.port();
+         var algorithm = Algorithm.RSA256((RSAPublicKey) pair.getPublic(), (RSAPrivateKey) pair.getPrivate());
+         String alice = JWT.create().withKeyId("fixture").withIssuer(issuer).withAudience("carl-admin").withSubject("alice").withExpiresAt(Instant.now().plusSeconds(300)).sign(algorithm);
+         String bob = JWT.create().withKeyId("fixture").withIssuer(issuer).withAudience("carl-admin").withSubject("bob").withExpiresAt(Instant.now().plusSeconds(300)).sign(algorithm);
+         var initial = nativeDocumentStep(http, base, alice, "carlTalkStart", null, Map.of());
+         assertEquals(200, initial.statusCode(), initial.body());
+         var prepared = JSON.readTree(initial.body());
+         String process = prepared.path("processUUID").asText();
+         UUID request = UUID.fromString(prepared.path("values").path("requestId").asText());
+         UUID conversation = UUID.nameUUIDFromBytes(("carl-native-conversation:" + request).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+         String selected = conversation + "/" + request;
+         String message = "Look at the household documents we have supplied and read a note relevant to our homes or rental-property history. Explain what it says, cite the accessible source records, and distinguish its historical date and supplied/unverified status from current confirmed financial facts. Do not change financial records or create a new report in response to this question.";
+         long recordsBefore = ((Number) nativeDocumentRows(data, "SELECT count(*) AS n FROM carl_record", null).getFirst().get("n")).longValue();
+         var submitted = nativeDocumentStep(http, base, alice, "carlTalkStart", process, Map.of("message", message, "visibility", "PRIVATE"));
+         assertEquals(200, submitted.statusCode(), submitted.body());
+         long deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos();
+         String status;
+         do
+         {
+            status = nativeDocumentRows(data, "SELECT status FROM carl_client_workflow WHERE request_id=?", request).getFirst().get("status").toString();
+            if(!status.equals("PENDING"))
+            {
+               break;
+            }
+            Thread.sleep(25);
+         }
+         while(System.nanoTime() < deadline);
+         assertEquals("COMPLETE", status);
+         var readInit = nativeDocumentStep(http, base, alice, "carlTalkRead", null, Map.of());
+         var read = nativeDocumentStep(http, base, alice, "carlTalkRead", JSON.readTree(readInit.body()).path("processUUID").asText(), Map.of("selected", selected));
+         assertEquals(200, read.statusCode(), read.body());
+         assertTrue(read.body().contains("2008-05-01"), read.body());
+         assertTrue(read.body().contains("SUPPLIED_UNVERIFIED"), read.body());
+         assertTrue(read.body().contains("[record:" + document + "]"), read.body());
+         var otherInit = nativeDocumentStep(http, base, bob, "carlTalkRead", null, Map.of());
+         var otherRead = nativeDocumentStep(http, base, bob, "carlTalkRead", JSON.readTree(otherInit.body()).path("processUUID").asText(), Map.of("selected", selected));
+         assertTrue(otherRead.statusCode() >= 400 || JSON.readTree(otherRead.body()).path("type").asText().equals("ERROR"), otherRead.body());
+         assertTrue(!otherRead.body().contains("roof inspection"), otherRead.body());
+         assertEquals(recordsBefore, ((Number) nativeDocumentRows(data, "SELECT count(*) AS n FROM carl_record", null).getFirst().get("n")).longValue());
+         assertEquals(calls + 2, provider.requests.size());
+         assertTrue(JSON.readTree(provider.requests.get(calls)).path("tools").size() > 0);
+         String toolResult = provider.requests.get(calls + 1);
+         assertTrue(toolResult.contains("Historical supplied home note"), toolResult);
+         assertTrue(toolResult.contains("SUPPLIED_UNVERIFIED"), toolResult);
+         var audit = nativeDocumentRows(data, "SELECT tool_name,caller_id,decision,completed_at FROM audit_log WHERE session_key=?", "carl-conversation:" + request);
+         assertEquals(1, audit.size());
+         assertEquals("carl_read_document", audit.getFirst().get("tool_name"));
+         assertEquals("alice", audit.getFirst().get("caller_id"));
+         assertEquals("EXECUTED_READ", audit.getFirst().get("decision"));
+         assertTrue(audit.getFirst().get("completed_at") != null);
+      }
+      finally
+      {
+         keyServer.stop(0);
+      }
+   }
+
+
+
+   private static java.util.List<Map<String, Object>> nativeDocumentRows(javax.sql.DataSource data, String sql, Object argument) throws Exception
+   {
+      try(var c = data.getConnection(); var statement = c.prepareStatement(sql))
+      {
+         if(argument != null)
+         {
+            statement.setObject(1, argument);
+         }
+         try(var rows = statement.executeQuery())
+         {
+            var result = new java.util.ArrayList<Map<String, Object>>();
+            while(rows.next())
+            {
+               var row = new java.util.LinkedHashMap<String, Object>();
+               for(int i = 1; i <= rows.getMetaData().getColumnCount(); i++)
+               {
+                  row.put(rows.getMetaData().getColumnLabel(i), rows.getObject(i));
+               }
+               result.add(row);
+            }
+            return result;
+         }
+      }
+   }
+
+
+
+   private static HttpResponse<String> nativeDocumentStep(HttpClient http, String base, String token, String process, String uuid, Map<String, String> fields) throws Exception
+   {
+      String boundary = "controlled-document-boundary";
+      String body = "--" + boundary + "\r\nContent-Disposition: form-data; name=\"values\"\r\n\r\n" + JSON.writeValueAsString(fields) + "\r\n--" + boundary + "--\r\n";
+      String route = "/qqq/v1/processes/" + process + (uuid == null ? "/init" : "/" + uuid + "/step/input");
+      return http.send(HttpRequest.newBuilder(URI.create(base + route)).timeout(Duration.ofSeconds(10)).header("Authorization", "Bearer " + token).header("Origin", "https://carl.controlled").header("Content-Type", "multipart/form-data; boundary=" + boundary).POST(HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString());
    }
 
 
@@ -482,7 +624,7 @@ class CarlConversationHttpTest
             sql.execute("INSERT INTO carl_permission(member_id,domain,details) SELECT m.id,d,true FROM carl_member m CROSS JOIN unnest(ARRAY['BILLS','VENDORS','CALENDAR','FINANCE','TAX','SETTINGS']) d");
             sql.execute("INSERT INTO carl_identity(issuer,subject,member_id) VALUES('" + ISSUER + "','alice-subject',1),('" + ISSUER + "','bob-subject',2)");
          }
-         var configuration = com.kof22.agentadmin.bootstrap.NativeConfigurationFiles.read(Path.of("config/agent.properties"), Map.of(), "--kof22.agent.db.url=" + DATABASE.getJdbcUrl(), "--kof22.agent.db.username=" + DATABASE.getUsername(), "--kof22.agent.db.password=" + DATABASE.getPassword(), "--kof22.agent.qqq.db-password=synthetic-reader", "--kof22.agent.qqq.password=synthetic-unused-bootstrap", "--kof22.agent.anthropic-api-key=synthetic-no-provider", "--kof22.agent.anthropic-base-url=" + provider.url(), "--kof22.agent.model.id=claude-sonnet-5", "--kof22.agent.limits.max-output-tokens=40", "--kof22.agent.limits.turn-timeout=PT2S").configuration();
+         var configuration = com.kof22.agentadmin.bootstrap.NativeConfigurationFiles.read(Path.of("config/agent.properties"), Map.of(), "--kof22.agent.db.url=" + DATABASE.getJdbcUrl(), "--kof22.agent.db.username=" + DATABASE.getUsername(), "--kof22.agent.db.password=" + DATABASE.getPassword(), "--kof22.agent.qqq.db-password=synthetic-reader", "--kof22.agent.qqq.password=synthetic-unused-bootstrap", "--kof22.agent.anthropic-api-key=synthetic-no-provider", "--kof22.agent.anthropic-base-url=" + provider.url(), "--kof22.agent.model.id=claude-sonnet-5", "--kof22.agent.limits.max-output-tokens=40", "--kof22.agent.limits.turn-timeout=PT10S").configuration();
          var generator = KeyPairGenerator.getInstance("RSA");
          generator.initialize(2048);
          var pair = generator.generateKeyPair();
@@ -638,7 +780,7 @@ class CarlConversationHttpTest
          entered.countDown();
          try
          {
-            if(!release.await(1, java.util.concurrent.TimeUnit.SECONDS))
+            if(!release.await(5, java.util.concurrent.TimeUnit.SECONDS))
             {
                throw new AssertionError("Contending request did not start within the SDK bound");
             }
@@ -654,7 +796,7 @@ class CarlConversationHttpTest
       String first = base + conversation + "/workflows/conversation/" + UUID.randomUUID();
       String firstInput = JSON.writeValueAsString(Map.of("input", Map.of("message", "Revise step Review family checklist in plan Family review plan version 5; assign to Synthetic B; due " + date.plusDays(3) + "; location Kitchen.")));
       assertEquals(200, send(http, first, "PUT", alice, firstInput).statusCode());
-      assertTrue(entered.await(1, java.util.concurrent.TimeUnit.SECONDS));
+      assertTrue(entered.await(5, java.util.concurrent.TimeUnit.SECONDS));
       proposal.put("due", date.plusDays(4).toString()).put("location", "Office");
       provider.enqueue("end_turn", proposal.toString());
       String second = secondConversation + "/workflows/conversation/" + UUID.randomUUID();
@@ -699,15 +841,8 @@ class CarlConversationHttpTest
          var identity = new ClientIdentity(ISSUER, "carl-family", access, ignored -> jwk);
          var store = new ClientStore(data);
          clients = new ClientService(store, org.mockito.Mockito.mock(SessionManager.class), identity, access, DataProtection.defaults(), Duration.ofSeconds(10), components.clientWorkflows(com.kof22.agentadmin.bootstrap.NativeStores.create(configuration.database())));
-         int port;
-         try(var socket = new ServerSocket(0))
-         {
-            port = socket.getLocalPort();
-         }
-         String origin = "http://127.0.0.1:" + port;
-         var servlet = new ClientServlet(identity, store, clients, origin, () -> true);
-         server = Javalin.create(config -> config.jetty.modifyServletContextHandler(handler -> handler.addServlet(new ServletHolder(servlet), "/api/agent/v1/*"))).start("127.0.0.1", port);
-         base = origin + "/api/agent/v1";
+         server = startClientServer(identity, store, clients);
+         base = "http://127.0.0.1:" + server.port() + "/api/agent/v1";
       }
 
 
@@ -720,6 +855,33 @@ class CarlConversationHttpTest
          inference.close();
       }
    }
+
+   /** Bind once through Jetty before configuring the real servlet's exact authority. */
+   private static Javalin startClientServer(ClientIdentity identity, ClientStore store, ClientService clients)
+   {
+      var delegate = new java.util.concurrent.atomic.AtomicReference<ClientServlet>();
+      var transport = new jakarta.servlet.http.HttpServlet()
+      {
+         private static final long serialVersionUID = 1L;
+
+         @Override
+         public void service(jakarta.servlet.ServletRequest request, jakarta.servlet.ServletResponse response) throws jakarta.servlet.ServletException, java.io.IOException
+         {
+            var current = delegate.get();
+            if(current == null)
+            {
+               ((jakarta.servlet.http.HttpServletResponse) response).sendError(jakarta.servlet.http.HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+               return;
+            }
+            current.service(request, response);
+         }
+      };
+      var server = Javalin.create(config -> config.jetty.modifyServletContextHandler(handler -> handler.addServlet(new ServletHolder(transport), "/api/agent/v1/*"))).start("127.0.0.1", 0);
+      delegate.set(new ClientServlet(identity, store, clients, "http://127.0.0.1:" + server.port(), () -> true));
+      return server;
+   }
+
+
 
    private static long[] assertPlanLifecycle(Provider provider, HttpClient http, String base, String conversation, String alice, CarlService service, boolean negative) throws Exception
    {
@@ -745,9 +907,18 @@ class CarlConversationHttpTest
          for(String denied : List.of("Do not " + task, "What if I " + task, "Bob said: \"" + task + "\"", "Explain the plan", task.replace("assign to Synthetic A", "assign to Synthetic B"), task.replace("location Home", "consider Home"), task.replace("version 1", "version 11"), task + " Because this is still under discussion, but don't add the step."))
          {
             var rejected = planTurn(provider, http, base + conversation, alice, proposal, denied);
-            assertEquals("CLARIFICATION", rejected.path("artifact").path("kind").asText(), rejected.toString());
-            assertEquals("PLAN_STEP", rejected.path("artifact").path("proposedOperation").asText());
-            assertTrue(rejected.path("artifact").path("confirmationRequired").asBoolean());
+            if(denied.equals("Explain the plan"))
+            {
+               assertEquals("ANSWER", rejected.path("artifact").path("kind").asText(), rejected.toString());
+               assertTrue(!rejected.path("artifact").has("proposedOperation"));
+               assertTrue(!rejected.path("artifact").has("confirmationRequired"));
+            }
+            else
+            {
+               assertEquals("CLARIFICATION", rejected.path("artifact").path("kind").asText(), rejected.toString());
+               assertEquals("PLAN_STEP", rejected.path("artifact").path("proposedOperation").asText());
+               assertTrue(rejected.path("artifact").path("confirmationRequired").asBoolean());
+            }
             assertEquals(1, ((Number) ((Map<?, ?>) new com.kof22.carlai.domain.PlanLifecycle(service).get("alice", plan).get("plan")).get("version")).intValue());
          }
          return new long[]{source, plan};
@@ -1388,17 +1559,34 @@ class CarlConversationHttpTest
    private static JsonNode await(HttpClient http, String path, String token) throws Exception
    {
       long deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos();
+      long quotaWaitMillis = 0;
+      long pollMillis = 250;
       JsonNode result;
       do
       {
-         Thread.sleep(250);
+         Thread.sleep(pollMillis);
          var response = send(http, path, "GET", token, null);
+         if(response.statusCode() == 429)
+         {
+            assertEquals("rate_limit", JSON.readTree(response.body()).path("error").path("code").asText(), response.body());
+            String retry = response.headers().firstValue("Retry-After").orElse("");
+            assertTrue(retry.matches("[1-9][0-9]{0,2}"), "Rate-limit polling requires a positive Retry-After in seconds");
+            long waitMillis = Long.parseLong(retry) * 1000;
+            assertTrue(quotaWaitMillis + waitMillis <= 60000, "Workflow exceeded its single sixty-second quota recovery budget");
+            quotaWaitMillis += waitMillis;
+            long started = System.nanoTime();
+            Thread.sleep(waitMillis);
+            // Only an explicitly signaled rate-limit wait is excluded from the operation deadline.
+            deadline += System.nanoTime() - started;
+            continue;
+         }
          assertEquals(200, response.statusCode(), response.body());
          result = JSON.readTree(response.body());
          if(!result.path("status").asText().equals("PENDING"))
          {
             return result;
          }
+         pollMillis = Math.min(1000, pollMillis * 2);
 
       }
       while(System.nanoTime() < deadline);

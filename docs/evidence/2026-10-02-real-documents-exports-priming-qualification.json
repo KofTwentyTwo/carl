@@ -1,0 +1,234 @@
+{
+  "generatedAt": "2026-10-02T08:22:56.602813+00:00",
+  "scope": "ACTUAL_LOCAL_OWNER_PRIVATE_DATA_QA",
+  "package": {
+    "applicationSha256": "adf707224e4ae0c84511bc21c787aa9d3e2b8f5f8327cfd872fa3dc89d9aad9b",
+    "sealedFiles": 251,
+    "runtimeLibraries": 247,
+    "dependencyClosureUnchanged": true,
+    "unitIntegrationTests": {
+      "tests": 563,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "coverage": {
+    "linesCovered": 12761,
+    "linesMissed": 1574,
+    "branchesCovered": 7366,
+    "branchesMissed": 3225,
+    "requiredLineRatio": 0.8,
+    "requiredBranchRatio": 0.6
+  },
+  "security": {
+    "distributionJavaPackages": 269,
+    "HIGH": 0,
+    "CRITICAL": 0,
+    "sourceSecretFindings": 0
+  },
+  "actualDatabaseTransition": {
+    "status": "PASS",
+    "engine": "Flyway",
+    "coreVersion": 8,
+    "domainVersion": 62,
+    "existingTablesByteEquivalent": 82,
+    "retentionComparison": "PASSED_IN_ORIGINAL_INVOCATION_BEFORE_READER_CHECK",
+    "readerCheck": "INDEPENDENT_POST_UPGRADE_VERIFICATION",
+    "migrationReplayed": false,
+    "newViewsReadable": 2,
+    "rawNewTablesDenied": 4,
+    "fullRestore": "ACTUAL_ENCRYPTED_PRE_V62_LOCAL_RESTORE_PASS; see separately scoped restore evidence"
+  },
+  "documentCustody": {
+    "documents": 10,
+    "complete": 10,
+    "workflow": "Actual native original upload, immutable preview and human-authorized confirmation",
+    "visibility": "PRIVATE",
+    "sourceType": "HISTORICAL_NOTE",
+    "state": "SUPPLIED_UNVERIFIED",
+    "originalDownloads": "BYTE_IDENTICAL",
+    "anonymous": "DENIED",
+    "currentFinancialModelOverrides": 0,
+    "liveModelAcceptance": "ACTUAL_SCOPE_PASSED_BELOW"
+  },
+  "csvExports": {
+    "status": "PASS",
+    "scopes": [
+      "SELECTED",
+      "ALL_AUTHORIZED"
+    ],
+    "selectedRows": 2,
+    "allAuthorizedRows": 23610,
+    "everyFieldMatchesIndependentSource": true,
+    "anonymous": "DENIED",
+    "cache": "NO_STORE",
+    "businessRecordMutations": 0
+  },
+  "priming": {
+    "status": "PASS_ACTUAL_DRAFT_SOURCES_AND_BROWSER_SCOPE",
+    "defaults": 5,
+    "readiness": "DRAFT_FROM_ACTUAL_RECORDS_AND_SUPPLIED_DOCUMENTS",
+    "balance": "DATED_SELECTED_SOURCE_REVIEW_WITH_UNQUALIFIED_ACCOUNT_GAPS",
+    "period": "2026-09-01/2026-10-01",
+    "currency": "USD",
+    "accountSourceLabels": 64,
+    "confirmedEconomicAccounts": "UNRESOLVED",
+    "financialActions": 0
+  },
+  "browser": {
+    "status": "PASS",
+    "checks": [
+      "actual-checkbox-selection-exposes-two-bulk-actions",
+      "real-scoped-USD-monthly-dashboard-with-unreviewed-coverage",
+      "actual-saved-readiness-plan-rendered-as-draft",
+      "narrow-render-captured-for-review",
+      "actual-overview-cashflow-and-plan-use-explicit-stored-defaults",
+      "actual-money-balance-and-flow-use-explicit-stored-defaults",
+      "ten-actual-private-documents-and-contextual-source-actions",
+      "actual-two-dated-CSV-download-records-and-contextual-download-action"
+    ],
+    "financialMutations": 0,
+    "providerCalls": 0,
+    "limitation": "Actual local private-data/browser acceptance; current financial terms/account qualification remain unresolved and live calendar is deferred"
+  },
+  "conversation": {
+    "readinessDraftMatchesSavedReport": true,
+    "actualDocumentsLinked": 10,
+    "confirmedPriorities": 3,
+    "inventedExecutionAssignments": 0,
+    "real-documents-current-answer": {
+      "status": "PASS",
+      "currentCallerAudienceVerified": true,
+      "allCitationsPermitted": true,
+      "actualDocumentReads": 2,
+      "allReadsBounded": true,
+      "positiveActualProviderUsage": true,
+      "answerOnlyNoFinancialArtifact": true
+    },
+    "real-documents-current-plan-followup": {
+      "status": "PASS",
+      "currentCallerAudienceVerified": true,
+      "allCitationsPermitted": true,
+      "actualDocumentReads": 0,
+      "allReadsBounded": true,
+      "positiveActualProviderUsage": true,
+      "answerOnlyNoFinancialArtifact": true
+    }
+  },
+  "quotedSourceChecks": [
+    {
+      "case": "real-documents-current-answer",
+      "quotedFragments": 8,
+      "allQuotedFragmentsMatchOriginalOrDeterministicSavedSource": true
+    },
+    {
+      "case": "real-documents-current-plan-followup",
+      "quotedFragments": 1,
+      "allQuotedFragmentsMatchOriginalOrDeterministicSavedSource": true
+    }
+  ],
+  "nativeMetadata": {
+    "carlProcesses": 150,
+    "carlTablesIncludingProtectedStorage": 52,
+    "approvedCsvTables": 43
+  },
+  "remaining": {
+    "originalImperativeDocumentRequest": "Every original UNKNOWN preserved. Prior559 first imperative read independently qualified. Current563 routing repair passes; complex follow-up completion remains unqualified.",
+    "dateControls": "Pinned Next ignores DATE_PICKER saved defaults; server facts correct; upstream repair pending",
+    "financialQualification": "BLOCKED missing current debt terms, account identity/ownership/buckets, cash reserve/budget and rental/tax evidence",
+    "liveCalendarAndAuthentik": "OWNER_DEFERRED",
+    "liquibaseRuntime": "NOT_INSTALLED; actual runtime remains Flyway",
+    "hostedImagesGitopsDeployment": "NOT_QUALIFIED",
+    "fullPrivateRestore": "ACTUAL_ENCRYPTED_PRE_V62_LOCAL_RESTORE_PASS; production recovery targets remain NOT_QUALIFIED",
+    "all150ProcessesActualRealDataAcceptance": "NOT_CLAIMED"
+  },
+  "actualPrivateBackupRestore": {
+    "status": "PASS",
+    "scope": "ISOLATED_LOCAL_RESTORE_OF_ACTUAL_ENCRYPTED_PRE_V62_BACKUP",
+    "network": "NONE",
+    "publishedPorts": 0,
+    "persistentVolumes": 0,
+    "archiveHashVerified": true,
+    "decryptedBytesMatchOriginalDump": true,
+    "restoreExitOnError": true,
+    "restoredCoreVersion": 8,
+    "restoredDomainVersion": 60,
+    "transactionCount": 23610,
+    "sourceAccountLabelCount": 64,
+    "originalRolesAndPrivilegesRetained": true,
+    "foreignKeysValidated": true,
+    "readerViewReadable": true,
+    "readerRawTableDenied": true,
+    "runningPrivateDatabaseChanged": false,
+    "productionRecoveryTargets": "NOT_QUALIFIED",
+    "createdAt": "2026-10-02T06:47:00.940431+00:00"
+  },
+  "scriptGates": {
+    "pythonTests": 31,
+    "nodeEvaluationHarnessAssertions": 22,
+    "outcome": "PASS",
+    "pythonEnvironment": "PyYAML6.0.3 isolated environment; initial base Python lacked yaml"
+  },
+  "previousDocumentConversationApplicationSha256": "5ce464ace47e06a72314fdea2b879bc7fee5a87dfa2599688816a5717c3c3355",
+  "actualImperativeDocumentConversation": {
+    "readinessDraftMatchesSavedReport": true,
+    "actualDocumentsLinked": 10,
+    "confirmedPriorities": 3,
+    "inventedExecutionAssignments": 0,
+    "real-documents-imperative-fixed-answer": {
+      "status": "PASS",
+      "currentCallerAudienceVerified": true,
+      "allCitationsPermitted": true,
+      "actualDocumentReads": 1,
+      "allReadsBounded": true,
+      "positiveActualProviderUsage": true,
+      "answerOnlyNoFinancialArtifact": true
+    },
+    "followup": "Original559 UNKNOWN preserved; optional now-prefix regression passes in563. Complex current follow-up remains UNKNOWN; see currentComplexFollowup.",
+    "applicationSha256": "9257c083d43c12e7951ed79ad1b561ca24543223e1e84ef9b608278c596a0ee7"
+  },
+  "currentComplexFollowup": {
+    "applicationSha256": "adf707224e4ae0c84511bc21c787aa9d3e2b8f5f8327cfd872fa3dc89d9aad9b",
+    "status": "UNKNOWN_PRESERVED",
+    "configuredToolCalls": 32,
+    "configuredTurnTimeoutSeconds": 120,
+    "maxContextChars": 128000,
+    "maxTurnContextChars": 512000,
+    "maxConcurrentTurns": 2,
+    "actualReadExecutions": 24,
+    "independentAuthorizedReadReplayErrors": 0,
+    "separateReadOnlyDiagnostic": "Ten-iteration tool-loop exhaustion; not reconstruction of discarded original exception",
+    "firstNewDocumentAnswer": "COMPLETE; not substituted for failed follow-up acceptance",
+    "financialArtifactMutation": "NOT_AUTHORIZED_BY_READ_ONLY_REQUEST",
+    "repair": "IN_PROGRESS"
+  },
+  "developmentCiBaseline": {
+    "source": "d0a11bf387b2a4a6b25a5feb5c34d17d8aa2aad3",
+    "qualificationRun": 36974782652,
+    "canonicalArtifacts": 9,
+    "immutablePaths": 9,
+    "guardedFilesIntegrated": 4,
+    "pythonTests": 31,
+    "nodeAssertions": 22,
+    "circleciValidation": "PASS",
+    "shellChecks": "PASS",
+    "stableBaselineChanged": false,
+    "actualHostedCarlQualification": "PENDING"
+  },
+  "ownerChatQa": {
+    "status": "FAIL",
+    "currentRequestStatus": "UNKNOWN",
+    "financialArtifactPresent": false,
+    "savedAnswerPresent": false,
+    "currentPermissionEpoch": true,
+    "auditedReadExecutions": 9,
+    "independentAuthorizedReadReplayErrors": 0,
+    "providerUsageEvents": 9,
+    "inputTokens": 181881,
+    "outputTokens": 2305,
+    "checkStatus": "OWNER_REPORTED_FAILURE_UNDER_INVESTIGATION",
+    "scope": "Actual native user flow; prior specific backend cases do not qualify this flow",
+    "repair": "Bounded grouped spending capability and native status/display qualification in progress"
+  }
+}

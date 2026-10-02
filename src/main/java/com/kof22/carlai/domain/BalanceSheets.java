@@ -123,7 +123,7 @@ public final class BalanceSheets
                   if(asset != null)
                   {
                      var account = permitted(c, scope, "carl_account_view", asset, sources);
-                     if(ownership == null || ownership.compareTo((BigDecimal) account.get("ownership_share")) != 0)
+                     if(ownership == null || !reviewedAccount(account) || ownership.compareTo((BigDecimal) account.get("ownership_share")) != 0)
                      {
                         gaps.add("Property " + choice.property() + " and linked account ownership differ or are unknown; account attribution is not property equity.");
                      }
@@ -170,7 +170,7 @@ public final class BalanceSheets
             {
                var account = permitted(c, scope, "carl_account_view", id, sources);
                var item = new LinkedHashMap<String, Object>();
-               for(String key : List.of("id", "title", "kind", "currency", "ownership_share", "liquid", "evidence"))
+               for(String key : List.of("id", "title", "kind", "currency", "ownership_share", "liquid", "review_state", "evidence"))
                {
                   item.put(key, account.get(key));
                }
@@ -184,7 +184,11 @@ public final class BalanceSheets
                item.put("observations", balance);
                BigDecimal amount = resolved(balance);
                BigDecimal owned = null;
-               if(amount == null)
+               if(!reviewedAccount(account))
+               {
+                  gaps.add("Account " + id + " needs account review; kind, ownership and liquidity are unqualified. Observed balances remain evidence and are excluded from attributed totals, not zero.");
+               }
+               else if(amount == null)
                {
                   gaps.add("Account " + id + " has missing or conflicting dated balances; excluded, not zero.");
                }
@@ -204,7 +208,7 @@ public final class BalanceSheets
                   }
                }
                item.put("ownedSignedBalance", owned);
-               item.put("treatment", "Counted once using signed source balance and supplied account ownership.");
+               item.put("treatment", !reviewedAccount(account) ? "NEEDS_REVIEW — excluded from attributed totals; observed balance is not qualified ownership or cash." : "Counted once using signed source balance and supplied account ownership.");
                accountRows.add(item);
             }
             var facts = new LinkedHashMap<String, Object>();
@@ -293,6 +297,14 @@ public final class BalanceSheets
       sources.put(id, CarlService.number(result, "source_revision"));
       result.remove("principal");
       return result;
+   }
+
+
+
+   static boolean reviewedAccount(Map<String, Object> account)
+   {
+      return "CONFIRMED".equals(account.get("review_state")) && account.get("ownership_share") != null
+         && account.get("liquid") != null && !"UNCLASSIFIED".equals(account.get("kind"));
    }
 
 

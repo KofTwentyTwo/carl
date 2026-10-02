@@ -147,7 +147,7 @@ public final class RentalStress
             if(property.get("debt_account_id") != null)
             {
                var debt = BalanceSheets.permitted(c, scope, "carl_account_view", CarlService.number(property, "debt_account_id"), sources);
-               if(owned == null || owned.compareTo((BigDecimal) debt.get("ownership_share")) != 0)
+               if(owned == null || !BalanceSheets.reviewedAccount(debt) || owned.compareTo((BigDecimal) debt.get("ownership_share")) != 0)
                {
                   gaps.add("Property and mortgage account ownership differ or are unresolved; stress attribution is not a statement of legal debt liability.");
                }
@@ -240,6 +240,10 @@ public final class RentalStress
       }
       long id = CarlService.number(property, "debt_account_id");
       var debt = BalanceSheets.permitted(c, scope, "carl_account_view", id, sources);
+      if(!BalanceSheets.reviewedAccount(debt))
+      {
+         throw new IllegalArgumentException("Reviewed mortgage account kind, ownership and liquidity required before a rate shock");
+      }
       var observations = BalanceSheets.balance(c, id, value.balanceAsOf());
       BigDecimal balance = BalanceSheets.resolved(observations);
       if(balance == null || balance.signum() >= 0 || !value.balanceAsOf().toString().equals(observations.getFirst().get("as_of").toString()) || value.allocatedPrincipal().compareTo(balance.negate()) > 0 || !property.get("currency").equals(debt.get("currency")))

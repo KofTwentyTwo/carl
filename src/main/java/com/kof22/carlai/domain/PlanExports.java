@@ -129,6 +129,7 @@ public final class PlanExports
          {
             throw new SecurityException("Plan export unavailable");
          }
+         NativeReadScope.check(actor);
          return (byte[]) rows.getFirst().get("content");
       });
    }

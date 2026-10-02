@@ -15,14 +15,18 @@ import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kingsrook.qqq.backend.core.logging.QLogger;
 import com.kof22.agentadmin.client.ClientFailure;
 import com.kof22.agentadmin.client.ClientWorkflow;
+
+import static com.kingsrook.qqq.backend.core.logging.LogUtils.logPair;
 
 
 /** Explicit user-requested report/draft workflows, separate from read-only model tools. */
 public final class CarlClientWorkflows implements AutoCloseable
 {
    private static final ObjectMapper JSON = new ObjectMapper();
+   private static final QLogger LOG = QLogger.getLogger(CarlClientWorkflows.class);
    private final CarlService service;
    private final CalendarWorkflows calendars;
    private final CarlConversation conversation;
@@ -316,6 +320,7 @@ public final class CarlClientWorkflows implements AutoCloseable
          {
             // A commit may have happened before a transport/permission failure. Never replay blindly.
             CarlService.clearDeadline();
+            LOG.warn("Carl workflow outcome requires reconciliation", logPair("requestId", id), logPair("workflowKind", kind), logPair("exceptionClass", failure.getClass().getName()));
             finish(id, "UNKNOWN", null);
          }
          finally

@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-01",
+  "scope": "LOCAL_REAL_DATA_READINESS_ACTIONS_AND_THREE_CONVERSATIONS",
+  "repository": "KofTwentyTwo/carl",
+  "branch": "feature/cicd-liquibase-gitops",
+  "baseRevision": "5414d7a",
+  "sourceUncommitted": true,
+  "applicationSha256": "6c11140b59560d6d3b5038a36206426a50d0b5f03630c2cd0f313fe2d6699acd",
+  "distributionFiles": 251,
+  "unchangedRuntimeLibraries": 247,
+  "sourceSnapshotSha256": "0c5f96c95ba104e8ea6644e7ee1bb2beb8d036262c4f1fdb6c8827c52a9222d0",
+  "build": {
+    "command": "JAVA_HOME=<Java21> mvn -B -ntp -Dmaven.repo.local=<qualified-cache> spotless:apply clean verify",
+    "tests": 490,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "qualityGates": "PASS",
+    "coverageFloors": {
+      "lines": 0.8,
+      "branches": 0.6
+    }
+  },
+  "native": {
+    "domainProcesses": 104,
+    "contextualActions": "PASS_STATED_SCOPE",
+    "bulkSelection": "1..100 checked transactions",
+    "realBulkPreview": "PASS",
+    "previewFinancialCorrections": 0,
+    "protectedPlanReportRetrieval": "PASS",
+    "freshNativePdf": "PASS",
+    "anonymousRetrieval": 401,
+    "downloadNoStore": true,
+    "search": "READY",
+    "broker": "READY",
+    "allNativeProcesses": 105
+  },
+  "liveConversations": {
+    "inventory": "PASS",
+    "sameConversationSavedPlan": "PASS",
+    "transactionCountSignedUsdTotal": "PASS",
+    "independentPermissionFilteredSql": "PASS",
+    "verifiedCallerCompletedReadAudit": "PASS",
+    "positiveProviderUsage": "PASS",
+    "currentAudienceAndPermissionEpoch": "PASS",
+    "nullFinancialArtifact": "PASS",
+    "existingPlansReportsGoalsUnchanged": true,
+    "originalUnknownRequestPreserved": true,
+    "noAutomaticReplay": true,
+    "citationScope": "Permitted returned sample; deterministic totals cover all matching permitted rows"
+  },
+  "ciScriptTests": 31,
+  "shellChecks": "PASS",
+  "secretScan": "ZERO_FINDINGS",
+  "privateDataPublished": false,
+  "limitations": [
+    "Whole-system financial priming blocked by missing current account, debt, cash, budget, expense and rental facts",
+    "Historical-document ingestion/retrieval not implemented: Carl#31",
+    "Authenticated visual QA pending owner sign-in",
+    "Calendar/reminders and Authentik deferred by owner",
+    "Not acceptance of every domain process",
+    "Running database still Flyway; Liquibase transition and hosted delivery remain separately unqualified",
+    "No hosted image publication, Argo rollout or release qualification"
+  ]
+}

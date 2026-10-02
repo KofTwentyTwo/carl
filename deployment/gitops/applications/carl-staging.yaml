@@ -1,0 +1,31 @@
+# Copyright (C) 2026 KofTwentyTwo
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: carl-staging
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/KofTwentyTwo/carl-CD.git
+    targetRevision: main
+    path: environments/staging
+  destination:
+    name: k8s-prod
+    namespace: carl-staging
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=false
+    retry:
+      limit: 2
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 1m

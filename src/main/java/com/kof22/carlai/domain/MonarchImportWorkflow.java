@@ -98,6 +98,72 @@ public final class MonarchImportWorkflow
 
 
    /*******************************************************************************
+    * Registers observed source labels privately without asserting economic identity or ownership.
+    ******************************************************************************/
+   public int registerSourceAccounts(String principal, UUID reviewId, String currency)
+   {
+      java.util.Currency.getInstance(currency);
+      var review = review(principal, reviewId);
+      var labels = new java.util.TreeSet<String>();
+      if(review.get("transaction_reference") != null)
+      {
+         var parsed = MonarchCsv.transactions(decode(upload(principal, review.get("transaction_reference").toString())));
+         if(!parsed.valid())
+         {
+            throw new IllegalArgumentException("Correct invalid transaction rows before registering source accounts");
+         }
+         parsed.rows().forEach(row -> labels.add(row.account()));
+      }
+      if(review.get("balance_reference") != null)
+      {
+         var parsed = MonarchCsv.balances(resolvedBalances(principal, reviewId, decode(upload(principal, review.get("balance_reference").toString()))));
+         if(!parsed.valid())
+         {
+            throw new IllegalArgumentException("Resolve invalid or conflicting balance rows before registering source accounts");
+         }
+         parsed.rows().forEach(row -> labels.add(row.account()));
+      }
+      return db.transaction(c ->
+      {
+         var member = FinancialRecords.mutationMember(c, principal);
+         // Serialize registrations by verified member; another review must not duplicate mappings.
+         CarlService.rows(c, "SELECT id FROM carl_member WHERE id=? FOR UPDATE", member.id());
+         if(CarlService.rows(c, "SELECT id FROM carl_import_review WHERE id=? AND member_id=? FOR UPDATE", reviewId, member.id()).size() != 1)
+         {
+            throw new SecurityException("Import review unavailable");
+         }
+         int created = 0;
+         for(String label : labels)
+         {
+            var existing = CarlService.rows(c, "SELECT account_id FROM carl_monarch_mapping WHERE member_id=? AND source_label=?", member.id(), label);
+            if(!existing.isEmpty())
+            {
+               long id = CarlService.number(existing.getFirst(), "account_id");
+               CarlService.requireRecord(c, principal, id);
+               var account = CarlService.rows(c, "SELECT currency FROM carl_account WHERE record_id=?", id).getFirst();
+               if(!currency.equals(account.get("currency")))
+               {
+                  throw new IllegalArgumentException("Existing source mapping has a different currency");
+               }
+               continue;
+            }
+            long id = CarlService.record(c, member, "FINANCE", "PRIVATE", label,
+               "Observed Monarch source label; review " + reviewId + "; currency explicitly confirmed by importing caller. Economic identity, account kind, liquidity and ownership remain unreviewed; label is not proof of a distinct economic account.");
+            CarlService.execute(c, "INSERT INTO carl_account(record_id,kind,currency,liquid,ownership_share,review_state) VALUES(?,'UNCLASSIFIED',?,NULL,NULL,'NEEDS_REVIEW')", id, currency);
+            CarlService.execute(c, "INSERT INTO carl_monarch_mapping(member_id,source_label,account_id) VALUES(?,?,?)", member.id(), label, id);
+            created++;
+         }
+         if(created > 0)
+         {
+            CarlService.bump(c, member.householdId());
+         }
+         return created;
+      });
+   }
+
+
+
+   /*******************************************************************************
     * Validates bounded source input before any domain records are changed.
     ******************************************************************************/
    public UUID preview(String principal, List<String> references)
@@ -210,7 +276,22 @@ public final class MonarchImportWorkflow
     ******************************************************************************/
    public String apply(String principal, UUID reviewId, boolean acceptRevisions)
    {
-      var review = review(principal, reviewId);
+      var review = db.transaction(c ->
+      {
+         var member = FinancialRecords.mutationMember(c, principal);
+         var rows = CarlService.rows(c, "SELECT * FROM carl_import_review WHERE id=? AND member_id=?", reviewId, member.id());
+         if(rows.size() != 1)
+         {
+            throw new SecurityException("Import review unavailable");
+         }
+         NativeMutationReceipt.bindMonarch(member, reviewId, logical(reviewId, "transactions"));
+         if(rows.getFirst().get("status").equals("COMPLETE"))
+         {
+            NativeMutationReceipt.beforeMonarchCompletion(c, member, reviewId);
+            NativeMutationReceipt.after(c, CarlService.member(c, principal));
+         }
+         return rows.getFirst();
+      });
       if(review.get("status").equals("COMPLETE"))
       {
          return review.get("result").toString();
@@ -249,8 +330,10 @@ public final class MonarchImportWorkflow
       String status = partial ? (review.get("transaction_reference") == null ? "NEEDS_REVIEW" : "PARTIAL") : "COMPLETE";
       db.transaction(c ->
       {
-         var member = CarlService.manager(c, principal, "FINANCE");
+         var member = FinancialRecords.mutationMember(c, principal);
+         NativeMutationReceipt.beforeMonarchCompletion(c, member, reviewId);
          CarlService.execute(c, "UPDATE carl_import_review SET status=?,result=? WHERE id=? AND member_id=?", status, result.toString(), reviewId, member.id());
+         NativeMutationReceipt.after(c, CarlService.member(c, principal));
          return null;
       });
       return status + ": " + result;

@@ -88,11 +88,13 @@ public final class ExpenseRecords
       service.transaction(c ->
       {
          var actor = manager(c, principal);
+         NativeMutationReceipt.before(c, actor);
          var old = require(c, principal, "carl_expense_view", expense);
          property(c, principal, values);
          old.put("seasonalAmounts", obligation(c, old).seasonalAmounts());
          if(CarlService.request(c, actor, request, "EXPENSE_CORRECT", digest) != null)
          {
+            NativeMutationReceipt.after(c, CarlService.member(c, principal));
             return null;
          }
          if(CarlService.number(old, "revision") != expectedRevision)
@@ -110,6 +112,7 @@ public final class ExpenseRecords
          touch(c, expense);
          CarlService.bump(c, actor.householdId());
          CarlService.complete(c, request, expense, "COMPLETE", "Attributed local correction; original evidence retained");
+         NativeMutationReceipt.after(c, CarlService.member(c, principal));
          return null;
       });
    }
@@ -310,9 +313,11 @@ public final class ExpenseRecords
       service.transaction(c ->
       {
          var actor = manager(c, principal);
+         NativeMutationReceipt.before(c, actor);
          var target = require(c, principal, "carl_cash_plan_view", plan);
          if(CarlService.request(c, actor, request, "CASH_EXPENSE_ATTACH", digest) != null)
          {
+            NativeMutationReceipt.after(c, CarlService.member(c, principal));
             return null;
          }
          for(long id : expenses)
@@ -346,6 +351,7 @@ public final class ExpenseRecords
          touch(c, plan);
          CarlService.bump(c, actor.householdId());
          CarlService.complete(c, request, plan, "COMPLETE", "Expense inputs selected; avoid duplicate manual cash events");
+         NativeMutationReceipt.after(c, CarlService.member(c, principal));
          return null;
       });
    }

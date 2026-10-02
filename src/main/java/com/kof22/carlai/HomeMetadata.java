@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.kingsrook.qqq.backend.core.actions.processes.BackendStep;
+import com.kingsrook.qqq.backend.core.exceptions.QException;
 import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
 import com.kingsrook.qqq.backend.core.model.metadata.code.QCodeReferenceLambda;
 import com.kingsrook.qqq.backend.core.model.metadata.fields.QFieldMetaData;
@@ -19,6 +20,7 @@ import com.kingsrook.qqq.backend.core.model.metadata.processes.QBackendStepMetaD
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QComponentType;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QFrontendComponentMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QFrontendStepMetaData;
+import com.kingsrook.qqq.backend.core.model.metadata.processes.QFunctionInputMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData;
 import com.kof22.agentadmin.OperatorPermissions;
 import com.kof22.agentcore.security.Role;
@@ -68,29 +70,37 @@ public final class HomeMetadata
       fields.forEach(review::withFormField);
       var process = new QProcessMetaData().withName("carlSaveHomeProfile").withTableName("carlHomes").withLabel("Record Home Use and Mortgage Terms").withPermissionRules(OperatorPermissions.require(Role.OPERATOR))
          .withStep(new QFrontendStepMetaData().withName("choose").withLabel("Choose property").withComponent(new QFrontendComponentMetaData().withType(QComponentType.EDIT_FORM)).withFormField(field("property", QFieldType.LONG, true).withPossibleValueSourceName("carlHomes")))
-         .withStep(new QBackendStepMetaData().withName("load").withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
-         {
-            var current = homes.get(CarlMetadata.principal(), Long.parseLong(in.getValueString("property")));
-            out.addValue("requestId", UUID.randomUUID().toString());
-            out.addValue("expectedRevision", (java.io.Serializable) current.get("revision"));
-            out.addValue("currency", (java.io.Serializable) current.get("currency"));
-            out.addValue("propertyUse", (java.io.Serializable) current.get("property_use"));
-            out.addValue("rateKind", (java.io.Serializable) current.get("rate_kind"));
-            out.addValue("mortgageSupplied", current.get("profile_evidence") != null && current.get("debt_account_id") != null && !"Mortgage terms not supplied".equals(current.get("assumptions")));
-            for(String[] mapping : new String[][]{{"asOf", "mortgage_as_of"}, {"principal", "mortgage_principal"}, {"annualRate", "annual_rate"}, {"payment", "payment_amount"}, {"firstPayment", "first_payment"}, {"maturity", "maturity_date"}, {"amortizationMonths", "amortization_months"}, {"escrow", "escrow_amount"}, {"fee", "fee_amount"}, {"assumptions", "assumptions"}, {"evidence", "profile_evidence"}})
+         .withStep(new QBackendStepMetaData().withName("load")
+            .withInputData(new QFunctionInputMetaData().withFieldList(List.of(field("requestId", QFieldType.STRING, false).withIsEditable(false), field("expectedRevision", QFieldType.LONG, false).withIsEditable(false), field("currency", QFieldType.STRING, false).withIsEditable(false), field("reviewedPropertyId", QFieldType.LONG, false).withIsEditable(false))))
+            .withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
             {
-               out.addValue(mapping[0], (java.io.Serializable) current.get(mapping[1]));
-            }
-            out.addValue("summary", current.get("title") + " — current property revision " + current.get("revision") + ". Optional terms stay unknown. Payment, escrow and fees are separate supplied assumptions. This profile changes no account balance, rent, title or external obligation.");
-         }))).withStep(review)
+               var current = homes.get(CarlMetadata.principal(), Long.parseLong(in.getValueString("property")));
+               out.addValue("reviewedPropertyId", (java.io.Serializable) current.get("id"));
+               out.addValue("requestId", UUID.randomUUID().toString());
+               out.addValue("expectedRevision", (java.io.Serializable) current.get("revision"));
+               out.addValue("currency", (java.io.Serializable) current.get("currency"));
+               out.addValue("propertyUse", (java.io.Serializable) current.get("property_use"));
+               out.addValue("rateKind", (java.io.Serializable) current.get("rate_kind"));
+               out.addValue("mortgageSupplied", current.get("profile_evidence") != null && current.get("debt_account_id") != null && !"Mortgage terms not supplied".equals(current.get("assumptions")));
+               for(String[] mapping : new String[][]{{"asOf", "mortgage_as_of"}, {"principal", "mortgage_principal"}, {"annualRate", "annual_rate"}, {"payment", "payment_amount"}, {"firstPayment", "first_payment"}, {"maturity", "maturity_date"}, {"amortizationMonths", "amortization_months"}, {"escrow", "escrow_amount"}, {"fee", "fee_amount"}, {"assumptions", "assumptions"}, {"evidence", "profile_evidence"}})
+               {
+                  out.addValue(mapping[0], (java.io.Serializable) current.get(mapping[1]));
+               }
+               out.addValue("summary", current.get("title") + " — current property revision " + current.get("revision") + ". Optional terms stay unknown. Payment, escrow and fees are separate supplied assumptions. This profile changes no account balance, rent, title or external obligation.");
+            })))
+         .withStep(review)
          .withStep(new QBackendStepMetaData().withName("save").withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
          {
+            if(!in.getValueString("property").equals(in.getValueString("reviewedPropertyId")))
+            {
+               throw new QException("Property changed; start a new review for the chosen property");
+            }
             HomeRecords.Mortgage mortgage = null;
             if(Boolean.parseBoolean(in.getValueString("mortgageSupplied")))
             {
                mortgage = new HomeRecords.Mortgage(date(in.getValueString("asOf")), decimal(in.getValueString("principal")), decimal(in.getValueString("annualRate")), decimal(in.getValueString("payment")), date(in.getValueString("firstPayment")), date(in.getValueString("maturity")), integer(in.getValueString("amortizationMonths")), HomeRecords.RateKind.valueOf(in.getValueString("rateKind") == null ? "UNKNOWN" : in.getValueString("rateKind")), decimal(in.getValueString("escrow")), decimal(in.getValueString("fee")), in.getValueString("assumptions"));
             }
-            long revision = homes.save(CarlMetadata.principal(), UUID.fromString(in.getValueString("requestId")), Long.parseLong(in.getValueString("property")), Long.parseLong(in.getValueString("expectedRevision")), new HomeRecords.ProfileValues(HomeRecords.Use.valueOf(in.getValueString("propertyUse")), in.getValueString("currency"), mortgage, in.getValueString("evidence")));
+            long revision = homes.save(CarlMetadata.principal(), UUID.fromString(in.getValueString("requestId")), Long.parseLong(in.getValueString("reviewedPropertyId")), Long.parseLong(in.getValueString("expectedRevision")), new HomeRecords.ProfileValues(HomeRecords.Use.valueOf(in.getValueString("propertyUse")), in.getValueString("currency"), mortgage, in.getValueString("evidence")));
             out.addValue("result", "Supplied home profile retained at property revision " + revision + ". No financial or property action was executed.");
          })))
          .withStep(new QFrontendStepMetaData().withName("result").withComponent(new QFrontendComponentMetaData().withType(QComponentType.VIEW_FORM)).withViewField(field("result", QFieldType.TEXT, false)));

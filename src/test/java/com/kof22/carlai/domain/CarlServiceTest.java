@@ -547,6 +547,51 @@ class CarlServiceTest
 
 
    @Test
+   void monarchSourceAccountsLoadWithoutInventingOwnershipAndRemainPrivate() throws Exception
+   {
+      var imports = new MonarchImportWorkflow(service);
+      imports.storeUpload("alice", "unreviewed-source", "Date,Balance,Account\n2026-09-01,100.00,Observed source\n".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      UUID review = imports.preview("alice", java.util.List.of("unreviewed-source"));
+      assertEquals(1, imports.registerSourceAccounts("alice", review, "USD"));
+      assertEquals(0, imports.registerSourceAccounts("alice", review, "USD"));
+      assertThrows(SecurityException.class, () -> imports.registerSourceAccounts("bob", review, "USD"));
+      assertThrows(IllegalArgumentException.class, () -> imports.registerSourceAccounts("alice", review, "EUR"));
+      var account = service.view(CarlService.Scope.privateFor("alice"), "accounts").getFirst();
+      assertEquals("NEEDS_REVIEW", account.get("review_state"));
+      assertEquals("UNCLASSIFIED", account.get("kind"));
+      assertNull(account.get("ownership_share"));
+      assertNull(account.get("liquid"));
+      assertTrue(service.view(CarlService.Scope.privateFor("bob"), "accounts").isEmpty());
+      assertTrue(imports.apply("alice", review, false).startsWith("COMPLETE"));
+      assertEquals(new BigDecimal("100.0000"), service.view(CarlService.Scope.privateFor("alice"), "accounts").getFirst().get("balance"));
+   }
+
+
+
+   @Test
+   void humanAccountReviewPreservesImportEvidenceAndRecordsAttribution() throws Exception
+   {
+      var imports = new MonarchImportWorkflow(service);
+      imports.storeUpload("alice", "review-source", "Date,Balance,Account\n2026-09-01,100.00,Observed source\n".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      UUID review = imports.preview("alice", java.util.List.of("review-source"));
+      imports.registerSourceAccounts("alice", review, "USD");
+      var account = service.view(CarlService.Scope.privateFor("alice"), "accounts").getFirst();
+      long id = CarlService.number(account, "id");
+      var finance = new FinancialRecords(service);
+      assertThrows(SecurityException.class, () -> finance.reviewAccount("bob", id, "CASH", true, BigDecimal.ONE, "Unauthorized review"));
+      assertThrows(IllegalArgumentException.class, () -> finance.reviewAccount("alice", id, "UNCLASSIFIED", true, BigDecimal.ONE, "Unsupported qualification"));
+      finance.reviewAccount("alice", id, "CASH", true, BigDecimal.ONE, "Human verified a distinct account and ownership from its statement");
+      var after = service.view(CarlService.Scope.privateFor("alice"), "accounts").getFirst();
+      assertEquals("CONFIRMED", after.get("review_state"));
+      assertEquals(account.get("evidence"), after.get("evidence"));
+      assertEquals(new BigDecimal("1.0000000000"), after.get("ownership_share"));
+      long correctingMember = service.transaction(c -> CarlService.number(CarlService.rows(c, "SELECT member_id FROM carl_correction WHERE record_id=?", id).getFirst(), "member_id"));
+      assertEquals(1L, correctingMember);
+   }
+
+
+
+   @Test
    void monRepeatBalancesDoesNotInvalidateFactsAndMissingMappingRetainsPartialStatus()
    {
       var finances = new FinancialRecords(service);

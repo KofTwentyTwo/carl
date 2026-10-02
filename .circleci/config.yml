@@ -1,0 +1,163 @@
+# Copyright (C) 2026 KofTwentyTwo
+version: 2.1
+orbs:
+  munitor: kof22/munitor@0.3.0
+jobs:
+  verify:
+    machine:
+      image: ubuntu-2404:current
+    resource_class: large
+    steps:
+      - checkout
+      - munitor/install_java:
+          version: "21"
+      - munitor/install_node:
+          version: "22"
+      - munitor/install_kustomize:
+          version: "5.5.0"
+      - run:
+          name: Prepare Carl tooling
+          command: |
+            sudo apt-get update -qq
+            sudo apt-get install -y python3-yaml
+            bash scripts/ci/install-maven.sh
+            export GITHUB_ACTOR="${CIRCLE_USERNAME:?}"
+            echo 'export GITHUB_ACTOR="${CIRCLE_USERNAME:?}"' >> "$BASH_ENV"
+            node --version
+            kustomize version
+      - run:
+          name: Exact source, fresh dependencies, complete Java/PostgreSQL/browser/migration gates
+          no_output_timeout: 20m
+          command: bash scripts/ci/verify.sh
+      - run:
+          name: Build both immutable candidates once, scan all dependencies/images, emit SBOMs
+          no_output_timeout: 20m
+          command: bash scripts/ci/images.sh build
+      - store_test_results:
+          path: target/surefire-reports
+      - store_artifacts:
+          path: target/security
+      - store_artifacts:
+          path: target/site/jacoco
+      - store_artifacts:
+          path: target/migration-evidence/report.json
+      - store_artifacts:
+          path: target/foundation-evidence
+      - store_artifacts:
+          path: target/browser-evidence
+      - store_artifacts:
+          path: target/dashboard-browser-evidence
+      - store_artifacts:
+          path: target/talk-browser-evidence
+      - store_artifacts:
+          path: target/docked-chat-browser-evidence
+      - store_artifacts:
+          path: target/qbits-browser-evidence
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  publish:
+    machine:
+      image: ubuntu-2404:current
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Publish the scanned exact image pair and verify CircleCI OIDC provenance
+          command: bash scripts/ci/images.sh publish
+      - store_artifacts:
+          path: target/publication
+      - persist_to_workspace:
+          root: .
+          paths:
+            - target/publication
+  promote:
+    parameters:
+      environment:
+        type: enum
+        enum: [dev, staging, production]
+    machine:
+      image: ubuntu-2404:current
+    steps:
+      - attach_workspace:
+          at: .
+      - munitor/install_kustomize:
+          version: "5.5.0"
+      - munitor/install_gh
+      - run:
+          name: Prepare manifest validation
+          command: |
+            sudo apt-get update -qq
+            sudo apt-get install -y python3-yaml
+      - run:
+          name: Require private exact deployment qualification, then promote digests
+          command: bash scripts/ci/promote.sh << parameters.environment >>
+  stable:
+    machine:
+      image: ubuntu-2404:current
+    steps:
+      - checkout
+      - munitor/install_kustomize:
+          version: "5.5.0"
+      - munitor/install_gh
+      - run:
+          name: Prepare manifest validation
+          command: |
+            sudo apt-get update -qq
+            sudo apt-get install -y python3-yaml
+      - run:
+          name: Promote the preceding signed qualified RC image digests without rebuilding
+          command: bash scripts/ci/stable.sh
+      - store_artifacts:
+          path: target/publication
+workflows:
+  development:
+    jobs:
+      - verify:
+          context: [github, security]
+          filters:
+            tags:
+              ignore: /.*/
+      - publish:
+          context: [ghcr, github]
+          requires: [verify]
+          filters:
+            branches:
+              only: develop
+      - promote:
+          name: promote-dev
+          environment: dev
+          context: github
+          requires: [publish]
+          filters:
+            branches:
+              only: develop
+  release-candidate:
+    jobs:
+      - verify:
+          context: [github, security]
+          filters: &rc_filter
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+-rc\.[1-9][0-9]*$/
+      - publish:
+          context: [ghcr, github]
+          requires: [verify]
+          filters: *rc_filter
+      - promote:
+          name: promote-staging
+          environment: staging
+          context: github
+          requires: [publish]
+          filters: *rc_filter
+  stable:
+    jobs:
+      - stable:
+          context: [github, ghcr]
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/

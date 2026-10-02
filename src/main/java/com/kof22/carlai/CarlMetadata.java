@@ -87,13 +87,14 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
          table("carlBills", "Bills", "carl_bill_view", "vendor_label:S,amount:M,currency:S,due_date:D,status:S,payment_evidence:T,source_id:S,created_at:I,revision:L"),
          table("carlVendors", "Vendors", "carl_vendor_view", "category:S,contact:S,contact_verified:B"),
          table("carlWork", "Vendor Work", "carl_work_view", "vendor_id:L,status:S,assigned_member:L,follow_up:D,commitment_evidence:T"),
-         table("carlAccounts", "Accounts and Debts", "carl_account_view", "kind:S,currency:S,institution:S,liquid:B,ownership_share:R,balance:M,as_of:D,basis:S"),
+         table("carlAccounts", "Accounts and Debts", "carl_account_view", "kind:S,currency:S,institution:S,liquid:B,ownership_share:R,balance:M,as_of:D,basis:S,review_state:S"),
          table("carlTransactions", "Transactions", "carl_transaction_view", "account_id:L,effective_date:D,amount:M,currency:S,classification:S,category:S,transfer_key:S,source_id:S"),
          table("carlBudgets", "Budgets", "carl_budget_view", "category:S,period_start:D,period_end:D,amount:M,currency:S"),
          table("carlProperties", "Rental Properties", "carl_rental_property_view", "revision:L,locality:S,ownership_share:R,market_value:M,valuation_date:D,currency:S,legal_owner:S,asset_account_id:L,debt_account_id:L,acquisition_date:D,acquisition_basis:M,land_basis:M,building_basis:M,basis_evidence:T"),
          table("carlCalendarConnections", "Calendar Connections", "carl_calendar_connection_view", "provider:S,sync_state:S,last_success:I,last_attempt:I,failure_code:S,coverage_from:D,coverage_through:D"),
          table("carlCalendar", "Calendar", "carl_calendar_view", "start_at:I,end_at:I,source_zone:S,all_day_start:D,all_day_end_exclusive:D,cancelled:B,transparent:B,last_success:I,sync_state:S"),
          table("carlTax", "Tax Documents", "carl_tax_view", "tax_year:L,jurisdiction:S,document_kind:S,classification_state:S,treatment_evidence:T"),
+         table("carlDocuments", "Household Evidence Documents", "carl_document_view", "visibility:S,source_identity:S,source_type:S,document_date:D,as_of_date:D,state:S,original_name:S,media_type:S,content_hash:S,byte_count:L,extraction_status:S,page_count:L,text_length:L,created_at:I,revision:L"),
          artifactTable()))
       {
          instance.addTable(table);
@@ -103,7 +104,7 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
          .withField(field("id", QFieldType.STRING));
       instance.addTable(reviews);
       app.withChild(reviews);
-      for(String name : List.of("carlAccounts", "carlVendors", "carlWork", "carlBills", "carlImportReviews", "carlArtifacts", "carlTransactions"))
+      for(String name : List.of("carlAccounts", "carlVendors", "carlWork", "carlBills", "carlImportReviews", "carlArtifacts", "carlTransactions", "carlDocuments"))
       {
          instance.addPossibleValueSource(QPossibleValueSource.newForTable(name));
       }
@@ -175,6 +176,15 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
          long id = new FinancialRecords(service).createAccount(principal(), in.getValueString("title"), in.getValueString("kind"), in.getValueString("currency"), in.getValuePrimitiveBoolean("liquid"), new BigDecimal(in.getValueString("ownershipShare")), in.getValueString("visibility"), in.getValueString("evidence"));
          out.addValue("result", "Account created: " + id);
       }));
+      add(instance, app, process("carlReviewAccount", "Review Financial Account", List.of(input("accountId", QFieldType.LONG, true).withPossibleValueSourceName("carlAccounts"), input("kind", QFieldType.STRING, true), input("liquid", QFieldType.BOOLEAN, true), input("ownershipShare", QFieldType.DECIMAL, true), input("confirmDistinct", QFieldType.BOOLEAN, true).withLabel("Verified distinct economic account; not an overlapping alias or included savings bucket"), input("reason", QFieldType.TEXT, true).withLabel("Evidence for account identity, kind, liquidity and ownership")), (in, out) ->
+      {
+         if(!Boolean.TRUE.equals(in.getValueBoolean("confirmDistinct")))
+         {
+            throw new com.kingsrook.qqq.backend.core.exceptions.QException("Confirm economic identity before qualifying an account; unresolved aliases and buckets must remain under review");
+         }
+         new FinancialRecords(service).reviewAccount(principal(), Long.parseLong(in.getValueString("accountId")), in.getValueString("kind"), in.getValuePrimitiveBoolean("liquid"), new BigDecimal(in.getValueString("ownershipShare")), in.getValueString("reason"));
+         out.addValue("result", "Human qualification saved with attribution. Original import evidence retained; existing plans become stale.");
+      }));
       add(instance, app, process("carlDebtTerms", "Record Debt Statement Terms", List.of(input("accountId", QFieldType.LONG, true).withPossibleValueSourceName("carlAccounts"), input("asOf", QFieldType.DATE, true), input("principalBalance", QFieldType.DECIMAL, true), input("minimum", QFieldType.DECIMAL, true), input("minimumFraction", QFieldType.DECIMAL, true), input("apr", QFieldType.DECIMAL, true).withLabel("Annual rate as decimal (0.24 means 24%)"), input("monthlyFee", QFieldType.DECIMAL, true), input("evidence", QFieldType.TEXT, true)), (in, out) ->
       {
          new com.kof22.carlai.domain.DebtPlans(service).terms(principal(), Long.parseLong(in.getValueString("accountId")), in.getValueLocalDate("asOf"), new BigDecimal(in.getValueString("principalBalance")), new BigDecimal(in.getValueString("minimum")), new BigDecimal(in.getValueString("minimumFraction")), new BigDecimal(in.getValueString("apr")), new BigDecimal(in.getValueString("monthlyFee")), in.getValueString("evidence"));
@@ -215,6 +225,10 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
       CarlTalkProcesses.register(instance, app, talk);
       CarlDashboards.register(instance, service);
       HomeMetadata.register(instance, app, service);
+      CarlReadinessProcess.register(instance, app, service);
+      CarlBulkTransactionProcesses.register(instance, app, service);
+      DocumentProcesses.register(instance, app, service);
+      CarlTableExportProcesses.register(instance, app, service);
       CarlSystemMetadata.register(instance, service);
       CarlNavigation.apply(instance, app);
       return app;
@@ -328,11 +342,13 @@ final class CarlMetadata implements MetaDataProducerInterface<QAppMetaData>
          .forEach(field -> field.withDisplayFormat(com.kingsrook.qqq.backend.core.model.metadata.fields.DisplayFormat.DECIMAL2_COMMAS));
       fields.stream().filter(field -> !field.getName().equals("requestId")).forEach(form::withFormField);
       return new QProcessMetaData().withName(name).withLabel(label).withPermissionRules(OperatorPermissions.require(Role.OPERATOR))
-         .withStep(new QBackendStepMetaData().withName("prepare").withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
-         {
-            principal();
-            out.addValue("requestId", UUID.randomUUID().toString());
-         })))
+         .withStep(new QBackendStepMetaData().withName("prepare")
+            .withInputData(new com.kingsrook.qqq.backend.core.model.metadata.processes.QFunctionInputMetaData().withFieldList(List.of(new QFieldMetaData("requestId", QFieldType.STRING).withIsEditable(false))))
+            .withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
+            {
+               principal();
+               out.addValue("requestId", UUID.randomUUID().toString());
+            })))
          .withStep(form).withStep(new QBackendStepMetaData().withName("execute").withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
          {
             try

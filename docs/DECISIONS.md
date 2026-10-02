@@ -1,5 +1,17 @@
 # Decisions
 
+## October 1 — local QA, model access and visual direction
+
+The owner defers Authentik and calendar/reminder integration while requesting a functioning local QA application. A dedicated password-protected localhost login is authorized. Actual local OIDC authentication uses a separate identity database and verified subject; it does not impersonate the import actor or qualify the future internet deployment. The owner permits Anthropic to process the financial records needed to answer questions using the existing personal credential. Household report/calendar display uses America/Chicago. All imported accounts are USD; unknown ownership, economic account identity and bucket relationships remain unresolved.
+
+The owner selects the Carl local sign-in design for the main application: charcoal surfaces, a subdued geometric background, white text and blue accents. Apply it through native QQQ/Next theme extension points and matching Carl dashboard/chat styling while preserving readable financial tables and visible keyboard focus. Track implementation in Carl issue27. This is a consumer branding decision, not a new foundation-wide appearance requirement.
+
+## October1 — current real-data and real-service instructions
+
+The owner requires actual functional application flows and authorizes supplied real Monarch exports as private local test/application data. Do not commit the files, derived private records, account assessments or confirmed private facts. Ask for missing facts and retain confirmed answers with provenance in the protected private dataset. All exported accounts are confirmed USD. Source account identities and parent/bucket relationships require evidence; do not invent or silently merge them. These instructions supersede earlier synthetic-only local data guidance. Existing prohibitions on external financial/vendor mutations and public disclosure remain.
+
+The fixture-backed preview is stopped. Historical fixture checks are controlled evidence only, not live product completion. Current delivery decisions remain in SPEC-cicd-gitops.md; real implementation and rollout qualification are unfinished.
+
 | Decision | Current outcome |
 | --- | --- |
 | D-01 | Confirmed public KofTwentyTwo/carl; display Carl AI. Identifiers carl-ai and com.kof22.carlai. Immutable release baseline0.4.1 is independently remotely qualified at b23f89a44647ddc8fd0f3f0894b159ae823638b7/run36703216841. Current development parent0.5.0-SNAPSHOT passes the final408-test/113-browser RC8 qualification; earlier gates retain their historical identities. Protected foundation PR17/main1464b10 is independently published and qualified in run36878751071; see [signed RC8 development evidence](evidence/2026-10-01-foundation-pr17-rc8-publication.json). Hosted private-package credentials and a matching immutable release remain separate holds. |
@@ -47,3 +59,8 @@ Owner confirms the currently served preview is insufficient: it lacks the reques
 ## October1 — current synthetic preview
 
 The frozen008af67 preview is https://localhost:51051, with the previous64503 preview retained. Native Talk passes five offline/privacy checks; six current navigation/record checks and four selected dashboard-fact checks pass, alongside two acknowledged ESB events with no dead letters. The model remains disconnected pending access to the already-selected personal token. Real household/model/Synology policies and account identities are not inferred. See [running evidence](evidence/2026-10-01-current-running-preview.json).
+
+
+## Repository and issue ownership — October 1
+
+The owner confirms that the agent foundation is reusable infrastructure for all agents, while Carl is an independent consumer application. Carl application features, domain data/imports, branding, financial workflows and app-specific defects belong in the `KofTwentyTwo/carl` issue tracker. Foundation issues contain only reusable agent infrastructure. The owner explicitly does not require GitHub Projects. A consumer reproducing a shared runtime defect may supply evidence, but its business implementation does not move upstream.

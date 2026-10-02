@@ -22,6 +22,7 @@ import com.kingsrook.qqq.backend.core.model.metadata.processes.QBackendStepMetaD
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QComponentType;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QFrontendComponentMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QFrontendStepMetaData;
+import com.kingsrook.qqq.backend.core.model.metadata.processes.QFunctionInputMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.tables.Capability;
 import com.kingsrook.qqq.backend.core.model.metadata.tables.QTableMetaData;
@@ -64,9 +65,9 @@ final class MonarchUploadProcess
             UUID review = workflow.preview(principal, refs);
             out.addValue("reviewId", review.toString());
             out.addValue("preview", workflow.describe(principal, review));
-         }))
+         }).withInputData(new QFunctionInputMetaData().withFieldList(List.of(field("reviewId", QFieldType.STRING, false).withIsEditable(false)))))
          .withStep(new QFrontendStepMetaData().withName("review").withLabel("Review Before Applying")
-            .withComponent(component(QComponentType.VIEW_FORM)).withViewField(field("reviewId", QFieldType.STRING, false)).withViewField(field("preview", QFieldType.TEXT, false))
+            .withComponent(component(QComponentType.VIEW_FORM)).withViewField(field("reviewId", QFieldType.STRING, false).withIsEditable(false)).withViewField(field("preview", QFieldType.TEXT, false))
             .withComponent(component(QComponentType.EDIT_FORM)).withFormField(field("confirm", QFieldType.BOOLEAN, true).withLabel("I reviewed these imports and account mappings"))
             .withFormField(field("acceptRevisions", QFieldType.BOOLEAN, false).withLabel("Accept listed source revisions and changed balance observations")))
          .withStep(step("apply", (in, out) ->
@@ -75,11 +76,21 @@ final class MonarchUploadProcess
             {
                throw new QException("Review confirmation required");
             }
-            out.addValue("result", workflow.apply(CarlMetadata.principal(), UUID.fromString(in.getValueString("reviewId")), Boolean.TRUE.equals(in.getValueBoolean("acceptRevisions"))));
+            workflow.apply(CarlMetadata.principal(), UUID.fromString(in.getValueString("reviewId")), Boolean.TRUE.equals(in.getValueBoolean("acceptRevisions")));
+            out.addValue("result", com.kof22.carlai.domain.NativeMutationReceipt.MONARCH_MESSAGE);
          }))
          .withStep(result());
       instance.addProcess(process);
       app.withChild(process);
+      simple(instance, app, "carlRegisterMonarchSources", "Register Source Accounts for Review", List.of(field("reviewId", QFieldType.STRING, true).withPossibleValueSourceName("carlImportReviews"), field("currency", QFieldType.STRING, true), field("confirm", QFieldType.BOOLEAN, true).withLabel("This currency applies to every source account in this review")), (in, out) ->
+      {
+         if(!Boolean.TRUE.equals(in.getValueBoolean("confirm")))
+         {
+            throw new QException("Explicit source currency confirmation required");
+         }
+         int created = workflow.registerSourceAccounts(CarlMetadata.principal(), UUID.fromString(in.getValueString("reviewId")), in.getValueString("currency"));
+         out.addValue("result", created + " private source accounts registered for review. Ownership, account kind, liquidity and duplicate relationships remain unknown. Unreviewed balances are excluded from qualified financial totals. Resume the import to store source observations.");
+      });
       simple(instance, app, "carlMapMonarch", "Map Monarch Account", List.of(field("sourceLabel", QFieldType.STRING, true), field("accountId", QFieldType.LONG, true).withPossibleValueSourceName("carlAccounts")), (in, out) ->
       {
          workflow.mapAccount(CarlMetadata.principal(), in.getValueString("sourceLabel"), Long.parseLong(in.getValueString("accountId")));
@@ -97,7 +108,8 @@ final class MonarchUploadProcess
          {
             throw new QException("Review confirmation required");
          }
-         out.addValue("result", workflow.apply(CarlMetadata.principal(), UUID.fromString(in.getValueString("reviewId")), Boolean.TRUE.equals(in.getValueBoolean("acceptRevisions"))));
+         workflow.apply(CarlMetadata.principal(), UUID.fromString(in.getValueString("reviewId")), Boolean.TRUE.equals(in.getValueBoolean("acceptRevisions")));
+         out.addValue("result", com.kof22.carlai.domain.NativeMutationReceipt.MONARCH_MESSAGE);
       });
    }
 
