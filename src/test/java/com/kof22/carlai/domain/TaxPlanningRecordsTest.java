@@ -97,7 +97,7 @@ class TaxPlanningRecordsTest
 
    private String facts(String principal, long id)
    {
-      return service.artifact(principal, id).get("facts").toString();
+      return StoredFacts.compact(service.artifact(principal, id).get("facts"));
    }
 
 
@@ -148,7 +148,7 @@ class TaxPlanningRecordsTest
       long artifact = tax.packet(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), null, NOW, List.of(property), List.of(), List.of());
       service.transaction(c ->
       {
-         CarlService.execute(c, "UPDATE carl_artifact SET facts=? WHERE record_id=?", "{\"amount\":0.123456789012345678,\"text\":\"A\uD840\uDC00B\",\"parts\":[1,2,3],\"complex/key\":{\"tilde~field\":null}}", artifact);
+         CarlService.execute(c, "UPDATE carl_artifact SET facts=CAST(? AS jsonb) WHERE record_id=?", "{\"amount\":0.123456789012345678,\"text\":\"A\uD840\uDC00B\",\"parts\":[1,2,3],\"complex/key\":{\"tilde~field\":null}}", artifact);
          return null;
       });
       var presentation = new ArtifactPresentation(service);

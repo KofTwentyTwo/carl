@@ -93,7 +93,7 @@ class ExpenseRecordsTest
       long actual = expenses.manualActual("alice", UUID.randomUUID(), ASOF, "USD", n("100.00"), ExpenseForecast.Kind.EXPENSE, "FAMILY", "Synthetic payment evidence");
       expenses.settle("alice", UUID.randomUUID(), expense, LocalDate.of(2026, 9, 15), actual, n("100.00"), "Explicit September allocation");
       long report = expenses.report(new CarlService.Scope("alice", Set.of("alice", "bob")), UUID.randomUUID(), Set.of(expense), Set.of(actual), FROM, THROUGH, ASOF);
-      String facts = service.artifact("bob", report).get("facts").toString();
+      String facts = StoredFacts.compact(service.artifact("bob", report).get("facts"));
       assertEquals("USD", new com.fasterxml.jackson.databind.ObjectMapper().readTree(facts).path("currency").asText(), "Saved forecast retains explicit currency at its root");
       assertTrue(facts.contains("\"knownScheduledExpenses\":400.00"));
       assertTrue(facts.contains("\"actualExpenses\":100.00"));
@@ -138,12 +138,12 @@ class ExpenseRecordsTest
       var unknown = new ExpenseRecords.Schedule("USD", ExpenseForecast.Cadence.ONCE, LocalDate.of(2026, 9, 15), null, null, Map.of(), ExpenseForecast.Kind.EXPENSE, ExpenseForecast.Basis.ESTIMATED, null);
       long expense = expenses.create("alice", UUID.randomUUID(), "Maintenance", "FAMILY", "Amount pending", unknown);
       long report = expenses.report(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), Set.of(expense), Set.of(), FROM, THROUGH, ASOF);
-      String facts = service.artifact("alice", report).get("facts").toString();
+      String facts = StoredFacts.compact(service.artifact("alice", report).get("facts"));
       assertTrue(facts.contains("\"expectedAmount\":null"));
       assertTrue(facts.contains("\"cashCoverageComplete\":false"));
       long reserve = expenses.create("alice", UUID.randomUUID(), "Repair reserve", "FAMILY", "Reserve assumption", new ExpenseRecords.Schedule("USD", ExpenseForecast.Cadence.ONCE, LocalDate.of(2026, 9, 20), null, n("75.00"), Map.of(), ExpenseForecast.Kind.RESERVE_EARMARK, ExpenseForecast.Basis.COMMITTED, null));
       long reserved = expenses.report(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), Set.of(reserve), Set.of(), FROM, THROUGH, ASOF);
-      String reservedFacts = service.artifact("alice", reserved).get("facts").toString();
+      String reservedFacts = StoredFacts.compact(service.artifact("alice", reserved).get("facts"));
       assertTrue(reservedFacts.contains("\"remainingReserveEarmarks\":75.00"));
       assertTrue(reservedFacts.contains("\"cashEvents\":[]"));
    }
@@ -190,7 +190,7 @@ class ExpenseRecordsTest
       expenses.refreshActual("alice", refresh, actual, currentRevision, "Reviewed updated imported amount");
       expenses.settle("alice", UUID.randomUUID(), expense, LocalDate.of(2026, 9, 15), actual, n("120.00"), "Reviewed replacement payment allocation");
       long recovered = expenses.report(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), Set.of(expense), Set.of(actual), FROM, THROUGH, ASOF);
-      assertTrue(service.artifact("alice", recovered).get("facts").toString().contains("\"remainingExpenses\":280.00"));
+      assertTrue(StoredFacts.compact(service.artifact("alice", recovered).get("facts")).contains("\"remainingExpenses\":280.00"));
       assertFalse(service.artifact("alice", recovered).get("facts").toString().contains("source changed"));
       sql("UPDATE carl_record SET visibility='PRIVATE' WHERE id=" + account);
       assertThrows(SecurityException.class, () -> service.artifact("bob", report));
