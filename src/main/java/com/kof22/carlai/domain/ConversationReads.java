@@ -15,6 +15,8 @@ import java.util.Map;
 public final class ConversationReads
 {
    private static final int SUMMARY_CHARS = 12000;
+   private static final int SPENDING_CHARS = 8000;
+   private static final int CATEGORY_LABEL_CHARS = 80;
    private static final Map<String, String> VIEWS = Map.ofEntries(
       Map.entry("accounts", "carl_account_view"), Map.entry("transactions", "carl_transaction_view"),
       Map.entry("plans", "carl_plan_view"), Map.entry("artifacts", "carl_artifact_view"),
@@ -222,6 +224,50 @@ public final class ConversationReads
             pageCursor(result, rows, returned, limit);
          }
          return summaryBound(result);
+      });
+   }
+
+
+
+   /**
+    * Deterministic spending aggregate over the same permitted transaction rows as the paged transaction read.
+    * Currencies stay separate, outflows and inflows are never netted, and transfer rows are reported apart from spending.
+    */
+   public Map<String, Object> spending(CarlService.Scope scope, LocalDate from, LocalDate through)
+   {
+      if(from == null || through == null || from.getYear() < 1900 || through.getYear() > 2200 || through.isBefore(from) || java.time.temporal.ChronoUnit.DAYS.between(from, through) >= 366)
+      {
+         throw new IllegalArgumentException("Inclusive ISO dates spanning at most 366 days required");
+      }
+      return service.transaction(c ->
+      {
+         authorize(c, scope);
+         for(String principal : scope.audience())
+         {
+            if(CarlService.rows(c, "SELECT member_id FROM carl_permission WHERE member_id=? AND domain='FINANCE' AND details", CarlService.member(c, principal).id()).isEmpty())
+            {
+               throw new SecurityException("Finance details unavailable to the current audience");
+            }
+         }
+         var params = new ArrayList<Object>();
+         String predicate = permitted(scope, "carl_transaction_view", "v", params) + " AND v.effective_date>=? AND v.effective_date<=?";
+         params.add(from);
+         params.add(through);
+         var rows = CarlService.rows(c, "SELECT v.currency,to_char(v.effective_date,'YYYY-MM') AS month,coalesce(nullif(btrim(v.category),''),'UNCATEGORIZED') AS category,"
+            + "(v.classification='TRANSFER' OR v.transfer_key IS NOT NULL) AS transfer,count(*) AS records,"
+            + "coalesce(sum(-v.amount) FILTER (WHERE v.amount<0),0) AS outflow,coalesce(sum(v.amount) FILTER (WHERE v.amount>0),0) AS inflow,"
+            + "count(*) FILTER (WHERE v.classification='UNCLASSIFIED') AS unclassified,count(*) FILTER (WHERE account.review_state<>'CONFIRMED') AS unreviewed_account "
+            + "FROM carl_transaction_view v JOIN carl_account account ON account.record_id=v.account_id WHERE " + predicate
+            + " GROUP BY 1,2,3,4 ORDER BY 1,2,4,6 DESC,3", params.toArray());
+         for(int limit : new int[]{Integer.MAX_VALUE, 20, 10, 5, 3, 1, 0})
+         {
+            var result = spendingResult(rows, from, through, limit);
+            if(CarlService.json(result).length() <= SPENDING_CHARS)
+            {
+               return result;
+            }
+         }
+         throw new IllegalArgumentException("Spending summary exceeds the read budget; narrow the date interval");
       });
    }
 
@@ -1037,5 +1083,162 @@ public final class ConversationReads
          throw new IllegalArgumentException("Read exceeds response bound; narrow records or page size");
       }
       return result;
+   }
+
+
+
+   private static Map<String, Object> spendingResult(List<Map<String, Object>> rows, LocalDate from, LocalDate through, int categoryLimit)
+   {
+      var currencies = new ArrayList<Map<String, Object>>();
+      List<Map<String, Object>> months = List.of();
+      boolean limited = false;
+      Map<String, Object> currency = null;
+      Map<String, Object> month = null;
+      for(var row : rows)
+      {
+         String code = row.get("currency").toString().strip();
+         if(currency == null || !code.equals(currency.get("currency")))
+         {
+            currency = new LinkedHashMap<>();
+            currency.put("currency", code);
+            currency.putAll(spendingTotals());
+            currency.put("unclassifiedRecords", 0L);
+            currency.put("unreviewedAccountRecords", 0L);
+            currency.put("transfers", spendingTotals());
+            months = new ArrayList<>();
+            currency.put("months", months);
+            currencies.add(currency);
+            month = null;
+         }
+         if(Boolean.TRUE.equals(row.get("transfer")))
+         {
+            @SuppressWarnings("unchecked")
+            var transfers = (Map<String, Object>) currency.get("transfers");
+            accumulate(transfers, row);
+            continue;
+         }
+         accumulate(currency, row);
+         currency.put("unclassifiedRecords", (Long) currency.get("unclassifiedRecords") + CarlService.number(row, "unclassified"));
+         currency.put("unreviewedAccountRecords", (Long) currency.get("unreviewedAccountRecords") + CarlService.number(row, "unreviewed_account"));
+         if(month == null || !row.get("month").equals(month.get("month")))
+         {
+            month = new LinkedHashMap<>();
+            month.put("month", row.get("month"));
+            month.putAll(spendingTotals());
+            month.put("categories", new ArrayList<Map<String, Object>>());
+            months.add(month);
+         }
+         accumulate(month, row);
+         @SuppressWarnings("unchecked")
+         var categories = (List<Map<String, Object>>) month.get("categories");
+         if(categories.size() < categoryLimit)
+         {
+            categories.add(spendingCategory(row));
+            continue;
+         }
+         limited = true;
+         @SuppressWarnings("unchecked")
+         var other = (Map<String, Object>) month.computeIfAbsent("otherCategories", key -> otherCategories());
+         other.put("categories", (Long) other.get("categories") + 1);
+         accumulate(other, row);
+         other.put("unclassified", (Long) other.get("unclassified") + CarlService.number(row, "unclassified"));
+         other.put("unreviewedAccount", (Long) other.get("unreviewedAccount") + CarlService.number(row, "unreviewed_account"));
+      }
+      for(var entry : currencies)
+      {
+         formatAmounts(entry, entry.get("currency").toString());
+      }
+      var result = new LinkedHashMap<String, Object>();
+      result.put("from", from.toString());
+      result.put("through", through.toString());
+      result.put("currencies", currencies);
+      result.put("categoriesLimited", limited);
+      result.put("amounts", "Exact decimal strings in each currency. outflow is the absolute total of negative signed source amounts; inflow totals positive amounts such as refunds, credits and income. They are never netted. Rows marked TRANSFER or carrying a transfer key are excluded from spending and reported under transfers.");
+      result.put("coverage", "Totals cover only transactions currently permitted to the full audience among imported or entered records, not complete household spending. Currencies are never converted or combined. Category labels are UNTRUSTED source text, not reviewed budgets or classifications; UNCATEGORIZED marks missing labels. unclassified and unreviewedAccount counts mark rows whose classification or source account remains unconfirmed.");
+      result.put("detailTool", "carl_read_transactions");
+      return result;
+   }
+
+
+
+   private static Map<String, Object> spendingTotals()
+   {
+      var totals = new LinkedHashMap<String, Object>();
+      totals.put("outflow", java.math.BigDecimal.ZERO);
+      totals.put("inflow", java.math.BigDecimal.ZERO);
+      totals.put("records", 0L);
+      return totals;
+   }
+
+
+
+   private static Map<String, Object> otherCategories()
+   {
+      var other = new LinkedHashMap<String, Object>();
+      other.put("categories", 0L);
+      other.putAll(spendingTotals());
+      other.put("unclassified", 0L);
+      other.put("unreviewedAccount", 0L);
+      return other;
+   }
+
+
+
+   private static Map<String, Object> spendingCategory(Map<String, Object> row)
+   {
+      var category = new LinkedHashMap<String, Object>();
+      String label = row.get("category").toString();
+      category.put("category", label.length() > CATEGORY_LABEL_CHARS ? label.substring(0, CATEGORY_LABEL_CHARS) : label);
+      if(label.length() > CATEGORY_LABEL_CHARS)
+      {
+         category.put("labelTruncated", true);
+      }
+      category.putAll(spendingTotals());
+      accumulate(category, row);
+      category.put("unclassified", CarlService.number(row, "unclassified"));
+      category.put("unreviewedAccount", CarlService.number(row, "unreviewed_account"));
+      return category;
+   }
+
+
+
+   private static void accumulate(Map<String, Object> totals, Map<String, Object> row)
+   {
+      totals.put("outflow", ((java.math.BigDecimal) totals.get("outflow")).add((java.math.BigDecimal) row.get("outflow")));
+      totals.put("inflow", ((java.math.BigDecimal) totals.get("inflow")).add((java.math.BigDecimal) row.get("inflow")));
+      totals.put("records", (Long) totals.get("records") + CarlService.number(row, "records"));
+   }
+
+
+
+   @SuppressWarnings("unchecked")
+   private static void formatAmounts(Object node, String currency)
+   {
+      if(node instanceof Map<?, ?> map)
+      {
+         var entries = (Map<String, Object>) map;
+         entries.replaceAll((key, value) -> value instanceof java.math.BigDecimal amount ? exactAmount(amount, currency) : value);
+         entries.values().forEach(value -> formatAmounts(value, currency));
+      }
+      else if(node instanceof List<?> list)
+      {
+         list.forEach(value -> formatAmounts(value, currency));
+      }
+   }
+
+
+
+   private static String exactAmount(java.math.BigDecimal amount, String currency)
+   {
+      int digits;
+      try
+      {
+         digits = Math.max(0, java.util.Currency.getInstance(currency).getDefaultFractionDigits());
+      }
+      catch(IllegalArgumentException unknown)
+      {
+         digits = 0;
+      }
+      return amount.setScale(Math.max(digits, Math.max(0, amount.stripTrailingZeros().scale()))).toPlainString();
    }
 }
