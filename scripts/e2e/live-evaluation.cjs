@@ -30,7 +30,8 @@ async function main() {
   const temporary = path.join(destination, 'tmp');
   await mkdir(temporary, { recursive: true });
   const environment = { ...process.env, CARL_PREVIEW_LIVE_MODEL: mode === 'live' ? 'true' : 'false' };
-  if (mode !== 'live') delete environment.ANTHROPIC_API_KEY;
+  if (mode !== 'live') delete environment.KOF22_AGENT_ANTHROPIC_API_KEY;
+  delete environment.ANTHROPIC_API_KEY;
   let fixture, browser, watchdog, ownedApplicationPid, ownedDatabaseContainer;
   let result = blocked('Controlled fixture qualification only; no live inference attempted.');
   try {

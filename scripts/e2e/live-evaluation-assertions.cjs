@@ -61,7 +61,7 @@ function finishReport(report) {
 function livePrerequisites(environment) {
   return environment.CARL_EVALUATION_AUTHORIZED === 'synthetic-preview-only' && environment.CARL_PREVIEW_LIVE_MODEL === 'true' &&
     typeof environment.CARL_EVALUATION_MODEL === 'string' && environment.CARL_EVALUATION_MODEL.trim().length > 0 &&
-    typeof environment.ANTHROPIC_API_KEY === 'string' && environment.ANTHROPIC_API_KEY.trim().length > 0;
+    typeof environment.KOF22_AGENT_ANTHROPIC_API_KEY === 'string' && environment.KOF22_AGENT_ANTHROPIC_API_KEY.trim().length > 0;
 }
 function evaluateInitialPurchase(observation, manifest) {
   const common = { id: 'LE-06-initial', requirements: ['FIN-16', 'FAT-15', 'FAT-16'] };

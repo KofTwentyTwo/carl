@@ -284,6 +284,7 @@ async function main() {
     let origin = existing?.replace(/\/$/, '');
     if(!origin) {
       const environment = { ...process.env, CARL_PREVIEW_LIVE_MODEL: 'false', CARL_PREVIEW_QBITS: String(mode.ownedQBits) };
+      delete environment.KOF22_AGENT_ANTHROPIC_API_KEY;
       delete environment.ANTHROPIC_API_KEY;
       // Optional infrastructure comes only from this disposable fixture, never inherited endpoints.
       for(const key of Object.keys(environment)) if(key.startsWith('CARL_QBITS_')) delete environment[key];
