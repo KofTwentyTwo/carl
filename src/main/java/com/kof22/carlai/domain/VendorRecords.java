@@ -269,6 +269,7 @@ public final class VendorRecords
          {
             throw new IllegalArgumentException("Export sources changed; review the draft and create a current export");
          }
+         NativeReadScope.check(actor);
          return ((byte[]) rows.getFirst().get("content")).clone();
       });
    }

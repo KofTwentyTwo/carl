@@ -1,0 +1,42 @@
+{
+  "version": "0.5.0-SNAPSHOT",
+  "channel": "snapshot",
+  "qualificationScope": "DEVELOPMENT_ONLY",
+  "source": "d0a11bf387b2a4a6b25a5feb5c34d17d8aa2aad3",
+  "qualificationRun": 36974782652,
+  "qualificationURL": "https://github.com/KofTwentyTwo/kof22-agent-foundation/actions/runs/36974782652",
+  "image": "ghcr.io/koftwentytwo/kof22-agent-foundation@sha256:5a7e356b063010266f3eeb178b5c65bccb9f56b5d98f7f1e168bae8b2fea3f0b",
+  "evidenceZipSha256": "54a39c2029ce72a90a2d742672077fce4ffb6e11ca0d8afda1f4b8483f38804c",
+  "evidenceZipPath": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-20261002.072932-7-evidence.zip",
+  "artifacts": {
+    "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.pom": "d11d1210d1c7e57ee6504159e13266ec01f76e93452ec692061381630634f99b",
+    "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.jar": "e0ccaf139deda28ab09988d2d17c441ae98faacd702575655c3d68f814019de0",
+    "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT-tests.jar": "b6e2e258c3ec9d7d7ef2aa5568cdcf80e09294e96c893929e0a4d3a311eb0ba3",
+    "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.pom": "b9065abc76a17b0b1efb4f23c7fac3c0406f1c4a17ecdf07990bb4ba15c6f26d",
+    "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.jar": "921d9259f6c2ea63ceb1a31863195ade88a645b72f47bf53fec31dfb11fa467c",
+    "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.pom": "d15231b8d71cab726c16ac5cdd43d35eb4b5c0eeff2e0e05bb2ed6a9b49cba4a",
+    "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.jar": "4d6c8ba89b0bc0d782aff9eecbaab81f6552a177539b6f8ecdda0470d25e317c",
+    "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT-tests.jar": "4bb52bac4d7463ebb500e4ab2f1f64962ed041e0dead5fdc2f9958ac68742490",
+    "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-SNAPSHOT.pom": "857bca2153213fdfcd23e384481a98a596117bee54a9e59b6e56829f8a1eaf6b"
+  },
+  "immutableArtifactPaths": {
+    "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.pom": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261002.072846-7.pom",
+    "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT.jar": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261002.072846-7.jar",
+    "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-SNAPSHOT-tests.jar": "com/kof22/kof22-agent-core/0.5.0-SNAPSHOT/kof22-agent-core-0.5.0-20261002.072846-7-tests.jar",
+    "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.pom": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261002.072903-7.pom",
+    "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-SNAPSHOT.jar": "com/kof22/kof22-agent-ui/0.5.0-SNAPSHOT/kof22-agent-ui-0.5.0-20261002.072903-7.jar",
+    "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.pom": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261002.072917-7.pom",
+    "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT.jar": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261002.072917-7.jar",
+    "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-SNAPSHOT-tests.jar": "com/kof22/kof22-agent-qqq/0.5.0-SNAPSHOT/kof22-agent-qqq-0.5.0-20261002.072917-7-tests.jar",
+    "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-SNAPSHOT.pom": "com/kof22/kof22-agent-parent/0.5.0-SNAPSHOT/kof22-agent-parent-0.5.0-20261002.072932-7.pom"
+  },
+  "remoteConsumer": {
+    "tests": 17,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "signatureAssurance": "Repository key signatures independently verified for publication and delivery manifests; hosted image signature check passed. Local anonymous OCI signature pull denied by access policy; no public transparency log assurance claimed.",
+  "dependencyQualification": "Published #51 RC8 closure; latest QQQ/Next successors require separate qualification",
+  "consumerDistributionQualification": "Not established by upstream publication; actual Carl CircleCI gate must qualify its exact distribution"
+}

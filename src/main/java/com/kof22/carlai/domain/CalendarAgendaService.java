@@ -125,6 +125,11 @@ public final class CalendarAgendaService
          {
             CarlService.execute(c, "UPDATE carl_calendar_connection SET last_attempt=now() WHERE record_id=?", connection);
          }
+         else
+         {
+            NativeMutationReceipt.beforeCalendar(c, actor, request);
+            NativeMutationReceipt.after(c, CarlService.member(c, principal));
+         }
          return new Frame(connection, revision, actor.permissionRevision(), actor, prior != null);
       });
       if(frame.complete())
@@ -164,6 +169,7 @@ public final class CalendarAgendaService
          {
             var actor = authorize(c, principal, frame);
             lockConnection(c, frame);
+            NativeMutationReceipt.beforeCalendar(c, actor, request);
             var seenSeries = new HashSet<String>();
             var occurrences = new ArrayList<AgendaDecoder.Occurrence>();
             for(var resource : resources)
@@ -206,6 +212,7 @@ public final class CalendarAgendaService
             CarlService.execute(c, "UPDATE carl_calendar_connection SET sync_state='CURRENT',last_success=now(),last_attempt=now(),failure_code=NULL,coverage_from=?,coverage_through=? WHERE record_id=?", from, through, frame.connection());
             CarlService.execute(c, "UPDATE carl_record SET revision=revision+1 WHERE id=?", frame.connection());
             CarlService.complete(c, request, frame.connection(), "COMPLETE", "Read-only calendar projection synchronized for the requested interval");
+            NativeMutationReceipt.after(c, CarlService.member(c, principal));
             return null;
          });
       }
@@ -289,7 +296,8 @@ public final class CalendarAgendaService
    {
       service.transaction(c ->
       {
-         authorize(c, principal, frame);
+         var actor = authorize(c, principal, frame);
+         NativeMutationReceipt.beforeCalendar(c, actor, request);
          var current = CarlService.rows(c, "SELECT revision FROM carl_record WHERE id=? FOR UPDATE", frame.connection()).getFirst();
          if(CarlService.number(current, "revision") == frame.revision())
          {
@@ -297,6 +305,7 @@ public final class CalendarAgendaService
             CarlService.execute(c, "UPDATE carl_record SET revision=revision+1 WHERE id=?", frame.connection());
          }
          CarlService.complete(c, request, frame.connection(), "PARTIAL", "Read failed or was superseded; previous local projection retained");
+         NativeMutationReceipt.after(c, CarlService.member(c, principal));
          return null;
       });
       return status(principal, frame.connection(), request);

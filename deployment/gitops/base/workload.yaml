@@ -1,0 +1,123 @@
+# Copyright (C) 2026 KofTwentyTwo
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: carl
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carl
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: carl
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: carl
+    spec:
+      serviceAccountName: carl
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        - name: carl-ghcr
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: carl
+          image: ghcr.io/koftwentytwo/carl:UNQUALIFIED
+          args: ["/run/secrets/runtime/agent.properties"]
+          ports:
+            - name: http
+              containerPort: 8090
+          startupProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            failureThreshold: 60
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          volumeMounts:
+            - name: runtime
+              mountPath: /run/secrets/runtime
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: runtime
+          secret:
+            secretName: carl-runtime
+            defaultMode: 0440
+            optional: false
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carl
+spec:
+  selector:
+    app.kubernetes.io/name: carl
+  ports:
+    - name: http
+      port: 8090
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: carl
+  annotations:
+    cert-manager.io/cluster-issuer: zerossl-production
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: UNQUALIFIED.invalid
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: carl
+                port:
+                  name: http
+  tls:
+    - hosts: [UNQUALIFIED.invalid]
+      secretName: carl-tls

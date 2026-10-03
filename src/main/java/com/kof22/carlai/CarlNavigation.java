@@ -5,11 +5,21 @@ package com.kof22.carlai;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kingsrook.qqq.backend.core.actions.permissions.PermissionsHelper;
+import com.kingsrook.qqq.backend.core.actions.permissions.TablePermissionSubType;
+import com.kingsrook.qqq.backend.core.actions.processes.BackendStep;
+import com.kingsrook.qqq.backend.core.actions.tables.QueryAction;
+import com.kingsrook.qqq.backend.core.exceptions.QException;
+import com.kingsrook.qqq.backend.core.model.actions.tables.QInputSource;
+import com.kingsrook.qqq.backend.core.model.actions.tables.query.QQueryFilter;
+import com.kingsrook.qqq.backend.core.model.actions.tables.query.QueryInput;
 import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
 import com.kingsrook.qqq.backend.core.model.metadata.branding.QBrandingMetaData;
+import com.kingsrook.qqq.backend.core.model.metadata.code.QCodeReferenceLambda;
 import com.kingsrook.qqq.backend.core.model.metadata.layout.QAppMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.layout.QAppSection;
 import com.kingsrook.qqq.backend.core.model.metadata.layout.QIcon;
+import com.kingsrook.qqq.backend.core.model.metadata.processes.QBackendStepMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.tables.QTableMetaData;
 
@@ -29,9 +39,10 @@ final class CarlNavigation
 
    static void apply(QInstance instance, QAppMetaData app)
    {
-      String svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='#203040'/><path d='M44 20H30a12 12 0 0 0 0 24h14' fill='none' stroke='#fff' stroke-width='7'/><path d='M44 31H31' stroke='#40b8a4' stroke-width='7'/></svg>";
+      String svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='#25282c'/><path d='M44 20H30a12 12 0 0 0 0 24h14' fill='none' stroke='#fff' stroke-width='7'/><path d='M44 31H31' stroke='#0066cc' stroke-width='7'/></svg>";
       String icon = "data:image/svg+xml;base64," + java.util.Base64.getEncoder().encodeToString(svg.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-      instance.setBranding(new QBrandingMetaData().withAppName("Carl AI").withCompanyName("Carl AI").withLogo(icon).withIcon(icon).withAccentColor("#2563eb").withAccentColorLight("#dbeafe"));
+      instance.setBranding(new QBrandingMetaData().withAppName("Carl AI").withCompanyName("Carl AI").withLogo(icon).withIcon(icon).withAccentColor("#0066cc").withAccentColorLight("#163e69"));
+      instance.withSupplementalMetaData(new CarlTheme());
       app.withIcon(new QIcon().withName("dashboard"));
       var sections = new ArrayList<QAppSection>();
       for(int n = 0; n < LABELS.size(); n++)
@@ -89,12 +100,14 @@ final class CarlNavigation
 
    private static final java.util.Map<String, String> ACTION_TABLES = java.util.Map.ofEntries(
       java.util.Map.entry("carlCreateAccount", "carlAccounts"),
+      java.util.Map.entry("carlReviewAccount", "carlAccounts"),
       java.util.Map.entry("carlDebtTerms", "carlAccounts"),
       java.util.Map.entry("carlDebtPayments", "carlAccounts"),
       java.util.Map.entry("carlCompareDebt", "carlAccounts"),
       java.util.Map.entry("carlDebtRateChange", "carlAccounts"),
       java.util.Map.entry("carlInvestmentContext", "carlFinancialGoals"),
       java.util.Map.entry("carlClassifyTransaction", "carlTransactions"),
+      java.util.Map.entry("carlClassifyTransactions", "carlTransactions"),
       java.util.Map.entry("carlPairTransfer", "carlTransactions"),
       java.util.Map.entry("carlUnpairTransfer", "carlTransactions"),
       java.util.Map.entry("carlPreviewBills", "carlBills"),
@@ -108,7 +121,10 @@ final class CarlNavigation
       java.util.Map.entry("carlMaintainVendorWork", "carlWork"),
       java.util.Map.entry("carlVendorDraft", "carlWork"),
       java.util.Map.entry("carlImportMonarch", "carlImportReviews"),
+      java.util.Map.entry("carlRegisterDocument", "carlDocuments"),
+      java.util.Map.entry("carlDownloadDocument", "carlDocuments"),
       java.util.Map.entry("carlMapMonarch", "carlImportReviews"),
+      java.util.Map.entry("carlRegisterMonarchSources", "carlImportReviews"),
       java.util.Map.entry("carlResolveMonarchBalance", "carlImportReviews"),
       java.util.Map.entry("carlResumeMonarch", "carlImportReviews"),
       java.util.Map.entry("carlHouseholdReport", "carlArtifacts"),
@@ -198,6 +214,55 @@ final class CarlNavigation
          }
          process.withTableName(table).withMinInputRecords(0).withMaxInputRecords(0);
       }
+      selectedRecordAction(instance, process);
+   }
+
+
+
+   static void selectedRecordAction(QInstance instance, QProcessMetaData process)
+   {
+      if(process.getStep("selectedRecord") != null || process.getMinInputRecords() != null && process.getMinInputRecords() > 0 || process.getMaxInputRecords() != null && process.getMaxInputRecords() > 1)
+      {
+         return;
+      }
+      var fields = List.copyOf(process.getInputFields());
+      var targets = fields.stream().filter(field -> process.getTableName().equals(field.getPossibleValueSourceName())).toList();
+      if(targets.size() != 1)
+      {
+         return;
+      }
+      String target = targets.getFirst().getName();
+      process.withMinInputRecords(0).withMaxInputRecords(1);
+      process.withStep(0, new QBackendStepMetaData().withName("selectedRecord").withCode(new QCodeReferenceLambda<BackendStep>((in, out) ->
+      {
+         if(in.getCallback() == null || in.getCallback().getQueryFilter() == null)
+         {
+            return;
+         }
+         var filter = new QQueryFilter().withSubFilters(List.of(in.getCallback().getQueryFilter())).withLimit(2);
+         var query = new QueryInput().withTableName(process.getTableName()).withFilter(filter).withInputSource(QInputSource.USER);
+         PermissionsHelper.checkTablePermissionThrowing(query, TablePermissionSubType.READ);
+         var records = new QueryAction().execute(query).getRecords();
+         if(records == null || records.size() != 1)
+         {
+            throw new QException("Choose exactly one currently readable record for this action");
+         }
+         var row = records.getFirst();
+         out.addValue(target, row.getValue(instance.getTable(process.getTableName()).getPrimaryKeyField()));
+         for(var field : fields)
+         {
+            String column = switch(field.getName())
+            {
+               case "expectedRevision" -> "revision";
+               case "expectedVersion" -> "version";
+               default -> field.getName();
+            };
+            if(!field.getName().equals(target) && row.getValue(column) != null)
+            {
+               out.addValue(field.getName(), row.getValue(column));
+            }
+         }
+      })));
    }
 
 
@@ -224,7 +289,7 @@ final class CarlNavigation
       {
          return 5;
       }
-      if(name.contains("Import") || name.contains("Monarch") || name.contains("Artifact") || name.contains("Report") || name.contains("Copy") || name.contains("Export") || name.contains("Download"))
+      if(name.contains("Document") || name.contains("Import") || name.contains("Monarch") || name.contains("Artifact") || name.contains("Report") || name.contains("Copy") || name.contains("Export") || name.contains("Download"))
       {
          return 6;
       }

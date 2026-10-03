@@ -15,7 +15,7 @@ import com.kof22.agentadmin.qbits.AuthoritativeSearchAccess;
 public final class CarlSearchAccess implements AuthoritativeSearchAccess
 {
    /** Fixed developer-owned tables; no table/SQL expression is supplied by prompts or events. */
-   public static final Map<String, String> TABLES = Map.of("carlBills", "carl_bill_view", "carlVendors", "carl_vendor_view", "carlWork", "carl_work_view", "carlAccounts", "carl_account_view", "carlTransactions", "carl_transaction_view", "carlBudgets", "carl_budget_view", "carlProperties", "carl_rental_property_view", "carlCalendar", "carl_calendar_view");
+   public static final Map<String, String> TABLES = Map.of("carlBills", "carl_bill_view", "carlVendors", "carl_vendor_view", "carlWork", "carl_work_view", "carlAccounts", "carl_account_view", "carlTransactions", "carl_transaction_view", "carlBudgets", "carl_budget_view", "carlProperties", "carl_rental_property_view", "carlCalendar", "carl_calendar_view", "carlDocuments", "carl_document_view");
    private final CarlService service;
    private final Supplier<String> principal;
 

@@ -1,0 +1,6 @@
+# Copyright (C) 2026 KofTwentyTwo
+# Reuse the exact verified application image and dependency closure.
+ARG APPLICATION_IMAGE
+FROM ${APPLICATION_IMAGE}
+ENTRYPOINT ["java", "-Dqqq.logger.logSessionId.disabled=true", "-cp", "/app/app.jar:/app/lib/*", "com.kof22.agentadmin.bootstrap.DatabaseBootstrap"]
+CMD ["migrate", "/run/secrets/migration.properties"]

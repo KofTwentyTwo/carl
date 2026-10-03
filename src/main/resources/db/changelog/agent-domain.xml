@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2026 KofTwentyTwo -->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.33.xsd">
+  <!-- The shared bridge resolves the canonical db/migration SQL catalog after exact history validation.
+       V61 remains canonical SQL: applied history is adopted; pending migration executes once.
+       Append only new domain changesets here; never execute the adopted SQL a second time. -->
+</databaseChangeLog>

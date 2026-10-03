@@ -8,6 +8,10 @@ Carl AI is the visible product name. Use Carl's identity in the header, browser 
 
 The main dashboards follow the financial questions represented in Monarch: Cash Flow, Balance Sheet, Financial Plan and Progress, and an income/expense Sankey. They display Carl's actual authorized records and deterministic calculations. A decorative fixture-only dashboard does not satisfy this scope.
 
+## Owner-selected visual direction — October 1, 2026
+
+The main application follows the Carl local sign-in reference: a dark charcoal geometric background, solid charcoal panels, white primary text, muted secondary text and blue actions/accents. Apply native QQQ/Next theme tokens and supported custom CSS, with matching styles in Carl's dashboards and docked chat. Place texture behind content, preserve contrast/focus/error distinctions, and keep financial values right aligned with existing currency formatting. Styling must preserve all existing authorization and business workflows. Qualification requires actual authenticated desktop/narrow views, not a decorative mockup. See Carl issue27.
+
 ## Navigation and action placement
 
 | Group | Main views | Actions belong here |

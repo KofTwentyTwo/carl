@@ -188,7 +188,7 @@ class CarlDashboardScopeEpochNativeTest
             try
             {
                Object result = method.invoke(connection, args);
-               if(method.getName().equals("prepareStatement") && args[0] instanceof String sql && sql.startsWith("SELECT t.*,ac.kind AS account_kind"))
+               if(method.getName().equals("prepareStatement") && args[0] instanceof String sql && sql.startsWith("SELECT t.*") && sql.contains("FROM carl_transaction_view t JOIN carl_account_view ac"))
                {
                   cashQuery.set(true);
                }

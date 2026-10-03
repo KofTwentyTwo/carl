@@ -204,24 +204,40 @@ public class CarlNativeHttpTest
                assertEquals(200, accounts.statusCode(), accounts.body());
                assertTrue(accounts.body().contains("Private synthetic account"));
                assertFalse(request(http, base, "/data/carlAccounts", bob, "GET", null, null).body().contains("Private synthetic account"));
-               String init = multipart(Map.of(), Map.of());
-               var start = request(http, base, "/processes/carlImportMonarch/init", alice, "POST", init, "multipart/form-data; boundary=carl-boundary");
+               String init = v1Multipart(Map.of(), Map.of());
+               var start = request(http, base, "/qqq/v1/processes/carlImportMonarch/init", alice, "POST", init, "multipart/form-data; boundary=carl-boundary");
                assertEquals(200, start.statusCode(), start.body());
                String processId = JSON.readTree(start.body()).path("processUUID").asText();
                assertFalse(processId.isBlank(), start.body());
                String transactions = "Date,Merchant,Category,Account,Original Statement,Notes,Amount,Tags,Owner,Reviewed,Id\n2026-09-01,Synthetic shop,Food,Checking,Synthetic,,-12.30,,,Reviewed,100000000000000001\n";
-               String upload = multipart(Map.of(), Map.of("transactionsFile", transactions));
-               var preview = request(http, base, "/processes/carlImportMonarch/" + processId + "/step/upload", alice, "POST", upload, "multipart/form-data; boundary=carl-boundary");
+               String upload = v1Multipart(Map.of(), Map.of("transactionsFile", transactions));
+               var preview = request(http, base, "/qqq/v1/processes/carlImportMonarch/" + processId + "/step/upload", alice, "POST", upload, "multipart/form-data; boundary=carl-boundary");
                assertEquals(200, preview.statusCode(), preview.body());
                assertTrue(preview.body().contains("Transactions: 1"), preview.body());
                String reviewId = JSON.readTree(preview.body()).path("values").path("reviewId").asText();
                assertFalse(reviewId.isBlank(), preview.body());
-               var wrong = request(http, base, "/processes/carlImportMonarch/" + processId + "/step/review", bob, "POST", multipart(Map.of("reviewId", reviewId, "confirm", "true"), Map.of()), "multipart/form-data; boundary=carl-boundary");
+               var wrong = request(http, base, "/qqq/v1/processes/carlImportMonarch/" + processId + "/step/review", bob, "POST", v1Multipart(Map.of("confirm", "true"), Map.of()), "multipart/form-data; boundary=carl-boundary");
                assertTrue(wrong.statusCode() >= 400, wrong.body());
-               var apply = request(http, base, "/processes/carlImportMonarch/" + processId + "/step/review", alice, "POST", multipart(Map.of("reviewId", reviewId, "confirm", "true"), Map.of()), "multipart/form-data; boundary=carl-boundary");
+               var secondStart = request(http, base, "/qqq/v1/processes/carlImportMonarch/init", alice, "POST", init, "multipart/form-data; boundary=carl-boundary");
+               String secondProcessId = JSON.readTree(secondStart.body()).path("processUUID").asText();
+               var secondPreview = request(http, base, "/qqq/v1/processes/carlImportMonarch/" + secondProcessId + "/step/upload", alice, "POST", v1Multipart(Map.of(), Map.of("transactionsFile", transactions.replace("100000000000000001", "100000000000000002"))), "multipart/form-data; boundary=carl-boundary");
+               assertEquals(200, secondPreview.statusCode(), secondPreview.body());
+               String secondReviewId = JSON.readTree(secondPreview.body()).path("values").path("reviewId").asText();
+               assertFalse(secondReviewId.isBlank(), secondPreview.body());
+               assertFalse(secondReviewId.equals(reviewId));
+               var substituted = request(http, base, "/qqq/v1/processes/carlImportMonarch/" + processId + "/step/review", alice, "POST", v1Multipart(Map.of("reviewId", secondReviewId, "confirm", "true"), Map.of()), "multipart/form-data; boundary=carl-boundary");
+               assertTrue(substituted.statusCode() >= 400 || !JSON.readTree(substituted.body()).path("error").asText().isBlank(), substituted.body());
+               assertEquals(0, service.view(CarlService.Scope.privateFor("alice"), "transactions").size());
+               var apply = request(http, base, "/qqq/v1/processes/carlImportMonarch/" + processId + "/step/review", alice, "POST", v1Multipart(Map.of("confirm", "true"), Map.of()), "multipart/form-data; boundary=carl-boundary");
                assertEquals(200, apply.statusCode(), apply.body());
                assertTrue(apply.body().contains("COMPLETE"), apply.body());
                assertEquals(1, service.view(CarlService.Scope.privateFor("alice"), "transactions").size());
+               var resumeStart = request(http, base, "/qqq/v1/processes/carlResumeMonarch/init", alice, "POST", init, "multipart/form-data; boundary=carl-boundary");
+               String resumeId = JSON.readTree(resumeStart.body()).path("processUUID").asText();
+               var resume = request(http, base, "/qqq/v1/processes/carlResumeMonarch/" + resumeId + "/step/input", alice, "POST", v1Multipart(Map.of("reviewId", secondReviewId, "confirm", "true"), Map.of()), "multipart/form-data; boundary=carl-boundary");
+               assertEquals(200, resume.statusCode(), resume.body());
+               assertTrue(resume.body().contains("COMPLETE"), resume.body());
+               assertEquals(2, service.view(CarlService.Scope.privateFor("alice"), "transactions").size());
                var created = nativeProcess(http, base, alice, "carlAddRentalProperty", Map.of("title", "Synthetic HTTP rental", "visibility", "PRIVATE", "evidence", "Synthetic supplied deed", "currency", "USD", "locality", "Chester, Illinois"));
                assertTrue(created.contains("Unknown ownership and basis remain unknown"), created);
                long property = ((Number) service.view(CarlService.Scope.privateFor("alice"), "properties").getFirst().get("id")).longValue();
@@ -249,7 +265,7 @@ public class CarlNativeHttpTest
                var projected = nativeProcess(http, base, alice, "carlExpenseReport", Map.of("expense", Long.toString(expenseId), "from", "2026-09-01", "through", "2026-09-30", "asOf", "2026-09-15"));
                assertTrue(projected.contains("not the entire household"), projected);
                assertFalse(request(http, base, "/data/carlExpenses", bob, "GET", null, null).body().contains("Synthetic HTTP expense"));
-               assertEquals(java.util.Set.of("carl_read_bills", "carl_read_finances", "carl_read_records", "carl_read_budget", "carl_read_preferences", "carl_read_availability"), tools.stream().map(tool -> tool.definition().name()).collect(java.util.stream.Collectors.toSet()));
+               assertEquals(java.util.Set.of("carl_read_bills", "carl_read_finances", "carl_read_records", "carl_read_budget", "carl_read_preferences", "carl_read_availability", "carl_read_document"), tools.stream().map(tool -> tool.definition().name()).collect(java.util.stream.Collectors.toSet()));
                var recordsTool = tools.stream().filter(tool -> tool.definition().name().equals("carl_read_records")).findFirst().orElseThrow();
                for(String kind : List.of("properties", "taxProperties", "tax", "rentalUnits", "rentalSources", "rentDues", "rentApplications", "artifacts", "calendar", "cashPlans", "financialGoals", "financingOffers", "expenses", "expenseActuals", "expenseSettlements"))
                {
@@ -300,6 +316,13 @@ public class CarlNativeHttpTest
          request.header("Content-Type", type);
       }
       return http.send(request.method(method, body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString());
+   }
+
+
+
+   private static String v1Multipart(Map<String, String> fields, Map<String, String> files) throws Exception
+   {
+      return multipart(Map.of("values", JSON.writeValueAsString(fields)), files);
    }
 
 

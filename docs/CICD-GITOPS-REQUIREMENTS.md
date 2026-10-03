@@ -1,6 +1,6 @@
 # CI/CD and GitOps delivery requirements
 
-Status: core decisions confirmed; hostname/test-user decisions pending, October 1, 2026. The owner requests a complete
+Status: delivery decisions confirmed; tester names pending, October 1, 2026. The owner requests a complete
 pipeline patterned after the Kof22 website: tested application and migration
 images, Liquibase support for schema and versioned data changes, and Argo CD
 delivery to the local Kubernetes infrastructure. Prepare a concrete design and
@@ -20,10 +20,10 @@ foundation; Carl owns its domain changes and application deployment settings.
 | GitOps ownership | Private KofTwentyTwo/carl-CD, GHCR and existing app-of-apps |
 | Liquibase boundary | Liquibase for core and domain, with a tested retained-data/history transition |
 | Promotion | Automatic promotion of dev, RC/staging and production after their gates pass |
-| Destinations | k8s-prod; carl-dev/carl-staging/carl-prod; hostnames pending |
+| Destinations | k8s-prod; carl-dev/carl-staging/carl-prod; carl-dev.galaxy.direct, carl-staging.galaxy.direct and carl.galaxy.direct |
 | PostgreSQL | Existing PostgreSQL service; isolated databases and migrator/runtime/reader roles; discover service identity |
-| Authentication | Existing Authentik with dedicated Carl client; test-user selection pending |
-| Credentials | Reuse website contexts and credentials; inspected context names ghcr/github/security; verify package permissions |
+| Authentication | Existing Authentik with dedicated Carl client; named family/test accounts; username list pending |
+| Credentials | Reuse website contexts ghcr/github/security; authenticated API confirms their variable names; verify package/publication permissions in CI |
 | First rollout | Initial synthetic test deployment; no real family records or account connections |
 
 Acceptance must prove fresh dependency resolution, the existing quality gates,
@@ -36,3 +36,5 @@ operational visibility and recovery/promotion procedures for the selected scope.
 Recorded source merges, published images and successful cluster rollout are
 separate outcomes. The existing localhost synthetic preview remains a development
 fixture with its model disconnected.
+
+The [concrete delivery design](SPEC-cicd-gitops.md) incorporates these choices.

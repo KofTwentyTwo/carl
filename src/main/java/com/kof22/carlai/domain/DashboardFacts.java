@@ -60,7 +60,7 @@ public final class DashboardFacts
          authorize(c, scope);
          var parameters = new ArrayList<Object>(List.of(scope.principal(), from, through, currency));
          String permitted = intersection(scope, "carl_transaction_view", "t", parameters);
-         var transactions = CarlService.rows(c, "SELECT t.*,ac.kind AS account_kind FROM carl_transaction_view t JOIN carl_account_view ac ON ac.id=t.account_id AND ac.principal=t.principal WHERE t.principal=? AND t.effective_date>=? AND t.effective_date<=? AND t.currency=?" + permitted + " ORDER BY t.id LIMIT 100001", parameters.toArray());
+         var transactions = CarlService.rows(c, "SELECT t.*,ac.kind,ac.kind AS account_kind,ac.review_state,ac.ownership_share,ac.liquid FROM carl_transaction_view t JOIN carl_account_view ac ON ac.id=t.account_id AND ac.principal=t.principal WHERE t.principal=? AND t.effective_date>=? AND t.effective_date<=? AND t.currency=?" + permitted + " ORDER BY t.id LIMIT 100001", parameters.toArray());
          if(transactions.size() > 100000)
          {
             throw new IllegalArgumentException("Narrow the reporting interval; at most 100000 transaction records");
@@ -83,7 +83,8 @@ public final class DashboardFacts
          {
             if(pair.size() == 2 && ((BigDecimal) pair.get(0).get("amount")).add((BigDecimal) pair.get(1).get("amount")).signum() == 0
                && CarlService.number(pair.get(0), "account_id") != CarlService.number(pair.get(1), "account_id")
-               && "CASH".equals(pair.get(0).get("account_kind")) && "CASH".equals(pair.get(1).get("account_kind")))
+               && "CASH".equals(pair.get(0).get("account_kind")) && "CASH".equals(pair.get(1).get("account_kind"))
+               && BalanceSheets.reviewedAccount(pair.get(0)) && BalanceSheets.reviewedAccount(pair.get(1)))
             {
                pair.forEach(row -> excluded.add(CarlService.number(row, "id")));
             }
@@ -94,6 +95,8 @@ public final class DashboardFacts
          }
          var totals = new java.util.TreeMap<String, Map<String, Object>>();
          var nonCash = new java.util.TreeMap<String, Map<String, Object>>();
+         var unreviewed = new java.util.TreeMap<String, Map<String, Object>>();
+         int unreviewedRecords = 0;
          BigDecimal zero = BigDecimal.ZERO.setScale(scale);
          BigDecimal inflows = zero;
          BigDecimal outflows = zero;
@@ -115,12 +118,17 @@ public final class DashboardFacts
             {
                unclassified++;
             }
+            boolean reviewed = BalanceSheets.reviewedAccount(row);
+            if(!reviewed)
+            {
+               unreviewedRecords++;
+            }
             if(amount.signum() == 0)
             {
                continue;
             }
             boolean incoming = amount.signum() > 0;
-            if("EXPENSE".equals(classification))
+            if(reviewed && "EXPENSE".equals(classification))
             {
                if(incoming)
                {
@@ -131,7 +139,7 @@ public final class DashboardFacts
                   spending = spending.subtract(amount);
                }
             }
-            boolean cash = "CASH".equals(row.get("account_kind"));
+            boolean cash = reviewed && "CASH".equals(row.get("account_kind"));
             if(cash && incoming)
             {
                inflows = inflows.add(amount);
@@ -143,12 +151,12 @@ public final class DashboardFacts
             String category = row.get("category").toString();
             String direction = incoming ? "INFLOW" : "OUTFLOW";
             String key = row.get("account_kind") + "\u0000" + classification + "\u0000" + category + "\u0000" + direction;
-            var group = (cash ? totals : nonCash).computeIfAbsent(key, ignored -> new LinkedHashMap<>(Map.of("classification", classification, "category", category, "direction", direction, "accountKind", row.get("account_kind"),
-               "label", label(classification, incoming) + ": " + category, "amount", zero, "records", 0L)));
+            var group = (!reviewed ? unreviewed : cash ? totals : nonCash).computeIfAbsent(key, ignored -> new LinkedHashMap<>(Map.of("classification", classification, "category", category, "direction", direction, "accountKind", row.get("account_kind"),
+               "label", (reviewed ? label(classification, incoming) : "Unreviewed account source movement") + ": " + category, "amount", zero, "records", 0L)));
             group.put("amount", ((BigDecimal) group.get("amount")).add(amount.abs()));
             group.put("records", ((Long) group.get("records")) + 1);
          }
-         if(totals.size() + nonCash.size() > 1000)
+         if(totals.size() + nonCash.size() + unreviewed.size() > 1000)
          {
             throw new IllegalArgumentException("Narrow the selected period; at most 1000 distinct directional categories");
          }
@@ -168,12 +176,21 @@ public final class DashboardFacts
          result.put("displayZone", CarlService.member(c, scope.principal()).zone().toString());
          result.put("generatedAt", service.reportTime().toString());
          result.put("latestMovementDate", newest == null ? null : newest.toString());
-         result.put("inflows", inflows);
-         result.put("outflows", outflows);
-         result.put("netMovement", inflows.subtract(outflows));
-         result.put("classifiedSpendingAllAccountKinds", spending);
-         result.put("classifiedExpenseRefundsAllAccountKinds", refunds);
-         result.put("classifiedNetSpendingAllAccountKinds", spending.subtract(refunds));
+         boolean accountReviewPending = unreviewedRecords > 0;
+         result.put("inflows", accountReviewPending ? null : inflows);
+         result.put("outflows", accountReviewPending ? null : outflows);
+         result.put("netMovement", accountReviewPending ? null : inflows.subtract(outflows));
+         result.put("knownReviewedCashInflows", inflows);
+         result.put("knownReviewedCashOutflows", outflows);
+         result.put("unreviewedAccountRecords", unreviewedRecords);
+         result.put("unreviewedAccountMovements", List.copyOf(unreviewed.values()));
+         if(accountReviewPending)
+         {
+            gaps.add("Account review required for " + unreviewedRecords + " source movements; cash totals are unknown until kind, ownership and liquidity are confirmed. These records are neither qualified cash nor non-cash movements and remain separately visible.");
+         }
+         result.put("classifiedSpendingAllAccountKinds", accountReviewPending ? null : spending);
+         result.put("classifiedExpenseRefundsAllAccountKinds", accountReviewPending ? null : refunds);
+         result.put("classifiedNetSpendingAllAccountKinds", accountReviewPending ? null : spending.subtract(refunds));
          result.put("records", transactions.size());
          result.put("excludedTransferLegs", excluded.size());
          result.put("flows", List.copyOf(totals.values()));

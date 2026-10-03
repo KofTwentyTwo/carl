@@ -44,11 +44,43 @@ public final class FinancialRecords
       }
       return db.transaction(c ->
       {
-         var member = CarlService.manager(c, principal, "FINANCE");
+         var member = mutationMember(c, principal);
          long id = CarlService.record(c, member, "FINANCE", visibility, title, evidence);
          CarlService.execute(c, "INSERT INTO carl_account(record_id,kind,currency,liquid,ownership_share) VALUES(?,?,?,?,?)", id, kind, currency, liquid, ownershipShare);
          CarlService.bump(c, member.householdId());
          return id;
+      });
+   }
+
+
+
+   /*******************************************************************************
+    * Records a human qualification of economic identity and ownership without rewriting source evidence.
+    ******************************************************************************/
+   public void reviewAccount(String principal, long accountId, String kind, boolean liquid, BigDecimal ownershipShare, String reason)
+   {
+      if(!Set.of("CASH", "CREDIT_CARD", "LOAN", "INVESTMENT", "OTHER_ASSET").contains(kind)
+         || ownershipShare == null || ownershipShare.signum() <= 0 || ownershipShare.compareTo(BigDecimal.ONE) > 0
+         || ownershipShare.stripTrailingZeros().scale() > 10)
+      {
+         throw new IllegalArgumentException("Explicit account kind and ownership share required");
+      }
+      CarlService.bounded(reason, 2000, "economic identity and ownership review evidence");
+      db.transaction(c ->
+      {
+         var member = mutationMember(c, principal);
+         CarlService.requireRecord(c, principal, accountId);
+         var before = CarlService.rows(c, "SELECT * FROM carl_account WHERE record_id=? FOR UPDATE", accountId);
+         if(before.size() != 1)
+         {
+            throw new IllegalArgumentException("Financial account required");
+         }
+         CarlService.execute(c, "UPDATE carl_account SET kind=?,liquid=?,ownership_share=?,review_state='CONFIRMED' WHERE record_id=?", kind, liquid, ownershipShare, accountId);
+         CarlService.execute(c, "UPDATE carl_record SET revision=revision+1 WHERE id=?", accountId);
+         CarlService.execute(c, "INSERT INTO carl_correction(record_id,member_id,reason,before_value,after_value) VALUES(?,?,?,?,?)", accountId, member.id(), reason,
+            CarlService.json(before), CarlService.json(CarlService.rows(c, "SELECT * FROM carl_account WHERE record_id=?", accountId)));
+         CarlService.bump(c, member.householdId());
+         return null;
       });
    }
 
@@ -103,11 +135,13 @@ public final class FinancialRecords
       }
       return db.transaction(c ->
       {
-         var member = CarlService.manager(c, principal, "FINANCE");
+         var member = mutationMember(c, principal);
+         NativeMutationReceipt.beforeMonarchTransaction(c, member, requestId);
          String digest = BillCsv.hash(preview.contentIdentity() + ":" + mappingIdentity(mapping, preview.rows().stream().map(row -> row.account()).toList()));
          Long prior = CarlService.request(c, member, requestId, "MONARCH_TRANSACTIONS", digest);
          if(prior != null)
          {
+            NativeMutationReceipt.after(c, CarlService.member(c, principal));
             return prior;
          }
          long batch = batch(c, member, requestId, "Monarch Transactions", preview.contentIdentity(), preview.rows().size());
@@ -165,6 +199,7 @@ public final class FinancialRecords
             CarlService.bump(c, member.householdId());
          }
          CarlService.complete(c, requestId, batch, "COMPLETE", "Source revisions preserved; absent transactions unchanged");
+         NativeMutationReceipt.after(c, CarlService.member(c, principal));
          return batch;
       });
    }
@@ -183,7 +218,7 @@ public final class FinancialRecords
       }
       return db.transaction(c ->
       {
-         var member = CarlService.manager(c, principal, "FINANCE");
+         var member = mutationMember(c, principal);
          Long prior = CarlService.request(c, member, requestId, "MONARCH_BALANCES", BillCsv.hash(preview.contentIdentity() + ":" + mappingIdentity(mapping, preview.rows().stream().map(row -> row.account()).toList())));
          if(prior != null)
          {
@@ -233,32 +268,40 @@ public final class FinancialRecords
     ******************************************************************************/
    public void classify(String principal, long transactionId, String classification, String category, String reason)
    {
+      db.transaction(c ->
+      {
+         classify(c, principal, transactionId, classification, category, reason);
+         return null;
+      });
+   }
+
+
+
+   /** Uses the caller's existing transaction so bounded bulk corrections remain atomic. */
+   void classify(Connection c, String principal, long transactionId, String classification, String category, String reason) throws SQLException
+   {
       if(!Set.of("INCOME", "EXPENSE", "DEBT_PRINCIPAL", "DEBT_INTEREST", "CAPITAL", "UNCLASSIFIED").contains(classification))
       {
          throw new IllegalArgumentException("Unsupported classification");
       }
       CarlService.bounded(reason, 2000, "classification reason");
       CarlService.bounded(category, 200, "category");
-      db.transaction(c ->
+      var member = mutationMember(c, principal);
+      CarlService.requireRecord(c, principal, transactionId);
+      var before = CarlService.rows(c, "SELECT * FROM carl_transaction WHERE record_id=? FOR UPDATE", transactionId);
+      if(before.size() != 1)
       {
-         var member = CarlService.manager(c, principal, "FINANCE");
-         CarlService.requireRecord(c, principal, transactionId);
-         var before = CarlService.rows(c, "SELECT * FROM carl_transaction WHERE record_id=? FOR UPDATE", transactionId);
-         if(before.size() != 1)
-         {
-            throw new SecurityException("Transaction unavailable");
-         }
-         account(c, principal, CarlService.number(before.getFirst(), "account_id"));
-         if(before.getFirst().get("transfer_key") != null)
-         {
-            throw new IllegalArgumentException("Unpair and review both transfer legs before reclassification");
-         }
-         CarlService.execute(c, "UPDATE carl_transaction SET classification=?,category=? WHERE record_id=?", classification, category, transactionId);
-         CarlService.execute(c, "INSERT INTO carl_correction(record_id,member_id,reason,before_value,after_value) VALUES(?,?,?,?,?)", transactionId, member.id(), reason, CarlService.json(before), CarlService.json(Map.of("classification", classification, "category", category)));
-         CarlService.execute(c, "UPDATE carl_record SET revision=revision+1 WHERE id=?", transactionId);
-         CarlService.bump(c, member.householdId());
-         return null;
-      });
+         throw new SecurityException("Transaction unavailable");
+      }
+      account(c, principal, CarlService.number(before.getFirst(), "account_id"));
+      if(before.getFirst().get("transfer_key") != null)
+      {
+         throw new IllegalArgumentException("Unpair and review both transfer legs before reclassification");
+      }
+      CarlService.execute(c, "UPDATE carl_transaction SET classification=?,category=? WHERE record_id=?", classification, category, transactionId);
+      CarlService.execute(c, "INSERT INTO carl_correction(record_id,member_id,reason,before_value,after_value) VALUES(?,?,?,?,?)", transactionId, member.id(), reason, CarlService.json(before), CarlService.json(Map.of("classification", classification, "category", category)));
+      CarlService.execute(c, "UPDATE carl_record SET revision=revision+1 WHERE id=?", transactionId);
+      CarlService.bump(c, member.householdId());
    }
 
 
@@ -275,7 +318,7 @@ public final class FinancialRecords
       CarlService.bounded(reason, 2000, "transfer review reason");
       db.transaction(c ->
       {
-         var member = CarlService.manager(c, principal, "FINANCE");
+         var member = mutationMember(c, principal);
          CarlService.requireRecord(c, principal, outgoing);
          CarlService.requireRecord(c, principal, incoming);
          CarlService.rows(c, "SELECT record_id FROM carl_transaction WHERE record_id IN (?,?) ORDER BY record_id FOR UPDATE", outgoing, incoming);
@@ -312,7 +355,7 @@ public final class FinancialRecords
       CarlService.bounded(reason, 2000, "transfer review reason");
       db.transaction(c ->
       {
-         var member = CarlService.manager(c, principal, "FINANCE");
+         var member = mutationMember(c, principal);
          requireTransaction(c, principal, transactionId);
          var selected = CarlService.rows(c, "SELECT transfer_key FROM carl_transaction WHERE record_id=?", transactionId).getFirst();
          Object key = selected.get("transfer_key");
@@ -364,7 +407,7 @@ public final class FinancialRecords
             predicate.append(" AND EXISTS(SELECT 1 FROM carl_transaction_view permitted WHERE permitted.id=t.id AND permitted.principal=?)");
             parameters.add(recipient);
          }
-         var totals = CarlService.rows(c, "SELECT currency,classification,count(*) AS records,sum(amount) AS total FROM carl_transaction_view t WHERE " + predicate + " GROUP BY currency,classification", parameters.toArray());
+         var totals = CarlService.rows(c, "SELECT t.currency,t.classification,ac.review_state,count(*) AS records,sum(t.amount) AS total FROM carl_transaction_view t JOIN carl_account_view ac ON ac.id=t.account_id AND ac.principal=t.principal WHERE " + predicate + " GROUP BY t.currency,t.classification,ac.review_state", parameters.toArray());
          var sample = CarlService.rows(c, "SELECT t.* FROM carl_transaction_view t WHERE " + predicate + " ORDER BY effective_date DESC,id DESC LIMIT 50", parameters.toArray());
          sample.forEach(row -> row.remove("principal"));
          return Map.of("totals", totals, "sample", sample);
@@ -376,6 +419,11 @@ public final class FinancialRecords
       var gaps = new ArrayList<String>();
       for(var account : accounts)
       {
+         if(!BalanceSheets.reviewedAccount(account))
+         {
+            gaps.add("Account " + account.get("id") + " needs account review; observed balances are excluded from attributed balances and liquidity until kind, ownership and liquidity are confirmed.");
+            continue;
+         }
          if(account.get("balance") == null)
          {
             gaps.add("Missing balance for account " + account.get("id"));
@@ -393,6 +441,11 @@ public final class FinancialRecords
       {
          long count = CarlService.number(total, "records");
          transactionCount += count;
+         if(!"CONFIRMED".equals(total.get("review_state")))
+         {
+            gaps.add(count + " " + total.get("currency") + " source transactions need account review; excluded from qualified classified flows.");
+            continue;
+         }
          if(total.get("classification").equals("UNCLASSIFIED"))
          {
             gaps.add(count + " unclassified " + total.get("currency") + " transactions; signed amounts are not assumed income or spending");
@@ -404,7 +457,7 @@ public final class FinancialRecords
       }
       if(transactionCount > transactions.size())
       {
-         gaps.add("Showing the latest " + transactions.size() + " of " + transactionCount + " authorized transactions; classified totals include all authorized records in the interval");
+         gaps.add("Showing the latest " + transactions.size() + " of " + transactionCount + " authorized transactions; qualified classified totals include reviewed account records in the interval");
       }
       return Map.of("scope", "Authorized accounts only; balances are signed assets/liabilities, partial coverage must not imply complete household net worth",
          "signedBalancesByCurrency", balances, "liquidBalancesByCurrency", liquid, "classifiedFlows", flows, "gaps", gaps, "accounts", accounts, "transactions", transactions, "transactionCount", transactionCount);
@@ -436,6 +489,24 @@ public final class FinancialRecords
          return Map.of("currency", account.get("currency"), "opening", start, "activity", activity, "closing", end, "unexplainedDifference", end.subtract(start.add(activity)),
             "limitation", "Activity includes only caller-permitted transactions and may be partial. Daily observation times are unknown; same-day ordering, missing activity and valuation changes require review");
       });
+   }
+
+
+
+   /*******************************************************************************
+    * Financial writes lock household before account and transaction rows. Recheck
+    * membership after waiting so serialization cannot retain revoked permissions.
+    ******************************************************************************/
+   static CarlService.Member mutationMember(Connection c, String principal) throws SQLException
+   {
+      var initial = CarlService.manager(c, principal, "FINANCE");
+      CarlService.rows(c, "SELECT permission_revision FROM carl_household WHERE id=? FOR UPDATE", initial.householdId());
+      var current = CarlService.manager(c, principal, "FINANCE");
+      if(current.householdId() != initial.householdId())
+      {
+         throw new SecurityException("Household changed; retry the request");
+      }
+      return current;
    }
 
 
