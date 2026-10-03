@@ -96,6 +96,14 @@ public final class CalendarPublicationService implements AutoCloseable
 
 
 
+   /** Identifies the configured collection, component and audience without exposing its endpoint or credentials. */
+   public String collectionKey()
+   {
+      return collectionKey;
+   }
+
+
+
    /** Explicit application workflow; ordinary read tools must not call this method. */
    public Outcome publish(UUID request, long plan, UUID step, int expectedVersion) throws SQLException
    {

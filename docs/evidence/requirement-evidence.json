@@ -556,7 +556,7 @@
   },
   "SYN-05": {
     "status": "PASS",
-    "evidence": "ReminderObservationsTest; browser native-shared-reminder-sync-and-human-reported-completion",
+    "evidence": "ReminderObservationsTest; CarlServiceTest.agendaSynchronizationReadsBackPublishedRemindersAlongsideEvents; browser native-shared-reminder-sync-and-human-reported-completion",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "SYN-06": {
