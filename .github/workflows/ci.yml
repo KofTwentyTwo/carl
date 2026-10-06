@@ -14,12 +14,15 @@ on:
       candidate_version:
         type: string
         default: ''
+    secrets:
+      FOUNDATION_PACKAGES_TOKEN:
+        required: false
 concurrency:
   group: carl-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 permissions:
   contents: read
-  packages: read # Resolve foundation Maven dependencies with the workflow token, as the foundation does.
+  packages: read # Resolve foundation Maven dependencies; FOUNDATION_PACKAGES_TOKEN (owner read:packages) when present, else the workflow token.
 jobs:
   source:
     name: Source and release policy
@@ -63,11 +66,11 @@ jobs:
           cache: maven
       - name: Verify actual application
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
         run: mvn -B -ntp --settings config/maven/settings.xml.example verify
       - name: Verify actual public household reconciliation
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
         run: bash scripts/verify-public-household.sh
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
@@ -81,24 +84,24 @@ jobs:
       - run: npm exec --prefix scripts/e2e -- playwright install --with-deps chromium
       - name: Verify packaged native browser workflows
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
         run: bash scripts/verify-browser.sh
       - name: Verify packaged financial dashboards
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
         run: bash scripts/verify-dashboard-browser.sh
       - name: Verify packaged Carl conversations
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
         run: bash scripts/verify-talk-browser.sh
       - name: Verify packaged docked chat and System navigation
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
           CARL_DOCKED_QBITS: 'false'
@@ -106,7 +109,7 @@ jobs:
         run: bash scripts/verify-docked-chat-browser.sh
       - name: Verify packaged Quick Search and ESB
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
         run: bash scripts/verify-qbits-browser.sh

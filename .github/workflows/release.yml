@@ -41,6 +41,7 @@ jobs:
     uses: ./.github/workflows/ci.yml
     with:
       candidate_version: ${{ needs.policy.outputs.version }}
+    secrets: inherit
   publish:
     name: Publish signed verified delivery
     needs: [policy, verification]
