@@ -1,5 +1,9 @@
 # Carl session history
 
+## October 6 (evening) — hosted CI defects found and fixed on PR #46
+
+Run 37530219406 was cancelled by a newer push, not failed. Later runs passed source policy and, after a test-client rate-limit backoff, the full Maven verify. The packaged browser step then failed because Carl's System navigation rejected the foundation's new `reconcileApproval` action at startup; b4b4cd0 fixes it with a reproducing test. Local packaged runs had masked this because they used stale October 1 foundation jars. See step 4a in [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). Next: confirm the b4b4cd0 run, then continue with merge of #46 and rebasing the eleven PRs.
+
 ## October 6 — hosted CI rebuilt; first real run in progress
 
 PR #46 (`feature/GH-6-hosted-ci`) replaces the gated workflow with the foundation-standard `Carl` workflow: `source`, `Application verification`, `Carl gate`; Maven uses repository secret `FOUNDATION_PACKAGES_TOKEN` (owner `read:packages`, set October 6) with workflow-token fallback; no environment gate. Run 37530219406 passed `source` and progressed into the Maven build, past the earlier parent-POM resolution failure. Next session: read [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md); if run 37530219406 is green, merge #46, rebase the eleven PR branches (#35-#45) onto main so they pick up the new workflow, merge in the planned order, then cut 1.0 via `release.yml`. Local integration verify of all eleven branches already passed 590 tests. CircleCI remains a second, failing gate pending an owner decision to keep or drop it.

@@ -19,8 +19,6 @@ public final class ZCarlSystemNavigation implements MetaDataProducerInterface<QA
     *******************************************************************************/
    private static final java.util.Set<String> APPROVAL_ACTIONS = java.util.Set.of("denyApproval", "reconcileApproval");
 
-
-
    /** Explicit application factory entry point. */
    public ZCarlSystemNavigation()
    {
