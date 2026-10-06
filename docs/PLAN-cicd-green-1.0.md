@@ -1,0 +1,27 @@
+# PLAN: CI/CD green, merge all PRs, Carl 1.0 test build
+
+## Goal
+Hosted CI runs and passes on every open Carl PR, the eleven PRs (#35-#45) merge to main, and a tagged 1.0 package is ready for owner testing.
+
+## Approach
+Prove the merged set locally first on `integration/1.0-all-prs` (worktree `../carl-integration-1.0`, all eleven branches merged without conflict at fbdb2bf). Unblock hosted CI, which needs two owner actions that the agent cannot perform: supply `FOUNDATION_PACKAGES_TOKEN` and approve or relax the `foundation-packages` environment gate. Then rerun CI per PR, merge in dependency order, and cut 1.0 through `release.yml`.
+
+## Files Affected
+- `.github/workflows/ci.yml` - job `application` uses `environment: foundation-packages` (required reviewer: KofTwentyTwo) and `secrets.FOUNDATION_PACKAGES_TOKEN`; no change expected unless the owner relaxes the gate.
+- `.circleci/config.yml` - `verify` job in contexts `github`/`security`; run 12 failed on PR #45, cause not yet read.
+- `docs/TODO.md`, `docs/SESSION-STATE.md` - status updates.
+
+## Steps
+1. [x] Build `integration/1.0-all-prs` from origin/main with all eleven PR branches (clean merge).
+2. [x] Full local `mvn clean verify` on the integration branch: 590 tests, 0 failures, 0 errors, 0 skipped, BUILD SUCCESS (Oct 5). First run failed to compile: PR #36 calls `AgentRuntimeException.reason()`, which foundation main added on Oct 4 (PRs #62/#63 via #81) but the locally installed 0.5.0-SNAPSHOT dated Oct 2 lacked. Rebuilt foundation `origin/main` (99d2833) into `~/.m2` from worktree `../kof22-foundation-main-build`; second run in progress. Hosted CI must therefore resolve a foundation snapshot published after Oct 4 19:33 (foundation run 37228739090 published successfully).
+3. [ ] OWNER: create a GitHub PAT with `read:packages` on the private foundation Maven packages; add it as secret `FOUNDATION_PACKAGES_TOKEN` to environment `foundation-packages` (and the CircleCI `github` context if CircleCI should also pass).
+4. [ ] OWNER: approve the waiting `Agent` runs on each PR, or remove `required_reviewers` from `foundation-packages` so pull requests run unattended.
+5. [ ] Read the CircleCI run 12 failure and fix or retire the duplicate CircleCI gate (decision for owner: keep both CI systems or one).
+6. [ ] Rerun CI on all PRs; fix any failures on the PR branches.
+7. [ ] Merge PRs in order: #36 (owner chat), #39, #40, #41, #42, #43, #44, #37, #38, #45, then #35.
+8. [ ] Tag and run `release.yml` for 1.0; verify the published artifact and record evidence in `docs/evidence/`.
+9. [ ] Hand the owner a runnable 1.0 package with sign-in instructions.
+
+## Open Questions
+- Does the owner want CircleCI kept as a required gate alongside GitHub Actions, or dropped?
+- Is the integration branch an acceptable merge path, or must each PR merge individually for history?

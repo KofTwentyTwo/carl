@@ -3,32 +3,28 @@
 # Consumer additions retain their respective owners' copyright.
 #
 
-name: Agent
+name: Carl
 on:
   push:
     branches-ignore: [main, develop]
   pull_request:
+  workflow_dispatch:
   workflow_call:
     inputs:
       candidate_version:
         type: string
         default: ''
-    secrets:
-      FOUNDATION_PACKAGES_TOKEN:
-        required: false
 concurrency:
-  group: agent-${{ github.workflow }}-${{ github.ref }}
+  group: carl-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 permissions:
   contents: read
-  packages: read # Resolve foundation Maven dependencies.
+  packages: read # Resolve foundation Maven dependencies with the workflow token, as the foundation does.
 jobs:
-  application:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    name: Application verification
-    environment: foundation-packages
+  source:
+    name: Source and release policy
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -37,31 +33,41 @@ jobs:
         run: python3 -m unittest discover -s scripts/tests -p 'test_release.py'
       - name: Verify public household fixtures
         run: python3 -m unittest discover -s scripts/tests -p 'test_public_household.py'
+      - name: Scan source for secrets
+        run: |
+          mkdir -p target/security
+          docker run --rm -v "$PWD:/src" zricethezav/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f dir /src --redact --report-format json --report-path /src/target/security/gitleaks.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: always()
+        with:
+          name: source-security
+          path: target/security/gitleaks.json
+  verify:
+    name: Application verification
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Prepare exact candidate version
         if: inputs.candidate_version != ''
         env:
           CANDIDATE_VERSION: ${{ inputs.candidate_version }}
         run: python3 scripts/release-policy.py --prepare "$CANDIDATE_VERSION"
-      - name: Scan source for secrets
-        run: |
-          mkdir -p target/security
-          docker run --rm -v "$PWD:/src" zricethezav/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f dir /src --redact --report-format json --report-path /src/target/security/gitleaks.json
       - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
         with:
           distribution: temurin
           java-version: '21'
+          cache: maven
       - name: Verify actual application
         env:
-          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
-        run: |
-          if [ -z "$GITHUB_TOKEN" ]; then
-            echo '::error::BLOCKED: FOUNDATION_PACKAGES_TOKEN with read:packages and access to the private foundation repository is required; Carl GITHUB_TOKEN is not equivalent.'
-            exit 1
-          fi
-          mvn -B -ntp --settings config/maven/settings.xml.example verify
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn -B -ntp --settings config/maven/settings.xml.example verify
       - name: Verify actual public household reconciliation
         env:
-          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
         run: bash scripts/verify-public-household.sh
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
@@ -75,24 +81,24 @@ jobs:
       - run: npm exec --prefix scripts/e2e -- playwright install --with-deps chromium
       - name: Verify packaged native browser workflows
         env:
-          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
         run: bash scripts/verify-browser.sh
       - name: Verify packaged financial dashboards
         env:
-          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
         run: bash scripts/verify-dashboard-browser.sh
       - name: Verify packaged Carl conversations
         env:
-          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
         run: bash scripts/verify-talk-browser.sh
       - name: Verify packaged docked chat and System navigation
         env:
-          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
           CARL_DOCKED_QBITS: 'false'
@@ -100,7 +106,7 @@ jobs:
         run: bash scripts/verify-docked-chat-browser.sh
       - name: Verify packaged Quick Search and ESB
         env:
-          GITHUB_TOKEN: ${{ secrets.FOUNDATION_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_SETTINGS: config/maven/settings.xml.example
           CARL_QUALIFIED_DISTRIBUTION: ${{ github.workspace }}/target/agent
         run: bash scripts/verify-qbits-browser.sh
@@ -143,14 +149,15 @@ jobs:
           if-no-files-found: error
           retention-days: 30
           path: target/delivery/*
-  required-verification:
-    name: Required application verification
-    needs: application
+  gate:
+    name: Carl gate
     if: always()
+    needs: [source, verify]
     runs-on: ubuntu-24.04
-    timeout-minutes: 1
+    timeout-minutes: 2
     steps:
-      - name: Require completed application verification
+      - name: Require every mandatory result
         env:
-          APPLICATION_RESULT: ${{ needs.application.result }}
-        run: test "$APPLICATION_RESULT" = success
+          SOURCE_RESULT: ${{ needs.source.result }}
+          VERIFY_RESULT: ${{ needs.verify.result }}
+        run: test "$SOURCE_RESULT" = success && test "$VERIFY_RESULT" = success
