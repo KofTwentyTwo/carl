@@ -13,6 +13,14 @@ import com.kingsrook.qqq.backend.core.model.metadata.layout.QIcon;
 /** Native app-output finalizer sorts after the optional QBits multi-output producer and preserves registered app permissions. */
 public final class ZCarlSystemNavigation implements MetaDataProducerInterface<QAppMetaData>
 {
+   /*******************************************************************************
+    ** Inherited foundation approval actions that take an approval id and belong on
+    ** the approvals table rather than in the System sidebar.
+    *******************************************************************************/
+   private static final java.util.Set<String> APPROVAL_ACTIONS = java.util.Set.of("denyApproval", "reconcileApproval");
+
+
+
    /** Explicit application factory entry point. */
    public ZCarlSystemNavigation()
    {
@@ -60,7 +68,7 @@ public final class ZCarlSystemNavigation implements MetaDataProducerInterface<QA
             {
                if(child instanceof com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData process && process.getTableName() == null)
                {
-                  if(!process.getName().equals("denyApproval") || instance.getTable("approvals") == null)
+                  if(!APPROVAL_ACTIONS.contains(process.getName()) || instance.getTable("approvals") == null)
                   {
                      throw new IllegalStateException("System action needs an explicit registered table: " + process.getName());
                   }
