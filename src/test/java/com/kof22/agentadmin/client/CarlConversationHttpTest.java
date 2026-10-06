@@ -1391,7 +1391,7 @@ class CarlConversationHttpTest
       JsonNode result;
       do
       {
-         Thread.sleep(250);
+         Thread.sleep(500);
          var response = send(http, path, "GET", token, null);
          assertEquals(200, response.statusCode(), response.body());
          result = JSON.readTree(response.body());
@@ -1407,7 +1407,25 @@ class CarlConversationHttpTest
 
 
 
+   /*******************************************************************************
+    ** Send like a well-behaved client: the foundation admits 60 requests per member
+    ** per fixed minute, so back off on a rate_limit response instead of failing.
+    *******************************************************************************/
    private static HttpResponse<String> send(HttpClient http, String url, String method, String token, String body) throws Exception
+   {
+      long deadline = System.nanoTime() + Duration.ofSeconds(70).toNanos();
+      HttpResponse<String> response = sendOnce(http, url, method, token, body);
+      while(response.statusCode() == 429 && response.body().contains("\"rate_limit\"") && System.nanoTime() < deadline)
+      {
+         Thread.sleep(2000);
+         response = sendOnce(http, url, method, token, body);
+      }
+      return response;
+   }
+
+
+
+   private static HttpResponse<String> sendOnce(HttpClient http, String url, String method, String token, String body) throws Exception
    {
       return http.send(HttpRequest.newBuilder(URI.create(url)).timeout(Duration.ofSeconds(10)).header("Authorization", token.startsWith("Bearer ") ? token : "Bearer " + token).header("Content-Type", "application/json").method(method, body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString());
    }
