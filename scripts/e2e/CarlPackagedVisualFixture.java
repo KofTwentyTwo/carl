@@ -413,7 +413,7 @@ public final class CarlPackagedVisualFixture
       {
          if(!child.isAlive())
          {
-            throw new IllegalStateException("Packaged child startup failed; private log at " + temporary.resolve("application.log"));
+            throw startupFailure("Packaged child startup failed");
          }
          try
          {
@@ -429,7 +429,25 @@ public final class CarlPackagedVisualFixture
          }
          Thread.sleep(100);
       }
-      throw new IllegalStateException("Packaged application readiness timed out");
+      throw startupFailure("Packaged application readiness timed out");
+   }
+
+
+
+   /*******************************************************************************
+    ** Describe a child startup failure. Hosted CI runs only synthetic records, so
+    ** there the log tail is included; elsewhere the log stays private on disk.
+    *******************************************************************************/
+   private IllegalStateException startupFailure(String reason) throws java.io.IOException
+   {
+      var log = temporary.resolve("application.log");
+      if(!"true".equals(System.getenv("GITHUB_ACTIONS")) || !Files.isRegularFile(log))
+      {
+         return new IllegalStateException(reason + "; private log at " + log);
+      }
+      var lines = new String(Files.readAllBytes(log), java.nio.charset.StandardCharsets.UTF_8).split("\\R");
+      var tail = String.join("\n", java.util.Arrays.asList(lines).subList(Math.max(0, lines.length - 120), lines.length));
+      return new IllegalStateException(reason + "; synthetic hosted-CI log tail:\n" + tail);
    }
 
 
