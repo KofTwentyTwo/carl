@@ -1,5 +1,9 @@
 # Carl session history
 
+## October 6 — hosted CI rebuilt; first real run in progress
+
+PR #46 (`feature/GH-6-hosted-ci`) replaces the gated workflow with the foundation-standard `Carl` workflow: `source`, `Application verification`, `Carl gate`; Maven uses repository secret `FOUNDATION_PACKAGES_TOKEN` (owner `read:packages`, set October 6) with workflow-token fallback; no environment gate. Run 37530219406 passed `source` and progressed into the Maven build, past the earlier parent-POM resolution failure. Next session: read [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md); if run 37530219406 is green, merge #46, rebase the eleven PR branches (#35-#45) onto main so they pick up the new workflow, merge in the planned order, then cut 1.0 via `release.yml`. Local integration verify of all eleven branches already passed 590 tests. CircleCI remains a second, failing gate pending an owner decision to keep or drop it.
+
 ## October 5 — goal: CI green, merge all PRs, 1.0 test build
 
 Owner set the goal after a crashed session whose transcript was not written to disk. Recovered state: eleven open PRs (#35-#45) from the Claude takeover, all mergeable, none merged, every hosted `Agent` run WAITING on the `foundation-packages` environment (required reviewer KofTwentyTwo) and the environment holds no `FOUNDATION_PACKAGES_TOKEN`; CircleCI `verify` run 12 failed on PR #45 with cause unread. Main is unprotected. Local worktree `../carl-integration-1.0` on `integration/1.0-all-prs` merges all eleven branches cleanly at fbdb2bf; full local verify passes 590 tests with zero failures after rebuilding foundation main 99d2833 into the local Maven repository (the locally installed Oct 2 snapshot lacked `AgentRuntimeException.reason()`, which PR #36 requires). The agent cannot approve the environment gate or create the packages token; both are owner actions listed in [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). Nothing pushed or merged yet.
