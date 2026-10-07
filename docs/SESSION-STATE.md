@@ -2,7 +2,7 @@
 
 ## October 6 (evening) — hosted CI defects found and fixed on PR #46
 
-Run 37530219406 was cancelled by a newer push, not failed. Later runs passed source policy and, after a test-client rate-limit backoff, the full Maven verify. The packaged browser step then failed because Carl's System navigation rejected the foundation's new `reconcileApproval` action at startup; b4b4cd0 fixes it with a reproducing test. Local packaged runs had masked this because they used stale October 1 foundation jars. See step 4a in [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). Next: confirm the b4b4cd0 run, then continue with merge of #46 and rebasing the eleven PRs.
+Run 37530219406 was cancelled by a newer push, not failed. Later runs passed source policy and, after a test-client rate-limit backoff, the full Maven verify. The packaged browser step then failed because Carl's System navigation rejected the foundation's new `reconcileApproval` action at startup; b4b4cd0 fixes it with a reproducing test. Local packaged runs had masked this because they used stale October 1 foundation jars. See step 4a in [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). A test rate-limit backoff and a jsoup 1.23.2 pin for CVE-2026-75140 completed the repairs. Hosted run 37551191289 at d7892f8 is fully green. Next, with owner approval: merge #46, rebase the eleven PRs (#35-#45) onto main, rerun their CI, merge in the planned order, then cut 1.0. CircleCI reports a red "no configuration" check until the owner disconnects it.
 
 ## October 6 — hosted CI rebuilt; first real run in progress
 
