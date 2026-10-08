@@ -62,7 +62,7 @@ async function main() {
     await page.screenshot({ path: path.join(report, '03-import-preview.png'), fullPage: true });
     await page.getByLabel('I reviewed these imports and account mappings').check();
     await page.getByRole('button', { name: /next|continue|submit/i }).last().click();
-    await expect(page.getByText(/Transaction batch.*committed/)).toBeVisible();
+    await expect(page.getByText(/Reviewed import processing finished/)).toBeVisible();
     checks.push('native-two-file-upload-preview-confirm-apply');
     await page.screenshot({ path: path.join(report, '04-import-complete.png'), fullPage: true });
     await page.setViewportSize({width:390,height:844});
@@ -74,7 +74,7 @@ async function main() {
     await page.screenshot({path:path.join(report,'04b-narrow-repeat-import-preview.png'),fullPage:true});
     await page.getByLabel('I reviewed these imports and account mappings').check();
     await page.getByRole('button',{name:/next|continue|submit/i}).last().click();
-    await expect(page.getByText(/Transaction batch.*committed/)).toBeVisible();
+    await expect(page.getByText(/Reviewed import processing finished/)).toBeVisible();
     checks.push('native-narrow-two-file-repeat-import');
     await page.setViewportSize({width:1440,height:1000});
     await page.goto(origin + '/app/carlTransactions');
@@ -185,7 +185,7 @@ async function main() {
     await page.locator('input[name="from"]').fill('2026-09-30');
     await page.locator('input[name="through"]').fill('2026-09-30');
     await page.getByRole('button',{name:/next|continue|submit/i}).last().click();
-    await expect(page.getByText(/Connection: CURRENT/)).toBeVisible();
+    await expect(page.getByText(/Calendar refresh request recorded/)).toBeVisible();
     await page.screenshot({path:path.join(report,'15-calendar-refresh.png'),fullPage:true});
     checks.push('native-bounded-calendar-refresh-over-controlled-HTTPS');
     await page.goto(origin + '/app/carlCalendar');
