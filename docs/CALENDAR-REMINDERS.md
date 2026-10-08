@@ -38,3 +38,5 @@ Checked September 29, 2026: Synology documents Calendar task management and CalD
 - [Synology Calendar API guide](https://kb.synology.com/en-sg/DG/Calendar_API_Guide/4)
 
 Prefer the standard CalDAV contract where the service supports it. A Synology-specific task API is a possible compatibility decision, not an assumed dependency or permission to use unrestricted NAS administration.
+
+Refreshing the shared calendar agenda (`carlSyncAgenda`) also reads back Carl-published, unretired reminders whose plan steps are due in the requested window, at most 50 per refresh and only in plans the caller can currently see. Each VTODO read back is decoded as untrusted provider data and retained as a reminder observation for explicit human review (`carlReviewReminder`); it never changes plan step status and is not verified financial completion. Unsupported or changed remote tasks are reported for review rather than applied. Live Synology task behavior remains unqualified until SYN-AT-08.
