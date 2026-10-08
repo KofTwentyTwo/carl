@@ -8,6 +8,21 @@ review; read [HANDOFF-NEXT-LLM.md](HANDOFF-NEXT-LLM.md) before resuming. Checked
 
 - [ ] Push and review the local `feature/GH-34-*` owner-chat fixes, then qualify owner chat end to end (Carl#34).
 - [ ] Generate evidence from CI with one schema, committed SHAs and no local paths (Carl#12).
+
+## Active — October 5: CI green, merge PRs, 1.0 test build
+
+See [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). Hosted CI is blocked on two owner actions: the `FOUNDATION_PACKAGES_TOKEN` environment secret and approval of the `foundation-packages` environment gate.
+
+- [x] Local integration branch `integration/1.0-all-prs` merges all eleven PR branches cleanly.
+- [x] Full local verify on the integration branch: 590 tests, 0 failures, against foundation main 99d2833.
+- [ ] Owner supplies `FOUNDATION_PACKAGES_TOKEN` and approves or relaxes the environment gate.
+- [ ] CI green on every PR, PRs merged, 1.0 tagged and released for owner testing.
+
+## Paused — October 2 owner takeover request
+
+Implementation is stopped. Read [HANDOFF-NEXT-LLM.md](HANDOFF-NEXT-LLM.md) before resuming; the latest full gate fails and earlier checked milestones are scoped history.
+
+- [ ] Independently diagnose full566-test failure versus isolated HTTP29 PASS.
 - [ ] Review guarded spending-read candidate, then qualify actual owner UI/model completion.
 - [ ] Review shared Check Status candidate, including stale401/403 revocation, before adoption.
 - [ ] Qualify generic governed local-record action authority (foundation60) and Carl clerk capabilities (Carl33).

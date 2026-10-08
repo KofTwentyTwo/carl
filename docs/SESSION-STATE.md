@@ -28,6 +28,20 @@ wording in it describe their own dates.
 
 ## October 2 — stopped for independent LLM takeover (historical)
 
+## October 6 (evening) — hosted CI defects found and fixed on PR #46
+
+Run 37530219406 was cancelled by a newer push, not failed. Later runs passed source policy and, after a test-client rate-limit backoff, the full Maven verify. The packaged browser step then failed because Carl's System navigation rejected the foundation's new `reconcileApproval` action at startup; b4b4cd0 fixes it with a reproducing test. Local packaged runs had masked this because they used stale October 1 foundation jars. See step 4a in [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). A test rate-limit backoff and a jsoup 1.23.2 pin for CVE-2026-75140 completed the repairs. Hosted run 37551191289 at d7892f8 is fully green. Next, with owner approval: merge #46, rebase the eleven PRs (#35-#45) onto main, rerun their CI, merge in the planned order, then cut 1.0. CircleCI reports a red "no configuration" check until the owner disconnects it.
+
+## October 6 — hosted CI rebuilt; first real run in progress
+
+PR #46 (`feature/GH-6-hosted-ci`) replaces the gated workflow with the foundation-standard `Carl` workflow: `source`, `Application verification`, `Carl gate`; Maven uses repository secret `FOUNDATION_PACKAGES_TOKEN` (owner `read:packages`, set October 6) with workflow-token fallback; no environment gate. Run 37530219406 passed `source` and progressed into the Maven build, past the earlier parent-POM resolution failure. Next session: read [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md); if run 37530219406 is green, merge #46, rebase the eleven PR branches (#35-#45) onto main so they pick up the new workflow, merge in the planned order, then cut 1.0 via `release.yml`. Local integration verify of all eleven branches already passed 590 tests. CircleCI remains a second, failing gate pending an owner decision to keep or drop it.
+
+## October 5 — goal: CI green, merge all PRs, 1.0 test build
+
+Owner set the goal after a crashed session whose transcript was not written to disk. Recovered state: eleven open PRs (#35-#45) from the Claude takeover, all mergeable, none merged, every hosted `Agent` run WAITING on the `foundation-packages` environment (required reviewer KofTwentyTwo) and the environment holds no `FOUNDATION_PACKAGES_TOKEN`; CircleCI `verify` run 12 failed on PR #45 with cause unread. Main is unprotected. Local worktree `../carl-integration-1.0` on `integration/1.0-all-prs` merges all eleven branches cleanly at fbdb2bf; full local verify passes 590 tests with zero failures after rebuilding foundation main 99d2833 into the local Maven repository (the locally installed Oct 2 snapshot lacked `AgentRuntimeException.reason()`, which PR #36 requires). The agent cannot approve the environment gate or create the packages token; both are owner actions listed in [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). Nothing pushed or merged yet.
+
+## October 2 — stopped for independent LLM takeover
+
 Owner requested implementation stop and handoff. Read [HANDOFF-NEXT-LLM.md](HANDOFF-NEXT-LLM.md) for exact source/runtime distinctions, saved evidence and next review. Latest full566-test gate fails (1 failure,9 errors); isolated HTTP29 passes. Spending and shared status candidates are isolated, unintegrated and not deployed. Generic local-action authority is design research only. Normal owner chat remains FAIL. Source changes, private records and existing runtime are preserved; no pause-cleanup commit, merge, release or migration. Issues Carl33/34 and foundation60/61 remain open with current status.
 
 ## October 2 — owner chat QA failure

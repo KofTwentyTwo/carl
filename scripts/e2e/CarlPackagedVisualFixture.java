@@ -396,6 +396,11 @@ public final class CarlPackagedVisualFixture
       {
          builder.command().add(1, "-Djava.io.tmpdir=" + temporary);
       }
+      if("true".equals(System.getenv("GITHUB_ACTIONS")))
+      {
+         // The native launcher prints only a generic failure line, so record thrown exceptions for synthetic CI diagnosis.
+         builder.command().add(1, "-Xlog:exceptions=info");
+      }
       builder.directory(temporary.toFile());
       builder.environment().keySet().removeIf(name -> name.startsWith("KOF22_") || name.startsWith("CARL_") || Set.of("ANTHROPIC_API_KEY", "JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS").contains(name));
       if("true".equals(System.getenv("CARL_PREVIEW_LIVE_MODEL")) && System.getenv(MODEL_CREDENTIAL) != null)
@@ -420,7 +425,7 @@ public final class CarlPackagedVisualFixture
       {
          if(!child.isAlive())
          {
-            throw new IllegalStateException("Packaged child startup failed; private log at " + temporary.resolve("application.log"));
+            throw startupFailure("Packaged child startup failed");
          }
          try
          {
@@ -436,7 +441,35 @@ public final class CarlPackagedVisualFixture
          }
          Thread.sleep(100);
       }
-      throw new IllegalStateException("Packaged application readiness timed out");
+      throw startupFailure("Packaged application readiness timed out");
+   }
+
+
+
+   /*******************************************************************************
+    ** Describe a child startup failure. Hosted CI runs only synthetic records, so
+    ** there the log tail is included; elsewhere the log stays private on disk.
+    *******************************************************************************/
+   private IllegalStateException startupFailure(String reason) throws java.io.IOException
+   {
+      var log = temporary.resolve("application.log");
+      if(!"true".equals(System.getenv("GITHUB_ACTIONS")) || !Files.isRegularFile(log))
+      {
+         return new IllegalStateException(reason + "; private log at " + log);
+      }
+      var lines = new String(Files.readAllBytes(log), java.nio.charset.StandardCharsets.UTF_8).split("\\R");
+      var exceptions = new java.util.LinkedHashSet<String>();
+      for(String line : lines)
+      {
+         int start = line.indexOf("Exception <a '");
+         if(start >= 0 && !line.matches(".*(ClassNotFound|NoSuchField|NoSuchMethod)Exception.*"))
+         {
+            exceptions.add(line.substring(start).replaceAll("\\{0x[0-9a-f]+}", ""));
+         }
+      }
+      var distinct = new java.util.ArrayList<>(exceptions);
+      var tail = String.join("\n", java.util.Arrays.asList(lines).subList(Math.max(0, lines.length - 40), lines.length));
+      return new IllegalStateException(reason + "; synthetic hosted-CI exceptions:\n" + String.join("\n", distinct.subList(Math.max(0, distinct.size() - 80), distinct.size())) + "\nlog tail:\n" + tail);
    }
 
 
