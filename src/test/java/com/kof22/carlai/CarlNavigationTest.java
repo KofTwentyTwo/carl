@@ -165,6 +165,26 @@ class CarlNavigationTest
 
 
    @Test
+   void inheritedReconcileApprovalActionAlsoLivesOnApprovalsTable()
+   {
+      var instance = new QInstance();
+      var reconcile = new com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData().withName("reconcileApproval").withLabel("Reconcile Approval Execution")
+         .withPermissionRules(com.kof22.agentadmin.OperatorPermissions.require(com.kof22.agentcore.security.Role.ADMIN));
+      var operations = new com.kingsrook.qqq.backend.core.model.metadata.layout.QAppMetaData().withName("operations").withLabel("Operations").withChild(reconcile);
+      instance.addApp(operations);
+      instance.addTable(new com.kingsrook.qqq.backend.core.model.metadata.tables.QTableMetaData().withName("approvals"));
+      instance.addProcess(reconcile);
+      new CarlMetadata(new com.kof22.carlai.domain.CarlService(new org.postgresql.ds.PGSimpleDataSource(), java.time.Clock.systemUTC())).produce(instance);
+      assertEquals("approvals", reconcile.getTableName());
+      assertEquals(0, reconcile.getMinInputRecords());
+      assertEquals(0, reconcile.getMaxInputRecords());
+      assertTrue(operations.getChildren().stream().noneMatch(child -> child instanceof com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData));
+      assertNotNull(instance.getProcess("reconcileApproval"));
+   }
+
+
+
+   @Test
    void databaseHtmlEscapesIdentifiersAndExplainsEmptyAndBoundedResults()
    {
       String unsafe = "<img src=x onerror=alert(1)>";
