@@ -1397,9 +1397,23 @@ class CarlConversationHttpTest
       String input = JSON.writeValueAsString(Map.of("input", Map.of("message", "Please prepare my bill report for September 2026.")));
       provider.enqueue("max_tokens", JSON.writeValueAsString(Map.of("operation", "CLARIFY", "message", "An incomplete response")));
       assertEquals(200, send(http, path, "PUT", alice, input).statusCode());
-      assertEquals("UNKNOWN", await(http, path, alice).path("status").asText(), "A truncated model response must not be a complete conversational result");
+      // Nothing can be saved before routing completes, so a truncated response is a definite failure, not an uncertain outcome.
+      assertEquals("FAILED", await(http, path, alice).path("status").asText(), "A truncated model response must not be a complete conversational result");
+      UUID truncated = UUID.fromString(path.substring(path.lastIndexOf('/') + 1));
+      String failureCode;
+      try(var c = java.sql.DriverManager.getConnection(DATABASE.getJdbcUrl(), DATABASE.getUsername(), DATABASE.getPassword());
+         var query = c.prepareStatement("SELECT failure_code FROM carl_client_workflow WHERE request_id=?"))
+      {
+         query.setObject(1, truncated);
+         try(var rows = query.executeQuery())
+         {
+            rows.next();
+            failureCode = rows.getString(1);
+         }
+      }
+      assertEquals("incomplete_response", failureCode);
       int calls = provider.requests.size();
-      assertEquals("UNKNOWN", JSON.readTree(send(http, path, "PUT", alice, input).body()).path("status").asText());
+      assertEquals("FAILED", JSON.readTree(send(http, path, "PUT", alice, input).body()).path("status").asText());
       assertEquals(calls, provider.requests.size());
       assertEquals(artifacts, service.view(CarlService.Scope.privateFor("alice"), "artifacts").size());
       path = base + conversation + "/workflows/conversation/" + UUID.randomUUID();
@@ -1427,7 +1441,8 @@ class CarlConversationHttpTest
          provider.enqueue("end_turn", JSON.writeValueAsString(proposal));
          path = base + conversation + "/workflows/conversation/" + UUID.randomUUID();
          assertEquals(200, send(http, path, "PUT", alice, input).statusCode());
-         assertEquals("UNKNOWN", await(http, path, alice).path("status").asText());
+         // Malformed proposals are rejected before any write (FAILED); inaccessible work stays a security outcome (UNKNOWN).
+         assertEquals(proposal.get("operation").equals("DRAFT") ? "UNKNOWN" : "FAILED", await(http, path, alice).path("status").asText());
          assertEquals(artifacts, service.view(CarlService.Scope.privateFor("alice"), "artifacts").size());
       }
       provider.enqueue("end_turn", JSON.writeValueAsString(Map.of("operation", "REFUSE")));
@@ -1443,7 +1458,8 @@ class CarlConversationHttpTest
          provider.enqueue(stop, JSON.writeValueAsString(Map.of("operation", "CLARIFY", "message", "Incomplete")));
          path = base + conversation + "/workflows/conversation/" + UUID.randomUUID();
          assertEquals(200, send(http, path, "PUT", alice, input).statusCode());
-         assertEquals("UNKNOWN", await(http, path, alice).path("status").asText());
+         // An incomplete routing response ends before any write: a definite failure.
+         assertEquals("FAILED", await(http, path, alice).path("status").asText());
       }
       assertEquals(artifacts, service.view(CarlService.Scope.privateFor("alice"), "artifacts").size());
    }
