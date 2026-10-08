@@ -20,4 +20,4 @@ Run the [representative model evaluation](docs/EVALUATION.md) against the frozen
 
 See [operator instructions](docs/OPERATOR-RUNBOOK.md), [family API integration](docs/CLIENT-INTEGRATION.md), and [acceptance evidence](docs/ACCEPTANCE.md). Do not connect personal sources or expose this development application publicly until the outstanding acceptance and deployment work is qualified.
 
-The [build journal drafts](docs/blog/README.md) document Carl’s creation using synthetic examples and explicit qualification boundaries.
+The owner’s build-journal blog drafts are kept in the owner’s private notes, outside this repository.
