@@ -2,14 +2,20 @@
 
 **STOPPED at the owner's request.** Implementation is paused for independent review by another LLM. Preserve all local changes and isolated candidates. Do not treat this handoff, earlier checked checklists, controlled fixtures or a running URL as proof that Carl is complete. The owner wants a real clerk, accountant and advisor that can compose reusable tools to inspect, correct and plan over the same authoritative records shown in QQQ.
 
+**Later on October 2:** the uncommitted work described below is preserved as commit `9bd782e`
+(`feature/codex-wip-2026-10-02`). A local `mvn verify` of `9bd782e` against foundation main `d0a11bf`
+passes 566 tests; this supersedes the failing 566-test run recorded below. The owner chat still fails
+([Carl#34](https://github.com/KofTwentyTwo/carl/issues/34)); its fixes are in local branches pending push.
+Paths to private files are described, not given; the owner holds them.
+
 ## Start here
 
-Read AGENTS.md, REQUIREMENTS.md, FINANCIAL-PLANNING-REQUIREMENTS.md, DECISIONS.md, SESSION-STATE.md, TODO.md and ACCEPTANCE.md. Carl is the application; the foundation supplies reusable infrastructure. Consumer checkout is `/Users/james.maes/Git.Local/KofTwentyTwo/carl`, branch `feature/cicd-liquibase-gitops`, HEAD `5414d7acde7f5d7556dc52544ee0e4bd2ab3bc52`, with substantial uncommitted work. Foundation's original checkout is still an older branch; do not mistake it for published main. Do not reset, stash, remove worktrees or commit the failing candidate merely to make the tree look clean. A private source/evidence preservation bundle is at `/Users/james.maes/.local/share/carl/handoffs/2026-10-02-owner-pause` (not for Git, CI or publication).
+Read AGENTS.md, REQUIREMENTS.md, FINANCIAL-PLANNING-REQUIREMENTS.md, DECISIONS.md, SESSION-STATE.md, TODO.md and ACCEPTANCE.md. Carl is the application; the foundation supplies reusable infrastructure. Consumer checkout is the owner's local Carl clone, branch `feature/cicd-liquibase-gitops`, HEAD `5414d7acde7f5d7556dc52544ee0e4bd2ab3bc52`, with substantial uncommitted work. Foundation's original checkout is still an older branch; do not mistake it for published main. Do not reset, stash, remove worktrees or commit the failing candidate merely to make the tree look clean. Source and evidence were preserved in the private owner-held bundle (not for Git, CI or publication).
 
 ## Running application versus latest source
 
-- Actual QA URL: https://localhost:8443. Anonymous metadata returns401. Actual local owner OIDC, PostgreSQL, Anthropic, OpenSearch and Artemis are configured. Private credentials and records are under `~/.local/share/carl/`; never print or publish them. Authentik and live calendar/reminder work are owner-deferred.
-- Runtime is the sealed563-test distribution `~/.local/share/carl/runtime/qualified-agent-20261002-document-followup`; app SHA256 `adf707224e4ae0c84511bc21c787aa9d3e2b8f5f8327cfd872fa3dc89d9aad9b`. Database is **Flyway domainV62/coreV8**, not Liquibase. The candidate fixes below are not running.
+- Actual QA URL: https://localhost:8443. Anonymous metadata returns401. Actual local owner OIDC, PostgreSQL, Anthropic, OpenSearch and Artemis are configured. Private credentials and records are in the owner's private local data directory; never print or publish them. Authentik and live calendar/reminder work are owner-deferred.
+- Runtime is the sealed 563-test distribution in the owner's private runtime directory; app SHA256 `adf707224e4ae0c84511bc21c787aa9d3e2b8f5f8327cfd872fa3dc89d9aad9b`. Database is **Flyway domainV62/coreV8**, not Liquibase. The candidate fixes below are not running.
 - Real imports, original-document custody, selected/all-authorized transaction CSV exports and selected browser flows have scoped evidence. Metadata enumeration of150 processes is not execution acceptance of150 processes. Missing account identities/bucket relationships, current debt terms, budget/reserve and rental evidence block whole financial priming. Preserve uncertainty and ask for the missing facts.
 - Owner's ordinary monthly-spending chat is **FAIL**: UNKNOWN, no saved answer/artifact, nine successful authorized reads and recorded provider usage. The complex document-to-plan followup also remains UNKNOWN. Preserve original request identities; do not automatically replay submissions.
 
@@ -18,7 +24,7 @@ Read AGENTS.md, REQUIREMENTS.md, FINANCIAL-PLANNING-REQUIREMENTS.md, DECISIONS.m
 - Bounded readiness retrieval is integrated in ConversationReads, CarlConversation and CarlReadinessConversationTest. Actual controlled SDK/PostgreSQL RED exhausted ten iterations; focused GREEN uses two reads/three model turns,50 focused tests pass. This does not qualify normal owner chat.
 - Latest full `spotless:apply clean verify` against matching published foundation51 artifacts: **566 tests,1 failure,9 errors,0 skips, BUILD FAILURE**. Only CarlConversationHttpTest failed: one503/unavailable assertion and nine migration-inspection errors. Full log is preserved. Subsequent isolated `-Dtest=CarlConversationHttpTest test` passes29/29. Cross-suite/static QQQ connection state or container lifecycle is a hypothesis, not established cause. No full-green rerun or new package followed.
 - Four development CI files are integrated: canonical nine foundation artifact hashes and immutable timestamped paths pinned to published main `d0a11bf387b2a4a6b25a5feb5c34d17d8aa2aad3`, hosted run36974782652.31 Python tests,22 Node checks, shell/CircleCI validation pass. Stable release baseline0.4.1 is unchanged. No hosted Carl green image/GitOps rollout is claimed.
-- Full failed log: `evidence/carl-readiness-retrieval-published-foundation-full-verify.log` under /Users/james.maes/.local/share/carl/handoffs/2026-10-02-owner-pause. Isolated PASS: `evidence/carl-published-foundation-http-failure-diagnostic.log`. A later focused run overwrote the HTTP XML; retain the full failed log as independent evidence.
+- Full failed log: `evidence/carl-readiness-retrieval-published-foundation-full-verify.log` in the private owner-held bundle. Isolated PASS: `evidence/carl-published-foundation-http-failure-diagnostic.log`. A later focused run overwrote the HTTP XML; retain the full failed log as independent evidence.
 
 ## Isolated candidates — review before integration
 

@@ -16,4 +16,4 @@ away significant source precision merely to change presentation.
 4. [x] Run required Java/frontend checks and packaged browser/visual verification.
 5. [x] Record exact evidence and update handoffs; retain existing integration holds.
 
-Completed with [exact qualification](evidence/2026-10-01-money-presentation-qualification.json):419 current Java results,117 final browser checks, unchanged coverage floors, and matching frozen distribution/image. Current synthetic preview is https://localhost:57132; model/hosted/release/production holds remain separate.
+Completed with [exact qualification](evidence/2026-10-01-money-presentation-qualification.json):419 current Java results,117 final browser checks, unchanged coverage floors, and matching frozen distribution/image. The former synthetic preview was `localhost:57132` (closed; not live); model/hosted/release/production holds remain separate.
