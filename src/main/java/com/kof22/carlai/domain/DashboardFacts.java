@@ -226,7 +226,7 @@ public final class DashboardFacts
             selected = " AND v.id=?";
             parameters.add(selectedId);
          }
-         var rows = CarlService.rows(c, "SELECT v.id,v.facts::jsonb->>'asOf' AS as_of,v.stale,v.status_label FROM carl_artifact_view v WHERE v.principal=? AND v.kind='FINANCIAL_PLAN' AND v.facts::jsonb->>'calculationVersion'='selected-balance-sheet-v1'" + selected + intersection(scope, "carl_artifact_view", "v", parameters) + " ORDER BY v.id DESC LIMIT 1001", parameters.toArray());
+         var rows = CarlService.rows(c, "SELECT v.id,selection.facts->>'asOf' AS as_of,v.stale,v.status_label FROM carl_artifact_view v JOIN carl_artifact selection ON selection.record_id=v.id WHERE v.principal=? AND v.kind='FINANCIAL_PLAN' AND selection.facts->>'calculationVersion'='selected-balance-sheet-v1'" + selected + intersection(scope, "carl_artifact_view", "v", parameters) + " ORDER BY v.id DESC LIMIT 1001", parameters.toArray());
          if(rows.size() > 1000)
          {
             throw new IllegalArgumentException("Select a saved balance sheet by ID; more than 1000 eligible saved reports");
@@ -304,7 +304,7 @@ public final class DashboardFacts
             throw new IllegalArgumentException("Narrow plan expectations before viewing this dashboard");
          }
          var observations = new ArrayList<Map<String, Object>>();
-         var candidates = CarlService.rows(c, "SELECT v.* FROM carl_artifact_view v WHERE v.principal=? AND v.kind='FINANCIAL_PLAN' AND v.facts::jsonb->>'calculationVersion'='plan-effects-v1' AND v.facts::jsonb->'expectation'->>'plan_id'=? ORDER BY v.id DESC LIMIT 101", scope.principal(), Long.toString(plan));
+         var candidates = CarlService.rows(c, "SELECT v.* FROM carl_artifact_view v JOIN carl_artifact selection ON selection.record_id=v.id WHERE v.principal=? AND v.kind='FINANCIAL_PLAN' AND selection.facts->>'calculationVersion'='plan-effects-v1' AND selection.facts->'expectation'->>'plan_id'=? ORDER BY v.id DESC LIMIT 101", scope.principal(), Long.toString(plan));
          if(candidates.size() > 100)
          {
             throw new IllegalArgumentException("Narrow plan observations before viewing this dashboard");

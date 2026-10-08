@@ -346,7 +346,7 @@ class CarlServiceTest
       tax.document("alice", property, "Synthetic rent records", "FAMILY", 2026, TaxPreparation.Category.RENT_RECORDS, TaxPreparation.Treatment.PROPOSED, "Human proposed classification, not accountant approval", "Synthetic document description");
       assertTrue(service.view(CarlService.Scope.privateFor("bob"), "tax").isEmpty());
       long packet = tax.packet(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), 2026, Instant.parse("2026-09-30T12:00:00Z"), java.util.List.of(property));
-      var facts = service.artifact("alice", packet).get("facts").toString();
+      var facts = StoredFacts.compact(service.artifact("alice", packet).get("facts"));
       assertTrue(facts.contains("UNDETERMINED"));
       assertTrue(facts.contains("acquisitionBasis\":null"));
       assertTrue(facts.contains("PROPOSED"));

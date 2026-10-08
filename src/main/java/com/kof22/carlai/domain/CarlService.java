@@ -611,7 +611,7 @@ public final class CarlService
       String domain = Set.of("VENDOR_DRAFT", "VENDOR_REPORT").contains(kind) ? "VENDORS" : kind.equals("CALENDAR_REPORT") ? "CALENDAR" : kind.equals("FINANCIAL_PLAN") ? "FINANCE" : "BILLS";
       long id = record(c, requester, domain, "PRIVATE", kind.replace('_', ' '), "Explicit authenticated generation request " + requestId);
       long revision = number(rows(c, "SELECT revision FROM carl_household WHERE id=?", requester.householdId()).getFirst(), "revision");
-      execute(c, "INSERT INTO carl_artifact(record_id,request_id,kind,period_start,period_end,facts,narrative,limitations,narration_state,source_revision,formula_version,intended_recipient,status_label,permission_revision) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      execute(c, "INSERT INTO carl_artifact(record_id,request_id,kind,period_start,period_end,facts,narrative,limitations,narration_state,source_revision,formula_version,intended_recipient,status_label,permission_revision) VALUES(?,?,?,?,?,CAST(? AS jsonb),?,?,?,?,?,?,?,?)",
          id, requestId, kind, from, through, facts, narrative, limitations, narrationState, revision, "carl-v1", recipient, statusLabel, requester.permissionRevision());
       for(long sourceId : sources.keySet())
       {

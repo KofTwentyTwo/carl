@@ -190,7 +190,7 @@ class PortfolioPlansTest
       var scope = new CarlService.Scope("alice", Set.of("alice", "bob"));
       long report = compare(request, Set.of(a, b), Set.of(move), scope);
       assertEquals(report, compare(request, Set.of(b, a), Set.of(move), scope));
-      String facts = service.artifact("bob", report).get("facts").toString();
+      String facts = StoredFacts.compact(service.artifact("bob", report).get("facts"));
       assertTrue(facts.contains("\"originalPrincipal\":2000.00"));
       assertTrue(facts.contains("\"debtAfterFinancedFees\":2010.00"));
       assertTrue(facts.contains("\"upfrontCashFees\":5.00"));
@@ -258,14 +258,14 @@ class PortfolioPlansTest
       long a = account("Source", "FAMILY");
       sql("INSERT INTO carl_debt_rate(account_id,effective_date,annual_rate,monthly_fee,evidence) VALUES(" + a + ",'2026-10-10',0.30,7,'Future contract change')");
       long report = compare(UUID.randomUUID(), Set.of(a), Set.of(), CarlService.Scope.privateFor("alice"));
-      String facts = service.artifact("alice", report).get("facts").toString();
+      String facts = StoredFacts.compact(service.artifact("alice", report).get("facts"));
       assertTrue(facts.contains("Future contract change"));
       assertTrue(facts.contains("\"firstMonth\":2"));
       assertTrue(facts.contains("\"monthlyFees\":7.00"));
       sql("INSERT INTO carl_debt_rate(account_id,effective_date,annual_rate,monthly_fee,evidence) VALUES(" + a + ",'2026-10-11',0.40,9,'Intra period change')");
       long partial = compare(UUID.randomUUID(), Set.of(a), Set.of(), CarlService.Scope.privateFor("alice"));
       assertTrue(service.artifact("alice", partial).get("facts").toString().contains("intra-period"));
-      assertTrue(service.artifact("alice", partial).get("facts").toString().contains("\"comparisons\":{}"));
+      assertTrue(StoredFacts.compact(service.artifact("alice", partial).get("facts")).contains("\"comparisons\":{}"));
    }
 
 
