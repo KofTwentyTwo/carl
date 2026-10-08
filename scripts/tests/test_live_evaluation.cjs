@@ -24,10 +24,16 @@ test('failed case command exits nonzero even when its report was initially revie
 test('whitespace model or startup credential cannot authorize live startup', () => {
   const { livePrerequisites } = require('../e2e/live-evaluation-assertions.cjs');
   assert.equal(typeof livePrerequisites, 'function');
-  const env = { CARL_EVALUATION_AUTHORIZED: 'synthetic-preview-only', CARL_PREVIEW_LIVE_MODEL: 'true', CARL_EVALUATION_MODEL: 'synthetic-model', ANTHROPIC_API_KEY: 'synthetic-key' };
+  const env = { CARL_EVALUATION_AUTHORIZED: 'synthetic-preview-only', CARL_PREVIEW_LIVE_MODEL: 'true', CARL_EVALUATION_MODEL: 'synthetic-model', KOF22_AGENT_ANTHROPIC_API_KEY: 'synthetic-key' };
   assert.equal(livePrerequisites(env), true);
   assert.equal(livePrerequisites({ ...env, CARL_EVALUATION_MODEL: ' \t ' }), false);
-  assert.equal(livePrerequisites({ ...env, ANTHROPIC_API_KEY: ' \n ' }), false);
+  assert.equal(livePrerequisites({ ...env, KOF22_AGENT_ANTHROPIC_API_KEY: ' \n ' }), false);
+});
+test('live startup credential uses only the foundation runtime variable name', () => {
+  const { livePrerequisites } = require('../e2e/live-evaluation-assertions.cjs');
+  const env = { CARL_EVALUATION_AUTHORIZED: 'synthetic-preview-only', CARL_PREVIEW_LIVE_MODEL: 'true', CARL_EVALUATION_MODEL: 'synthetic-model' };
+  assert.equal(livePrerequisites({ ...env, ANTHROPIC_API_KEY: 'synthetic-legacy-key' }), false);
+  assert.equal(livePrerequisites({ ...env, KOF22_AGENT_ANTHROPIC_API_KEY: 'synthetic-key' }), true);
 });
 function initialBudget() {
   return { mode: 'controlled', terminal: 'PARTIAL', kind: 'PURCHASE_BUDGET', artifactId: '11', selected: 'conversation/initial', audience: 'PRIVATE', audienceMembers: [1], sources: [{ kind: 'CASH_PLAN', id: 16, revision: 1 }], apiMatchesTalk: true, nativeRecordMatches: true, rereadSame: true, artifactCountBeforeReread: 5, artifactCountAfterReread: 5, operationDelta: 0, saved: { kind: 'FINANCIAL_PLAN', narration_state: 'NOT_REQUESTED', narrative: '', limitations: 'Conditional plan only; no payment recommendation', facts: { budgetOnly: true, allInPrice: null, classification: null, sourcePlan: { id: 16, revision: 1, currency: 'USD', opening_cash: 1000, reserve_floor: 200, discretionary_cap: 500 }, protectedReserve: 200, allInCostsKnown: false, budget: { currency: 'USD', purchaseDate: '2026-09-30', supportedCashBudget: 500 }, evidenceStatus: 'Human-supplied assumptions, not independent verification.' } } };
