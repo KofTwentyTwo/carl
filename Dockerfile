@@ -16,6 +16,10 @@ RUN apt-get update \
            ge '3.5.5-1ubuntu3.6' || exit 1; \
        done \
     && rm -rf /var/lib/apt/lists/*
+# CVE-2026-78667, CVE-2026-78669, CVE-2026-97031: the base ships the pebble service manager
+# built with Go 1.26.7, and no package owns it to upgrade. Carl never runs it, so remove it
+# and fail closed if any copy remains. Drop this once the base carries Go 1.26.9 or later.
+RUN rm -f /usr/bin/pebble && ! command -v pebble >/dev/null
 WORKDIR /app
 COPY --chown=10001:10001 target/agent/ /app/
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError"
