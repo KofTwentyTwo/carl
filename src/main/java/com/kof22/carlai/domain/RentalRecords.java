@@ -107,10 +107,12 @@ public final class RentalRecords
       service.transaction(c ->
       {
          var actor = manager(c, principal);
+         NativeMutationReceipt.before(c, actor);
          var before = require(c, principal, "carl_rental_property_view", property);
          validateAccounts(c, principal, values);
          if(CarlService.request(c, actor, request, "RENTAL_PROPERTY_CORRECTION", digest) != null)
          {
+            NativeMutationReceipt.after(c, CarlService.member(c, principal));
             return null;
          }
          if(CarlService.number(before, "revision") != expectedRevision)
@@ -126,6 +128,7 @@ public final class RentalRecords
          touch(c, property);
          CarlService.bump(c, actor.householdId());
          CarlService.complete(c, request, property, "COMPLETE", "Attributed local correction; original evidence retained");
+         NativeMutationReceipt.after(c, CarlService.member(c, principal));
          return null;
       });
    }

@@ -316,7 +316,7 @@
   },
   "FIN-15": {
     "status": "PASS",
-    "evidence": "PlanLifecycle; PlanEffectsTest; CarlPlanEffectNativeTest",
+    "evidence": "CarlServiceTest.versionedPlanRequiresAgreementCurrentRevisionAndExplicitCompletionEvidence; PlanEffectsTest; CarlPlanEffectNativeTest",
     "limitation": "Immutable expected effects and later selected observations pass domain/native/family tests; no task completion or external financial action is inferred."
   },
   "FIN-16": {
@@ -556,7 +556,7 @@
   },
   "SYN-05": {
     "status": "PASS",
-    "evidence": "ReminderObservationsTest; browser native-shared-reminder-sync-and-human-reported-completion",
+    "evidence": "ReminderObservationsTest; CarlServiceTest.agendaSynchronizationReadsBackPublishedRemindersAlongsideEvents; browser native-shared-reminder-sync-and-human-reported-completion",
     "limitation": "Controlled synthetic application contract; live qualification is separate."
   },
   "SYN-06": {
@@ -671,7 +671,7 @@
   },
   "UX-11": {
     "status": "BLOCKED",
-    "evidence": "CarlNativeChatTest; NativeChatRoutesTest; CarlTalkServiceTest;48 final dock checks plus5 native Talk checks; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
+    "evidence": "CarlNativeChatTest; CarlTalkServiceTest; inherited foundation qqq-admin NativeChatRoutesTest (not a Carl test);48 final dock checks plus5 native Talk checks; docs/evidence/2026-10-01-rc8-docked-public-qualification.json",
     "limitation": "Private-default dock and contextual native Talk share the host-owned durable conversation service, authorized immutable audiences, bounded history and truthful pending/unknown results. Identity/logout clears private text; unknown POSTs are never automatically replayed. Live replies/evaluations remain blocked on authorized1Password credential access."
   }
 }

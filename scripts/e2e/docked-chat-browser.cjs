@@ -175,7 +175,8 @@ async function qualify(page, context, browser, origin, report, label, checks, mo
   const response = await started; expect(response.status()).toBe(200);
   const outcome = await response.json(); expect(outcome.selected).toMatch(SELECTED);
   expect(['PENDING', 'UNKNOWN']).toContain(outcome.status);
-  await expect(panel.getByText('Response status is unknown. Your message will not be sent again.', { exact: true })).toBeVisible({ timeout: 90000 });
+  // Without a model the turn ends honestly: an explicit failure (carl#34) or, if the outcome is lost, unknown.
+  await expect(panel.getByText(/^(This response failed\. Start a new chat when ready\.|Response status is unknown\. Your message will not be sent again\.)$/)).toBeVisible({ timeout: 90000 });
   await expect(composer).toBeDisabled();
   await expect(panel.getByRole('button', { name: 'Send message', exact: true })).toBeDisabled();
   expect(traffic.start).toHaveLength(1); expect(traffic.start[0]).toMatchObject({ shared: false, participants: [] });
@@ -218,7 +219,7 @@ async function qualify(page, context, browser, origin, report, label, checks, mo
     const sharedResponse = await sharedStarted; expect(sharedResponse.status()).toBe(200);
     const sharedOutcome = await sharedResponse.json(); expect(sharedOutcome.selected).toMatch(SELECTED);
     await expect(panel.getByRole('checkbox', { name: 'Share this conversation', exact: true })).toHaveCount(0);
-    await expect(panel.getByText('Response status is unknown. Your message will not be sent again.', { exact: true })).toBeVisible({ timeout: 90000 });
+    await expect(panel.getByText(/^(This response failed\. Start a new chat when ready\.|Response status is unknown\. Your message will not be sent again\.)$/)).toBeVisible({ timeout: 90000 });
     expect(traffic.start).toHaveLength(2); expect(traffic.start[1].shared).toBe(true); expect(traffic.start[1].participants).toEqual([memberId]);
     checks.push(label + '-explicit-selected-sharing-frozen-on-creation-and-UNKNOWN');
     await bob.reload({ waitUntil: 'domcontentloaded' }); await openChat(bob);
@@ -284,6 +285,7 @@ async function main() {
     let origin = existing?.replace(/\/$/, '');
     if(!origin) {
       const environment = { ...process.env, CARL_PREVIEW_LIVE_MODEL: 'false', CARL_PREVIEW_QBITS: String(mode.ownedQBits) };
+      delete environment.KOF22_AGENT_ANTHROPIC_API_KEY;
       delete environment.ANTHROPIC_API_KEY;
       // Optional infrastructure comes only from this disposable fixture, never inherited endpoints.
       for(const key of Object.keys(environment)) if(key.startsWith('CARL_QBITS_')) delete environment[key];

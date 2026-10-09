@@ -575,51 +575,56 @@ public final class CarlService
    long saveArtifact(Scope scope, UUID requestId, String kind, LocalDate from, LocalDate through, String facts, String narrative, String narrationState,
       String limitations, Map<Long, Long> sources, String recipient, String statusLabel, String inputDigest, long expectedPermissionRevision)
    {
-      return transaction(c ->
+      return transaction(c -> saveArtifact(c, scope, requestId, kind, from, through, facts, narrative, narrationState, limitations, sources, recipient, statusLabel, inputDigest, expectedPermissionRevision));
+   }
+
+
+
+   long saveArtifact(Connection c, Scope scope, UUID requestId, String kind, LocalDate from, LocalDate through, String facts, String narrative, String narrationState,
+      String limitations, Map<Long, Long> sources, String recipient, String statusLabel, String inputDigest, long expectedPermissionRevision) throws SQLException
+   {
+      var requester = member(c, scope.principal());
+      long currentEpoch = number(rows(c, "SELECT permission_revision FROM carl_household WHERE id=? FOR SHARE", requester.householdId()).getFirst(), "permission_revision");
+      if(currentEpoch != expectedPermissionRevision)
       {
-         var requester = member(c, scope.principal());
-         long currentEpoch = number(rows(c, "SELECT permission_revision FROM carl_household WHERE id=? FOR SHARE", requester.householdId()).getFirst(), "permission_revision");
-         if(currentEpoch != expectedPermissionRevision)
-         {
-            throw unavailable();
-         }
-         authorizeAudience(c, scope);
-         String digest = BillCsv.hash(kind + ":" + inputDigest + ":" + String.join(",", scope.audience().stream().sorted().toList()));
-         Long prior = request(c, requester, requestId, kind, digest);
-         if(prior != null)
-         {
-            requireRecord(c, scope.principal(), prior);
-            return prior;
-         }
-         for(String principal : scope.audience())
-         {
-            for(long sourceId : sources.keySet())
-            {
-               if(rows(c, "SELECT id FROM carl_access WHERE principal=? AND id=? AND details", principal, sourceId).isEmpty()
-                  && rows(c, "SELECT id FROM carl_calendar_view WHERE principal=? AND id=?", principal, sourceId).isEmpty())
-               {
-                  throw unavailable();
-               }
-            }
-         }
-         String domain = Set.of("VENDOR_DRAFT", "VENDOR_REPORT").contains(kind) ? "VENDORS" : kind.equals("CALENDAR_REPORT") ? "CALENDAR" : kind.equals("FINANCIAL_PLAN") ? "FINANCE" : "BILLS";
-         long id = record(c, requester, domain, "PRIVATE", kind.replace('_', ' '), "Explicit authenticated generation request " + requestId);
-         long revision = number(rows(c, "SELECT revision FROM carl_household WHERE id=?", requester.householdId()).getFirst(), "revision");
-         execute(c, "INSERT INTO carl_artifact(record_id,request_id,kind,period_start,period_end,facts,narrative,limitations,narration_state,source_revision,formula_version,intended_recipient,status_label,permission_revision) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            id, requestId, kind, from, through, facts, narrative, limitations, narrationState, revision, "carl-v1", recipient, statusLabel, requester.permissionRevision());
+         throw unavailable();
+      }
+      authorizeAudience(c, scope);
+      String digest = BillCsv.hash(kind + ":" + inputDigest + ":" + String.join(",", scope.audience().stream().sorted().toList()));
+      Long prior = request(c, requester, requestId, kind, digest);
+      if(prior != null)
+      {
+         requireRecord(c, scope.principal(), prior);
+         return prior;
+      }
+      for(String principal : scope.audience())
+      {
          for(long sourceId : sources.keySet())
          {
-            execute(c, "INSERT INTO carl_artifact_source(artifact_id,source_id,source_revision) VALUES(?,?,?)", id, sourceId, sources.get(sourceId));
+            if(rows(c, "SELECT id FROM carl_access WHERE principal=? AND id=? AND details", principal, sourceId).isEmpty()
+               && rows(c, "SELECT id FROM carl_calendar_view WHERE principal=? AND id=?", principal, sourceId).isEmpty())
+            {
+               throw unavailable();
+            }
          }
-         for(String principal : scope.audience())
-         {
-            long memberId = member(c, principal).id();
-            execute(c, "INSERT INTO carl_artifact_audience(artifact_id,member_id) VALUES(?,?)", id, memberId);
-            execute(c, "INSERT INTO carl_grant(record_id,member_id,details) VALUES(?,?,true)", id, memberId);
-         }
-         complete(c, requestId, id, narrationState.equals("FAILED") || statusLabel.startsWith("Incomplete") ? "PARTIAL" : "COMPLETE", statusLabel);
-         return id;
-      });
+      }
+      String domain = Set.of("VENDOR_DRAFT", "VENDOR_REPORT").contains(kind) ? "VENDORS" : kind.equals("CALENDAR_REPORT") ? "CALENDAR" : kind.equals("FINANCIAL_PLAN") ? "FINANCE" : "BILLS";
+      long id = record(c, requester, domain, "PRIVATE", kind.replace('_', ' '), "Explicit authenticated generation request " + requestId);
+      long revision = number(rows(c, "SELECT revision FROM carl_household WHERE id=?", requester.householdId()).getFirst(), "revision");
+      execute(c, "INSERT INTO carl_artifact(record_id,request_id,kind,period_start,period_end,facts,narrative,limitations,narration_state,source_revision,formula_version,intended_recipient,status_label,permission_revision) VALUES(?,?,?,?,?,CAST(? AS jsonb),?,?,?,?,?,?,?,?)",
+         id, requestId, kind, from, through, facts, narrative, limitations, narrationState, revision, "carl-v1", recipient, statusLabel, requester.permissionRevision());
+      for(long sourceId : sources.keySet())
+      {
+         execute(c, "INSERT INTO carl_artifact_source(artifact_id,source_id,source_revision) VALUES(?,?,?)", id, sourceId, sources.get(sourceId));
+      }
+      for(String principal : scope.audience())
+      {
+         long memberId = member(c, principal).id();
+         execute(c, "INSERT INTO carl_artifact_audience(artifact_id,member_id) VALUES(?,?)", id, memberId);
+         execute(c, "INSERT INTO carl_grant(record_id,member_id,details) VALUES(?,?,true)", id, memberId);
+      }
+      complete(c, requestId, id, narrationState.equals("FAILED") || statusLabel.startsWith("Incomplete") ? "PARTIAL" : "COMPLETE", statusLabel);
+      return id;
    }
 
 
@@ -723,7 +728,7 @@ public final class CarlService
    static void requireEvidence(Connection c, String principal, long id) throws SQLException
    {
       requireRecord(c, principal, id);
-      var permitted = rows(c, "SELECT id FROM carl_bill_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_vendor_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_work_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_account_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_transaction_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_artifact_view WHERE principal=? AND id=? UNION ALL SELECT v.id FROM carl_calendar_view v JOIN carl_calendar_event e ON e.record_id=v.id WHERE v.principal=? AND v.id=? AND NOT e.free_busy_only", principal, id, principal, id, principal, id, principal, id, principal, id, principal, id, principal, id);
+      var permitted = rows(c, "SELECT id FROM carl_bill_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_vendor_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_work_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_account_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_transaction_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_artifact_view WHERE principal=? AND id=? UNION ALL SELECT id FROM carl_document_view WHERE principal=? AND id=? UNION ALL SELECT v.id FROM carl_calendar_view v JOIN carl_calendar_event e ON e.record_id=v.id WHERE v.principal=? AND v.id=? AND NOT e.free_busy_only", principal, id, principal, id, principal, id, principal, id, principal, id, principal, id, principal, id, principal, id);
       if(permitted.isEmpty())
       {
          throw unavailable();
@@ -791,12 +796,17 @@ public final class CarlService
          {
             T result = operation.run(c);
             c.commit();
+            NativeMutationReceipt.committed(c);
             return result;
          }
          catch(SQLException | RuntimeException failure)
          {
             c.rollback();
             throw failure;
+         }
+         finally
+         {
+            NativeMutationReceipt.clear(c);
          }
       }
       catch(SQLException failure)

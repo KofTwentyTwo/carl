@@ -1,6 +1,16 @@
 # Monarch transaction import contract
 
-Status: confirmed transaction and balance-history formats; controlled native upload, reconciliation and repeat-import workflows are implemented and qualified with synthetic records. Real account/currency mappings and financial coverage remain unresolved; see [current acceptance](ACCEPTANCE.md). Owner authorized local inspection of manually downloaded `Transactions_*.csv` examples on September 29, 2026. This document records the schema and required behavior, not private account contents. Real rows, account labels, financial aggregates and private source files must not enter the public repository, build artifacts or synthetic fixtures.
+Current owner authorization: use supplied real exports as protected private local application/test data and retain confirmed missing facts with provenance. All exported accounts are confirmed USD. Do not commit or publish the files, derived private records or account assessments. Account identity collisions, alias candidates and bucket/parent relationships must be reviewed rather than guessed. Historical controlled examples below are not a substitute for actual import and reconciliation acceptance.
+
+Status: confirmed transaction and balance-history formats; controlled native upload, reconciliation and repeat-import workflows are implemented and qualified with synthetic records. Real economic account identities, ownership, liquidity, source classifications and financial coverage remain unresolved; see [current acceptance](ACCEPTANCE.md). Owner authorized local inspection of manually downloaded `Transactions_*.csv` examples on September 29, 2026. This document records the schema and required behavior, not private account contents. Real rows, account labels, financial aggregates and private source files must not enter the public repository, build artifacts or synthetic fixtures.
+
+## Accounts awaiting review
+
+Native Monarch Import History includes **Register Source Accounts for Review**. Select an existing preview, explicitly confirm the source currency, then resume the import. New source labels become private `NEEDS_REVIEW` accounts with `UNCLASSIFIED` kind and genuinely unknown ownership and liquidity. Registration reuses existing mappings and rejects a conflicting currency; it does not merge labels or establish that each label represents separate money.
+
+Accounts and Debts exposes the review state. **Review Financial Account** requires explicit kind, liquidity, ownership share, evidence and confirmation that this is a distinct economic account rather than an alias or an included savings bucket. The domain service records before/after values and the verified reviewer, preserves original evidence, and invalidates prior snapshots. Do not qualify uncertain aliases or bucket balances merely to populate totals. Such accounts remain excluded from attributed balances and qualified cash/spending figures; their imported source activity remains visible separately. Unknown cash totals render as unknown, with no fabricated zero chart.
+
+An owner-authorized private offline load can use the same domain upload/preview/register/apply services with a dedicated authenticated PostgreSQL machine caller. It does not invent a family identity or grant browser access. Browser access still requires verified transport identity and an explicitly approved membership mapping. Protected files, private configuration and load evidence stay outside this repository.
 
 ## Supported observed export
 

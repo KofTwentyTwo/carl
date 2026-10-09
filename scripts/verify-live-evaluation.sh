@@ -36,7 +36,7 @@ if [[ "${2:-}" == --ordinary-talk ]]; then
     echo 'Ordinary preservation requires controlled mode' >&2
     exit 1
   fi
-  env -u ANTHROPIC_API_KEY CARL_PREVIEW_LIVE_MODEL=false JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=$report/tmp" node "$root/scripts/e2e/talk-browser.cjs" "$distribution" "$report/ordinary-talk" "$report/fixture-classes:$classpath" >"$report/ordinary-talk.log" 2>&1
+  env -u KOF22_AGENT_ANTHROPIC_API_KEY -u ANTHROPIC_API_KEY CARL_PREVIEW_LIVE_MODEL=false JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=$report/tmp" node "$root/scripts/e2e/talk-browser.cjs" "$distribution" "$report/ordinary-talk" "$report/fixture-classes:$classpath" >"$report/ordinary-talk.log" 2>&1
 elif [[ $# -gt 1 ]]; then
   usage >&2
   exit 1

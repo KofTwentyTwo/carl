@@ -28,6 +28,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
  ******************************************************************************/
 public final class CarlPackagedVisualFixture
 {
+   /** Foundation runtime credential name; the legacy unprefixed name is never forwarded. */
+   private static final String MODEL_CREDENTIAL = "KOF22_AGENT_ANTHROPIC_API_KEY";
+
    private final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:16-alpine");
    private final Path distribution;
    private final Path temporary;
@@ -204,11 +207,11 @@ public final class CarlPackagedVisualFixture
       properties.setProperty("kof22.agent.client-api.issuer", identity.issuer);
       properties.setProperty("kof22.agent.client-api.audience", "carl-family");
       boolean liveModel = "true".equals(System.getenv("CARL_PREVIEW_LIVE_MODEL"));
-      if(liveModel && (System.getenv("ANTHROPIC_API_KEY") == null || System.getenv("ANTHROPIC_API_KEY").isBlank()))
+      if(liveModel && (System.getenv(MODEL_CREDENTIAL) == null || System.getenv(MODEL_CREDENTIAL).isBlank()))
       {
-         throw new IllegalStateException("Live synthetic preview requires ANTHROPIC_API_KEY");
+         throw new IllegalStateException("Live synthetic preview requires " + MODEL_CREDENTIAL);
       }
-      properties.setProperty("kof22.agent.anthropic-api-key", liveModel ? "${ANTHROPIC_API_KEY}" : "synthetic-unused");
+      properties.setProperty("kof22.agent.anthropic-api-key", liveModel ? "${" + MODEL_CREDENTIAL + "}" : "synthetic-unused");
       properties.setProperty("kof22.agent.anthropic-base-url", liveModel ? "https://api.anthropic.com" : "http://127.0.0.1:9");
       properties.setProperty("kof22.agent.model.id", evaluation && liveModel ? System.getenv("CARL_EVALUATION_MODEL") : "claude-sonnet-5");
       if(evaluation)
@@ -231,7 +234,7 @@ public final class CarlPackagedVisualFixture
       }
       if(evaluation)
       {
-         var loaded = com.kof22.agentadmin.configuration.NativeAgentConfiguration.load(configuration,java.util.Map.of("ANTHROPIC_API_KEY","synthetic-validation-only"));
+         var loaded = com.kof22.agentadmin.configuration.NativeAgentConfiguration.load(configuration,java.util.Map.of(MODEL_CREDENTIAL,"synthetic-validation-only"));
          var limits = loaded.core().getLimits().validated();
          if(limits.maxOutputTokens() != 8000 || limits.maxToolCalls() != 8 || limits.maxConcurrentTurns() != 1 || !limits.turnTimeout().equals(Duration.ofSeconds(60)))
          {
@@ -399,7 +402,11 @@ public final class CarlPackagedVisualFixture
          builder.command().add(1, "-Xlog:exceptions=info");
       }
       builder.directory(temporary.toFile());
-      builder.environment().keySet().removeIf(name -> name.startsWith("KOF22_") || name.startsWith("CARL_") || Set.of("JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS").contains(name));
+      builder.environment().keySet().removeIf(name -> name.startsWith("KOF22_") || name.startsWith("CARL_") || Set.of("ANTHROPIC_API_KEY", "JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS").contains(name));
+      if("true".equals(System.getenv("CARL_PREVIEW_LIVE_MODEL")) && System.getenv(MODEL_CREDENTIAL) != null)
+      {
+         builder.environment().put(MODEL_CREDENTIAL, System.getenv(MODEL_CREDENTIAL));
+      }
       builder.environment().put("CARL_CALDAV_EVENTS_COLLECTION", origin + "/synthetic-calendar/");
       builder.environment().put("CARL_CALDAV_EVENTS_AUDIENCE_MEMBERS", "1,2");
       builder.environment().put("CARL_CALDAV_REMINDERS_COLLECTION", origin + "/synthetic-reminders/");

@@ -168,18 +168,32 @@ class CarlNavigationTest
    void inheritedReconcileApprovalActionAlsoLivesOnApprovalsTable()
    {
       var instance = new QInstance();
-      var reconcile = new com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData().withName("reconcileApproval").withLabel("Reconcile Approval Execution")
-         .withPermissionRules(com.kof22.agentadmin.OperatorPermissions.require(com.kof22.agentcore.security.Role.ADMIN));
-      var operations = new com.kingsrook.qqq.backend.core.model.metadata.layout.QAppMetaData().withName("operations").withLabel("Operations").withChild(reconcile);
+      // Both foundation approval actions take an approvalId on a "confirm" form step.
+      var reconcile = approvalAction("reconcileApproval");
+      var deny = approvalAction("denyApproval");
+      var operations = new com.kingsrook.qqq.backend.core.model.metadata.layout.QAppMetaData().withName("operations").withLabel("Operations").withChild(reconcile).withChild(deny);
       instance.addApp(operations);
       instance.addTable(new com.kingsrook.qqq.backend.core.model.metadata.tables.QTableMetaData().withName("approvals"));
       instance.addProcess(reconcile);
+      instance.addProcess(deny);
+      // Regression: two approval actions must share one approvals value source, not register it twice.
       new CarlMetadata(new com.kof22.carlai.domain.CarlService(new org.postgresql.ds.PGSimpleDataSource(), java.time.Clock.systemUTC())).produce(instance);
       assertEquals("approvals", reconcile.getTableName());
-      assertEquals(0, reconcile.getMinInputRecords());
-      assertEquals(0, reconcile.getMaxInputRecords());
+      assertEquals("approvals", deny.getTableName());
+      assertNotNull(instance.getPossibleValueSource("approvals"));
+      assertEquals("approvals", reconcile.getFrontendStep("confirm").getFormFields().stream().filter(field -> field.getName().equals("approvalId")).findFirst().orElseThrow().getPossibleValueSourceName());
       assertTrue(operations.getChildren().stream().noneMatch(child -> child instanceof com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData));
       assertNotNull(instance.getProcess("reconcileApproval"));
+   }
+
+
+
+   private static com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData approvalAction(String name)
+   {
+      return new com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData().withName(name).withLabel(name)
+         .withPermissionRules(com.kof22.agentadmin.OperatorPermissions.require(com.kof22.agentcore.security.Role.ADMIN))
+         .withStep(new com.kingsrook.qqq.backend.core.model.metadata.processes.QFrontendStepMetaData().withName("confirm")
+            .withFormField(new com.kingsrook.qqq.backend.core.model.metadata.fields.QFieldMetaData("approvalId", com.kingsrook.qqq.backend.core.model.metadata.fields.QFieldType.LONG)));
    }
 
 

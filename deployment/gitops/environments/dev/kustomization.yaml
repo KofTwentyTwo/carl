@@ -1,0 +1,22 @@
+# Copyright (C) 2026 KofTwentyTwo
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: carl-dev
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: Ingress
+      name: carl
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: carl-dev.galaxy.direct
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: carl-dev.galaxy.direct
+images:
+  - name: ghcr.io/koftwentytwo/carl
+    newTag: UNQUALIFIED
+  - name: ghcr.io/koftwentytwo/carl-migrator
+    newTag: UNQUALIFIED

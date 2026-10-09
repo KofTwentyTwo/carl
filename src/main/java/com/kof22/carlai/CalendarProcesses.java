@@ -48,8 +48,8 @@ final class CalendarProcesses
          CarlMetadata.choices(instance, "carlAgendaCollection", calendars.agendaCollections().stream().sorted().toList());
          CarlMetadata.add(instance, app, CarlMetadata.process("carlSyncAgenda", "Refresh Shared Calendar Agenda", List.of(field("collection").withPossibleValueSourceName("carlAgendaCollection"), new QFieldMetaData("from", QFieldType.DATE).withIsRequired(true), new QFieldMetaData("through", QFieldType.DATE).withIsRequired(true)), (in, out) ->
          {
-            var result = calendars.synchronizeAgenda(CarlMetadata.principal(), in.getValueString("collection"), UUID.fromString(in.getValueString("requestId")), in.getValueLocalDate("from"), in.getValueLocalDate("through"));
-            out.addValue("result", "Calendar refresh: " + result.get("requestStatus") + "\nConnection: " + result.get("sync_state") + "\nCovered dates: " + result.get("coverage_from") + " through " + result.get("coverage_through") + "\nLast successful refresh: " + result.get("last_success") + "\nIssue: " + (result.get("failure_code") == null ? "None reported" : result.get("failure_code")) + "\n\nOnly this date window and configured calendar were synchronized. Private event details remain excluded; synchronization does not book or change an appointment.");
+            calendars.synchronizeAgenda(CarlMetadata.principal(), in.getValueString("collection"), UUID.fromString(in.getValueString("requestId")), in.getValueLocalDate("from"), in.getValueLocalDate("through"));
+            out.addValue("result", com.kof22.carlai.domain.NativeMutationReceipt.CALENDAR_MESSAGE);
          }));
       }
       if(calendars.collections().isEmpty())

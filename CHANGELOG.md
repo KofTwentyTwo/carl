@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- End conversations that fail before any record is saved (budget, deadline, iteration cap, provider or unusable model output) as FAILED with a public reason and guidance instead of UNKNOWN, and record a public-safe `failure_code` for FAILED and UNKNOWN workflows (domain migration V63). Revocation and failures after a possible write stay UNKNOWN.
+
 ## [0.1.0] - 2026-09-30
 
 ### Added

@@ -15,14 +15,18 @@ import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kingsrook.qqq.backend.core.logging.QLogger;
 import com.kof22.agentadmin.client.ClientFailure;
 import com.kof22.agentadmin.client.ClientWorkflow;
+
+import static com.kingsrook.qqq.backend.core.logging.LogUtils.logPair;
 
 
 /** Explicit user-requested report/draft workflows, separate from read-only model tools. */
 public final class CarlClientWorkflows implements AutoCloseable
 {
    private static final ObjectMapper JSON = new ObjectMapper();
+   private static final QLogger LOG = QLogger.getLogger(CarlClientWorkflows.class);
    private final CarlService service;
    private final CalendarWorkflows calendars;
    private final CarlConversation conversation;
@@ -129,7 +133,7 @@ public final class CarlClientWorkflows implements AutoCloseable
             }
             catch(java.util.concurrent.RejectedExecutionException capacity)
             {
-               finish(requestId, "FAILED", null);
+               finish(requestId, "FAILED", null, "capacity");
                throw new ClientFailure(429, "workflow_capacity");
             }
          }
@@ -193,7 +197,9 @@ public final class CarlClientWorkflows implements AutoCloseable
                      var snapshot = PlanClientOperations.snapshot(c, context, current, plan);
                      output.set("plan", JSON.valueToTree(snapshot));
                   }
-                  CarlService.execute(c, "UPDATE carl_client_workflow SET artifact_id=?,plan_id=?,plan_result=?,status=? WHERE request_id=? AND status='PENDING'", artifact, plan, output.toString(), output.path("kind").asText().equals("GOAL_TRADEOFF") ? "PARTIAL" : outcome.status(), id);
+                  String status = output.path("kind").asText().equals("GOAL_TRADEOFF") ? "PARTIAL" : outcome.status();
+                  String failureCode = status.equals("FAILED") ? output.path("kind").asText().toLowerCase(java.util.Locale.ROOT) : null;
+                  CarlService.execute(c, "UPDATE carl_client_workflow SET artifact_id=?,plan_id=?,plan_result=?,status=?,failure_code=? WHERE request_id=? AND status='PENDING'", artifact, plan, output.toString(), status, failureCode, id);
                   return null;
                });
                return;
@@ -310,13 +316,14 @@ public final class CarlClientWorkflows implements AutoCloseable
             };
             scope(context);
             var saved = service.artifact(context.member().caller(), artifact);
-            finish(id, saved.get("narration_state").equals("FAILED") || saved.get("status_label").toString().startsWith("Incomplete") ? "PARTIAL" : "COMPLETE", artifact);
+            finish(id, saved.get("narration_state").equals("FAILED") || saved.get("status_label").toString().startsWith("Incomplete") ? "PARTIAL" : "COMPLETE", artifact, null);
          }
          catch(RuntimeException failure)
          {
             // A commit may have happened before a transport/permission failure. Never replay blindly.
             CarlService.clearDeadline();
-            finish(id, "UNKNOWN", null);
+            LOG.warn("Carl workflow outcome requires reconciliation", logPair("requestId", id), logPair("workflowKind", kind), logPair("exceptionClass", failure.getClass().getName()));
+            finish(id, "UNKNOWN", null, WorkflowFailures.code(failure));
          }
          finally
          {
@@ -637,11 +644,11 @@ public final class CarlClientWorkflows implements AutoCloseable
 
 
 
-   private void finish(UUID id, String status, Long artifact)
+   private void finish(UUID id, String status, Long artifact, String failureCode)
    {
       service.transaction(c ->
       {
-         CarlService.execute(c, "UPDATE carl_client_workflow SET status=?,artifact_id=? WHERE request_id=? AND status='PENDING'", status, artifact, id);
+         CarlService.execute(c, "UPDATE carl_client_workflow SET status=?,artifact_id=?,failure_code=? WHERE request_id=? AND status='PENDING'", status, artifact, failureCode, id);
          return null;
       });
    }

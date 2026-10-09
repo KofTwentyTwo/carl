@@ -8,6 +8,10 @@ Carl AI is the visible product name. Use Carl's identity in the header, browser 
 
 The main dashboards follow the financial questions represented in Monarch: Cash Flow, Balance Sheet, Financial Plan and Progress, and an income/expense Sankey. They display Carl's actual authorized records and deterministic calculations. A decorative fixture-only dashboard does not satisfy this scope.
 
+## Owner-selected visual direction — October 1, 2026
+
+The main application follows the Carl local sign-in reference: a dark charcoal geometric background, solid charcoal panels, white primary text, muted secondary text and blue actions/accents. Apply native QQQ/Next theme tokens and supported custom CSS, with matching styles in Carl's dashboards and docked chat. Place texture behind content, preserve contrast/focus/error distinctions, and keep financial values right aligned with existing currency formatting. Styling must preserve all existing authorization and business workflows. Qualification requires actual authenticated desktop/narrow views, not a decorative mockup. See Carl issue27.
+
 ## Navigation and action placement
 
 | Group | Main views | Actions belong here |
@@ -78,7 +82,7 @@ Implementation bounds: inclusive interval at most 366 days; at most 100000 acces
 Remaining UX-08/09/10 work: packaged RC4 browser checks and default signed-in landing hook, source-integrated full gate, approved foundation/QQQ snapshot upgrade, real Quick Search/ESB QBit wiring and fixture qualification. QQQ 4.0 has no consumer home-screen/default-app metadata API; RC4 `/` redirects to generic `/app`, while these widgets are native app dashboards under `/app/carlAI`, `/app/carlOverview`, `/app/carlMoney` and `/app/carlPlanning`. No new UI/QBit live or remote-release acceptance is claimed.
 
 
-October1 final current package: [RC8 evidence](evidence/2026-10-01-rc8-docked-public-qualification.json) records408 tests and113 browser checks including desktop/narrow dock, System/ESB, explicit saved defaults, protected home profiles and admin diagnostics. The full public fictional preview is https://localhost:63173. Live inference and private-package/immutable-release qualification remain blocked; earlier UI evidence below retains its historical scope.
+October1 final current package: [RC8 evidence](evidence/2026-10-01-rc8-docked-public-qualification.json) records408 tests and113 browser checks including desktop/narrow dock, System/ESB, explicit saved defaults, protected home profiles and admin diagnostics. The full public fictional preview was `localhost:63173` (closed; not live). Live inference and private-package/immutable-release qualification remain blocked; earlier UI evidence below retains its historical scope.
 
 
 ## Monetary presentation

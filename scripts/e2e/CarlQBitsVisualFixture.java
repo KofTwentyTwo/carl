@@ -267,15 +267,20 @@ public final class CarlQBitsVisualFixture implements AutoCloseable
          }
          boolean labelMatches = document(record).path("recordLabel").asText().equals(expected);
          boolean stepLogged = log.contains("Running backend step [refresh] in process [carlRefreshSearchIndex]");
-         lastEventEvidence = Map.of("acknowledged", queue.getMessagesAcknowledged(), "expectedAcknowledged", acknowledged,
-            "added", queue.getMessagesAdded(), "expectedAdded", added, "remaining", queue.getMessageCount(),
-            "consumerCount", queue.getConsumerCount(), "deadLetters", deadCount, "labelMatches", labelMatches, "stepLogged", stepLogged);
+         // Read the counters once: the evidence must show the values the check below accepted,
+         // not an earlier read taken just before the last acknowledgement landed.
+         long acknowledgedNow = queue.getMessagesAcknowledged();
+         long addedNow = queue.getMessagesAdded();
+         long remaining = queue.getMessageCount();
+         int consumers = queue.getConsumerCount();
+         lastEventEvidence = Map.of("acknowledged", acknowledgedNow, "expectedAcknowledged", acknowledged,
+            "added", addedNow, "expectedAdded", added, "remaining", remaining,
+            "consumerCount", consumers, "deadLetters", deadCount, "labelMatches", labelMatches, "stepLogged", stepLogged);
          // Exact selected ESbTriggerRunner source commits a successful run, or
          // commits a dead-letter on failure. This fixed trigger retains the default
          // DEAD_LETTER_QUEUE policy. One unique packaged consumer, exact added/ack
          // counters and no DLQ therefore prove success independently of DEBUG logs.
-         if(queue.getMessagesAcknowledged() == acknowledged && queue.getMessagesAdded() == added
-            && queue.getConsumerCount() == 1 && queue.getMessageCount() == 0 && labelMatches)
+         if(acknowledgedNow == acknowledged && addedNow == added && consumers == 1 && remaining == 0 && labelMatches)
          {
             return;
          }

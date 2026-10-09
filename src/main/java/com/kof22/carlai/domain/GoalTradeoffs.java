@@ -203,7 +203,7 @@ public final class GoalTradeoffs
       String label = reasons.isEmpty() ? "Educational goal tradeoff — affordability unqualified" : "Incomplete goal tradeoff — incomparable assumptions";
       long id = CarlService.record(c, actor, "FINANCE", "PRIVATE", "Goal tradeoff", "Explicit authenticated tradeoff request " + request);
       LocalDate from = start == null ? LocalDate.parse(debt.get("period_start").toString()) : start;
-      CarlService.execute(c, "INSERT INTO carl_artifact(record_id,request_id,kind,period_start,period_end,facts,narrative,limitations,narration_state,source_revision,formula_version,status_label,permission_revision) VALUES(?,?,'FINANCIAL_PLAN',?,?,?,'',?,'NOT_REQUESTED',?,'goal-tradeoffs-v1',?,?)", id, request, from, from.plusMonths(Math.max(horizon, 1)), encoded, LIMITS, CarlService.number(household, "revision"), label, actor.permissionRevision());
+      CarlService.execute(c, "INSERT INTO carl_artifact(record_id,request_id,kind,period_start,period_end,facts,narrative,limitations,narration_state,source_revision,formula_version,status_label,permission_revision) VALUES(?,?,'FINANCIAL_PLAN',?,?,CAST(? AS jsonb),'',?,'NOT_REQUESTED',?,'goal-tradeoffs-v1',?,?)", id, request, from, from.plusMonths(Math.max(horizon, 1)), encoded, LIMITS, CarlService.number(household, "revision"), label, actor.permissionRevision());
       for(var entry : sources.entrySet())
       {
          CarlService.execute(c, "INSERT INTO carl_artifact_source(artifact_id,source_id,source_revision) VALUES(?,?,?)", id, entry.getKey(), entry.getValue());

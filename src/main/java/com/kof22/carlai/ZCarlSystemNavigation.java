@@ -71,6 +71,13 @@ public final class ZCarlSystemNavigation implements MetaDataProducerInterface<QA
                      throw new IllegalStateException("System action needs an explicit registered table: " + process.getName());
                   }
                   process.withTableName("approvals").withMinInputRecords(0).withMaxInputRecords(0);
+                  // Both approval actions share one approvals value source; register it once.
+                  if(instance.getPossibleValueSource("approvals") == null)
+                  {
+                     instance.addPossibleValueSource(com.kingsrook.qqq.backend.core.model.metadata.possiblevalues.QPossibleValueSource.newForTable("approvals"));
+                  }
+                  process.getFrontendStep("confirm").getFormFields().stream().filter(field -> field.getName().equals("approvalId")).forEach(field -> field.withPossibleValueSourceName("approvals"));
+                  CarlNavigation.selectedRecordAction(instance, process);
                }
             }
             app.getChildren().removeIf(child -> child instanceof com.kingsrook.qqq.backend.core.model.metadata.processes.QProcessMetaData);

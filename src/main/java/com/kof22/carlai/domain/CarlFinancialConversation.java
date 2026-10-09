@@ -79,14 +79,10 @@ final class CarlFinancialConversation
          {
             values = List.of();
          }
-         if(values.size() > 50)
-         {
-            throw new IllegalArgumentException("Narrow report sources to fifty per kind");
-         }
          catalog.put(kind, values.stream().map(row ->
          {
             var safe = new LinkedHashMap<String, Object>();
-            for(String key : List.of("id", "title", "currency", "goal_type", "property_id", "tax_year"))
+            for(String key : List.of("id", "title", "currency", "kind", "review_state", "goal_type", "property_id", "tax_year"))
             {
                if(row.get(key) != null)
                {

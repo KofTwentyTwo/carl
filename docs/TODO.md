@@ -1,5 +1,14 @@
 # Carl implementation checklist
 
+## Current state (2026-10-02)
+
+Source `9bd782e` passes 566 tests against foundation main `d0a11bf`; see
+[current state](SESSION-STATE.md#current-state-2026-10-02). Implementation is paused for owner
+review; read [HANDOFF-NEXT-LLM.md](HANDOFF-NEXT-LLM.md) before resuming. Checked items below are scoped history.
+
+- [ ] Push and review the local `feature/GH-34-*` owner-chat fixes, then qualify owner chat end to end (Carl#34).
+- [ ] Generate evidence from CI with one schema, committed SHAs and no local paths (Carl#12).
+
 ## Active — October 5: CI green, merge PRs, 1.0 test build
 
 See [PLAN-cicd-green-1.0.md](PLAN-cicd-green-1.0.md). Hosted CI is blocked on two owner actions: the `FOUNDATION_PACKAGES_TOKEN` environment secret and approval of the `foundation-packages` environment gate.
@@ -19,7 +28,7 @@ Implementation is stopped. Read [HANDOFF-NEXT-LLM.md](HANDOFF-NEXT-LLM.md) befor
 - [ ] Qualify generic governed local-record action authority (foundation60) and Carl clerk capabilities (Carl33).
 - [ ] Complete retained Liquibase transition, hosted image/GitOps gates and missing real financial evidence.
 
-## Current priority — actual private household application
+## October 1–2 priority — actual private household application (historical)
 
 Current repair sequence: restore and qualify contextual table actions; persist genuine owner priorities and a source-linked readiness draft; bound live conversation retrieval; add an explicit atomic selected-transaction classification workflow; then requalify and restart the immutable local package. Whole-system financial priming remains blocked by missing account/debt/cash/rental facts.
 
@@ -91,7 +100,7 @@ Historical controlled qualification:408 tests,113 browser checks across seven fi
 - [ ] Agree model usage/alerts, retention/deletion, backup expiry, access revocation and operating policies before real-data use.
 - [ ] Separately qualify any requested production environment, TLS/identity/operator, recovery targets, encrypted restore and upgrade/rollback. Deployment has not been requested.
 
-The historical fictional preview was https://localhost:57132 (Alice; frozen money-qualified RC8 app372f094e). Its model was disconnected. It is superseded by the actual local application described above. Apps/tables-only navigation, System Operations/ESB/admin diagnostics, saved dashboard selections and typed homes/mortgages are qualified; prior previews remain preserved. Live/hosted/release/production states remain separate.
+The historical fictional preview was `localhost:57132` (closed; not live) (Alice; frozen money-qualified RC8 app 372f094e (package SHA-256 prefix, not a commit)). Its model was disconnected. It is superseded by the actual local application described above. Apps/tables-only navigation, System Operations/ESB/admin diagnostics, saved dashboard selections and typed homes/mortgages are qualified; prior previews remain preserved. Live/hosted/release/production states remain separate.
 
 
 October 1: combined RC8/docked-chat backend coverage and packaged browser qualification are complete. Preserve native provider shutdown and immutable/live publication holds.
@@ -131,7 +140,7 @@ Qualified419 current Java results,117 packaged/running browser checks and exact 
 
 Track current application tasks in [Carl#3](https://github.com/KofTwentyTwo/carl/issues/3), [Carl#4](https://github.com/KofTwentyTwo/carl/issues/4) and [Carl#5](https://github.com/KofTwentyTwo/carl/issues/5). Shared operational migration work is [foundation#51](https://github.com/KofTwentyTwo/kof22-agent-foundation/issues/51). No GitHub Projects requirement.
 
-## Current source follow-up — real evidence and native actions
+## Source follow-up — real evidence and native actions (historical)
 
 - [x] Protect generated request IDs and reviewed plan/home/Monarch state; focused native PostgreSQL substitution, stale-state and normal-flow regressions pass.
 - [x] Implement private original documents and bounded source-grounded chat/readiness access; focused PostgreSQL/native tests pass.

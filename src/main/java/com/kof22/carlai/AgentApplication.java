@@ -138,7 +138,7 @@ public final class AgentApplication
          @Override
          public com.kof22.agentadmin.NativeDownloadPolicy downloadPolicy()
          {
-            return new com.kof22.agentadmin.NativeDownloadPolicy(java.util.Map.of("carlProtectedPlanExports", "carlExportPlan", "carlProtectedVendorDrafts", "carlDownloadVendorDraft", "carlProtectedReportPdfs", "carlDownloadReportPdf", "carlProtectedReportTexts", "carlDownloadReportText"));
+            return new com.kof22.agentadmin.NativeDownloadPolicy(java.util.Map.of("carlProtectedPlanExports", "carlExportPlan", "carlProtectedVendorDrafts", "carlDownloadVendorDraft", "carlProtectedReportPdfs", "carlDownloadReportPdf", "carlProtectedReportTexts", "carlDownloadReportText", "carlProtectedDocuments", "carlDownloadDocument", "carlProtectedTableExports", "carlDownloadTableExport"));
          }
 
 

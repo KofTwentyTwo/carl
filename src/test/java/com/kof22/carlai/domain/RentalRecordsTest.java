@@ -125,7 +125,7 @@ class RentalRecordsTest
       UUID reportRequest = UUID.randomUUID();
       long artifact = rentals.report(new CarlService.Scope("alice", Set.of("alice", "bob")), reportRequest, Set.of(house), FROM, THROUGH, THROUGH);
       assertEquals(artifact, rentals.report(new CarlService.Scope("alice", Set.of("alice", "bob")), reportRequest, Set.of(house), FROM, THROUGH, THROUGH));
-      String facts = service.artifact("bob", artifact).get("facts").toString();
+      String facts = StoredFacts.compact(service.artifact("bob", artifact).get("facts"));
       assertTrue(facts.contains("\"unpaidRent\":100.00"));
       assertTrue(facts.contains("\"debtPrincipal\":300.00"));
       assertTrue(facts.contains("\"debtInterest\":100.00"));
@@ -142,7 +142,7 @@ class RentalRecordsTest
       long receipt = transaction("100.00", "private-source", "PRIVATE");
       rentals.classify("alice", UUID.randomUUID(), receipt, List.of(component("rent", RentalEconomics.Kind.RENT_RECEIPT, "100.00", house)), "FAMILY", "Private account source");
       long report = rentals.report(new CarlService.Scope("alice", Set.of("alice", "bob")), UUID.randomUUID(), Set.of(house), FROM, THROUGH, THROUGH);
-      String shared = service.artifact("bob", report).get("facts").toString();
+      String shared = StoredFacts.compact(service.artifact("bob", report).get("facts"));
       assertFalse(shared.contains("private-source"));
       assertTrue(shared.contains("\"rentCollected\":0.00"));
       assertTrue(shared.contains("partial"));
@@ -208,8 +208,8 @@ class RentalRecordsTest
       long split = rentals.classify("alice", UUID.randomUUID(), tx, List.of(part), "FAMILY", "Original penny allocation");
       long full = rentals.report(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), Set.of(first, second), FROM, THROUGH, THROUGH);
       long subset = rentals.report(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), Set.of(second), FROM, THROUGH, THROUGH);
-      assertTrue(service.artifact("alice", full).get("facts").toString().contains("\"rentCollected\":0.01"));
-      assertTrue(service.artifact("alice", subset).get("facts").toString().contains("\"rentCollected\":0.00"));
+      assertTrue(StoredFacts.compact(service.artifact("alice", full).get("facts")).contains("\"rentCollected\":0.01"));
+      assertTrue(StoredFacts.compact(service.artifact("alice", subset).get("facts")).contains("\"rentCollected\":0.00"));
       long due = rentals.rentDue("alice", UUID.randomUUID(), second, null, FROM, n("0.01"), "FAMILY", "Synthetic lease");
       assertThrows(IllegalArgumentException.class, () -> rentals.applyRent("alice", UUID.randomUUID(), due, split, 1, "rent", n("0.01"), "Cannot move original penny"));
    }
@@ -247,7 +247,7 @@ class RentalRecordsTest
          new RentalEconomics.Component("rent", RentalEconomics.Kind.RENT_RECEIPT, n("150.00"), shares, BigDecimal.ZERO),
          new RentalEconomics.Component("cost", RentalEconomics.Kind.OPERATING_EXPENSE, n("30.00"), shares, BigDecimal.ZERO)), "FAMILY", "Two complete evidenced components");
       long report = rentals.report(CarlService.Scope.privateFor("alice"), UUID.randomUUID(), properties, FROM, THROUGH, THROUGH);
-      String facts = service.artifact("alice", report).get("facts").toString();
+      String facts = StoredFacts.compact(service.artifact("alice", report).get("facts"));
       assertTrue(facts.contains("\"rentCollected\":150.00"));
       assertTrue(facts.contains("\"operatingExpenses\":30.00"));
       assertTrue(facts.contains("\"cashBeforeReserves\":120.00"));
